@@ -1,1 +1,11 @@
-export default [];
+import bus from "@jukejia/egret-utils/dist/plugins/bus";
+import auth from "./auth";
+import configs from "./configs";
+import tools from "./tools";
+import weixin from "./weixin";
+import alipay from "./alipay";
+import poster from "./poster";
+
+const retina = require("@jukejia/retina");
+
+export default [bus, retina, auth, configs, tools, weixin, alipay, poster];

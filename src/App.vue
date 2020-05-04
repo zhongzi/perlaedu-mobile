@@ -8,23 +8,43 @@
     <transition>
       <router-view v-if="!$route.meta.keepAlive"></router-view>
     </transition>
-    <div class="copyright">
-      <a href="http://www.jiaowu.ai">由AI教务提供技术支持 </a>
-    </div>
+    <ai-copyright />
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import TipShare from "@/component/tip-share.vue";
 
+import AiCopyright from "@/view/component/AiCopyright.vue";
+
 @Component({
   components: {
-    TipShare
-  }
+    TipShare,
+    AiCopyright,
+  },
 })
 export default class Home extends Vue {
   created() {
-    console.log("App.vue");
+    this.$auth.entry = window.location.href;
+    this.$bus.$on("config:share", this.configShare);
+  }
+
+  configShare({ title, desc, link, imgUrl, success }) {
+    imgUrl = this.$options.filters.alioss(imgUrl);
+
+    console.log(title, desc, link, imgUrl);
+
+    this.$weixin.config(() => {
+      this.$weixin.configShare({
+        title: title,
+        desc: desc,
+        link: link || window.location.href,
+        imgUrl: imgUrl,
+        success: () => {
+          success && success();
+        },
+      });
+    });
   }
 }
 </script>
@@ -32,10 +52,15 @@ export default class Home extends Vue {
 <style lang="scss">
 @import "./asset/iconfont/iconfont.css";
 @import "./asset/css/style.css";
+@import "./asset/css/normalize.css";
 
 html {
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
+}
+
+a {
+  text-decoration: none;
 }
 
 #app {
@@ -51,7 +76,7 @@ html {
     font-size: 12px;
     color: #747474;
     letter-spacing: 1.34px;
-    padding-top: 10px;
+    padding: 10px 0px 20px;
 
     a {
       color: inherit;

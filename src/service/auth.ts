@@ -1,18 +1,16 @@
 import isEmpty from "lodash/isEmpty";
+import isObject from "lodash/isObject";
 const configs = require("../configs.json");
 
 const auth: any = {
   loggedIn() {
     return true;
   },
-  hasOpenId() {
-    return this.openid && this.openid.length > 0;
-  },
-  hasLoggedUser() {
-    return true;
-  },
   gotoLogin() {
-    // fixme
+    location.href =
+      configs.apiPrefix +
+      "/wechat/login?next=" +
+      encodeURIComponent(location.href);
   },
   login({ user, openid, token }) {
     if (token) {
@@ -31,12 +29,18 @@ const auth: any = {
     this.token = "";
     this.openid = "";
   },
+  hasLoggedUser() {
+    return this.user && this.user.id;
+  },
+  hasOpenId() {
+    return this.openid && this.openid.length > 0;
+  },
   replaceExpose(next, to, store) {
-    const oldExpose: string | void = to.query.expose;
-    const oldExpose2: string | void = to.query.expose2;
+    let oldExpose: string | void = to.query.expose;
+    let oldExpose2: string | void = to.query.expose2;
 
     if (oldExpose && oldExpose === this.openid) {
-      return next();
+      return false;
     }
 
     to.query.expose = this.openid;
@@ -46,23 +50,23 @@ const auth: any = {
       to.query.expose2 = oldExpose2 || store.state.expose2;
     }
 
-    return next({
+    next({
       name: to.name,
-      path: to.path,
       params: to.params,
-      query: to.query
+      query: to.query,
     });
-  }
+    return true;
+  },
 };
 
-const _jsonCaches = {};
+let _jsonCaches = {};
 
 function getJson(key, default_ = {}) {
-  const raw = window.localStorage.getItem(key);
+  let raw = window.localStorage.getItem(key);
 
-  const cache = _jsonCaches[key];
+  let cache = _jsonCaches[key];
   if (cache) {
-    const oldRaw = cache[0];
+    let oldRaw = cache[0];
     if (raw === oldRaw) {
       return cache[1];
     }
@@ -83,35 +87,36 @@ function getJson(key, default_ = {}) {
 
 function defineJSONProperty(name) {
   Object.defineProperty(auth, name, {
-    set: function(value) {
+    set: function (value) {
       if (value) {
         window.localStorage.setItem(name, JSON.stringify(value));
       } else {
         window.localStorage.removeItem(name);
       }
     },
-    get: function() {
+    get: function () {
       return getJson(name);
-    }
+    },
   });
 }
 
 function defineStringProperty(name) {
   Object.defineProperty(auth, name, {
-    set: function(value) {
+    set: function (value) {
       if (value) {
         window.localStorage.setItem(name, value);
       } else {
         window.localStorage.removeItem(name);
       }
     },
-    get: function() {
+    get: function () {
       return window.localStorage.getItem(name) || "";
-    }
+    },
   });
 }
 
 defineStringProperty("token");
 defineStringProperty("entry");
+defineJSONProperty("bill");
 
 export default auth;

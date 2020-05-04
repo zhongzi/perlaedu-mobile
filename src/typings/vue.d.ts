@@ -6,11 +6,9 @@ declare module "vue/types/vue" {
     $auth: any;
     $weixin: any;
     $tools: any;
-    $toast: any;
-    $loading: any;
-    $densityStr: any;
-    $bus: any;
-    $confirm: any;
     $hui: any;
+    $densityStr: any;
+    $PosterBuilder: any;
+    $bus: any;
   }
 }

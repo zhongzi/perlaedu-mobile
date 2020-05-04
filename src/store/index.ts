@@ -27,7 +27,7 @@ const state = {
   pendingTelephone: "",
   expose: "",
   expose2: "",
-  routes: []
+  routes: [],
 };
 
 const getters = {
@@ -36,7 +36,7 @@ const getters = {
   },
   fullTitle(state) {
     return getFullTitle(state.title);
-  }
+  },
 };
 
 const mutations = {
@@ -67,7 +67,7 @@ const mutations = {
     if (to.query.expose2) {
       state.expose2 = to.query.expose2;
     }
-  }
+  },
 };
 
 const actions = {};
@@ -79,5 +79,5 @@ export default new Vuex.Store({
   mutations,
   actions,
   modules,
-  strict: debug
+  strict: debug,
 });

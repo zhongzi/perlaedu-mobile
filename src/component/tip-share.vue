@@ -15,7 +15,7 @@
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 
 @Component({
-  name: "tip-share"
+  name: "tip-share",
 })
 export default class Home extends Vue {
   @Prop({ type: Boolean, default: false }) value: boolean;
