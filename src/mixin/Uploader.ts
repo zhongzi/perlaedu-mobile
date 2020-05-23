@@ -15,16 +15,16 @@ export default class UploaderMixin extends Vue {
   }
 
   uploadFile(file, type, prefix, callback) {
-    let suffixPos = file.name.lastIndexOf(".");
-    let suffix = suffixPos >= 0 && "." + file.name.substr(suffixPos);
+    const suffixPos = file.name.lastIndexOf(".");
+    const suffix = suffixPos >= 0 && "." + file.name.substr(suffixPos);
     this.upload(file, type, prefix, suffix || "", callback);
   }
 
   upload(file, type, prefix, suffix, callback) {
-    let key = urljoin(prefix, uuidv4() + suffix);
+    const key = urljoin(prefix, uuidv4() + suffix);
 
     this.fetchToken(type, key).then((resp) => {
-      let token = resp.data.token;
+      const token = resp.data.token;
       this.sendFile(file, key, token)
         .then(() => {
           callback(token.url);
@@ -45,13 +45,13 @@ export default class UploaderMixin extends Vue {
     });
   }
   sendFile(file, filename, token) {
-    let headers = {
+    const headers = {
       "Content-Type": "multipart/form-data",
       "Access-Control-Allow-Credentials": true,
       "Access-Control-Allow-Origin": "*",
     };
 
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append("key", token.path);
     formData.append("policy", token.policy);
     formData.append("OSSAccessKeyId", token.accessid);

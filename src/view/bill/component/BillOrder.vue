@@ -91,7 +91,7 @@
                 套餐说明
                 <span>{{ payItem.vitem.description }} </span>
               </div>
-              <bill-order-items :order="item" />
+              <bill-order-items :order="item" v-if="welfareItems.length > 0" />
             </div>
           </template>
         </ai-panel>
@@ -120,6 +120,7 @@ import BillOrderCost from "./BillOrderCost.vue";
 import BillOrderItems from "./BillOrderItems.vue";
 
 import find from "lodash/find";
+import filter from "lodash/filter";
 
 @Component({
   name: "bill-order",
@@ -168,6 +169,9 @@ export default class Home extends Mixins(SyncMixin) {
 
   get payItem() {
     return find(this.item.items, { is_welfare: false });
+  }
+  get welfareItems() {
+    return filter(this.item.items, { is_welfare: true }) || [];
   }
   onDelete() {
     this.store = "billOrder";

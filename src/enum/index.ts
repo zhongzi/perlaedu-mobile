@@ -1,7 +1,7 @@
 import forIn from "lodash/forIn";
 
 const toOptions = (status) => {
-  let options = [];
+  const options = [];
   forIn(status, (v: any, k: any) => {
     options.push({
       key: v.text,

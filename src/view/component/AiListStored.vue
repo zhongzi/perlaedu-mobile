@@ -68,6 +68,7 @@ export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Boolean, default: false }) enableGotoTop: boolean;
   @Prop({ type: Boolean, default: true }) enableEmpty: boolean;
   @Prop({ type: Boolean, default: true }) loading: boolean;
+  @Prop({ type: Boolean, default: true }) empty: boolean;
 
   created() {
     this.enableLoading = this.loading;

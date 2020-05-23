@@ -17,17 +17,17 @@ export default function (
     return "";
   }
 
-  let wx = undefined;
+  const wx = undefined;
   let systemDppx = 1;
   if (typeof wx !== "undefined" && wx.getSystemInfoSync) {
-    var systemInfo = wx.getSystemInfoSync();
+    const systemInfo = wx.getSystemInfoSync();
     systemDppx = systemInfo.pixelRatio;
   } else {
-    var res = require("res");
+    const res = require("res");
     systemDppx = res.dppx() || 1;
   }
 
-  let dppx = option.dppx || systemDppx;
+  const dppx = option.dppx || systemDppx;
 
   let ossParams: string = "x-oss-process=image/resize";
 

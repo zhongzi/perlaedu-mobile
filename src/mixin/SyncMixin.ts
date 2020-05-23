@@ -163,7 +163,7 @@ export default class SyncMixin extends Vue {
   }
 
   defaultFailureHandler(err) {
-    let message = this.$options.filters.safe(
+    const message = this.$options.filters.safe(
       err,
       "response.data.message",
       null

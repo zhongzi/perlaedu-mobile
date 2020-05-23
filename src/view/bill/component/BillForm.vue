@@ -68,10 +68,9 @@ export default class Home extends Vue {
     background-color: rgb(0, 0, 0, 0);
     min-width: 324px;
     min-height: 400px;
+    padding: 30px 20px;
   }
   .money {
-    margin-top: 10px;
-
     text-align: center;
     font-size: 14px;
     font-weight: bold;

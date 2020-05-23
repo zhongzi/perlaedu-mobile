@@ -91,6 +91,7 @@ export default class Home extends Mixins(SyncMixin) {
           "user",
           "seller",
           "items",
+          "is_paying",
           "cost_items",
           "hashed_id",
         ],

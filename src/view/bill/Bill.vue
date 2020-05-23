@@ -44,7 +44,7 @@
             <img :src="addBtnImage" />
           </div>
         </div>
-        <div class="welfare" v-if="welfareItems.length > 0">
+        <div class="welfare" v-if="welfareItems.length > 0 || isManager">
           <div class="welfare-title">
             限时福利
           </div>

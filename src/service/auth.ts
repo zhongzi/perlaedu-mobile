@@ -36,8 +36,8 @@ const auth: any = {
     return this.openid && this.openid.length > 0;
   },
   replaceExpose(next, to, store) {
-    let oldExpose: string | void = to.query.expose;
-    let oldExpose2: string | void = to.query.expose2;
+    const oldExpose: string | void = to.query.expose;
+    const oldExpose2: string | void = to.query.expose2;
 
     if (oldExpose && oldExpose === this.openid) {
       return false;
@@ -59,14 +59,14 @@ const auth: any = {
   },
 };
 
-let _jsonCaches = {};
+const _jsonCaches = {};
 
 function getJson(key, default_ = {}) {
-  let raw = window.localStorage.getItem(key);
+  const raw = window.localStorage.getItem(key);
 
-  let cache = _jsonCaches[key];
+  const cache = _jsonCaches[key];
   if (cache) {
-    let oldRaw = cache[0];
+    const oldRaw = cache[0];
     if (raw === oldRaw) {
       return cache[1];
     }

@@ -70,7 +70,7 @@ class PosterBuilder {
   downloadURL() {
     if (!this.isRendedAll()) return;
 
-    var link = document.createElement("a");
+    const link = document.createElement("a");
     link.download = name;
     link.href = this.getURL();
     document.body.appendChild(link);
@@ -129,7 +129,7 @@ class PosterBuilder {
   }
 
   renderText(element, index, callback) {
-    let text = new Konva.Text(
+    const text = new Konva.Text(
       Object.assign({}, { text: element.value }, element.options)
     );
 
@@ -140,12 +140,12 @@ class PosterBuilder {
   }
 
   renderCircle(element, index, callback) {
-    let image = new Image();
-    let self = this;
+    const image = new Image();
+    const self = this;
     image.setAttribute("crossOrigin", "Anonymous");
     image.onload = function () {
-      let originRadius = Math.min(image.width, image.height) / 2;
-      let scale =
+      const originRadius = Math.min(image.width, image.height) / 2;
+      const scale =
         (element.options.radius * self.scale * self.scale) / originRadius;
       element.options.fillPatternScale = {
         x: scale,
@@ -157,10 +157,10 @@ class PosterBuilder {
       };
       element.options.fillPatternRepeat = "no-repeat";
 
-      let zIndex = element.options.zIndex;
+      const zIndex = element.options.zIndex;
       delete element.options.zIndex;
 
-      let circle = new Konva.Circle(
+      const circle = new Konva.Circle(
         Object.assign({}, { fillPatternImage: image }, element.options)
       );
       self.scaleElement(circle);
@@ -173,14 +173,14 @@ class PosterBuilder {
   }
 
   renderImage(element, index, callback) {
-    let image = new Image();
-    let self = this;
+    const image = new Image();
+    const self = this;
     image.setAttribute("crossOrigin", "Anonymous");
     image.onload = function () {
-      let zIndex = element.options.zIndex;
+      const zIndex = element.options.zIndex;
       delete element.options.zIndex;
 
-      let img = new Konva.Image(
+      const img = new Konva.Image(
         Object.assign({}, { image: image }, element.options)
       );
 

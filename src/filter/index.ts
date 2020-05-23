@@ -25,20 +25,20 @@ function distanceFromDatetime(value: Date | string): string {
 
 function distanceFromSeconds(seconds) {
   seconds = Number(seconds);
-  var d = Math.floor(seconds / (3600 * 24));
-  var h = Math.floor((seconds % (3600 * 24)) / 3600);
-  var m = Math.floor((seconds % 3600) / 60);
-  var s = Math.floor(seconds % 60);
+  const d = Math.floor(seconds / (3600 * 24));
+  const h = Math.floor((seconds % (3600 * 24)) / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
 
-  var dDisplay = d > 0 ? d + "天" : "";
-  var hDisplay = h > 0 ? h + "小时" : "";
-  var mDisplay = m > 0 ? m + "分钟" : "";
-  var sDisplay = s > 0 ? s + "秒" : "";
+  const dDisplay = d > 0 ? d + "天" : "";
+  const hDisplay = h > 0 ? h + "小时" : "";
+  const mDisplay = m > 0 ? m + "分钟" : "";
+  const sDisplay = s > 0 ? s + "秒" : "";
   return dDisplay + hDisplay + mDisplay + sDisplay;
 }
 
 function mask(value, num, slot = "...") {
-  let _v = value.substring(0, num);
+  const _v = value.substring(0, num);
   if (_v === value) {
     return _v;
   }

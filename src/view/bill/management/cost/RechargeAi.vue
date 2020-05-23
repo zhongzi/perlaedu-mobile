@@ -62,6 +62,7 @@ import BillOrder from "../../component/BillOrder.vue";
 import BillMerchant from "../../component/BillMerchant.vue";
 import MerchantForm from "./MerchantForm.vue";
 
+import _get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 
 @Component({
@@ -85,7 +86,8 @@ export default class Home extends Mixins(SyncMixin) {
 
   get query() {
     return {
-      sort: "balance asc",
+      agent_id: _get(this.$auth, "user.agent.id", ""),
+      sort: "id desc",
       filters: JSON.stringify({
         name: [this.keyword],
       }),

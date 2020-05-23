@@ -2,7 +2,7 @@
   <div class="bill-actions">
     <hui-button class="btn-pay" @click.native="openForm = true">
       <i class="iconfont icon-pay" />
-      <span>立即支付 ({{ payBalance }}元)</span>
+      <span>立即支付 ({{ payBalance | round(2) }}元)</span>
     </hui-button>
     <div id="pay-poster" v-show="false" />
     <bill-form

@@ -75,8 +75,8 @@ function confirmNext(next: any, from: any, to: any) {
 }
 
 function pathnameRequired(to: any) {
-  let link: string = tools.buildURL(to.fullPath);
-  let url: any = new URL(link);
+  const link: string = tools.buildURL(to.fullPath);
+  const url: any = new URL(link);
   let pathname = null;
   to.matched.forEach((record) => {
     if (record.meta.pathname) pathname = record.meta.pathname;
@@ -167,10 +167,12 @@ router.afterEach((to: any, from: any) => {
 const replaceExpose = (location) => {
   if (isEmpty(location)) return;
 
-  let curQuery = (router.currentRoute ? router.currentRoute.query : {}) as any;
+  const curQuery = (router.currentRoute
+    ? router.currentRoute.query
+    : {}) as any;
   if (isObject(location)) {
     location = location as any;
-    let query = location.query || ({} as any);
+    const query = location.query || ({} as any);
     location.query = Object.assign({}, query || {}, {
       expose: query.expose || curQuery.expose || "",
       expose2: query.expose2 || curQuery.expose2 || "",
@@ -178,7 +180,7 @@ const replaceExpose = (location) => {
   }
 
   if (isString(location)) {
-    let hasQuery = location.indexOf("?");
+    const hasQuery = location.indexOf("?");
     location += hasQuery >= 0 ? "&" : "?";
     if (location.indexOf("expose") < 0) {
       location += "&expose=" + curQuery.expose || "";
