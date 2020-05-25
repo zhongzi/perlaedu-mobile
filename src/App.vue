@@ -54,9 +54,11 @@ export default class Home extends Vue {
 @import "./asset/css/style.css";
 @import "./asset/css/normalize.css";
 
-html {
+html,
+body {
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
+  width: 100%;
 }
 
 a {

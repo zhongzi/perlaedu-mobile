@@ -139,6 +139,7 @@ export default class Home extends Mixins(SyncMixin) {
         order_id: this.order.id,
         balance: this.order.balance,
         pay_balance: this.order.pay_balance,
+        value: this.order.value,
         target_id: this.curMerchant.id,
         target_class: "Merchant",
         remark: this.remark,

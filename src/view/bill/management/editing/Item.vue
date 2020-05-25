@@ -10,6 +10,12 @@
       :placeholder="innerItem.is_welfare ? '优惠金额' : '金额'"
       class="field"
     />
+    <ai-input
+      v-if="!innerItem.is_welfare"
+      v-model.number="innerItem.value"
+      placeholder="价值量，例如课时量、储值卡金额等"
+      class="field"
+    />
     <ai-input-date
       v-model="innerItem.start_at"
       label="上架日期"
@@ -52,12 +58,13 @@
 import { Component, Vue, Prop, Watch, Mixins } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
-import isEqual from "lodash/isEqual";
-import cloneDeep from "lodash/cloneDeep";
 
 import AiInput from "@/view/component/AiInput.vue";
 import AiInputCheck from "@/view/component/AiInputCheck.vue";
 import AiInputDate from "@/view/component/AiInputDate.vue";
+
+import isEqual from "lodash/isEqual";
+import cloneDeep from "lodash/cloneDeep";
 
 @Component({
   name: "bill-item-form",
@@ -73,6 +80,7 @@ export default class Home extends Mixins(SyncMixin) {
     is_welfare: false,
     is_overlay: true,
     price: null,
+    value: null,
     start_at: new Date(),
     end_at: new Date(),
     description: "",
@@ -99,6 +107,17 @@ export default class Home extends Mixins(SyncMixin) {
   @Watch("item", { deep: true })
   onItemChanged() {
     this.resetInnerItem();
+  }
+
+  @Watch("innerItem.price", { deep: true })
+  onInnerItemChanged(newV, oldV) {
+    if (
+      !this.innerItem.value ||
+      this.innerItem.value === 0 ||
+      isEqual(oldV, this.innerItem.value)
+    ) {
+      this.innerItem.value = this.innerItem.price;
+    }
   }
 
   resetInnerItem() {

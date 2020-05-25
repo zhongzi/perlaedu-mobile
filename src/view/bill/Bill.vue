@@ -29,9 +29,9 @@
               :key="item.id"
               :item="item"
               :swiperEnable="false"
-              :enableCheck="true"
               :panelOpened="true"
               :checked="selectedPayItemId === item.id"
+              :enableCheck="item.id !== selectedPayItemId"
               @update:checked="(checked) => setSelectedPayItemId(item, checked)"
               class="item"
             />
@@ -121,6 +121,7 @@ import sortBy from "lodash/sortBy";
 import reverse from "lodash/reverse";
 import sumBy from "lodash/sumBy";
 import remove from "lodash/remove";
+import maxBy from "lodash/maxBy";
 
 @Component({
   components: {
@@ -145,24 +146,39 @@ export default class Home extends Mixins(SyncMixin) {
   selectedWelfareItemIds: any = [];
 
   checked: boolean = true;
-  welfareBalanceItems: any = [];
+  invalidWelfareItemIds: any = [];
 
   get addBtnImage() {
     return require("@/asset/image/bill-add-item" + this.$densityStr + ".png");
   }
 
   get payBalance() {
-    let balance =
-      (this.selectedPayItem.price || 0) -
-      (sumBy(this.welfareBalanceItems, "price") || 0);
+    let balance: number = this.selectedPayItem.price || 0;
+    let unOverlayItem: any = maxBy(
+      filter(this.welfareItems, (item) => {
+        return (
+          !item.is_overlay && indexOf(this.invalidWelfareItemIds, item.id) < 0
+        );
+      }),
+      "price"
+    );
+    let unOverlayBalance: number = unOverlayItem ? unOverlayItem.price : 0;
+    let overlayBalance: number = sumBy(
+      filter(this.welfareItems, (item) => {
+        return (
+          item.is_overlay && indexOf(this.invalidWelfareItemIds, item.id) < 0
+        );
+      }),
+      "price"
+    );
+    balance = balance - unOverlayBalance - overlayBalance;
     return balance > 0 ? balance : 0;
   }
 
   get pickedItems() {
-    const ret = filter(this.welfareItems, (item) =>
+    return filter(this.welfareItems, (item) =>
       find(this.payingOrderitems, (orderItem) => orderItem.item_id === item.id)
     );
-    return ret;
   }
 
   get payingOrderitems() {
@@ -223,6 +239,8 @@ export default class Home extends Mixins(SyncMixin) {
 
     this.parseURL();
     this.loadProject();
+
+    this.$bus.$on("reload-project", this.loadProject);
   }
 
   @Watch("$route", { deep: true })
@@ -262,12 +280,17 @@ export default class Home extends Mixins(SyncMixin) {
     }
   }
 
-  onSwitchStatus(item) {
-    remove(this.welfareBalanceItems, (wi) => {
-      return wi.id === item.id;
-    });
-
-    this.welfareBalanceItems = concat(this.welfareBalanceItems, item);
+  onSwitchStatus(item, isValid) {
+    if (!isValid) {
+      this.invalidWelfareItemIds = concat(this.invalidWelfareItemIds, item.id);
+    } else {
+      this.invalidWelfareItemIds = filter(
+        this.invalidWelfareItemIds,
+        (itemId) => {
+          return itemId !== item.id;
+        }
+      );
+    }
   }
 
   loadProject() {
@@ -307,8 +330,7 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   setSelectedPayItemId(item, checked) {
-    this.selectedPayItemId = checked ? item.id : null;
-    this.$forceUpdate();
+    this.selectedPayItemId = checked ? item.id : this.selectedPayItemId;
   }
 
   checkInWelfareIds(item) {

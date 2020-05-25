@@ -159,10 +159,7 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   onSwitchStatus() {
-    this.$emit("switch-status", {
-      id: this.item.id,
-      price: this.isValid ? this.item.price : 0,
-    });
+    this.$emit("switch-status", this.item, this.isValid);
   }
 
   startCountDownInterval() {

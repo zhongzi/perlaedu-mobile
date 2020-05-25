@@ -26,6 +26,7 @@ import map from "lodash/map";
 import indexOf from "lodash/indexOf";
 import concat from "lodash/concat";
 import sortBy from "lodash/sortBy";
+import isEmpty from "lodash/isEmpty";
 
 @Component({
   components: {
@@ -39,6 +40,7 @@ export default class Home extends Mixins(SyncMixin, StopBodyScrollMixin) {
 
   welfareItems: any = [];
   open: boolean = false;
+  isSaved: boolean = false;
 
   get unpickedItems() {
     return sortBy(
@@ -80,6 +82,12 @@ export default class Home extends Mixins(SyncMixin, StopBodyScrollMixin) {
       this.open = true;
       return;
     } else {
+      if (this.open) {
+        this.$nextTick(() => {
+          this.$bus.$emit("save-order");
+        });
+      }
+
       this.open = false;
       this.$emit("picked", map(this.welfareItems, "id"));
     }
@@ -91,7 +99,6 @@ export default class Home extends Mixins(SyncMixin, StopBodyScrollMixin) {
 
   pullInSet(item) {
     this.welfareItems = concat(this.welfareItems, item);
-    this.$forceUpdate();
     return;
   }
 }

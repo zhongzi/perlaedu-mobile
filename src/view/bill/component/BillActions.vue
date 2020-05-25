@@ -149,6 +149,8 @@ export default class Home extends Mixins(SyncMixin, PayMixin) {
 
   created() {
     this.posterBuild();
+
+    this.$bus.$on("save-order", this.onSubmitBg);
   }
 
   @Watch("posterJson", { deep: true })
@@ -176,6 +178,24 @@ export default class Home extends Mixins(SyncMixin, PayMixin) {
       }
     );
     this.poster.build();
+  }
+
+  onSubmitBg() {
+    if (this.payBalance <= 0) return;
+
+    this.store = "billOrder";
+    this.id = this.order.id;
+    this.saveEntity({
+      query: {
+        extras: "scene_qrcode_url",
+      },
+      res: Object.assign({}, this.order, { form: this.queryForm }),
+      success: (resp) => {
+        this.$nextTick(() => {
+          this.$bus.$emit("reload-project");
+        });
+      },
+    });
   }
 
   onSubmit() {
