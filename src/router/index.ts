@@ -62,7 +62,7 @@ export default new Router({
       meta: {
         requireOpenid: true,
         title: "关注公众号",
-        style: {
+        copyrightStyle: {
           color: "#fff",
           background: "linear-gradient(123deg, #ffa118 0%, #ff8306 100%)",
         },

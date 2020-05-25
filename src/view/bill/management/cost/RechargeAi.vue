@@ -123,7 +123,7 @@ export default class Home extends Mixins(SyncMixin) {
     this.open = false;
     this.$hui.confirm.show({
       title: "充值确认",
-      message: `您正在给学校【${merchant.name}】充值${this.order.balance}元，请确认`,
+      message: `您正在给学校【${merchant.name}】充值${this.order.value}元，请确认`,
       confirmText: "确认",
       cancelText: "取消",
       onConfirm: () => {

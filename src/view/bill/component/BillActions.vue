@@ -163,7 +163,7 @@ export default class Home extends Mixins(SyncMixin, PayMixin) {
   }
 
   posterBuild() {
-    if (!this.project.id) return;
+    if (!this.project.title) return;
     if (!this.poster) {
       this.poster = new this.$PosterBuilder();
     }

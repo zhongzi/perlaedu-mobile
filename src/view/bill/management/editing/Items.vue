@@ -53,6 +53,7 @@ import cloneDeep from "lodash/cloneDeep";
 import find from "lodash/find";
 import indexOf from "lodash/indexOf";
 import isEqual from "lodash/isEqual";
+import _get from "lodash/get";
 
 @Component({
   components: {
@@ -91,7 +92,11 @@ export default class Home extends Mixins(SyncMixin) {
 
     this.store = "billProject";
     this.id = this.$route.params.projectId;
-    this.loadEntity({});
+    this.loadEntity({
+      query: {
+        extras: "channel",
+      },
+    });
   }
 
   @Watch("project", { deep: true })

@@ -49,6 +49,7 @@
                 <span>(付) {{ item.pay_balance }} 元</span>
                 <span>(总) {{ item.balance }} 元 </span>
                 <span>(惠) {{ item.balance - item.pay_balance }}元</span>
+                <span>(值) {{ item.value }} {{ valueUnit }}</span>
                 <div :class="b('right-actions')" v-if="!isSimpleMode">
                   <hui-button
                     class="action"
@@ -121,6 +122,7 @@ import BillOrderItems from "./BillOrderItems.vue";
 
 import find from "lodash/find";
 import filter from "lodash/filter";
+import _get from "lodash/get";
 
 @Component({
   name: "bill-order",
@@ -170,6 +172,11 @@ export default class Home extends Mixins(SyncMixin) {
   get payItem() {
     return find(this.item.items, { is_welfare: false });
   }
+
+  get valueUnit() {
+    return this.payItem.value_type === "course" ? "次课" : "元";
+  }
+
   get welfareItems() {
     return filter(this.item.items, { is_welfare: true }) || [];
   }

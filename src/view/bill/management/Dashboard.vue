@@ -94,8 +94,10 @@ export default class Home extends Mixins(SyncMixin) {
           "is_paying",
           "cost_items",
           "hashed_id",
+          "project",
         ],
         BillOrderItem: ["vitem"],
+        BillProject: ["channel"],
       }),
     };
   }
@@ -126,12 +128,6 @@ export default class Home extends Mixins(SyncMixin) {
       this.tabs,
       find(this.tabs, { value: this.$route.query.type || "paying" })
     );
-  }
-
-  gotoProjects() {
-    this.$router.push({
-      name: "",
-    });
   }
 
   onDownload(dateRange) {
