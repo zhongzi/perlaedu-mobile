@@ -15,6 +15,7 @@ const NotFound = () =>
   import(/* webpackChunkName: "main" */ "@/view/NotFound.vue");
 
 import billRoutes from "./bill";
+import websiteRoutes from "./website";
 import termsOfServiceRoutes from "./terms_of_service";
 
 patchVueRouter(Router);
@@ -25,7 +26,7 @@ export default new Router({
     {
       path: "/",
       redirect: {
-        name: "billHome",
+        name: "websiteHome",
       },
       meta: {
         requireOpenid: true,
@@ -76,7 +77,7 @@ export default new Router({
         title: "404",
       },
     },
-  ].concat(billRoutes, termsOfServiceRoutes),
+  ].concat(billRoutes, termsOfServiceRoutes, websiteRoutes),
   scrollBehavior: (to, from, savedPosition) => {
     if (savedPosition) {
       return savedPosition;

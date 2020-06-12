@@ -16,8 +16,8 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 })
 export default class Home extends Vue {
   @Prop({ type: Boolean, default: false }) checked: boolean;
-  @Prop({ type: Boolean, default: false }) disabled: boolean;
   @Prop({ type: Boolean, default: true }) enableCheck: boolean;
+  @Prop({ type: Boolean, default: false }) disabled: boolean;
 
   innerChecked: boolean = false;
 

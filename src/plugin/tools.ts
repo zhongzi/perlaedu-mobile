@@ -8,8 +8,6 @@ const urljoin = require("url-join");
 const isProduction = process.env.NODE_ENV === "production";
 
 const tools = {
-  isEmpty: (val) => isEmpty(val),
-  queryFilter: (d) => pickBy(d, (val) => val !== undefined),
   shadowLink: (
     link: string = null,
     campaign: any = null,

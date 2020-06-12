@@ -1,0 +1,71 @@
+<template>
+  <div class="wrapper website">
+    <router-view />
+    <ai-bottom-navigation :menus="menus" @click="onClick" v-if="showMenu" />
+  </div>
+</template>
+
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+
+import AiBottomNavigation from "@/view/component/AiBottomNavigation.vue";
+
+import isEqual from "lodash/isEqual";
+import find from "lodash/find";
+
+@Component({
+  components: {
+    AiBottomNavigation,
+  },
+})
+export default class Home extends Vue {
+  menus: any = [
+    {
+      name: "首页",
+      icon: "home",
+    },
+    {
+      name: "我的",
+      icon: "user",
+    },
+  ];
+
+  get showMenu() {
+    let hide = this.$route.meta.hideMenu;
+    if (!hide) {
+      this.$route.matched.forEach((route: any) => {
+        if (route.meta.hideMenu) {
+          hide = route.meta.hideMenu;
+        }
+      });
+    }
+    return !hide;
+  }
+
+  onClick(menu) {
+    if (isEqual(menu, this.menus[0])) {
+      if (
+        find(this.$route.matched, (location) => {
+          return location.name === "websiteMerchantHome";
+        })
+      ) {
+        this.$router.push({
+          name: "websiteMerchant",
+        });
+      } else {
+        this.$router.push({
+          name: "websiteUnion",
+        });
+      }
+    }
+  }
+}
+</script>
+<style lang="scss" scoped>
+.wrapper {
+  height: 100%;
+}
+.website {
+  margin-bottom: 64px;
+}
+</style>

@@ -1,5 +1,10 @@
 <template>
   <div :class="b()">
+    <div :class="b('label')" v-if="label">
+      <slot>
+        {{ label }}
+      </slot>
+    </div>
     <input
       ref="input"
       :class="b('input')"
@@ -21,6 +26,7 @@ import PatchMixin from "@/mixin/PatchMixin";
   name: "ai-input",
 })
 export default class Home extends Mixins(PatchMixin) {
+  @Prop({ type: String, default: null }) label: string;
   @Prop({ type: [String, Number], default: "" }) value: string | number;
   @Prop({ type: String, default: "text" }) type: string;
   @Prop({ type: String, default: "text" }) placeholder: string;
@@ -34,7 +40,16 @@ export default class Home extends Mixins(PatchMixin) {
 .ai-input {
   border: solid 1px;
   border-radius: 5px;
-  padding: 10px;
+  padding: 10px 0px;
+
+  &__label {
+    font-size: 14px;
+    font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
+    font-weight: bold;
+    color: rgba(84, 84, 84, 1);
+    line-height: 19px;
+    letter-spacing: 1px;
+  }
 
   &__input {
     width: 100%;

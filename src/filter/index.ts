@@ -7,6 +7,7 @@ import watermark from "@jukejia/egret-utils/dist/filters/watermark";
 import qrcode from "./qrcode";
 import qrcodeWhite from "./qrcode_white";
 import alioss from "./alioss";
+import prettyBytes from "./pretty_bytes";
 
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
@@ -113,6 +114,7 @@ const filters: { [k: string]: any } = {
   diffInDays,
   distanceFromSeconds,
   distanceFromDatetime,
+  prettyBytes,
 };
 
 export default filters;
