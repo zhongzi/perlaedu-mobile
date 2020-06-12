@@ -7,6 +7,7 @@ import watermark from "@jukejia/egret-utils/dist/filters/watermark";
 import qrcode from "./qrcode";
 import qrcodeWhite from "./qrcode_white";
 import alioss from "./alioss";
+import prettyBytes from "./pretty_bytes";
 
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
@@ -61,7 +62,7 @@ function isPast(value: string): boolean {
 }
 
 function defaultDate(value: Date | string | void): string {
-  return date(value, "yyyy-MM-dd HH:mm");
+  return date(value, "yyyy-MM-dd HH:mm:ss");
 }
 
 function defaultDay(value: Date | string | void): string {
@@ -113,6 +114,7 @@ const filters: { [k: string]: any } = {
   diffInDays,
   distanceFromSeconds,
   distanceFromDatetime,
+  prettyBytes,
 };
 
 export default filters;

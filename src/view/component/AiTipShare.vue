@@ -15,7 +15,7 @@
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 
 @Component({
-  name: "tip-share",
+  name: "ai-tip-share",
 })
 export default class Home extends Vue {
   @Prop({ type: Boolean, default: false }) value: boolean;
@@ -37,7 +37,7 @@ export default class Home extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.tip-share {
+.ai-tip-share {
   &__mask {
     position: fixed;
     top: 0;

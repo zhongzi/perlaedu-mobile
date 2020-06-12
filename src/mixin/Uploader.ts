@@ -1,31 +1,29 @@
 import { Component, Vue } from "vue-property-decorator";
 
 import FileApi from "@/api/common/file";
+import axios from "axios";
 
-const Fly = require("flyio/dist/npm/fly");
-
-const fly = new Fly();
 const urljoin = require("url-join");
 const uuidv4 = require("uuid/v4");
 
 @Component
 export default class UploaderMixin extends Vue {
-  uploadBlob(blob, type, prefix, suffix, callback) {
-    this.upload(blob, type, prefix, suffix, callback);
+  uploadBlob(blob, type, prefix, suffix, callback, callbackPrg = null) {
+    this.upload(blob, type, prefix, suffix, callback, callbackPrg);
   }
 
-  uploadFile(file, type, prefix, callback) {
+  uploadFile(file, type, prefix, callback, callbackPrg = null) {
     const suffixPos = file.name.lastIndexOf(".");
-    const suffix = suffixPos >= 0 && "." + file.name.substr(suffixPos);
-    this.upload(file, type, prefix, suffix || "", callback);
+    const suffix = suffixPos >= 0 && file.name.substring(suffixPos);
+    this.upload(file, type, prefix, suffix, callback, callbackPrg);
   }
 
-  upload(file, type, prefix, suffix, callback) {
+  upload(file, type, prefix, suffix, callback, callbackPrg) {
     const key = urljoin(prefix, uuidv4() + suffix);
 
     this.fetchToken(type, key).then((resp) => {
       const token = resp.data.token;
-      this.sendFile(file, key, token)
+      this.sendFile(file, key, token, callbackPrg)
         .then(() => {
           callback(token.url);
         })
@@ -44,7 +42,7 @@ export default class UploaderMixin extends Vue {
       query: null,
     });
   }
-  sendFile(file, filename, token) {
+  sendFile(file, filename, token, callbackPrg) {
     const headers = {
       "Content-Type": "multipart/form-data",
       "Access-Control-Allow-Credentials": true,
@@ -61,8 +59,12 @@ export default class UploaderMixin extends Vue {
     formData.append("name", filename);
     formData.append("file", file, filename);
 
-    return fly.post(token.host, formData, {
+    return axios.post(token.host, formData, {
       headers: headers,
+      onUploadProgress: (result) => {
+        callbackPrg &&
+          callbackPrg(Math.round((result.loaded * 100) / result.total));
+      },
     });
   }
 }

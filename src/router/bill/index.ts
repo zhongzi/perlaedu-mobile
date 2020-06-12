@@ -8,6 +8,7 @@ const BillSuccess = () =>
   import(/* webpackChunkName: "bill" */ "@/view/bill/BillSuccess.vue");
 
 import managementRoutes from "./management";
+import profileRoutes from "./profile";
 
 const billRoutes: any = [
   {
@@ -55,7 +56,7 @@ const billRoutes: any = [
           },
         },
       },
-    ].concat(managementRoutes),
+    ].concat(managementRoutes, profileRoutes),
   },
 ];
 

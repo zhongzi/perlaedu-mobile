@@ -1,6 +1,9 @@
 <template>
   <div :class="[{ 'bill-card-selected': isSelected }, 'bill-card']">
     <img class="bill-card__decorator-logo" :src="require('@/asset/logo.png')" />
+    <div class="bill-card__header">
+      <slot name="header"> </slot>
+    </div>
     <div class="bill-card__content">
       <slot name="left">
         <div class="bill-card__content-left">
@@ -22,6 +25,9 @@
           </div>
         </div>
       </slot>
+    </div>
+    <div class="bill-card__footer">
+      <slot name="footer" />
     </div>
   </div>
 </template>
@@ -61,7 +67,7 @@ export default class Home extends Vue {
     align-items: center;
     justify-content: space-between;
 
-    padding: 0px 20px;
+    padding: 10px 20px;
 
     height: 100%;
 

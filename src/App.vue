@@ -13,13 +13,13 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import TipShare from "@/component/tip-share.vue";
 
+import AiTipShare from "./view/component/AiTipShare.vue";
 import AiCopyright from "@/view/component/AiCopyright.vue";
 
 @Component({
   components: {
-    TipShare,
+    AiTipShare,
     AiCopyright,
   },
 })
@@ -57,8 +57,8 @@ export default class Home extends Vue {
 html,
 body {
   overflow: scroll;
-  -webkit-overflow-scrolling: touch;
   width: 100%;
+  height: 100%;
 }
 
 a {
@@ -71,7 +71,6 @@ a {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   background: #f5f5f5;
-  min-height: 100vh;
 
   .copyright {
     text-align: center;

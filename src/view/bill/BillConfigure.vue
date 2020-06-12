@@ -8,8 +8,9 @@
         </div>
         <ai-list-stored
           resource="billItem"
+          scrollType="none"
           :query="query"
-          :enableScroll="false"
+          :enableMoreData="false"
           :enableEmpty="false"
         >
           <template v-slot:item="{ item }">
@@ -32,8 +33,9 @@
         </div>
         <ai-list-stored
           resource="billItem"
+          scrollType="none"
           :query="query"
-          :enableScroll="false"
+          :enableMoreData="false"
           :enableEmpty="false"
         >
           <template v-slot:item="{ item }">

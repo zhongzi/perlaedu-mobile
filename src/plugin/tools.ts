@@ -8,8 +8,6 @@ const urljoin = require("url-join");
 const isProduction = process.env.NODE_ENV === "production";
 
 const tools = {
-  isEmpty: (val) => isEmpty(val),
-  queryFilter: (d) => pickBy(d, (val) => val !== undefined),
   shadowLink: (
     link: string = null,
     campaign: any = null,
@@ -32,7 +30,7 @@ const tools = {
     url.pathname = pathname;
     return url.href;
   },
-  resolveQrcode: (url) => {
+  makeQrcode: (url) => {
     return (
       configs.qrcodeURL +
       "?next=" +
@@ -43,6 +41,11 @@ const tools = {
     const resolved = router.resolve(location);
     const url = tools.buildURL(resolved.route.fullPath);
     return url;
+  },
+  resolveQrcode: (router, location) => {
+    const url = tools.resolveURL(router, location);
+    console.log(url);
+    return tools.makeQrcode(url);
   },
   buildURL: (path) => {
     return [location.origin, location.pathname, "#", path].join("");

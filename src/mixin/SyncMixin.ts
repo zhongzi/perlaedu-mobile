@@ -11,7 +11,7 @@ export default class SyncMixin extends Vue {
   tag: string = "";
   id: string | number | string[] = "";
 
-  enableLoading: boolean = true;
+  enableLoading: boolean = false;
   loadingText: any = null;
 
   openLoading() {

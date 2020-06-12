@@ -9,6 +9,7 @@ const Dashboard = () =>
 
 import editingRoutes from "./editing";
 import costRoutes from "./cost";
+import couponRoutes from "./coupon";
 
 const managementRoutes: any = [
   {
@@ -26,7 +27,7 @@ const managementRoutes: any = [
         component: Dashboard,
         meta: { title: "收款清单" },
       },
-    ].concat(editingRoutes, costRoutes),
+    ].concat(editingRoutes, costRoutes, couponRoutes),
   },
 ];
 

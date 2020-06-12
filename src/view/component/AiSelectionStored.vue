@@ -1,7 +1,8 @@
 <template>
-  <ai-selection
+  <ai-selection-borderless
     :value="value"
     :options="list"
+    :label="label"
     :labelKey="labelKey"
     :valueKey="valueKey"
     @input="(val) => $emit('input', val)"
@@ -12,11 +13,11 @@
 import { Component, Vue, Prop, Watch, Mixins } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
-import AiSelection from "./AiSelection.vue";
+import AiSelectionBorderless from "./AiSelectionBorderless.vue";
 
 @Component({
   components: {
-    AiSelection,
+    AiSelectionBorderless,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
@@ -24,6 +25,7 @@ export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: String }) resource: string;
   @Prop({ type: Object, default: () => ({}) }) query: object;
   @Prop({ type: Number, default: 100 }) limit: number;
+  @Prop({ type: String, default: "" }) label: string;
   @Prop({ type: String, default: "title" }) labelKey: string;
   @Prop({ type: String, default: "id" }) valueKey: string;
 
