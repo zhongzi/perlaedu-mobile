@@ -20,7 +20,9 @@
       <slot v-if="enablePullUp" :isPullingUp="isPullingUp" name="pullup">
         <div v-if="enablePullUp" :class="b('pullup')">
           <div v-if="!isPullingUp">
-            <span v-if="!isLoading">{{ pullingUpText }}</span>
+            <span v-if="!isLoading && list.length > 0">{{
+              pullingUpText
+            }}</span>
           </div>
           <div v-else :class="b('loading')">
             <ai-double-bounce :class="b('animation')" />

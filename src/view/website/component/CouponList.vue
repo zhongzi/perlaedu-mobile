@@ -1,25 +1,17 @@
 <template>
   <div class="wrapper coupon">
-    <ai-list-stored
-      resource="billItem"
-      :query="innerQuery"
-      scrollType="none"
-      :hideIfNoData="true"
-    >
-      <template v-slot:item="{ item }">
-        <coupon
-          :coupon="item"
-          :key="item.id"
-          :merchant="merchant"
-          :unionMerchant="unionMerchant"
-        />
-      </template>
-    </ai-list-stored>
+    <coupon
+      v-if="coupon.id"
+      :coupon="coupon"
+      :key="coupon.id"
+      :merchant="merchant"
+      :unionMerchant="unionMerchant"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch, Mixins } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
 
@@ -35,22 +27,22 @@ import find from "lodash/find";
     Coupon,
   },
 })
-export default class Home extends Vue {
+export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Object, default: null }) merchant: any;
   @Prop({ type: Object, default: null }) query: any;
 
   unionMerchant: any = null;
   unionMerchants: any = null;
 
-  get innerQuery() {
-    return merge(
-      {
-        id: this.$configs.universalBillItem,
-      },
-      {}
-    );
+  get coupon() {
+    return this.entity;
   }
+
   created() {
+    this.store = "billItem";
+    this.id = this.$configs.gBillCouponId;
+    this.loadEntity();
+
     // TODO
     this.$bus.$on("unionMerchant", (data) => {
       this.unionMerchants = data.list;

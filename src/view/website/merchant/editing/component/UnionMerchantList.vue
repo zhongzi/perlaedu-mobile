@@ -38,11 +38,7 @@ export default class Home extends Vue {
         merchant_id: this.$route.params.merchantId,
         extras: JSON.stringify({
           Union: ["count_merchants"],
-          UnionMerchant: [
-            "union",
-            "contributions_pure",
-            "contributions_pure_rank",
-          ],
+          UnionMerchant: ["union", "contributions_pure", "rank"],
         }),
       },
       this.query || {}

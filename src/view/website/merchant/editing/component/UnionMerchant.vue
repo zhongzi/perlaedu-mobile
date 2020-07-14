@@ -30,10 +30,7 @@
           <ai-number :num="unionMerchant.benefits" label="贡献" />
           <ai-number :num="unionMerchant.contributions" label="收益" />
           <ai-number :num="unionMerchant.contributions_pure" label="净收益" />
-          <ai-number
-            :num="unionMerchant.contributions_pure_rank"
-            label="净收益排名"
-          />
+          <ai-number :num="unionMerchant.rank" label="净收益排名" />
         </div>
       </template>
     </ai-card>

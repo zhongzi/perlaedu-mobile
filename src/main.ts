@@ -21,6 +21,7 @@ import filters from "./filter";
 import directives from "./directive";
 import { tools } from "./plugin/tools";
 import "./api/login";
+import { loadDictionary } from "./plugin/configs";
 
 import isEmpty from "lodash/isEmpty";
 import isObject from "lodash/isObject";
@@ -230,8 +231,13 @@ router.push = function (location, onResolve, onReject) {
   });
 } as any;
 Vue.config.productionTip = false;
-new Vue({
-  router,
-  store,
-  render: (h) => h(App),
-}).$mount("#app");
+
+// 预加载配置
+loadDictionary(() => {
+  new Vue({
+    router,
+    store,
+    render: (h) => h(App),
+  }).$mount("#app");
+  return;
+});

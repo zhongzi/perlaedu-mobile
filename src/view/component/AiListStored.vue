@@ -79,7 +79,9 @@
           </slot>
         </template>
         <template v-slot:footer>
-          <slot name="footer" />
+          <slot name="footer">
+            <span> 全部加载完毕</span>
+          </slot>
         </template>
       </ai-waterfall>
       <div v-else>
@@ -134,7 +136,7 @@ export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Number, default: 10 }) limit: number;
   @Prop({ type: Boolean, default: false }) refresh: boolean;
   @Prop({ type: String, default: "scroll" }) scrollType: boolean;
-  @Prop({ type: String, default: "100%" }) scrollHeight: string;
+  @Prop({ type: String, default: "90vh" }) scrollHeight: string;
   @Prop({ type: Boolean, default: true }) autoPullDown: boolean;
   @Prop({ type: Boolean, default: true }) enablePullDown: boolean;
   @Prop({ type: Boolean, default: true }) enablePullUp: boolean;

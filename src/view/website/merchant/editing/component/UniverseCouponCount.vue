@@ -30,12 +30,12 @@ export default class Home extends Mixins(SyncMixin) {
         issued: {
           merchant_id: this.merchant.id,
           action: "issued",
-          "Coupon.item_id": this.$configs.universalBillItem,
+          "coupon_id.BillCoupon.item_id": this.$configs.gBillCouponId,
         },
         used: {
           merchant_id: this.merchant.id,
           action: "used",
-          "Coupon.item_id": this.$configs.universalBillItem,
+          "coupon_id.BillCoupon.item_id": this.$configs.gBillCouponId,
         },
       }),
     };
@@ -46,14 +46,29 @@ export default class Home extends Mixins(SyncMixin) {
     this.load();
   }
 
-  @Watch("query", { deep: true })
-  onQueryChanged() {
+  @Watch("merchant", { deep: true })
+  onMerchantChanged() {
     this.load();
   }
 
   load() {
+    const query = {
+      limit: 1,
+      counts: JSON.stringify({
+        issued: {
+          merchant_id: this.merchant.id,
+          action: "issued",
+          "BillCoupon.item_id": this.$configs.gBillCouponId,
+        },
+        used: {
+          merchant_id: this.merchant.id,
+          action: "used",
+          "BillCoupon.item_id": this.$configs.gBillCouponId,
+        },
+      }),
+    };
     this.loadList({
-      query: this.query,
+      query: query,
       success: (resp) => {
         this.countIssued = resp.data.counts.issued;
         this.countUsed = resp.data.counts.used;

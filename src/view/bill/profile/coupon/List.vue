@@ -5,7 +5,7 @@
     </div>
     <hui-tab-rounded v-model="curTabIdx" :tabs="tabs" label="label" />
     <div class="container">
-      <ai-list-stored resource="billCoupon" :query="query" :height="800">
+      <ai-list-stored resource="billCoupon" :query="query">
         <template v-slot:item="{ item, tag }">
           <bill-coupon
             :key="item.id"
@@ -88,6 +88,8 @@ export default class Home extends Vue {
   }
   .container {
     background: #fff;
+    padding: 0px 20px;
+    min-height: 80vh;
   }
 }
 </style>
