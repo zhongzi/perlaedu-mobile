@@ -54,7 +54,7 @@ export default class Home extends Vue {
       return;
     }
     this.$router.push({
-      name: "websiteArticle",
+      name: "websiteMerchantArticle",
       params: {
         articleId: article.id,
       },

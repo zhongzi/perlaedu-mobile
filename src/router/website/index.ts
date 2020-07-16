@@ -9,12 +9,6 @@ const websiteRoutes: any = [
     path: "/websites",
     component: Home,
     name: "websiteHome",
-    redirect: {
-      name: "websiteMerchant",
-      params: {
-        merchantId: 1,
-      },
-    },
     meta: {
       requireOpenid: true,
       requireAuth: true,
