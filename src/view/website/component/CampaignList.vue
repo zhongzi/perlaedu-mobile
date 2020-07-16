@@ -44,7 +44,7 @@ export default class Home extends Vue {
   get innerQuery() {
     return merge(
       {
-        "campaign_id.Campaign.status": "ongoing",
+        "Campaign.status": "ongoing",
         extras: JSON.stringify({
           CampaignMerchant: ["campaign", "merchant"],
           Campaign: ["url"],

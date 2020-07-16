@@ -132,7 +132,8 @@ export default class Home extends Mixins(SyncMixin) {
 
     this.loadList({
       query: {
-        merchant_id: this.merchantId,
+        target_id: this.merchantId,
+        target_class: "Merchant",
         limit: 1,
       },
     });

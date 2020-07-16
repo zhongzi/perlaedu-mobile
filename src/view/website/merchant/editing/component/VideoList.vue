@@ -11,11 +11,7 @@
       class="list"
     >
       <template v-slot:item="{ item, tag }">
-        <ai-button-float-delete
-          @delete="onDelete(item, tag)"
-          class="item"
-          @click.native="gotoEditingVideo(item)"
-        >
+        <ai-button-float-delete @delete="onDelete(item, tag)" class="item">
           <a-video :video="item" :enablePlay="false" />
         </ai-button-float-delete>
       </template>

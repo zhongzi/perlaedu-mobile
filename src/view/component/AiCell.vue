@@ -87,8 +87,8 @@ export default class Home extends Vue {
         flex-direction: column;
 
         &-title {
-          font-size: 14px;
-          font-weight: 400;
+          font-size: 16px;
+          font-weight: 500;
           color: rgba(74, 74, 74, 1);
           line-height: 20px;
         }

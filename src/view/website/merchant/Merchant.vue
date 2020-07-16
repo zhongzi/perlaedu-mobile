@@ -132,6 +132,17 @@ export default class Home extends Mixins(SyncMixin) {
   created() {
     this.store = "merchant";
     this.id = this.$route.params.merchantId;
+    this.loadMerchant();
+  }
+
+  loadMerchant() {
+    this.id = this.$route.params.merchantId;
+    this.loadEntity({
+      requireColumns: ["count_persons"],
+      query: {
+        extras: "location,website,me,count_persons,scene_qrcode_url",
+      },
+    });
   }
 }
 </script>

@@ -12,12 +12,22 @@
         <div :class="b('uploader-progress-snapshoting')">
           <hui-progress v-if="!snapshotCover" />
           <hui-progress v-else :percentage="progress" />
-          <div>{{ snapshotCover ? "已截图" : "截图中..." }}</div>
+          <div>
+            {{
+              snapshotCover
+                ? "已截图"
+                : progress === 100
+                ? "截图中..."
+                : "待处理..."
+            }}
+          </div>
         </div>
       </div>
     </div>
     <div :class="b('form')">
-      <img v-if="snapshotCover" :src="snapshotCover" />
+      <p class="field">
+        <img v-if="snapshotCover" :src="snapshotCover" />
+      </p>
       <ai-input-borderless
         class="field"
         label="视频名称"
@@ -57,9 +67,9 @@ import { Component, Vue, Prop, Watch, Mixins } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
 
-import AiInputBorderless from "@/view/component/AiInputBorderless.vue";
-import AiSubmitActions from "@/view/component/AiSubmitActions.vue";
-import AiInputFile from "@/view/component/AiInputFile.vue";
+import AiInputBorderless from "./AiInputBorderless.vue";
+import AiSubmitActions from "./AiSubmitActions.vue";
+import AiInputFile from "./AiInputFile.vue";
 
 import merge from "lodash/merge";
 import isEmpty from "lodash/isEmpty";
@@ -83,7 +93,6 @@ export default class Home extends Mixins(SyncMixin) {
   video: any = {};
   progress: number = 0;
   form: any = {
-    cover: "",
     title: "",
     description: "",
     keywords: "",
@@ -92,7 +101,7 @@ export default class Home extends Mixins(SyncMixin) {
   selectedFiles: any = {};
 
   get snapshotCover() {
-    return _get(this.video, "SnapshotComplete.CoverUrl");
+    return _get(this.video, "events.SnapshotComplete.CoverUrl");
   }
 
   created() {
@@ -158,7 +167,9 @@ export default class Home extends Mixins(SyncMixin) {
         );
       },
       // 文件上传完成
-      onUploadSucceed: function (uploadInfo) {},
+      onUploadSucceed: function (uploadInfo) {
+        vm.checkSnapshot();
+      },
       // 文件上传进度
       onUploadProgress: function (uploadInfo, totalSize, loadedPercent) {
         vm.progress = loadedPercent * 100;
@@ -232,12 +243,10 @@ export default class Home extends Mixins(SyncMixin) {
       query: {
         extras: "vod,events,upload_auth",
       },
-      res: merge(
-        {
-          id: this.video.id,
-        },
-        this.form
-      ),
+      res: merge(this.form, {
+        id: this.video.id,
+        cover: this.snapshotCover,
+      }),
       success: (resp) => {
         this.$emit("uploaded", resp.data);
       },
@@ -260,7 +269,7 @@ export default class Home extends Mixins(SyncMixin) {
     });
   }
 
-  checkSnapshot(callback) {
+  checkSnapshot(callback = null) {
     let vm = this;
     setTimeout(() => {
       vm.loadVideo(null, () => {
@@ -274,7 +283,7 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   onCancel() {
-    this.$router.go(-1);
+    this.$emit("cancel");
   }
 
   onSubmit() {
@@ -309,6 +318,7 @@ export default class Home extends Mixins(SyncMixin) {
   &__uploader {
     &-trigger {
       margin: 20px 0px;
+      border: 1px solid rgba(0, 0, 0, 0.2);
     }
 
     &-progress {
@@ -328,6 +338,16 @@ export default class Home extends Mixins(SyncMixin) {
     }
     &-files {
       margin: 20px 0px;
+    }
+  }
+
+  &__form {
+    p {
+      text-align: center;
+      img {
+        max-width: 100%;
+        max-height: 100px;
+      }
     }
   }
 }

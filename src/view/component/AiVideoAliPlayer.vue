@@ -9,9 +9,9 @@
       :vid="video.videoid"
       :playauth="video.play_auth"
       :skinLayout="skinLayout"
+      :autoplay="autoplay"
       controlBarVisibility="hover"
       playsinline
-      autoplay
       showBarTime="60"
       x5_type=""
       @play="play"
@@ -41,6 +41,7 @@ export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: [String, Number] }) videoId: string | number;
   @Prop({ type: String, default: "100%" }) width: string;
   @Prop({ type: String, default: "100%" }) height: string;
+  @Prop({ type: Boolean, default: true }) autoplay: boolean;
 
   get video() {
     return this.entity;
@@ -152,6 +153,12 @@ export default class Home extends Mixins(SyncMixin) {
       color: rgba(155, 155, 155, 1);
       line-height: 18px;
       padding: 0px 20px;
+    }
+  }
+
+  &__player {
+    & ::v-deep video {
+      max-height: 100%;
     }
   }
 }

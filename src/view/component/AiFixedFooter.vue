@@ -21,15 +21,14 @@ export default class Home extends Vue {}
 <style scoped lang="scss">
 .ai-fixed-footer {
   min-height: 52px;
-  z-index: 20131227;
+  z-index: 199;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #fafafa;
 
   &__body {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: #fafafa;
-
     &-default {
       height: 100%;
       padding: 5px;

@@ -1,12 +1,15 @@
 <template>
   <div class="wrapper">
-    <ai-card @click.native="onClick" class="add-video-entry">
+    <ai-card @click.native="showPicker = true" class="add-video-entry">
       <template v-slot:header>
         <div class="cover">
           <i class="iconfont icon-plus" />
         </div>
       </template>
     </ai-card>
+    <hui-popup v-model="showPicker" position="right" class="popup">
+      <ai-video-selector @selected="onSelected" @cancel="showPicker = false" />
+    </hui-popup>
   </div>
 </template>
 
@@ -16,27 +19,41 @@ import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import SyncMixin from "@/mixin/SyncMixin";
 
 import AiCard from "@/view/component/AiCard.vue";
-import AiInput from "@/view/component/AiInput.vue";
-import AiSubmitActions from "@/view/component/AiSubmitActions.vue";
+import AiVideoSelector from "@/view/component/AiVideoSelector.vue";
 
 import map from "lodash/map";
 import isEmpty from "lodash/isEmpty";
+import isEqual from "lodash/isEqual";
 
 @Component({
   components: {
     AiCard,
-    AiInput,
-    AiSubmitActions,
+    AiVideoSelector,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Object, default: null }) merchant: any;
 
-  onClick() {
-    this.$router.push({
-      name: "websiteEditingVideo",
-      params: {
-        videoId: "new",
+  showPicker: boolean = false;
+
+  created() {
+    this.store = "websiteVideo";
+  }
+
+  onSelected(video) {
+    this.saveEntity({
+      res: {
+        video_id: video.id,
+        merchant_id: this.$auth.user.curr_merch_id,
+      },
+      success: () => {
+        this.showPicker = false;
+      },
+      failure: (err) => {
+        let message = err.response.data.message;
+        this.$hui.toast.info(
+          isEqual(message, "资源冲突") ? "已经加入" : message
+        );
       },
     });
   }
@@ -74,6 +91,11 @@ export default class Home extends Mixins(SyncMixin) {
 
   & ::v-deep input {
     padding-left: 10px;
+  }
+}
+.popup {
+  & ::v-deep .h-popup__content {
+    height: 100vh;
   }
 }
 </style>

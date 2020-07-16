@@ -17,9 +17,7 @@ export default class Home extends Mixins(SyncMixin) {
 
   created() {
     this.store = "merchant";
-    this.loadMerchant();
     this.share();
-    this.$bus.$on("website:merchant:refresh", this.loadMerchant);
   }
 
   @Watch("merchant", { deep: true })
@@ -31,15 +29,6 @@ export default class Home extends Mixins(SyncMixin) {
   @Watch("$route", { deep: true })
   onRouteChanged() {
     this.updateTitle();
-  }
-
-  loadMerchant() {
-    this.id = this.$route.params.merchantId;
-    this.loadEntity({
-      query: {
-        extras: "location,website,me,count_persons,scene_qrcode_url",
-      },
-    });
   }
 
   updateTitle() {
