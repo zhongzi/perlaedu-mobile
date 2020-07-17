@@ -31,7 +31,7 @@ export default class Home extends Vue {
     font-size: 16px;
     font-weight: 600;
     color: rgba(74, 74, 74, 1);
-    line-height: 3;
+    line-height: 2;
   }
 
   &__body {

@@ -220,6 +220,11 @@ export default class Home extends Vue {
     background: rgba(247, 247, 247, 1);
     border-radius: 6px;
 
+    pre {
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+
     .section-image {
       width: 100%;
       vertical-align: bottom;

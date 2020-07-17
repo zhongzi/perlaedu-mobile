@@ -44,8 +44,8 @@ export default class Home extends Vue {
   background: rgba(255, 255, 255, 0.6);
   border-radius: 10px;
   padding: 10px;
-  width: 50px;
-  height: 40px;
+  width: 70px;
+  height: 70px;
 
   &__content {
     display: flex;

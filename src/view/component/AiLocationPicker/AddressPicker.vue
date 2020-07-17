@@ -1,21 +1,21 @@
 <template>
   <div :class="b()">
     <div :class="b('selections')">
-      <ai-selection-borderless
+      <ai-selection
         :class="b('selection')"
         label="省份/直辖市"
         v-model="province"
         :autoDefault="false"
         :options="provinces"
       />
-      <ai-selection-borderless
+      <ai-selection
         :class="b('selection')"
         label="城市"
         v-model="city"
-        :autoDefault="false"
+        :autoDefault="true"
         :options="cities"
       />
-      <ai-selection-borderless
+      <ai-selection
         :class="b('selection')"
         label="区域"
         v-model="zone"
@@ -23,18 +23,14 @@
         :options="zones"
       />
     </div>
-    <ai-input-borderless
-      :class="b('address')"
-      v-model="address"
-      placeholder="详细地址"
-    />
+    <ai-input :class="b('address')" v-model="address" placeholder="详细地址" />
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 
-import AiSelectionBorderless from "@/view/component/AiSelectionBorderless.vue";
-import AiInputBorderless from "@/view/component/AiInputBorderless.vue";
+import AiSelection from "@/view/component/AiSelection.vue";
+import AiInput from "@/view/component/AiInput.vue";
 
 const locationData = require("@/asset/data/location.json");
 
@@ -43,8 +39,8 @@ import isEmpty from "lodash/isEmpty";
 @Component({
   name: "ai-address-picker",
   components: {
-    AiSelectionBorderless,
-    AiInputBorderless,
+    AiSelection,
+    AiInput,
   },
 })
 export default class Home extends Vue {

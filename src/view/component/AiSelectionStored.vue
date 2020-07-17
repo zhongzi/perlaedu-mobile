@@ -1,10 +1,15 @@
 <template>
-  <ai-selection-borderless
+  <ai-selection
     :value="value"
     :options="list"
     :label="label"
     :labelKey="labelKey"
     :valueKey="valueKey"
+    :enableAllOption="enableAllOption"
+    :enableUnsetOption="enableUnsetOption"
+    :mode="mode"
+    :autoDefault="autoDefault"
+    @selected="(o) => $emit('selected', o)"
     @input="(val) => $emit('input', val)"
   />
 </template>
@@ -13,11 +18,11 @@
 import { Component, Vue, Prop, Watch, Mixins } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
-import AiSelectionBorderless from "./AiSelectionBorderless.vue";
+import AiSelection from "./AiSelection.vue";
 
 @Component({
   components: {
-    AiSelectionBorderless,
+    AiSelection,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
@@ -28,6 +33,10 @@ export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: String, default: "" }) label: string;
   @Prop({ type: String, default: "title" }) labelKey: string;
   @Prop({ type: String, default: "id" }) valueKey: string;
+  @Prop({ type: Boolean, default: false }) enableAllOption: boolean;
+  @Prop({ type: Boolean, default: false }) enableUnsetOption: boolean;
+  @Prop({ type: Boolean, default: true }) autoDefault: boolean;
+  @Prop({ type: String, default: "" }) mode: string;
 
   created() {
     this.store = this.resource;

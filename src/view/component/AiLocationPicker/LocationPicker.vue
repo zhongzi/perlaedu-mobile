@@ -25,17 +25,22 @@
           :value="innerValue.location"
           @input="updateAddress"
         />
-        <ai-submit-actions @submit="onSubmit" @cancel="showPicker = false" />
+        <ai-fixed-footer>
+          <ai-submit-actions @submit="onSubmit" @cancel="showPicker = false" />
+        </ai-fixed-footer>
       </div>
     </hui-popup>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch, Mixins } from "vue-property-decorator";
+
+import StopBodyScrollMixin from "@/mixin/StopBodyScrollMixin";
 
 import AiCell from "../AiCell.vue";
 import AiSubmitActions from "../AiSubmitActions.vue";
+import AiFixedFooter from "../AiFixedFooter.vue";
 
 import GpsPicker from "./GPSPicker.vue";
 import AddressPicker from "./AddressPicker.vue";
@@ -50,14 +55,16 @@ import cloneDeep from "lodash/cloneDeep";
   components: {
     AiCell,
     AiSubmitActions,
+    AiFixedFooter,
     GpsPicker,
     AddressPicker,
   },
 })
-export default class Home extends Vue {
+export default class Home extends Mixins(StopBodyScrollMixin) {
   @Prop({ type: String, default: null }) label: string;
   @Prop({ type: Object, default: () => {} }) value: any;
 
+  SBSAuto: boolean = false;
   showPicker: boolean = false;
   innerValue: any = { address: "" };
 
@@ -70,6 +77,11 @@ export default class Home extends Vue {
     if (isEqual(this.innerValue, this.value)) return;
 
     this.innerValue = cloneDeep(this.value);
+  }
+
+  @Watch("showPicker")
+  onShowPickerChanged() {
+    this.stopBodyScroll(this.showPicker);
   }
 
   updateGPS(gps) {
@@ -105,17 +117,21 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .ai-location-picker {
+  padding: 5px 10px;
+
   &__popup {
     height: 100vh;
   }
 
   &__map {
-    height: 60%;
+    height: 50%;
   }
 
   &__address {
     height: 15%;
-    margin: 20px 10px;
+    margin: 20px auto;
+    box-sizing: border-box;
+    padding: 0px 10px;
   }
 }
 </style>

@@ -31,16 +31,8 @@
           :prefix="'websites/' + album.merchant_id + '/photos'"
         />
         <div class="fields">
-          <ai-input-borderless
-            class="field"
-            label="相片标题"
-            v-model="photo.title"
-          />
-          <ai-input-borderless
-            class="field"
-            label="相片备注"
-            v-model="photo.remark"
-          />
+          <ai-input class="field" label="相片标题" v-model="photo.title" />
+          <ai-input class="field" label="相片备注" v-model="photo.remark" />
         </div>
         <ai-submit-actions @cancel="onCancel" @submit="onSubmit" />
       </div>
@@ -55,7 +47,7 @@ import SyncMixin from "@/mixin/SyncMixin";
 
 import AiListStored from "@/view/component/AiListStored.vue";
 import AiImageUploader from "@/view/component/AiImageUploader.vue";
-import AiInputBorderless from "@/view/component/AiInputBorderless.vue";
+import AiInput from "@/view/component/AiInput.vue";
 import AiSubmitActions from "@/view/component/AiSubmitActions.vue";
 import AiButtonFloatDelete from "@/view/component/AiButtonFloatDelete.vue";
 import AiImageMultiUploader from "@/view/component/AiImageMultiUploader.vue";
@@ -70,7 +62,7 @@ import map from "lodash/map";
   components: {
     AiListStored,
     AiImageUploader,
-    AiInputBorderless,
+    AiInput,
     AiSubmitActions,
     AiButtonFloatDelete,
     AlbumPhoto,

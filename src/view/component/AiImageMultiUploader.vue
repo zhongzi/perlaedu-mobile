@@ -12,16 +12,23 @@
     </vue-file-upload>
     <hui-dialog v-model="showDialog">
       <div :class="b('dialog')">
-        <template v-for="(file, index) in files">
-          <ai-image-uploader-cell
-            :key="index"
-            :file="file.file"
-            :type="type"
-            :prefix="prefix"
-            @input="uploaded"
-          />
-        </template>
-        <hui-button :class="b('dialog-confirm')" @click.native="confirm">
+        <div :class="b('dialog-list')">
+          <template v-for="(file, index) in files">
+            <ai-image-uploader-cell
+              :class="b('dialog-item')"
+              :key="index"
+              :file="file.file"
+              :type="type"
+              :prefix="prefix"
+              @input="uploaded"
+            />
+          </template>
+        </div>
+        <hui-button
+          :class="b('dialog-confirm')"
+          @click.native="confirm"
+          type="primary"
+        >
           确认
         </hui-button>
       </div>
@@ -87,23 +94,23 @@ export default class Home extends Vue {
 
   &__dialog {
     padding: 20px 10px;
-    max-height: 500px;
 
-    position: relative;
-    overflow-y: scroll;
-    padding-bottom: 60px;
+    &-list {
+      max-height: 500px;
+
+      position: relative;
+      overflow-y: scroll;
+    }
+
+    &-item {
+      padding: 5px 15px;
+    }
 
     &-confirm {
-      margin: 20px 0px 0px;
-      width: 100%;
+      display: block;
+      margin: 30px auto 5px;
       height: 50px;
-
-      position: fixed;
-      left: 0px;
-      right: 0px;
-      bottom: 0px;
-      /* flex: 1; */
-      margin: 0px auto;
+      width: 90%;
     }
   }
 }

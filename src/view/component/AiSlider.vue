@@ -12,6 +12,9 @@
       @reachEnd="onReachEnd"
       @slideChange="onSlideChanged"
     >
+      <swiper-slide :class="b('swiper-item')" v-if="enableSlideBefore">
+        <slot name="slide-before" />
+      </swiper-slide>
       <swiper-slide
         :class="b('swiper-item')"
         v-for="(item, index) in list"
@@ -19,7 +22,9 @@
       >
         <slot name="item" :item="item" :index="index" />
       </swiper-slide>
-      <swiper-slide :class="b('swiper-item')" />
+      <swiper-slide :class="b('swiper-item')" v-if="enableSlideAfter">
+        <slot name="slide-after" />
+      </swiper-slide>
       <div
         class="swiper-pagination swiper-pagination-white"
         slot="pagination"
@@ -61,13 +66,15 @@ export default class Home extends Vue {
   @Prop({ type: Array, default: [] }) list: any;
   @Prop({ type: Boolean, default: false }) showPagination: boolean;
   @Prop({ type: Boolean, default: false }) showFlipButton: boolean;
+  @Prop({ type: Boolean, default: false }) enableSlideBefore: boolean;
+  @Prop({ type: Boolean, default: true }) enableSlideAfter: boolean;
   @Prop({ type: Object, default: () => ({}) }) options: object;
   @Prop({ type: Number, default: 0 }) slideToNum: number;
 
   get swiperOptions() {
     return merge(
       {
-        spaceBetween: 10,
+        spaceBetween: 0,
         freeMode: true,
         pagination: {
           el: ".swiper-pagination",
@@ -109,6 +116,7 @@ export default class Home extends Vue {
     line-height: 3;
   }
   &__swiper-item {
+    box-sizing: border-box;
   }
 }
 </style>

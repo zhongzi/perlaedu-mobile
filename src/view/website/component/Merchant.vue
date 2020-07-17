@@ -82,9 +82,6 @@ export default class Home extends Mixins(SyncMixin) {
 </script>
 <style lang="scss" scoped>
 .merchant {
-  padding-left: 27px;
-  padding-right: 27px;
-
   .container {
     display: flex;
     align-items: center;

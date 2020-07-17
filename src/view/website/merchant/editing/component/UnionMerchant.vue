@@ -18,7 +18,7 @@
                   {{ unionMerchant | safe("union.count_merchants", 0) }} 家机构
                 </ai-button-round-small>
                 <span class="datetime">
-                  {{ unionMerchant.created_at | defaultDate }} 加入</span
+                  {{ unionMerchant.created_at | defaultDay }} 加入</span
                 >
               </div>
             </template>
@@ -66,6 +66,8 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 .editing-union {
   .header {
+    width: 100%;
+
     background: linear-gradient(
       136deg,
       rgba(255, 207, 51, 1) 0%,

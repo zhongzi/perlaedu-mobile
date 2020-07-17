@@ -12,7 +12,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 
 import AiTipShare from "./view/component/AiTipShare.vue";
 import AiCopyright from "@/view/component/AiCopyright.vue";
@@ -54,15 +54,17 @@ export default class Home extends Vue {
 @import "./asset/css/style.css";
 @import "./asset/css/normalize.css";
 
-html,
-body {
-  overflow: scroll;
-  width: 100%;
-  height: 100%;
+:root {
+  box-sizing: border-box;
 }
 
-a {
-  text-decoration: none;
+*,
+::before,
+::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 #app {
@@ -71,17 +73,5 @@ a {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   background: #f5f5f5;
-
-  .copyright {
-    text-align: center;
-    font-size: 12px;
-    color: #747474;
-    letter-spacing: 1.34px;
-    padding: 10px 0px 20px;
-
-    a {
-      color: inherit;
-    }
-  }
 }
 </style>

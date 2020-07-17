@@ -9,8 +9,8 @@
 
       <course-list class="resource" :query="query" :merchant="merchant" />
       <teacher-list class="resource" :query="query" :merchant="merchant" />
-      <video-list class="resource" :query="query" :merchant="merchant" />
       <album-list class="resource" :query="query" :merchant="merchant" />
+      <video-list class="resource" :query="query" :merchant="merchant" />
       <article-list class="resource" :query="query" :merchant="merchant" />
     </div>
   </div>

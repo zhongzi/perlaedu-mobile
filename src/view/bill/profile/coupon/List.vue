@@ -1,8 +1,5 @@
 <template>
   <div class="wrapper coupons">
-    <div class="header">
-      <ai-search v-model="keyword" placeholder="搜索学校" />
-    </div>
     <hui-tab-rounded v-model="curTabIdx" :tabs="tabs" label="label" />
     <div class="container">
       <ai-list-stored resource="billCoupon" :query="query">
@@ -68,11 +65,6 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 .coupons {
   width: 100%;
-  background: linear-gradient(
-    119deg,
-    rgba(255, 146, 73, 1) 0%,
-    rgba(226, 99, 14, 1) 100%
-  );
   .header {
     min-height: 87px;
     display: flex;

@@ -48,7 +48,7 @@ export default class Home extends Mixins(PatchMixin) {
   border: solid 1px;
   border-radius: 5px;
   padding: 10px;
-  height: 24px;
+  height: 48px;
 
   &__content {
     width: 100%;
@@ -62,6 +62,10 @@ export default class Home extends Mixins(PatchMixin) {
 
     margin: 0px;
     padding: 0px;
+
+    span:nth-child(1) {
+      color: rgba(74, 74, 74, 0.5);
+    }
   }
 }
 </style>

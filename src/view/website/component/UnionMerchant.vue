@@ -47,7 +47,6 @@ export default class Home extends Vue {
 .merchant {
   .logo {
     border-radius: 20px;
-    box-sizing: border-box;
     border: 4px solid transparent;
 
     img {
@@ -63,10 +62,6 @@ export default class Home extends Vue {
   }
   .card {
     box-shadow: 0px 14px 20px 0px rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
-    .cover {
-      border-radius: 8px;
-    }
     .name {
       text-align: center;
       font-size: 14px;

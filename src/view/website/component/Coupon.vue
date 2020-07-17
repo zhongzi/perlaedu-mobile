@@ -8,12 +8,15 @@
         </div>
       </template>
       <template v-slot:subtitle>
-        <div class="price">
-          <span> {{ coupon.price }} </span> 元
+        <div class="value" v-if="valueType">
+          <span> {{ coupon.value }} </span>
+          {{ valueType.unit + valueType.text }}
         </div>
       </template>
       <template v-slot:right>
-        <hui-button @click.native="take" class="action"> 立即领取 </hui-button>
+        <hui-button @click.native="take" class="action">
+          {{ coupon.is_takeable ? "立即领取" : "我的卡包" }}
+        </hui-button>
       </template>
     </ai-cell>
   </div>
@@ -26,6 +29,10 @@ import SyncMixin from "@/mixin/SyncMixin";
 
 import AiCell from "@/view/component/AiCell.vue";
 
+import { BillItemValueType } from "@/enum/bill_item_value_type";
+
+import _get from "lodash/get";
+
 @Component({
   components: {
     AiCell,
@@ -34,16 +41,25 @@ import AiCell from "@/view/component/AiCell.vue";
 export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Object, default: null }) merchant: any;
   @Prop({ type: Object, default: null }) coupon: any;
-  @Prop({ type: Object, default: null }) unionMerchant: any;
+
+  get valueType() {
+    return BillItemValueType[this.coupon.value_type];
+  }
 
   take() {
-    const unionId = this.unionMerchant ? this.unionMerchant.union_id : 0;
+    if (!this.coupon.is_takeable) {
+      this.$router.push({
+        name: "billProfileHome",
+      });
+      return;
+    }
+    const unionId = _get(this.merchant, "union_merchant.union_id", 0);
     this.saveEntity({
       res: {
         item_id: this.coupon.id,
         union_id: unionId,
-        merchant_id: this.unionMerchant ? 0 : this.merchant.id,
-        referrer_openid: this.$store.state.expose,
+        merchant_id: this.merchant.id,
+        referrer_openid: this.$store.state.expose2,
         issuer: {
           union_id: unionId,
           merchant_id: this.merchant.id,
@@ -75,7 +91,6 @@ export default class Home extends Mixins(SyncMixin) {
   border-radius: 8px;
 
   padding: 10px 20px;
-  margin: 10px 27px;
 
   .title {
     font-size: 14px;
@@ -85,7 +100,7 @@ export default class Home extends Mixins(SyncMixin) {
     line-height: 20px;
     text-shadow: 0px 8px 14px rgba(0, 0, 0, 0.06);
   }
-  .price {
+  .value {
     font-size: 12px;
     font-family: PingFangSC-Semibold, PingFang SC;
     font-weight: 600;

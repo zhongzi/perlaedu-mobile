@@ -7,7 +7,7 @@
         </div>
       </template>
     </ai-card>
-    <hui-popup v-model="showPicker" position="right" class="popup">
+    <hui-popup v-model="showPicker" position="right" class="popup" ref="popup">
       <ai-video-selector @selected="onSelected" @cancel="showPicker = false" />
     </hui-popup>
   </div>
@@ -40,6 +40,10 @@ export default class Home extends Mixins(SyncMixin) {
     this.store = "websiteVideo";
   }
 
+  mounted() {
+    document.body.appendChild((this.$refs.popup as any).$el);
+  }
+
   onSelected(video) {
     this.saveEntity({
       res: {
@@ -61,19 +65,20 @@ export default class Home extends Mixins(SyncMixin) {
 </script>
 <style lang="scss" scoped>
 .add-video-entry {
-  width: 150px;
-  height: 160px;
+  margin: 10px 0px 15px;
+  width: 194px;
+  height: 148px;
+
   padding: 5px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
   border-radius: 8px;
 
-  margin-right: 15px;
-
   & ::v-deep .ai-card__header {
     height: 100%;
   }
   .cover {
+    width: 100%;
     height: 95%;
     display: flex;
     align-items: center;

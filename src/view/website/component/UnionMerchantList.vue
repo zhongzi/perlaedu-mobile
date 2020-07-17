@@ -106,9 +106,6 @@ export default class Home extends Vue {
   }
   .slider {
     margin-top: 5px;
-    .item {
-      margin-bottom: 20px;
-    }
   }
 }
 </style>

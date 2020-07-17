@@ -95,10 +95,9 @@ export default class Home extends Mixins(SyncMixin) {
 
   @Watch("website", { deep: true })
   onWebsiteChanged() {
-    if (this.enableUniverseCoupon === this.website.universe_coupon_enabled)
-      return;
+    if (this.enableUniverseCoupon === this.website.coupon_enabled) return;
 
-    this.enableUniverseCoupon = this.website.universe_coupon_enabled;
+    this.enableUniverseCoupon = this.website.coupon_enabled;
   }
 
   @Watch("enableUniverseCoupon", { deep: true })
@@ -115,7 +114,7 @@ export default class Home extends Mixins(SyncMixin) {
         id: this.id,
         target_id: this.merchantId,
         target_class: "Merchant",
-        universe_coupon_enabled: this.enableUniverseCoupon,
+        coupon_enabled: this.enableUniverseCoupon,
       },
       success: () => {
         !this.id && this.loadWebsite();

@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Mixins } from "vue-property-decorator";
+import { Component, Vue, Watch, Mixins } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
 
@@ -38,6 +38,11 @@ export default class Home extends Mixins(SyncMixin) {
         extras: "merchant",
       },
     });
+  }
+
+  @Watch("article", { deep: true })
+  onArticleChanged() {
+    this.$store.commit("updateTitle", `${this.article.title}`);
   }
 
   openWebsite() {

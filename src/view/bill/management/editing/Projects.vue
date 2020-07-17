@@ -5,7 +5,7 @@
       <span> 左滑可进行编辑或者删除操作</span>
     </div>
     <div class="projects">
-      <ai-list-stored resource="billProject" :query="query" :height="500">
+      <ai-list-stored resource="billProject" :query="query" scrollHeight="80vh">
         <template v-slot:item="{ item, tag }">
           <bill-card-project
             class="item"
@@ -22,21 +22,25 @@
         </template>
       </ai-list-stored>
     </div>
-    <ai-button-plus
-      v-if="isEdiable"
-      @click.native="newProjectDialogOpen"
-      class="btn-new-project"
-    />
+    <ai-fixed-footer>
+      <ai-button-plus
+        v-if="isEdiable"
+        @click.native="newProjectDialogOpen"
+        class="btn-new-project"
+      />
+    </ai-fixed-footer>
     <hui-dialog class="dlg-add-project" v-model="open" v-if="open">
       <div class="dlg-add-project__content">
-        <h1 class="field">编辑收费项目</h1>
+        <h2 class="field">编辑收费项目</h2>
         <ai-selection-stored
           resource="billChannel"
           v-model="form.channel_id"
+          mode="border"
           class="field"
         />
         <ai-input
           v-model="form.title"
+          mode="border"
           placeholder="输入项目名称"
           class="field"
         />
@@ -64,6 +68,7 @@ import AiInput from "@/view/component/AiInput.vue";
 import AiSelectionStored from "@/view/component/AiSelectionStored.vue";
 import AiListStored from "@/view/component/AiListStored.vue";
 import AiCellSwiper from "@/view/component/AiCellSwiper.vue";
+import AiFixedFooter from "@/view/component/AiFixedFooter.vue";
 
 import _get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
@@ -79,6 +84,7 @@ import filter from "lodash/filter";
     AiSelectionStored,
     AiCellSwiper,
     AiListStored,
+    AiFixedFooter,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
@@ -127,12 +133,12 @@ export default class Home extends Mixins(SyncMixin) {
       },
       res: this.form,
       success: (resp) => {
+        this.open = false;
         this.$nextTick(() => {
           this.onModify(resp.data);
         });
       },
     });
-    this.open = false;
   }
 
   onModify(project) {

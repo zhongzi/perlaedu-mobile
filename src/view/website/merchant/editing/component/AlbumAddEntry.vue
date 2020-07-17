@@ -7,7 +7,7 @@
         </div>
       </template>
     </ai-card>
-    <hui-dialog v-model="showDialog">
+    <hui-dialog v-model="showDialog" :appendToBody="true">
       <div class="form">
         <h2>新建相册</h2>
         <ai-input v-model="title" placeholder="输入相册名称" />
@@ -72,19 +72,23 @@ export default class Home extends Mixins(SyncMixin) {
 </script>
 <style lang="scss" scoped>
 .add-album-entry {
-  min-width: 150px;
-  height: 160px;
+  margin: 10px 0px;
+  width: 194px;
+  height: 148px;
+
   padding: 5px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
   border-radius: 8px;
+  box-sizing: border-box;
 
-  margin-right: 15px;
+  margin-right: 12px;
 
   & ::v-deep .ai-card__header {
     height: 100%;
   }
   .cover {
+    width: 100%;
     height: 95%;
     display: flex;
     align-items: center;

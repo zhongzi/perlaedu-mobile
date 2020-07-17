@@ -10,7 +10,7 @@
       label="label"
     />
     <div class="items">
-      <ai-list-stored resource="billItem" :query="query" :height="400">
+      <ai-list-stored resource="billItem" :query="query" scrollHeight="60vh">
         <template v-slot:item="{ item, tag }">
           <bill-card-welfare
             v-if="item.is_welfare"
@@ -33,7 +33,9 @@
           <div style="text-align: center; padding: 20px 0px;">暂无数据</div>
         </template>
       </ai-list-stored>
-      <ai-button-plus class="plus" @click.native="onNewItem" />
+      <ai-fixed-footer>
+        <ai-button-plus class="plus" @click.native="onNewItem" />
+      </ai-fixed-footer>
     </div>
   </div>
 </template>
@@ -45,6 +47,7 @@ import SyncMixin from "@/mixin/SyncMixin";
 import AiButtonPlus from "@/view/component/AiButtonPlus.vue";
 import AiListStored from "@/view/component/AiListStored.vue";
 import AiInputSwitchable from "@/view/component/AiInputSwitchable.vue";
+import AiFixedFooter from "@/view/component/AiFixedFooter.vue";
 
 import BillCardWelfare from "../../component/BillCardWelfare.vue";
 import BillCardPayment from "../../component/BillCardPayment.vue";
@@ -60,6 +63,7 @@ import _get from "lodash/get";
     AiInputSwitchable,
     AiButtonPlus,
     AiListStored,
+    AiFixedFooter,
     BillCardWelfare,
     BillCardPayment,
   },
@@ -187,12 +191,9 @@ export default class Home extends Mixins(SyncMixin) {
       height: 60px;
     }
   }
-  .tabs {
-    margin-bottom: 10px;
-  }
-
   .items {
     .item {
+      width: 100%;
       margin: 10px auto;
       border: none;
     }

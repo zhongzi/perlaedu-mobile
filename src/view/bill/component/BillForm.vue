@@ -25,6 +25,7 @@
       >
       <ai-input
         class="remark"
+        mode="border"
         :value="remark"
         @input="(v) => $emit('update:remark', v)"
         placeholder="订单备注(选填)"
@@ -122,6 +123,7 @@ export default class Home extends Vue {
       text-align: left;
       list-style-type: decimal;
       list-style-position: outside;
+      margin-left: 40px;
 
       font-size: 11px;
       color: rgba(102, 102, 102, 1);

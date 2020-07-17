@@ -11,12 +11,14 @@
       </div>
     </div>
     <div class="content" :style="mergedStyle">
-      <merchant :merchant="merchant" />
-      <div class="section unions">
-        <union-list :query="query" />
-      </div>
-      <div class="section coupons" v-if="website.universe_coupon_enabled">
-        <coupon-list :query="query" :merchant="merchant" />
+      <div class="block">
+        <merchant :merchant="merchant" />
+        <div class="section unions">
+          <union-list :query="query" :merchant="merchant" />
+        </div>
+        <div class="section coupons" v-if="website.coupon_enabled">
+          <coupon-list :query="query" :merchant="merchant" />
+        </div>
       </div>
       <div class="section campaigns">
         <campaign-list :query="query" />
@@ -41,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Mixins } from "vue-property-decorator";
+import { Component, Vue, Watch, Mixins } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
 
@@ -132,17 +134,16 @@ export default class Home extends Mixins(SyncMixin) {
   created() {
     this.store = "merchant";
     this.id = this.$route.params.merchantId;
-    this.loadMerchant();
   }
 
-  loadMerchant() {
-    this.id = this.$route.params.merchantId;
-    this.loadEntity({
-      requireColumns: ["count_persons"],
-      query: {
-        extras: "location,website,me,count_persons,scene_qrcode_url",
-      },
-    });
+  @Watch("merchant", { deep: true })
+  onMerchantChanged() {
+    this.updateTitle();
+  }
+
+  updateTitle() {
+    const name = (this.merchant.name || "") + " - 移动微官网";
+    this.$store.commit("updateTitle", name);
   }
 }
 </script>
@@ -158,8 +159,12 @@ export default class Home extends Mixins(SyncMixin) {
     }
     .setting {
       position: absolute;
-      top: 18px;
-      right: 17px;
+      top: 13px;
+      right: 10px;
+
+      padding: 5px 7px;
+      background: #ff940f;
+      border-radius: 10px;
 
       i {
         font-size: 28px;
@@ -175,6 +180,10 @@ export default class Home extends Mixins(SyncMixin) {
     border-radius: 12px;
     padding-top: 20px;
     padding-bottom: 80px;
+
+    .block {
+      margin: 0px 27px;
+    }
   }
 }
 </style>

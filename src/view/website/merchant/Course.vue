@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Mixins } from "vue-property-decorator";
+import { Component, Vue, Watch, Mixins } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
 
@@ -74,9 +74,17 @@ export default class Home extends Mixins(SyncMixin) {
     this.id = this.$route.params.courseId;
     this.loadEntity({
       query: {
-        extras: "merchant,bill",
+        extras: JSON.stringify({
+          Course: ["merchant", "bill"],
+          Merchant: ["count_persons"],
+        }),
       },
     });
+  }
+
+  @Watch("course", { deep: true })
+  onCouseChanged() {
+    this.$store.commit("updateTitle", `${this.course.title}-课程详情`);
   }
 
   openEditingCourse() {
@@ -121,8 +129,12 @@ export default class Home extends Mixins(SyncMixin) {
 
     .setting {
       position: absolute;
-      top: 18px;
-      right: 17px;
+      top: 13px;
+      right: 10px;
+
+      padding: 5px 7px;
+      background: #ff940f;
+      border-radius: 10px;
 
       i {
         font-size: 28px;
@@ -168,14 +180,13 @@ export default class Home extends Mixins(SyncMixin) {
     border-radius: 10px;
 
     min-height: 50vh;
-    padding: 10px 23px 25px;
+    padding: 25px 23px;
 
     .resource {
       margin-bottom: 10px;
     }
 
     .description {
-      background: #fff;
       padding: 10px;
       border-radius: 10px;
     }

@@ -38,3 +38,16 @@ export default class Home extends Vue {
   }
 }
 </script>
+<style lang="scss" scoped>
+.copyright {
+  text-align: center;
+  font-size: 12px;
+  color: #747474;
+  letter-spacing: 1.34px;
+  padding: 10px 0px 20px;
+
+  a {
+    color: inherit;
+  }
+}
+</style>

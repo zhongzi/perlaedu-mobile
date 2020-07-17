@@ -9,11 +9,12 @@
       :vid="video.videoid"
       :playauth="video.play_auth"
       :skinLayout="skinLayout"
-      :autoplay="autoplay"
+      :autoplay="false"
+      :x5_fullscreen="true"
+      :useH5Prism="true"
       controlBarVisibility="hover"
       playsinline
       showBarTime="60"
-      x5_type=""
       @play="play"
       @pause="pause"
       @ended="ended"
@@ -90,6 +91,8 @@ export default class Home extends Mixins(SyncMixin) {
         extras: "play_auth,videoid",
       },
       success: () => {
+        if (!this.autoplay) return;
+
         setTimeout(() => {
           if (this.$weixin.isInWeixin()) {
             this.$weixin.getNetworkType(() => {
@@ -158,7 +161,7 @@ export default class Home extends Mixins(SyncMixin) {
 
   &__player {
     & ::v-deep video {
-      max-height: 100%;
+      height: 100% !important;
     }
   }
 }

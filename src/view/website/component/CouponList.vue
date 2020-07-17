@@ -1,12 +1,6 @@
 <template>
   <div class="wrapper coupon">
-    <coupon
-      v-if="coupon.id"
-      :coupon="coupon"
-      :key="coupon.id"
-      :merchant="merchant"
-      :unionMerchant="unionMerchant"
-    />
+    <coupon v-if="coupon.id" :coupon="coupon" :merchant="merchant" />
   </div>
 </template>
 
@@ -20,6 +14,7 @@ import Coupon from "./Coupon.vue";
 
 import merge from "lodash/merge";
 import find from "lodash/find";
+import _get from "lodash/get";
 
 @Component({
   components: {
@@ -29,47 +24,47 @@ import find from "lodash/find";
 })
 export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Object, default: null }) merchant: any;
-  @Prop({ type: Object, default: null }) query: any;
-
-  unionMerchant: any = null;
-  unionMerchants: any = null;
 
   get coupon() {
     return this.entity;
   }
 
+  get couponId() {
+    if (!this.merchant || !_get(this.merchant, "website.coupon_enabled")) {
+      return 0;
+    }
+    const um = _get(this.merchant, "union_merchant");
+    if (um && um.coupon_enabled && um.coupon_id > 0) {
+      return um.coupon_id;
+    }
+    if (this.merchant.website.coupon_id > 0) {
+      return this.merchant.website.coupon_id;
+    }
+    return this.$configs.gBillCouponId || 0;
+  }
+
   created() {
     this.store = "billItem";
-    this.id = this.$configs.gBillCouponId;
-    this.loadEntity();
+    this.load();
+  }
 
-    // TODO
-    this.$bus.$on("unionMerchant", (data) => {
-      this.unionMerchants = data.list;
+  @Watch("couponId")
+  onCouponIdChanged() {
+    this.load();
+  }
+
+  load() {
+    this.id = this.couponId;
+    this.loadEntity({
+      query: {
+        extras: "is_takeable",
+      },
     });
-  }
-
-  @Watch("merchant", { deep: true })
-  onMerchantChanged() {
-    this.reset();
-  }
-
-  @Watch("unionMerchants", { deep: true })
-  onUnionMerchantsChanged() {
-    this.reset();
-  }
-
-  reset() {
-    this.unionMerchant = find(this.unionMerchants, {
-      merchant_id: this.merchant.id,
-    });
-    console.log(this.unionMerchant);
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .union {
-  padding: 0px 27px;
 }
 </style>

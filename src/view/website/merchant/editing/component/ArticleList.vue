@@ -97,7 +97,7 @@ export default class Home extends Mixins(SyncMixin) {
 <style lang="scss" scoped>
 .editing-articles {
   .plus {
-    margin-bottom: 10px;
+    margin: 10px auto;
   }
 
   .item {

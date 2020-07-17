@@ -6,5 +6,6 @@
   "dsn": "https://d051a93249944b058e6d65b971238017@sentry.cooppos.com/2",
   "qqMapKey": "LF6BZ-7LDC4-TGVUJ-XIW5P-SUZ6J-HQBK2",
   "qqMapName": "client-001",
+  "defaultCoverNews": "https://files.perlaedu.com//website/default/cover-news.png",
   "campaignServiceURL": "/campaigns/#/"
 }

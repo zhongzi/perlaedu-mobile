@@ -4,16 +4,23 @@
       {{ innerItem.id ? "编辑" : "创建" }}
       {{ innerItem.is_welfare ? "福利" : "套餐" }}
     </h3>
-    <ai-input v-model="innerItem.title" placeholder="标题" class="field" />
+    <ai-input
+      v-model="innerItem.title"
+      placeholder="标题"
+      class="field"
+      mode="border"
+    />
     <ai-input
       v-model.number="innerItem.price"
       :placeholder="innerItem.is_welfare ? '优惠金额' : '金额'"
+      mode="border"
       class="field"
     />
     <ai-input
       v-if="!innerItem.is_welfare"
       v-model.number="innerItem.value"
       placeholder="价值量，例如课时量、储值卡金额等"
+      mode="border"
       class="field"
     />
     <ai-input-date
@@ -26,17 +33,20 @@
       v-if="innerItem.is_welfare"
       v-model.number="innerItem.duration"
       placeholder="福利领取后有效期(秒),86400秒/天"
+      mode="border"
       class="field"
     />
     <ai-input
       v-if="innerItem.is_welfare"
       v-model.number="innerItem.min_balance"
       placeholder="福利可用的最低订单总额"
+      mode="border"
       class="field"
     />
     <ai-input
       v-model="innerItem.description"
       placeholder="说明"
+      mode="border"
       class="field"
     />
     <ai-input-check
@@ -62,6 +72,7 @@ import SyncMixin from "@/mixin/SyncMixin";
 import AiInput from "@/view/component/AiInput.vue";
 import AiInputCheck from "@/view/component/AiInputCheck.vue";
 import AiInputDate from "@/view/component/AiInputDate.vue";
+import AiFixedFooter from "@/view/component/AiFixedFooter.vue";
 
 import isEqual from "lodash/isEqual";
 import cloneDeep from "lodash/cloneDeep";
@@ -72,6 +83,7 @@ import cloneDeep from "lodash/cloneDeep";
     AiInput,
     AiInputCheck,
     AiInputDate,
+    AiFixedFooter,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
@@ -152,6 +164,7 @@ export default class Home extends Mixins(SyncMixin) {
 </script>
 <style lang="scss" scoped>
 .bill-item-form {
+  height: 90vh;
   padding: 0px 20px;
 
   h3 {
@@ -172,7 +185,7 @@ export default class Home extends Mixins(SyncMixin) {
     justify-content: space-around;
 
     width: 100%;
-    margin: 30px 0px;
+    margin: 50px 0px;
 
     .cancel {
       width: 30%;

@@ -7,18 +7,16 @@
       :prefix="merchant.id"
     />
     <div class="fields">
-      <ai-input-borderless
-        class="field"
-        label="机构名称"
-        v-model="innerMerchant.name"
-      />
+      <ai-input class="field" label="机构名称" v-model="innerMerchant.name" />
+      <ai-line />
       <ai-location-picker
         class="field"
         label="机构地址"
         :value="innerMerchant.location"
         @input="updateLocation"
       />
-      <ai-input-borderless
+      <ai-line />
+      <ai-input
         class="field"
         label="机构联系电话"
         v-model="innerMerchant.phone"
@@ -33,8 +31,9 @@ import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 import SyncMixin from "@/mixin/SyncMixin";
 
 import AiImageUploader from "@/view/component/AiImageUploader.vue";
-import AiInputBorderless from "@/view/component/AiInputBorderless.vue";
+import AiInput from "@/view/component/AiInput.vue";
 import AiLocationPicker from "@/view/component/AiLocationPicker";
+import AiLine from "@/view/component/AiLine.vue";
 
 import isEqual from "lodash/isEqual";
 import _get from "lodash/get";
@@ -45,7 +44,8 @@ import cloneDeep from "lodash/cloneDeep";
 @Component({
   components: {
     AiImageUploader,
-    AiInputBorderless,
+    AiInput,
+    AiLine,
     AiLocationPicker,
   },
 })

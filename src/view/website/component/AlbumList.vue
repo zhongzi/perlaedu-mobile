@@ -5,7 +5,7 @@
       :query="innerQuery"
       scrollType="slider"
       :hideIfNoData="true"
-      :sliderOptions="{ slidesPerView: 1.65 }"
+      :sliderOptions="{ slidesPerView: 1.8 }"
     >
       <template v-slot:header>
         <div>机构相册</div>

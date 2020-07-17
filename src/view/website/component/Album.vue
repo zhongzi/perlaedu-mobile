@@ -2,10 +2,14 @@
   <div class="wrapper">
     <ai-card @click.native="openAlbum">
       <template v-slot:header>
-        <img
-          class="cover"
-          :src="album.cover | alioss({ width: 200, height: 150 })"
-        />
+        <div class="header">
+          <img
+            class="cover"
+            :src="
+              album.cover | alioss({ width: 200, height: 150, mode: 'fill' })
+            "
+          />
+        </div>
       </template>
       <template v-slot:body>
         <div class="name">{{ album.title }}</div>
@@ -44,25 +48,35 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .wrapper {
-  height: 160px;
+  width: 194px;
+  height: 148px;
 
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
   border-radius: 8px;
   padding: 5px;
-  margin: 0px auto 15px;
+  margin-bottom: 15px;
 
-  .cover {
-    width: 100%;
-    background: rgba(216, 216, 216, 1);
-    border-radius: 4px;
-    overflow: hidden;
+  .header {
+    width: 184px;
+    height: 110px;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 5px;
+
+    .cover {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 4px;
+    }
   }
 
   .name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
     text-align: center;
 
     font-size: 13px;
@@ -70,35 +84,6 @@ export default class Home extends Vue {
     font-weight: 400;
     color: rgba(74, 74, 74, 1);
     line-height: 18px;
-  }
-}
-.dialog {
-  & ::v-deep .ai-slider__title {
-    text-align: center;
-  }
-  .item {
-    height: 100%;
-    position: relative;
-
-    img {
-      width: 100%;
-    }
-
-    .name {
-      position: absolute;
-      left: 0px;
-      right: 0px;
-      bottom: 0px;
-
-      background: rgba(0, 0, 0, 0.7);
-      padding-left: 15px;
-      color: #fff;
-
-      line-height: 50px;
-
-      font-size: 18px;
-      font-weight: 600;
-    }
   }
 }
 </style>

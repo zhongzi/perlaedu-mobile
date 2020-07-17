@@ -30,7 +30,7 @@ const tools = {
     url.pathname = pathname;
     return url.href;
   },
-  makeQrcode: (url) => {
+  makeQrcode: (url = null) => {
     return (
       configs.qrcodeURL +
       "?next=" +

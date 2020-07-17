@@ -8,19 +8,17 @@
       triggerName="article-cover"
     />
     <div class="fields">
-      <ai-input-borderless
-        class="field"
-        label="标题"
-        v-model="innerArticle.title"
-      />
+      <ai-input class="field" label="标题" v-model="innerArticle.title" />
+      <ai-line />
       <ai-input-switch class="field" label="是否为外链" v-model="isLink" />
-      <ai-input-borderless
+      <ai-line />
+      <ai-input
         class="field"
         label="访问链接"
         v-model="innerArticle.url"
         v-if="isLink"
       />
-      <ai-section class="field" v-else>
+      <ai-section class="field description" v-else>
         <template v-slot:header>
           <span> 详情 </span>
         </template>
@@ -43,12 +41,13 @@ import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 import SyncMixin from "@/mixin/SyncMixin";
 
 import AiImageUploader from "@/view/component/AiImageUploader.vue";
-import AiInputBorderless from "@/view/component/AiInputBorderless.vue";
+import AiInput from "@/view/component/AiInput.vue";
 import AiSubmitActions from "@/view/component/AiSubmitActions.vue";
 import AiRichTextEditor from "@/view/component/AiRichTextEditor.vue";
 import AiSection from "@/view/component/AiSection.vue";
 import AiInputSwitch from "@/view/component/AiInputSwitch.vue";
 import AiFixedFooter from "@/view/component/AiFixedFooter.vue";
+import AiLine from "@/view/component/AiLine.vue";
 
 import isEmpty from "lodash/isEmpty";
 import isEqual from "lodash/isEqual";
@@ -60,19 +59,20 @@ import cloneDeep from "lodash/cloneDeep";
 @Component({
   components: {
     AiImageUploader,
-    AiInputBorderless,
+    AiInput,
     AiSubmitActions,
     AiRichTextEditor,
     AiSection,
     AiInputSwitch,
     AiFixedFooter,
+    AiLine,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
   isLink: boolean = false;
   innerArticle: any = {
     id: "",
-    cover: "",
+    cover: this.$configs.defaultCoverNews,
     title: "",
     description: "",
     remark: "",
@@ -140,6 +140,8 @@ export default class Home extends Mixins(SyncMixin) {
 </script>
 <style lang="scss" scoped>
 .wrapper {
+  background: #fff;
+
   .fields {
     position: relative;
     top: -15px;
@@ -149,6 +151,9 @@ export default class Home extends Mixins(SyncMixin) {
     padding-top: 17px;
     padding-left: 17px;
     padding-right: 17px;
+  }
+  .description {
+    padding: 10px;
   }
 }
 </style>

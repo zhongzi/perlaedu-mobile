@@ -142,7 +142,6 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .ai-gps-picker {
-  width: 100%;
   height: 100%;
 }
 </style>

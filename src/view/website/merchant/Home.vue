@@ -17,23 +17,28 @@ export default class Home extends Mixins(SyncMixin) {
 
   created() {
     this.store = "merchant";
-    this.share();
+    this.loadMerchant();
   }
 
   @Watch("merchant", { deep: true })
   onMerchantChanged() {
-    this.updateTitle();
     this.share();
   }
 
   @Watch("$route", { deep: true })
   onRouteChanged() {
-    this.updateTitle();
+    this.loadMerchant();
   }
 
-  updateTitle() {
-    const name = (this.merchant.name || "") + " - 移动微官网";
-    this.$store.commit("updateTitle", name);
+  loadMerchant() {
+    this.id = this.$route.params.merchantId;
+    this.loadEntity({
+      requireColumns: ["count_persons"],
+      query: {
+        extras:
+          "location,website,me,count_persons,scene_qrcode_url,union_merchant",
+      },
+    });
   }
 
   share() {

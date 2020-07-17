@@ -1,5 +1,5 @@
 <template>
-  <hui-dialog class="dlg-welfare-draw" v-model="open">
+  <hui-dialog class="dlg-welfare-draw" v-model="showDialog">
     <template v-for="item in unpickedItems">
       <bill-card-welfare-pickable
         :item="item"
@@ -39,7 +39,7 @@ export default class Home extends Mixins(SyncMixin, StopBodyScrollMixin) {
   @Prop({ type: Boolean, default: false }) isManager: boolean;
 
   welfareItems: any = [];
-  open: boolean = false;
+  showDialog: boolean = false;
   isSaved: boolean = false;
 
   get unpickedItems() {
@@ -56,6 +56,12 @@ export default class Home extends Mixins(SyncMixin, StopBodyScrollMixin) {
   created() {
     this.welfareItems = cloneDeep(this.pickedItems || []);
     this.onOpen();
+    this.SBSAuto = false;
+  }
+
+  @Watch("showDialog")
+  onOpenChanged() {
+    this.stopBodyScroll(this.showDialog);
   }
 
   @Watch("pickedItems", { deep: true })
@@ -68,27 +74,22 @@ export default class Home extends Mixins(SyncMixin, StopBodyScrollMixin) {
     this.onOpen();
   }
 
-  @Watch("open")
-  onOpenChanged() {
-    this.stopBodyScroll(this.open);
-  }
-
   onOpen() {
     if (this.isManager) {
       this.$emit("picked", map(this.items, "id"));
       return;
     }
     if (this.unpickedItems.length > 0) {
-      this.open = true;
+      this.showDialog = true;
       return;
     } else {
-      if (this.open) {
+      if (this.showDialog) {
         this.$nextTick(() => {
           this.$bus.$emit("save-order");
         });
       }
 
-      this.open = false;
+      this.showDialog = false;
       this.$emit("picked", map(this.welfareItems, "id"));
     }
   }

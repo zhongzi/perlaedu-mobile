@@ -22,7 +22,7 @@
       v-if="isManager"
       label="收款码"
       @click="onOpen"
-      bottom="150px"
+      bottom="160px"
     />
     <ai-float-action
       v-if="isManager"
@@ -116,7 +116,7 @@ export default class Home extends Mixins(SyncMixin, PayMixin) {
         },
         {
           type: "image",
-          value: this.$tools.resolveQrcode(),
+          value: this.$tools.makeQrcode(),
           options: {
             x: 172,
             y: 260,

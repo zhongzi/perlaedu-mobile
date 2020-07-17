@@ -34,21 +34,22 @@ export default class Home extends Vue {
   align-items: center;
   justify-content: center;
 
-  box-sizing: border-box;
-
   width: 100%;
   height: 100%;
   min-height: 50px;
 
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 3px 14px 0px rgba(0, 0, 0, 0.04);
-  border-radius: 10px;
+  border-radius: 8px;
+  overflow: hidden;
 
   &__header {
     width: 100%;
     max-height: 80%;
     overflow: hidden;
-    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     img {
       max-width: 100%;

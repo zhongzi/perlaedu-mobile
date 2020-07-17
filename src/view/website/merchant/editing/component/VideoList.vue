@@ -1,15 +1,18 @@
 <template>
   <ai-section class="wrapper editing-videos" title="精彩视频">
-    <video-add-entry :merchant="merchant" @refresh="refresh = true" />
     <ai-list-stored
       resource="websiteVideo"
       :query="innerQuery"
       :refresh.sync="refresh"
       scrollType="slider"
       :enableEmpty="false"
-      :sliderOptions="{ slidesPerView: 1.1 }"
+      :sliderOptions="{ slidesPerView: 1.7, spaceBetween: 20 }"
+      :enableSlideBefore="true"
       class="list"
     >
+      <template v-slot:slide-before>
+        <video-add-entry :merchant="merchant" @refresh="refresh = true" />
+      </template>
       <template v-slot:item="{ item, tag }">
         <ai-button-float-delete @delete="onDelete(item, tag)" class="item">
           <a-video :video="item" :enablePlay="false" />

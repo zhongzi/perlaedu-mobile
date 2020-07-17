@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper teachers-picker">
-    <ai-input-borderless v-model="keyword" placeholder="输入老师名称" />
+    <!-- <ai-input v-model="keyword" placeholder="输入老师名称" /> -->
     <ai-list-stored
       resource="person"
       scrollType="scroll"
@@ -8,26 +8,28 @@
       :enableEmpty="false"
     >
       <template v-slot:item="{ item }">
-        <ai-state-check
-          @update:checked="(v) => onCheckedChanged(item, v)"
-          class="item"
-        >
-          <teacher :teacher="item" :enablePreview="false" />
-        </ai-state-check>
+        <div class="item">
+          <ai-state-check @update:checked="(v) => onCheckedChanged(item, v)">
+            <teacher :teacher="item" :enablePreview="false" class="teacher" />
+          </ai-state-check>
+        </div>
       </template>
     </ai-list-stored>
-    <ai-submit-actions @cancel="onCancel" @submit="onSubmit" />
+    <ai-fixed-footer>
+      <ai-submit-actions @cancel="onCancel" @submit="onSubmit" />
+    </ai-fixed-footer>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
+import StopBodyScrollMixin from "@/mixin/StopBodyScrollMixin";
 
 import AiListStored from "@/view/component/AiListStored.vue";
 import AiStateCheck from "@/view/component/AiStateCheck.vue";
-import AiInputBorderless from "@/view/component/AiInputBorderless.vue";
+import AiInput from "@/view/component/AiInput.vue";
 import AiSubmitActions from "@/view/component/AiSubmitActions.vue";
 import AiFixedFooter from "@/view/component/AiFixedFooter.vue";
 
@@ -40,13 +42,13 @@ import filter from "lodash/filter";
   components: {
     AiListStored,
     AiStateCheck,
-    AiInputBorderless,
+    AiInput,
     AiSubmitActions,
     AiFixedFooter,
     Teacher,
   },
 })
-export default class Home extends Vue {
+export default class Home extends Mixins(StopBodyScrollMixin) {
   @Prop({ type: Object, default: null }) query: any;
 
   keyword: string = "";
@@ -86,14 +88,23 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .teachers-picker {
-  padding: 15px;
+  padding: 25px;
 
-  & ::v-deep .ai-list-stored__list {
+  & ::v-deep .ai-infinite-scroll__list {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
   }
   .item {
-    width: 40%;
+    width: 45%;
+    margin: 10px 0px;
+
+    .teacher {
+      width: 100%;
+      height: 100%;
+      margin-bottom: 0px;
+    }
   }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <img class="cover" :src="photo.cover | alioss({ width: 150 })" />
+    <img class="cover" :src="photo.cover | alioss({ width: 100 })" />
   </div>
 </template>
 
@@ -14,8 +14,6 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .wrapper {
-  padding: 5px;
-
   .cover {
     max-width: 100%;
     max-height: 100%;

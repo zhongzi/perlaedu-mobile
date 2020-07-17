@@ -36,6 +36,8 @@
         v-else-if="scrollType === 'slider'"
         :list="list"
         :options="sliderOptions"
+        :enableSlideBefore="enableSlideBefore"
+        :enableSlideAfter="enableSlideAfter"
         @pull-left="loadData"
       >
         <template v-slot:header>
@@ -44,6 +46,9 @@
               {{ title }}
             </slot>
           </div>
+        </template>
+        <template v-slot:slide-before>
+          <slot name="slide-before" />
         </template>
         <template v-slot:item="{ item, index }">
           <slot name="item" :item="item" :index="index" :tag="tag" />
@@ -78,7 +83,7 @@
             <img :src="image" />
           </slot>
         </template>
-        <template v-slot:footer>
+        <template v-slot:waterfall-over>
           <slot name="footer">
             <span> 全部加载完毕</span>
           </slot>
@@ -145,6 +150,8 @@ export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Boolean, default: false }) hideIfNoData: boolean;
   @Prop({ type: Boolean, default: false }) enableMoreData: boolean;
   @Prop({ type: Object, default: () => ({}) }) sliderOptions: object;
+  @Prop({ type: Boolean, default: false }) enableSlideBefore: boolean;
+  @Prop({ type: Boolean, default: true }) enableSlideAfter: boolean;
   @Prop({ type: Number, default: 8 }) gap: number;
 
   hasMoreData: boolean = true;
@@ -225,7 +232,7 @@ export default class Home extends Mixins(SyncMixin) {
     font-family: PingFangSC-Semibold, PingFang SC;
     font-weight: 600;
     color: rgba(74, 74, 74, 1);
-    line-height: 3;
+    line-height: 2.5;
   }
 }
 </style>

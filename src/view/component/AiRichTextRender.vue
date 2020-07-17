@@ -52,6 +52,8 @@ export default class Home extends Vue {
 
       pre {
         margin: 1em auto;
+        word-break: break-word;
+        white-space: pre-wrap;
       }
     }
 

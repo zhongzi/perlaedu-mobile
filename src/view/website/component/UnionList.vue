@@ -1,20 +1,16 @@
 <template>
   <div class="wrapper union">
-    <ai-list-stored
-      resource="unionMerchant"
-      :query="innerQuery"
-      scrollType="none"
-      :hideIfNoData="true"
-    >
-      <template v-slot:item="{ item }">
-        <union :union="item.union" :merchant="item.merchant" class="item" />
-      </template>
-    </ai-list-stored>
+    <union
+      v-if="unionMerchant.id"
+      :union="unionMerchant.union"
+      :merchant="unionMerchant.merchant"
+      class="item"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch, Mixins } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
 
@@ -22,6 +18,7 @@ import AiListStored from "@/view/component/AiListStored.vue";
 import Union from "./Union.vue";
 
 import merge from "lodash/merge";
+import _get from "lodash/get";
 
 @Component({
   components: {
@@ -29,25 +26,39 @@ import merge from "lodash/merge";
     Union,
   },
 })
-export default class Home extends Vue {
-  @Prop({ type: Object, default: null }) query: any;
+export default class Home extends Mixins(SyncMixin) {
+  @Prop({ type: Object, default: null }) merchant: any;
 
-  get innerQuery() {
-    return merge(
-      {
+  get unionMerchant() {
+    return this.entity;
+  }
+
+  created() {
+    this.store = "unionMerchant";
+    this.load();
+  }
+
+  @Watch("merchant", { deep: true })
+  onMerchantChanged() {
+    this.load();
+  }
+
+  load() {
+    this.id = _get(this.merchant, "union_merchant.id", 0);
+    this.loadEntity({
+      id: this.id,
+      query: {
         extras: JSON.stringify({
           Union: ["count_merchants"],
-          UnionMerchant: ["union"],
+          UnionMerchant: ["union", "merchant"],
         }),
       },
-      this.query || {}
-    );
+    });
   }
 }
 </script>
 <style lang="scss" scoped>
 .union {
-  padding: 0px 27px;
   .item {
     margin: 10px 0px;
   }

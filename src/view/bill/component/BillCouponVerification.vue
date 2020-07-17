@@ -10,7 +10,7 @@
     <hui-dialog v-model="showDialog">
       <div class="dialog">
         <template v-if="isStaff">
-          <ai-input-borderless
+          <ai-input
             class="remark"
             label="核销备注"
             placeholder="请输入备注信息"
@@ -33,14 +33,14 @@ import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
 
-import AiInputBorderless from "@/view/component/AiInputBorderless.vue";
+import AiInput from "@/view/component/AiInput.vue";
 import AiSubmitActions from "@/view/component/AiSubmitActions.vue";
 
 import isEmpty from "lodash/isEmpty";
 
 @Component({
   components: {
-    AiInputBorderless,
+    AiInput,
     AiSubmitActions,
   },
 })
@@ -90,6 +90,7 @@ export default class Home extends Mixins(SyncMixin) {
       res: {
         coupon_id: this.coupon.id,
         action: "used",
+        verification_code: this.$route.query.code,
         remark: this.remark,
       },
       success: () => {

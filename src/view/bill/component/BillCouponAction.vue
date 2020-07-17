@@ -71,6 +71,9 @@ export default class Home extends Vue {
   }
   .action {
     width: 100%;
+    & ::v-deep .ai-cell__left-info-header-title {
+      font-size: 12px;
+    }
   }
 }
 </style>

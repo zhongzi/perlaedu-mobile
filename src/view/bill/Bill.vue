@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper bill-pay">
     <div class="decorator" />
     <div class="container">
       <div class="header">
@@ -390,7 +390,7 @@ export default class Home extends Mixins(SyncMixin) {
 }
 </script>
 <style lang="scss" scoped>
-.wrapper {
+.bill-pay {
   position: relative;
   overflow: hidden;
   min-height: 100vh;

@@ -3,7 +3,6 @@
     <bill-coupon-user class="card" :user="coupon.user" />
     <bill-coupon class="card" :coupon="coupon" :showActions="false" />
     <div class="container">
-      <bill-coupon-status class="card" :coupon="coupon" />
       <bill-coupon-description class="card" :coupon="coupon" />
       <bill-coupon-source class="card" :coupon="coupon" />
       <bill-coupon-action class="card" :coupon="coupon" />

@@ -28,21 +28,8 @@
       <p class="field">
         <img v-if="snapshotCover" :src="snapshotCover" />
       </p>
-      <ai-input-borderless
-        class="field"
-        label="视频名称"
-        v-model="form.title"
-      />
-      <ai-input-borderless
-        class="field"
-        label="视频描述"
-        v-model="form.description"
-      />
-      <ai-input-borderless
-        class="field"
-        label="标签，逗号间隔"
-        v-model="form.keywords"
-      />
+      <ai-input class="field" label="视频名称" v-model="form.title" />
+      <ai-input class="field" label="视频描述" v-model="form.description" />
       <ai-submit-actions @cancel="onCancel" @submit="onSubmit" />
     </div>
     <hui-dialog v-model="showDialog">
@@ -67,7 +54,7 @@ import { Component, Vue, Prop, Watch, Mixins } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
 
-import AiInputBorderless from "./AiInputBorderless.vue";
+import AiInput from "./AiInput.vue";
 import AiSubmitActions from "./AiSubmitActions.vue";
 import AiInputFile from "./AiInputFile.vue";
 
@@ -80,7 +67,7 @@ import cloneDeep from "lodash/cloneDeep";
 @Component({
   name: "ai-video-ali-uploader",
   components: {
-    AiInputBorderless,
+    AiInput,
     AiSubmitActions,
     AiInputFile,
   },

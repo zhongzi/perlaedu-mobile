@@ -50,6 +50,8 @@ export default class Home extends Vue {
   margin: 10px 10px 10px 15px;
 
   .image {
+    width: 71px;
+    height: 40px;
     max-width: 71px;
     max-height: 40px;
     border-radius: 4px;

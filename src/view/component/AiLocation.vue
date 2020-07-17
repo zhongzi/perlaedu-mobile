@@ -43,11 +43,7 @@ export default class Home extends Vue {
   }
 
   openMap() {
-    if (
-      this.$weixin.isInWeixin() &&
-      !isEmpty(this.gps) &&
-      !isEqual(this.gps, [0, 0])
-    ) {
+    if (this.$weixin.isInWeixin()) {
       this.$weixin.config(() => {
         this.$weixin.jsapi.openLocation({
           latitude: parseFloat(this.gps[0]),

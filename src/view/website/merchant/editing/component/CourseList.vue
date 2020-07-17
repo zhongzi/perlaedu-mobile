@@ -1,6 +1,5 @@
 <template>
   <ai-section class="wrapper editing-courses" title="热门课程">
-    <course-add-entry @refresh="refresh = true" :merchant="merchant" />
     <ai-list-stored
       class="list"
       resource="course"
@@ -8,8 +7,12 @@
       :refresh.sync="refresh"
       scrollType="slider"
       :enableEmpty="false"
-      :sliderOptions="{ slidesPerView: 4 }"
+      :sliderOptions="{ slidesPerView: 5, spaceBetween: 20 }"
+      :enableSlideBefore="true"
     >
+      <template v-slot:slide-before>
+        <course-add-entry @refresh="refresh = true" :merchant="merchant" />
+      </template>
       <template v-slot:item="{ item, tag }">
         <course :course="item" routeName="websiteEditingCourse">
           <template v-slot="{ courseIcon }">

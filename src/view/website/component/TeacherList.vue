@@ -4,7 +4,12 @@
       resource="websiteTeacher"
       :query="innerQuery"
       scrollType="slider"
-      :sliderOptions="{ slidesPerView: 3, initialSlide: 0, freeMode: true }"
+      :sliderOptions="{
+        slidesPerView: 3.3,
+        initialSlide: 0,
+        freeMode: true,
+        spaceBetween: 10,
+      }"
       :hideIfNoData="true"
     >
       <template v-slot:header>

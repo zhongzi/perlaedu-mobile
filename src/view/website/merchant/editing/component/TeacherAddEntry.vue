@@ -8,7 +8,7 @@
       </template>
       <template v-slot:body> </template>
     </ai-card>
-    <hui-popup v-model="showPicker" position="right">
+    <hui-popup v-model="showPicker" position="right" ref="popup">
       <div class="popup" v-if="showPicker">
         <teacher-picker :query="query" @submit="onSubmit" @cancel="onCancel" />
       </div>
@@ -49,6 +49,10 @@ export default class Home extends Mixins(SyncMixin) {
     this.store = "websiteTeacher";
   }
 
+  mounted() {
+    document.body.appendChild((this.$refs.popup as any).$el);
+  }
+
   onCancel() {
     this.showPicker = false;
   }
@@ -82,14 +86,17 @@ export default class Home extends Mixins(SyncMixin) {
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
   border-radius: 8px;
-
-  margin-right: 15px;
+  box-sizing: border-box;
+  margin-right: 14px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 
   & ::v-deep .ai-card__header {
     height: 100%;
   }
   .cover {
-    height: 95%;
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;

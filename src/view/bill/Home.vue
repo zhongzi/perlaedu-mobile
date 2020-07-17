@@ -10,7 +10,4 @@ import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class Home extends Vue {}
 </script>
-<style lang="scss" scoped>
-.wrapper {
-}
-</style>
+<style lang="scss" scoped></style>

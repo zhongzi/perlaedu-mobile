@@ -37,6 +37,8 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .wrapper {
+  margin-bottom: 15px;
+
   .course {
     display: flex;
     flex-direction: column;

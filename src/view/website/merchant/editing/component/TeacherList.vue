@@ -1,15 +1,18 @@
 <template>
   <ai-section class="wrapper editing-teachers" title="优秀老师">
-    <teacher-add-entry :merchant="merchant" @refresh="refresh = true" />
     <ai-list-stored
       resource="websiteTeacher"
       :query="innerQuery"
       :refresh.sync="refresh"
       scrollType="slider"
       :enableEmpty="false"
-      :sliderOptions="{ slidesPerView: 1.6, spaceBetween: 20 }"
+      :sliderOptions="{ slidesPerView: 3, spaceBetween: 18 }"
+      :enableSlideBefore="true"
       class="list"
     >
+      <template v-slot:slide-before>
+        <teacher-add-entry :merchant="merchant" @refresh="refresh = true" />
+      </template>
       <template v-slot:item="{ item, tag }">
         <ai-button-float-delete @delete="onDelete(item, tag)" class="item">
           <teacher :websiteTeacher="item" />
@@ -78,10 +81,12 @@ export default class Home extends Mixins(SyncMixin) {
   & ::v-deep .ai-section__body {
     display: flex;
     align-items: center;
+    justify-content: space-between;
   }
 
   .list {
     overflow-x: scroll;
+    flex: 1;
   }
 }
 </style>

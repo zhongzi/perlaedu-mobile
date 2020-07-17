@@ -2,19 +2,19 @@
   <hui-popup v-model="showPopup" @on-hide="onCancel" position="bottom">
     <div :class="b()">
       <div :class="b('menus')">
-        <ai-selection-borderless
+        <ai-selection
           :class="b('menu')"
           label="字体大小"
           v-model="value.font_size"
           :options="fontSizes"
         />
-        <ai-selection-borderless
+        <ai-selection
           :class="b('menu')"
           label="字体重量"
           v-model="value.font_weight"
           :options="fontWeights"
         />
-        <ai-selection-borderless
+        <ai-selection
           :class="b('menu')"
           label="字体颜色"
           v-model="value.font_color"
@@ -24,7 +24,7 @@
             <i class="iconfont icon-square" :style="{ color: value }" />
             <span> {{ label }} </span>
           </template>
-        </ai-selection-borderless>
+        </ai-selection>
       </div>
       <ai-input-textarea v-model="innerValue.text" :class="b('textarea')" />
       <ai-submit-actions
@@ -41,7 +41,7 @@ import PatchMixin from "@/mixin/PatchMixin";
 
 import AiFixedFooter from "./AiFixedFooter.vue";
 import AiInputTextarea from "./AiInputTextarea.vue";
-import AiSelectionBorderless from "./AiSelectionBorderless.vue";
+import AiSelection from "./AiSelection.vue";
 import AiSubmitActions from "./AiSubmitActions.vue";
 
 import isEqual from "lodash/isEqual";
@@ -53,7 +53,7 @@ import merge from "lodash/merge";
   components: {
     AiFixedFooter,
     AiInputTextarea,
-    AiSelectionBorderless,
+    AiSelection,
     AiSubmitActions,
   },
 })
@@ -67,6 +67,10 @@ export default class Home extends Mixins(PatchMixin) {
     font_color: "",
     text: "",
   };
+
+  created() {
+    this.resetInnerValue();
+  }
 
   get fontSizes() {
     return [
@@ -96,6 +100,10 @@ export default class Home extends Mixins(PatchMixin) {
 
   @Watch("value", { deep: true })
   onValueChanged() {
+    this.resetInnerValue();
+  }
+
+  resetInnerValue() {
     if (isEqual(this.innerValue, this.value)) return;
     this.innerValue = merge(this.innerValue, this.value);
   }
@@ -118,7 +126,6 @@ export default class Home extends Mixins(PatchMixin) {
     justify-content: space-between;
   }
   &__textarea {
-    padding: 10px;
     max-height: 500px;
     overflow-y: scroll;
   }

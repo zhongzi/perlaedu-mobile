@@ -1,7 +1,7 @@
 <template>
   <div :class="b()">
     <div :class="b('header')">
-      <ai-input-borderless v-model="keyword" placeholder="输入视频名称或标签" />
+      <ai-input v-model="keyword" placeholder="输入视频名称或标签" />
     </div>
     <ai-list-stored
       resource="video"
@@ -54,7 +54,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
-import AiInputBorderless from "./AiInputBorderless.vue";
+import AiInput from "./AiInput.vue";
 import AiCell from "./AiCell.vue";
 import AiListStored from "./AiListStored.vue";
 import AiVideoAliUploader from "./AiVideoAliUploader.vue";
@@ -67,7 +67,7 @@ import _get from "lodash/get";
 @Component({
   name: "ai-video-selector",
   components: {
-    AiInputBorderless,
+    AiInput,
     AiCell,
     AiListStored,
     AiVideoAliUploader,

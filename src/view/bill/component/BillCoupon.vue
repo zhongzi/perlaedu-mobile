@@ -23,8 +23,14 @@
           <div>有效期至: {{ innerItem.end_at | defaultDate }}</div>
         </template>
         <template v-slot:right-title>
-          {{ innerItem | safe("item.value") }}
+          <span>{{ innerItem | safe("item.value") }}</span>
           <span style="font-size: 12px;">{{ valueType }}</span>
+          <hui-button
+            @click.native="onClick"
+            v-if="!showActions"
+            style="display: block;"
+            >{{ status && status.text }}
+          </hui-button>
         </template>
         <template v-slot:right-remark>
           <span v-if="minBalance && minBalance > 0"
@@ -98,13 +104,13 @@ export default class Home extends Mixins(SyncMixin) {
     return this.coupon || this.entity;
   }
 
+  get status() {
+    return BillCouponStatus[this.innerItem.status];
+  }
+
   get actionName() {
-    if (isEmpty(this.innerItem.status)) return "";
-
-    if (this.innerItem.status === "taken") return "马上使用";
-
-    console.log(this.innerItem.status);
-    return BillCouponStatus[this.innerItem.status].text;
+    if (this.status === BillCouponStatus.taken) return "马上使用";
+    return this.status && this.status.text;
   }
 
   get actionType() {
@@ -116,7 +122,8 @@ export default class Home extends Mixins(SyncMixin) {
   get valueType() {
     if (isEmpty(this.innerItem.item)) return "";
 
-    return BillItemValueType[this.innerItem.item.value_type].text;
+    const valueType = BillItemValueType[this.innerItem.item.value_type];
+    return valueType.unit + valueType.text;
   }
 
   get minBalance() {

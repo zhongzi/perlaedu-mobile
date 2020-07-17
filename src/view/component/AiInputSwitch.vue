@@ -1,5 +1,5 @@
 <template>
-  <div :class="[b(), { [b('border-bottom')]: showBottomLine }]">
+  <div :class="b()">
     <div :class="b('label')" v-if="label">
       <slot>
         {{ label }}
@@ -35,7 +35,7 @@ export default class Home extends Vue {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 0px;
+  padding: 10px;
 
   &__label {
     font-size: 14px;
@@ -44,10 +44,6 @@ export default class Home extends Vue {
     color: rgba(84, 84, 84, 1);
     line-height: 19px;
     letter-spacing: 1px;
-  }
-
-  &__border-bottom {
-    border-bottom: 1px solid rgba(237, 237, 237, 1);
   }
 }
 </style>

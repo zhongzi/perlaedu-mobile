@@ -20,6 +20,10 @@ export default class StopBodyScrollMixin extends Vue {
     }
   }
 
+  mounted() {
+    this.SBSAuto && this.stopBodyScroll(true);
+  }
+
   deactivated() {
     this.SBSAuto && this.stopBodyScroll(false);
   }

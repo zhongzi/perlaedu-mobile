@@ -8,28 +8,27 @@
       triggerName="course-cover"
     />
     <div class="fields">
-      <ai-input-borderless
+      <ai-selection-stored
         class="field"
-        label="课程名称"
-        v-model="innerCourse.title"
+        resource="subject"
+        label="选择科目"
+        :query="query"
+        @selected="onSelected"
+        v-model="innerCourse.subject_id"
       />
+      <ai-line />
+      <ai-input class="field" label="课程名称" v-model="innerCourse.title" />
+      <ai-line />
       <ai-selection-stored
         resource="billProject"
-        label="购课链接"
+        label="购买链接"
         :query="query"
+        :enableUnsetOption="true"
         v-model="innerCourse.bill_id"
       >
       </ai-selection-stored>
       <ai-line />
-      <ai-selection-stored
-        class="field"
-        resource="subject"
-        label="归属科目"
-        :query="query"
-        v-model="innerCourse.subject_id"
-      >
-      </ai-selection-stored>
-      <ai-section class="field">
+      <ai-section class="field description">
         <template v-slot:header>
           <span> 详情 </span>
         </template>
@@ -52,7 +51,7 @@ import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 import SyncMixin from "@/mixin/SyncMixin";
 
 import AiImageUploader from "@/view/component/AiImageUploader.vue";
-import AiInputBorderless from "@/view/component/AiInputBorderless.vue";
+import AiInput from "@/view/component/AiInput.vue";
 import AiSubmitActions from "@/view/component/AiSubmitActions.vue";
 import AiRichTextEditor from "@/view/component/AiRichTextEditor.vue";
 import AiSelectionStored from "@/view/component/AiSelectionStored.vue";
@@ -61,6 +60,7 @@ import AiSection from "@/view/component/AiSection.vue";
 import AiFixedFooter from "@/view/component/AiFixedFooter.vue";
 
 import isEqual from "lodash/isEqual";
+import isEmpty from "lodash/isEmpty";
 import _get from "lodash/get";
 import merge from "lodash/merge";
 import debounce from "lodash/debounce";
@@ -69,7 +69,7 @@ import cloneDeep from "lodash/cloneDeep";
 @Component({
   components: {
     AiImageUploader,
-    AiInputBorderless,
+    AiInput,
     AiSelectionStored,
     AiSubmitActions,
     AiRichTextEditor,
@@ -123,6 +123,13 @@ export default class Home extends Mixins(SyncMixin) {
     }
   }
 
+  onSelected(subject) {
+    console.log(subject);
+    if (isEmpty(this.innerCourse.title)) {
+      this.innerCourse.title = subject.title;
+    }
+  }
+
   onSubmit() {
     if (!this.merchantId) return;
 
@@ -149,6 +156,9 @@ export default class Home extends Mixins(SyncMixin) {
     padding-top: 17px;
     padding-left: 17px;
     padding-right: 17px;
+  }
+  .description {
+    padding: 10px;
   }
 }
 </style>

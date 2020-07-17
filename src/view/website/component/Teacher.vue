@@ -2,10 +2,11 @@
   <div class="wrapper">
     <ai-card v-if="innerTeacher.id" @click.native="onClick">
       <template v-slot:header>
-        <img
-          class="cover"
-          :src="innerTeacher.avatar_url | alioss({ width: 120, height: 200 })"
-        />
+        <div class="cover">
+          <img
+            :src="innerTeacher.avatar_url | alioss({ width: 120, height: 200 })"
+          />
+        </div>
       </template>
       <template v-slot:body>
         <div class="name">{{ innerTeacher.realname }} 老师</div>
@@ -60,19 +61,28 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .wrapper {
+  width: 104px;
   height: 160px;
-
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
   border-radius: 8px;
   padding: 5px;
-  margin: 0px 0px 15px;
+  margin-bottom: 15px;
 
-  & ::v-deep .ai-card__header {
-    min-height: 80%;
+  .cover {
+    width: 96px;
+    height: 130px;
+    padding: 5px;
+
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 4px;
+    }
   }
 }
 .dialog {
@@ -85,17 +95,19 @@ export default class Home extends Vue {
     font-size: 18px;
     margin: 20px 0px;
   }
-}
-.cover {
-  max-width: 100%;
-  max-height: 100%;
-  background: rgba(216, 216, 216, 1);
-  border-radius: 4px;
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+  }
 }
 
 .name {
-  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
+  text-align: center;
   font-size: 13px;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;

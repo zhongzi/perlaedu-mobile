@@ -13,6 +13,7 @@
       </div>
     </slot>
     <avatar-cropper
+      v-show="showCropper"
       :class="b('cropper')"
       mimes="image/*"
       :upload-handler="uploadHandler"
@@ -20,6 +21,7 @@
       :output-options="outputOptions"
       :output-quality="outputQuality"
       :trigger="'#' + triggerName"
+      @changed="onChanged"
       ref="cropper"
     />
   </div>
@@ -28,6 +30,8 @@
 import { Component, Vue, Mixins, Prop } from "vue-property-decorator";
 import UploaderMixin from "@/mixin/Uploader";
 import AvatarCropper from "vue-avatar-cropper";
+
+import isEqual from "lodash/isEqual";
 
 @Component({
   name: "ai-image-uploader",
@@ -41,12 +45,13 @@ export default class Home extends Mixins(UploaderMixin) {
   @Prop({ type: String, default: "defaultTrigger" }) triggerName: string;
   @Prop({ type: [String, Number], default: "" }) prefix: string | number;
   @Prop({ type: Boolean, default: true }) enablePreview: boolean;
-  @Prop({ type: String, default: "image/png" }) mimetype: string;
+  @Prop({ type: Boolean, default: true }) enableGif: boolean;
   @Prop({
     type: Object,
     default: () => ({
+      aspectRatio: 1.333,
       autoCropArea: 1,
-      viewMode: 1,
+      viewMode: 2,
       movable: false,
       zoomable: false,
     }),
@@ -54,6 +59,25 @@ export default class Home extends Mixins(UploaderMixin) {
   cropperOptions: object;
   @Prop({ type: Object, default: () => ({}) }) outputOptions: object;
   @Prop({ type: Number, default: 1 }) outputQuality: number;
+
+  mimetype: string = "image/png";
+  showCropper: boolean = false;
+
+  onChanged(file, reader) {
+    if (this.enableGif && isEqual(file.type, "image/gif")) {
+      this.$hui.loading.show("上传中...");
+      this.uploadFile(file, this.type, this.prefix + "", (url) => {
+        this.$emit("input", url);
+        setTimeout(() => {
+          this.$hui.loading.hide();
+          (this.$refs.cropper as any).destroy();
+        }, 1000);
+      });
+      return;
+    }
+    this.showCropper = true;
+    this.mimetype = file.type || this.mimetype;
+  }
 
   uploadHandler(cropper) {
     this.$hui.loading.show("上传中...");
@@ -69,6 +93,7 @@ export default class Home extends Mixins(UploaderMixin) {
             this.$emit("input", url);
             setTimeout(() => {
               this.$hui.loading.hide();
+              this.showCropper = false;
             }, 1000);
           }
         );
@@ -97,8 +122,7 @@ export default class Home extends Mixins(UploaderMixin) {
     min-height: 200px;
 
     &-image {
-      max-width: 100%;
-      max-height: 100%;
+      width: 100%;
     }
     &-icon {
       position: absolute;

@@ -30,27 +30,34 @@
         </div>
       </template>
       <template v-slot:waterfall-over>
-        <slot name="footer">
-          <span> 全部加载完毕</span>
-        </slot>
+        <slot name="footer"> </slot>
       </template>
     </vue-waterfall-easy>
     <div :class="b('footer')">
       <slot name="slot" />
     </div>
-    <hui-dialog v-model="showDialog" :appendToBody="true" :class="b('dialog')">
+    <hui-dialog
+      v-model="showDialog"
+      :appendToBody="true"
+      :class="b('dialog')"
+      v-if="showDialog"
+    >
       <div :class="b('dialog-content')">
         <ai-slider
           :list="list"
           :options="swiperOptions"
           :showFlipButton="true"
           :showPagination="true"
-          :slideToNum="initialSlide"
+          :slideToNum.sync="curSlideNum"
         >
           <template v-slot:item="{ item, index }">
             <slot name="slider" :item="item" :index="index">
               <div :class="b('dialog-content-item')">
-                <img :src="item[imgKey]" @click="showDialog = false" />
+                <img
+                  :src="item[imgKey]"
+                  @click="showDialog = false"
+                  v-if="index <= curSlideNum + 3"
+                />
               </div>
             </slot>
           </template>
@@ -89,12 +96,12 @@ export default class Home extends Vue {
   @Prop({ type: Number, default: 8 }) gap: number;
 
   showDialog: boolean = false;
-  initialSlide: number = 0;
+  curSlideNum: number = 0;
   innerPreviewList: any = [];
 
   get swiperOptions() {
     return {
-      initialSlide: this.initialSlide,
+      curSlideNum: this.curSlideNum,
       effect: "fade",
       freeMode: false,
       autoHeight: true,
@@ -139,7 +146,7 @@ export default class Home extends Vue {
   }
 
   onImageClicked(img, index) {
-    this.initialSlide = index;
+    this.curSlideNum = index;
     this.showDialog = true;
   }
 }
@@ -147,8 +154,14 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 .ai-waterfall {
   height: 100%;
+
   &__list {
     height: 100%;
+
+    & ::v-deep .img-inner-box {
+      background: rgba(0, 0, 0, 0.1);
+      box-shadow: none !important;
+    }
   }
 }
 .ai-waterfall__dialog {

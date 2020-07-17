@@ -23,7 +23,7 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .add-course-entry {
-  margin: 0px 30px 0px 10px;
+  margin: 10px 0px;
 
   i {
     font-size: 40px;
