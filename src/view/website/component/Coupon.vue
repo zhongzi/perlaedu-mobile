@@ -4,7 +4,7 @@
       <template v-slot:title>
         <div class="title">
           <span> {{ coupon.title }} </span>
-          <i class="iconfont icon-info" />
+          <i class="iconfont icon-info" @click="showInfo" />
         </div>
       </template>
       <template v-slot:subtitle>
@@ -67,7 +67,9 @@ export default class Home extends Mixins(SyncMixin) {
         },
       },
       success: () => {
+        this.showInfo(false);
         this.$hui.toast.info("认领成功， 请到【我的】卡券列表查看使用");
+        this.$bus.$emit("website:coupon:taked");
       },
       failure: (error) => {
         this.$hui.toast.error(error.response.data.message);
@@ -77,6 +79,15 @@ export default class Home extends Mixins(SyncMixin) {
 
   created() {
     this.store = "billCoupon";
+    this.$bus.$on("website:coupon:take", (coupon) => {
+      if (coupon.id !== this.coupon.id) return;
+
+      this.take();
+    });
+  }
+
+  showInfo(show = true) {
+    this.$bus.$emit("website:coupon:dialog:show", show);
   }
 }
 </script>

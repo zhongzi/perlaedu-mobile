@@ -79,10 +79,6 @@ export default class Home extends Vue {
   }
 
   .title {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
     display: flex;
     align-items: center;
     justify-content: center;
@@ -93,6 +89,13 @@ export default class Home extends Vue {
       font-size: 24px;
       color: rgba(237, 139, 65, 1);
       margin-right: 10px;
+    }
+
+    span {
+      max-width: 80%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 }

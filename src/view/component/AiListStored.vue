@@ -83,7 +83,7 @@
             <img :src="image" />
           </slot>
         </template>
-        <template v-slot:waterfall-over>
+        <template v-slot:footer>
           <slot name="footer">
             <span> 全部加载完毕</span>
           </slot>

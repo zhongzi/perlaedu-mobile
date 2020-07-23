@@ -127,7 +127,6 @@ export default class Home extends Vue {
 
   @Watch("loadedAll", { deep: true })
   onLoadedAllChanged() {
-    console.log(this.loadedAll);
     if (!this.loadedAll) return;
     (this.$refs.waterfall as any).waterfallOver();
   }

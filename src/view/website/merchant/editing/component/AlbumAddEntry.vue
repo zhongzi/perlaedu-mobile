@@ -10,7 +10,7 @@
     <hui-dialog v-model="showDialog" :appendToBody="true">
       <div class="form">
         <h2>新建相册</h2>
-        <ai-input v-model="title" placeholder="输入相册名称" />
+        <ai-input v-model="title" placeholder="输入相册名称" class="input" />
         <ai-submit-actions @submit="onSubmit" @cancel="onCancel" />
       </div>
     </hui-dialog>
@@ -105,7 +105,7 @@ export default class Home extends Mixins(SyncMixin) {
   text-align: center;
 
   & ::v-deep input {
-    padding-left: 10px;
+    padding: 30px 10px 10px;
   }
 }
 </style>
