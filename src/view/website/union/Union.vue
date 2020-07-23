@@ -7,9 +7,12 @@
       <div class="content" :style="mergedStyle">
         <div class="info">
           <div class="title">
+            {{ union.name }}
+          </div>
+          <div class="desc">
             本综合体有{{ union.count_merchants }}家优质培训机构组成
           </div>
-          <div class="address">
+          <div class="address" v-if="union.location && union.location.address">
             <i class="iconfont icon-location" />
             <span>{{ union.location | safe("address") }}</span>
           </div>
@@ -136,6 +139,14 @@ export default class Home extends Mixins(SyncMixin) {
       margin: 0px 27px 20px;
 
       .title {
+        font-size: 18px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 600;
+        color: rgba(74, 74, 74, 1);
+        line-height: 2;
+      }
+
+      .desc {
         font-size: 15px;
         font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;

@@ -98,6 +98,7 @@ export default class Home extends Vue {
     margin: 0px 27px;
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-wrap: wrap;
   }
 

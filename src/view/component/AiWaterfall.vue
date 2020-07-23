@@ -36,12 +36,7 @@
     <div :class="b('footer')">
       <slot name="slot" />
     </div>
-    <hui-dialog
-      v-model="showDialog"
-      :appendToBody="true"
-      :class="b('dialog')"
-      v-if="showDialog"
-    >
+    <hui-dialog v-model="showDialog" :appendToBody="true" :class="b('dialog')">
       <div :class="b('dialog-content')">
         <ai-slider
           :list="list"

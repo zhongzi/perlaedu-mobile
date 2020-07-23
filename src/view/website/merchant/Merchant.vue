@@ -99,11 +99,10 @@ export default class Home extends Mixins(SyncMixin) {
     return _get(this.merchant, "website") || {};
   }
 
-  get bgCover() {
-    return (
-      this.website.cover_bg ||
-      require("@/asset/image/default_website_bg" + this.$densityStr + ".png")
-    );
+  get defaultBgImage() {
+    return require("@/asset/image/default_website_bg" +
+      this.$densityStr +
+      ".png");
   }
 
   get skin() {
@@ -116,7 +115,7 @@ export default class Home extends Mixins(SyncMixin) {
       ? startsWith(img, "linear")
         ? img
         : `url(${img})`
-      : "";
+      : `url(${this.defaultBgImage})`;
   }
 
   get mergedStyle() {

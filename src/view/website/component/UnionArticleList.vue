@@ -86,6 +86,7 @@ export default class Home extends Vue {
   }
 
   .image {
+    padding: 5px;
     img {
       width: 100%;
       border-radius: 8px;

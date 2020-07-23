@@ -98,7 +98,7 @@ export default class Home extends Mixins(SyncMixin) {
     rgba(255, 207, 51, 1) 0%,
     rgba(255, 131, 6, 1) 100%
   );
-  box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
+  box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
 
   padding: 10px 20px;
