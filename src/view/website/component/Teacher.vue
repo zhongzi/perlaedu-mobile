@@ -8,11 +8,8 @@
           />
         </div>
       </template>
-      <template v-slot:body>
-        <div class="name">{{ innerTeacher.realname }} 老师</div>
-      </template>
       <template v-slot:footer>
-        <slot name="actions" />
+        <div class="name">{{ innerTeacher.realname }} 老师</div>
       </template>
     </ai-card>
     <hui-dialog v-model="showDialog" :appendToBody="true">
@@ -20,7 +17,10 @@
         <img class="cover" :src="innerTeacher.avatar_url" />
         <div class="name">{{ innerTeacher.realname }} 老师</div>
         <div class="detail" v-if="innerTeacher.description">
-          <ai-rich-text-render :value="innerTeacher.description" />
+          <ai-rich-text-editor
+            :value="innerTeacher.description"
+            :is-editing="false"
+          />
         </div>
       </div>
     </hui-dialog>
@@ -31,14 +31,14 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 import AiCard from "@/view/component/AiCard.vue";
-import AiRichTextRender from "@/view/component/AiRichTextRender.vue";
+import AiRichTextEditor from "@/view/component/AiRichTextEditor.vue";
 
 import _get from "lodash/get";
 
 @Component({
   components: {
     AiCard,
-    AiRichTextRender,
+    AiRichTextEditor,
   },
 })
 export default class Home extends Vue {

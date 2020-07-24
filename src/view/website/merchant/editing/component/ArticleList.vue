@@ -97,17 +97,18 @@ export default class Home extends Mixins(SyncMixin) {
 <style lang="scss" scoped>
 .editing-articles {
   .plus {
-    margin: 10px auto;
+    margin: 10px auto 0px;
   }
 
   .item {
     margin: 10px 0px;
-    padding: 10px;
+    padding: 3px;
 
     .header {
       max-height: 150px;
       position: relative;
-      border-radius: 10px;
+      border-radius: 4px;
+      overflow: hidden;
 
       .mask {
         position: absolute;
@@ -122,10 +123,13 @@ export default class Home extends Mixins(SyncMixin) {
         justify-content: space-around;
 
         i {
-          font-size: 24px;
+          font-size: 20px;
           color: #fff;
         }
       }
+    }
+    .body {
+      padding: 5px 10px;
     }
   }
 }

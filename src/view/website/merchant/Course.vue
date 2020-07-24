@@ -19,7 +19,10 @@
           <i class="iconfont icon-course course-icon" />
           <span> 课程详情 </span>
         </template>
-        <ai-rich-text-render :value="course.description" />
+        <ai-rich-text-sections-editor
+          :is-editing="false"
+          :value="course.description"
+        />
       </ai-section>
     </div>
   </div>
@@ -31,7 +34,7 @@ import { Component, Vue, Watch, Mixins } from "vue-property-decorator";
 import SyncMixin from "@/mixin/SyncMixin";
 
 import AiSection from "@/view/component/AiSection.vue";
-import AiRichTextRender from "@/view/component/AiRichTextRender.vue";
+import AiRichTextSectionsEditor from "@/view/component/AiRichTextSectionsEditor.vue";
 
 import MerchantCell from "../component/MerchantCell.vue";
 import CouponList from "../component/CouponList.vue";
@@ -45,7 +48,7 @@ import isEmpty from "lodash/isEmpty";
     CouponList,
     AiSection,
     MerchantCell,
-    AiRichTextRender,
+    AiRichTextSectionsEditor,
   },
 })
 export default class Home extends Mixins(SyncMixin) {

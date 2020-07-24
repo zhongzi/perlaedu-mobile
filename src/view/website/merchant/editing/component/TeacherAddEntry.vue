@@ -82,7 +82,7 @@ export default class Home extends Mixins(SyncMixin) {
 .add-teacher-entry {
   min-width: 104px;
   height: 160px;
-  padding: 5px;
+  padding: 0px 5px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
   border-radius: 8px;

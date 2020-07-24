@@ -6,12 +6,16 @@
       :refresh.sync="refresh"
       scrollType="slider"
       :enableEmpty="false"
-      :sliderOptions="{ slidesPerView: 3, spaceBetween: 18 }"
+      :sliderOptions="{ slidesPerView: 3.1, spaceBetween: 12 }"
       :enableSlideBefore="true"
       class="list"
     >
       <template v-slot:slide-before>
-        <teacher-add-entry :merchant="merchant" @refresh="refresh = true" />
+        <teacher-add-entry
+          :merchant="merchant"
+          @refresh="refresh = true"
+          class="entry"
+        />
       </template>
       <template v-slot:item="{ item, tag }">
         <ai-button-float-delete @delete="onDelete(item, tag)" class="item">
@@ -84,9 +88,20 @@ export default class Home extends Mixins(SyncMixin) {
     justify-content: space-between;
   }
 
+  & ::v-deep .ai-section__header {
+    margin-left: 20px;
+  }
+
+  .entry {
+    margin-left: 20px;
+  }
+
   .list {
     overflow-x: scroll;
     flex: 1;
+    .item:nth-child(1) {
+      margin-left: 15px;
+    }
   }
 }
 </style>

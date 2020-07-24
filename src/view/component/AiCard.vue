@@ -59,5 +59,9 @@ export default class Home extends Vue {
     width: 100%;
     padding: 10px 0px;
   }
+
+  &__footer {
+    width: 100%;
+  }
 }
 </style>

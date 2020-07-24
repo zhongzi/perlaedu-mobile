@@ -6,7 +6,7 @@
           <img class="cover" :src="innerVideo.cover || defaultVideoCover" />
         </div>
       </template>
-      <template v-slot:body>
+      <template v-slot:footer>
         <div class="title">
           <i class="iconfont icon-video" />
           <span> {{ innerVideo.title }} </span>
@@ -63,7 +63,6 @@ export default class Home extends Vue {
   margin: 0px 0px 15px;
 
   .header {
-    width: 184px;
     height: 110px;
     display: flex;
     align-items: center;
@@ -81,9 +80,8 @@ export default class Home extends Vue {
   .title {
     display: flex;
     align-items: center;
-    justify-content: center;
+    margin: 0px 10px 10px;
 
-    text-align: center;
     line-height: 18px;
     i {
       font-size: 24px;
@@ -96,6 +94,7 @@ export default class Home extends Vue {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      font-size: 14px;
     }
   }
 }

@@ -49,7 +49,7 @@ export default class Home extends Mixins(UploaderMixin) {
   @Prop({
     type: Object,
     default: () => ({
-      aspectRatio: 1.333,
+      aspectRatio: 16 / 9,
       autoCropArea: 1,
       viewMode: 2,
       movable: false,

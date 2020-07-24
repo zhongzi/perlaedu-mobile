@@ -2,16 +2,21 @@
   <div class="wrapper editing">
     <merchant :merchant="merchant" />
     <div class="resources">
-      <union-merchant-list class="resource" :query="query" />
-      <universe-coupon class="resource" :merchant="merchant" />
+      <div class="section">
+        <union-merchant-list class="resource" :query="query" />
+        <universe-coupon class="resource" :merchant="merchant" />
+        <campaigns-entry class="resource" />
+      </div>
 
-      <campaigns-entry class="resource" />
-
-      <course-list class="resource" :query="query" :merchant="merchant" />
-      <teacher-list class="resource" :query="query" :merchant="merchant" />
-      <album-list class="resource" :query="query" :merchant="merchant" />
-      <video-list class="resource" :query="query" :merchant="merchant" />
-      <article-list class="resource" :query="query" :merchant="merchant" />
+      <course-list class="resource slide" :query="query" :merchant="merchant" />
+      <teacher-list class="resourc slide" :query="query" :merchant="merchant" />
+      <album-list class="resource slide" :query="query" :merchant="merchant" />
+      <video-list class="resource slide" :query="query" :merchant="merchant" />
+      <article-list
+        class="resource section"
+        :query="query"
+        :merchant="merchant"
+      />
     </div>
   </div>
 </template>
@@ -72,7 +77,9 @@ export default class Home extends Mixins(SyncMixin) {
   padding-bottom: 80px;
 
   .resources {
-    padding: 0px 20px;
+    .section {
+      padding: 0px 20px;
+    }
 
     .resource {
       margin-bottom: 20px;

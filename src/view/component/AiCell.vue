@@ -85,6 +85,8 @@ export default class Home extends Vue {
       &-header {
         display: flex;
         flex-direction: column;
+        justify-content: space-around;
+        height: 100%;
 
         &-title {
           font-size: 16px;

@@ -11,7 +11,11 @@
       :enableSlideBefore="true"
     >
       <template v-slot:slide-before>
-        <course-add-entry @refresh="refresh = true" :merchant="merchant" />
+        <course-add-entry
+          @refresh="refresh = true"
+          :merchant="merchant"
+          class="entry"
+        />
       </template>
       <template v-slot:item="{ item, tag }">
         <course :course="item" routeName="websiteEditingCourse">
@@ -86,10 +90,20 @@ export default class Home extends Mixins(SyncMixin) {
     display: flex;
     align-items: center;
   }
+
+  & ::v-deep .ai-section__header {
+    margin-left: 20px;
+  }
+
+  .entry {
+    margin-left: 20px;
+  }
+
   .list {
     flex: 1;
     overflow-x: scroll;
   }
+
   .item {
     i {
       font-size: 32px;

@@ -11,7 +11,11 @@
       class="list"
     >
       <template v-slot:slide-before>
-        <album-add-entry :merchant="merchant" @refresh="refresh = true" />
+        <album-add-entry
+          :merchant="merchant"
+          @refresh="refresh = true"
+          class="entry"
+        />
       </template>
       <template v-slot:item="{ item, tag }">
         <ai-button-float-delete @delete="onDelete(item, tag)" class="item">
@@ -83,6 +87,14 @@ export default class Home extends Mixins(SyncMixin) {
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+
+  & ::v-deep .ai-section__header {
+    margin-left: 20px;
+  }
+
+  .entry {
+    margin-left: 20px;
   }
 
   .list {

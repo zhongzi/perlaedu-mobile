@@ -33,7 +33,7 @@ export default class Home extends Vue {
     height: 72px;
     border: none;
     i {
-      font-size: 24px;
+      font-size: 18px;
       color: #4a4a4a66;
     }
   }

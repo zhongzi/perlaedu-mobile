@@ -14,8 +14,11 @@
             <template v-slot:subtitle>
               <div class="subtitle">
                 <ai-button-round-small>
-                  共
-                  {{ unionMerchant | safe("union.count_merchants", 0) }} 家机构
+                  <span class="desc">
+                    共
+                    {{ unionMerchant | safe("union.count_merchants", 0) }}
+                    家机构
+                  </span>
                 </ai-button-round-small>
                 <span class="datetime">
                   {{ unionMerchant.created_at | defaultDay }} 加入</span
@@ -79,7 +82,8 @@ export default class Home extends Vue {
   }
 
   .union {
-    padding: 10px 15px;
+    height: 80px;
+    padding: 10px;
 
     & ::v-deep img {
       width: 54px;
@@ -89,10 +93,11 @@ export default class Home extends Vue {
     }
 
     .title {
-      font-size: 18px;
-      font-weight: 800;
+      font-size: 16px;
+      font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
+      font-weight: bold;
       color: rgba(255, 255, 255, 1);
-      line-height: 1;
+      line-height: 21px;
       letter-spacing: 1px;
       text-shadow: 0px 3px 14px rgba(0, 0, 0, 0.04);
     }
@@ -100,6 +105,14 @@ export default class Home extends Vue {
     .subtitle {
       display: flex;
       align-items: center;
+
+      .desc {
+        font-size: 10px;
+        font-family: MicrosoftYaHei;
+        color: rgba(255, 122, 6, 1);
+        line-height: 14px;
+        text-shadow: 0px 3px 14px rgba(0, 0, 0, 0.04);
+      }
 
       .datetime {
         font-size: 12px;

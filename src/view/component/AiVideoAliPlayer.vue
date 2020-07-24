@@ -1,7 +1,7 @@
 <template>
   <div :class="b()">
     <vue-aliplayer
-      v-if="video.play_auth"
+      v-show="video.play_auth"
       ref="player"
       :class="b('player')"
       :width="width"
@@ -19,7 +19,7 @@
       @pause="pause"
       @ended="ended"
     />
-    <div :class="b('info')">
+    <div :class="b('info')" v-if="showInfo">
       <div :class="b('info-title')">{{ video.title }}</div>
       <div :class="b('info-desc')">{{ video.description }}</div>
     </div>
@@ -43,6 +43,7 @@ export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: String, default: "100%" }) width: string;
   @Prop({ type: String, default: "100%" }) height: string;
   @Prop({ type: Boolean, default: true }) autoplay: boolean;
+  @Prop({ type: Boolean, default: true }) showInfo: boolean;
 
   get video() {
     return this.entity;

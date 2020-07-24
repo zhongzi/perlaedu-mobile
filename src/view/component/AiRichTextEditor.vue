@@ -1,60 +1,82 @@
 <template>
   <div :class="b()">
-    <div :class="b('editor')">
-      <div class="insert">
-        <i class="iconfont icon-text-insert" @click="insertText(0)" />
-        <i class="iconfont icon-photo-add" @click="insertImage(0)" />
-      </div>
-      <div :class="b('content')">
-        <div v-for="(s, idx) in sections" :key="getUniqueId(s)">
-          <div class="section-content" v-if="s.url || s.text">
-            <img class="section-image" v-if="s.url" :src="s.url" />
-            <div v-else>
-              <pre
-                v-bind:style="
-                  richTextStyle(s.font_size, s.font_weight, s.font_color)
-                "
-                >{{ s.text }}</pre
-              >
-            </div>
-            <div class="section-actions">
-              <div class="edit">
-                <i
-                  v-if="s.text"
-                  class="iconfont icon-text-insert"
-                  @click="editSection(idx)"
-                ></i>
-                <i class="iconfont icon-trash" @click="removeSection(idx)"></i>
+    <template v-if="isEditing">
+      <div :class="b('editor')">
+        <div class="insert">
+          <i class="iconfont icon-text-insert" @click="insertText(0)" />
+          <i class="iconfont icon-photo-add" @click="insertImage(0)" />
+        </div>
+        <div :class="b('content')">
+          <div v-for="(s, idx) in sections" :key="getUniqueId(s)">
+            <div class="section-content" v-if="s.url || s.text">
+              <img class="section-image" v-if="s.url" :src="s.url" />
+              <div v-else>
+                <pre
+                  v-bind:style="
+                    richTextStyle(s.font_size, s.font_weight, s.font_color)
+                  "
+                  >{{ s.text }}</pre
+                >
               </div>
-              <div class="insert">
-                <i
-                  class="iconfont icon-text-insert"
-                  @click="insertText(idx + 1)"
-                />
-                <i
-                  class="iconfont icon-photo-add"
-                  @click="insertImage(idx + 1)"
-                />
+              <div class="section-actions">
+                <div class="edit">
+                  <i
+                    v-if="s.text"
+                    class="iconfont icon-text-insert"
+                    @click="editSection(idx)"
+                  ></i>
+                  <i
+                    class="iconfont icon-trash"
+                    @click="removeSection(idx)"
+                  ></i>
+                </div>
+                <div class="insert">
+                  <i
+                    class="iconfont icon-text-insert"
+                    @click="insertText(idx + 1)"
+                  />
+                  <i
+                    class="iconfont icon-photo-add"
+                    @click="insertImage(idx + 1)"
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <ai-rich-text-text-unit
-      v-if="showTextEditor"
-      :value="selectedRichText"
-      @input="saveRichText"
-      @close="showTextEditor = false"
-    />
-    <ai-image-uploader
-      ref="uploader"
-      @input="(img) => saveImage({ url: img })"
-      :prefix="imagePrefix"
-      :type="imageType"
-    >
-      <span />
-    </ai-image-uploader>
+      <ai-rich-text-text-unit
+        v-if="showTextEditor"
+        :value="selectedRichText"
+        @input="saveRichText"
+        @close="showTextEditor = false"
+      />
+      <ai-image-uploader
+        ref="uploader"
+        @input="saveImage"
+        :prefix="imagePrefix"
+        :type="imageType"
+      >
+        <span />
+      </ai-image-uploader>
+    </template>
+    <template v-else>
+      <div v-for="(s, i) in sections" :key="i" class="render">
+        <div class="section-content" v-if="s.url || s.text">
+          <img class="section-image" v-if="s.url" :src="s.url | alioss" />
+          <div v-if="s.text" class="section-text">
+            <pre
+              v-bind:style="{
+                'font-size': s.font_size,
+                'font-weight': s.font_weight,
+                color: s.font_color,
+              }"
+              >{{ s.text }}</pre
+            >
+          </div>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -79,6 +101,7 @@ import isObject from "lodash/isObject";
 })
 export default class Home extends Vue {
   @Prop({ type: [String, Array], default: null }) value: any;
+  @Prop({ type: Boolean, default: true }) isEditing: boolean;
   @Prop({ type: String, default: null }) imageType: string;
   @Prop({ type: String, default: null }) imagePrefix: string;
 
@@ -144,8 +167,8 @@ export default class Home extends Vue {
     this.showTextEditor = false;
   }
 
-  saveImage(value) {
-    this.sections.splice(this.currentIndex, 0, { ...value });
+  saveImage(img) {
+    this.sections.splice(this.currentIndex, 0, { url: img });
     this.resetSelectedRichText();
   }
 
@@ -188,6 +211,30 @@ export default class Home extends Vue {
     min-height: 250px;
     max-height: 500px;
     overflow-y: scroll;
+
+    .section-content {
+      padding: 5px;
+      margin: 5px;
+
+      background: rgba(247, 247, 247, 1);
+      border-radius: 6px;
+
+      pre {
+        word-break: break-word;
+        white-space: pre-wrap;
+      }
+
+      .section-image {
+        width: 100%;
+        vertical-align: bottom;
+      }
+      .section-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+      }
+    }
   }
 
   .insert {
@@ -213,27 +260,22 @@ export default class Home extends Vue {
     }
   }
 
-  .section-content {
-    padding: 5px;
-    margin: 5px;
+  .render {
+    .section-content {
+      .section-text {
+        text-align: left;
 
-    background: rgba(247, 247, 247, 1);
-    border-radius: 6px;
+        pre {
+          margin: 1em auto;
+          word-break: break-word;
+          white-space: pre-wrap;
+        }
+      }
 
-    pre {
-      word-break: break-word;
-      white-space: pre-wrap;
-    }
-
-    .section-image {
-      width: 100%;
-      vertical-align: bottom;
-    }
-    .section-actions {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px;
+      .section-image {
+        width: 100%;
+        vertical-align: bottom;
+      }
     }
   }
 }

@@ -22,7 +22,7 @@
         <template v-slot:header>
           <span> 详情 </span>
         </template>
-        <ai-rich-text-editor
+        <ai-rich-text-sections-editor
           v-model="innerArticle.description"
           imageType="merchant"
           :imagePrefix="'merchants/' + merchantId + '/articles'"
@@ -43,7 +43,7 @@ import SyncMixin from "@/mixin/SyncMixin";
 import AiImageUploader from "@/view/component/AiImageUploader.vue";
 import AiInput from "@/view/component/AiInput.vue";
 import AiSubmitActions from "@/view/component/AiSubmitActions.vue";
-import AiRichTextEditor from "@/view/component/AiRichTextEditor.vue";
+import AiRichTextSectionsEditor from "@/view/component/AiRichTextSectionsEditor.vue";
 import AiSection from "@/view/component/AiSection.vue";
 import AiInputSwitch from "@/view/component/AiInputSwitch.vue";
 import AiFixedFooter from "@/view/component/AiFixedFooter.vue";
@@ -61,7 +61,7 @@ import cloneDeep from "lodash/cloneDeep";
     AiImageUploader,
     AiInput,
     AiSubmitActions,
-    AiRichTextEditor,
+    AiRichTextSectionsEditor,
     AiSection,
     AiInputSwitch,
     AiFixedFooter,

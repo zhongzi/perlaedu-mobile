@@ -33,7 +33,6 @@
           </div>
           <div class="actions">
             <hui-button @click.native="charge"> 充值 </hui-button>
-            <hui-button> 提现 </hui-button>
           </div>
         </div>
       </template>

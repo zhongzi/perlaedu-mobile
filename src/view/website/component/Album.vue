@@ -6,13 +6,16 @@
           <img
             class="cover"
             :src="
-              album.cover | alioss({ width: 200, height: 150, mode: 'fill' })
+              album.cover | alioss({ width: 184, height: 110, mode: 'fill' })
             "
           />
         </div>
       </template>
-      <template v-slot:body>
-        <div class="name">{{ album.title }}</div>
+      <template v-slot:footer>
+        <div class="title">
+          <i class="iconfont icon-album" />
+          <span> {{ album.title }} </span>
+        </div>
       </template>
     </ai-card>
   </div>
@@ -72,18 +75,26 @@ export default class Home extends Vue {
     }
   }
 
-  .name {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .title {
+    display: flex;
+    align-items: center;
+    margin: 0px 10px;
 
     text-align: center;
+    line-height: 1.5;
+    i {
+      font-size: 20px;
+      color: rgba(237, 139, 65, 1);
+      margin-right: 10px;
+    }
 
-    font-size: 13px;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
-    color: rgba(74, 74, 74, 1);
-    line-height: 18px;
+    span {
+      max-width: 80%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 14px;
+    }
   }
 }
 </style>

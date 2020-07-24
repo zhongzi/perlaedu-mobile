@@ -53,7 +53,7 @@ export default class Home extends Vue {
 
   .union {
     height: 68px;
-    padding: 5px 10px 5px 5px;
+    padding: 5px 10px 5px 0px;
 
     .cover {
       width: 86px;
@@ -61,6 +61,7 @@ export default class Home extends Vue {
       display: flex;
       align-items: center;
       justify-content: center;
+      margin-right: 5px;
 
       img {
         max-width: 100%;

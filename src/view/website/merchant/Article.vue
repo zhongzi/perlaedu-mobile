@@ -7,7 +7,11 @@
         <span> {{ article.updated_at | defaultDate }} </span>
       </div>
     </div>
-    <ai-rich-text-render class="content" :value="article.description" />
+    <ai-rich-text-sections-editor
+      :is-editing="false"
+      class="content"
+      :value="article.description"
+    />
   </div>
 </template>
 
@@ -17,12 +21,12 @@ import { Component, Vue, Watch, Mixins } from "vue-property-decorator";
 import SyncMixin from "@/mixin/SyncMixin";
 
 import AiCard from "@/view/component/AiCard.vue";
-import AiRichTextRender from "@/view/component/AiRichTextRender.vue";
+import AiRichTextSectionsEditor from "@/view/component/AiRichTextSectionsEditor.vue";
 
 @Component({
   components: {
     AiCard,
-    AiRichTextRender,
+    AiRichTextSectionsEditor,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
@@ -87,7 +91,7 @@ export default class Home extends Mixins(SyncMixin) {
     }
   }
   .content {
-    padding: 10px;
+    padding: 0px 5px;
     background: #fff;
     min-height: 70%;
   }

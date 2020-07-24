@@ -11,7 +11,11 @@
       class="list"
     >
       <template v-slot:slide-before>
-        <video-add-entry :merchant="merchant" @refresh="refresh = true" />
+        <video-add-entry
+          :merchant="merchant"
+          @refresh="refresh = true"
+          class="entry"
+        />
       </template>
       <template v-slot:item="{ item, tag }">
         <ai-button-float-delete @delete="onDelete(item, tag)" class="item">
@@ -91,6 +95,14 @@ export default class Home extends Mixins(SyncMixin) {
   & ::v-deep .ai-section__body {
     display: flex;
     align-items: center;
+  }
+
+  & ::v-deep .ai-section__header {
+    margin-left: 20px;
+  }
+
+  .entry {
+    margin-left: 20px;
   }
 
   .list {
