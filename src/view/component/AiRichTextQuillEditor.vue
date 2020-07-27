@@ -79,14 +79,17 @@ export default class Home extends Mixins(UploaderMixin) {
 </script>
 <style lang="scss" scoped>
 .ai-text-editor {
+  .ql-editor {
+    padding: 5px;
+    font-size: 13px;
+    line-height: 2;
+    text-align: justify;
+  }
+
   & ::v-deep .ql-snow {
     border: none;
   }
 
-  & ::v-deep .ql-editor {
-    padding-left: 5px;
-    padding-right: 5px;
-  }
   & ::v-deep .quill-editor {
     border: 1px dashed #000;
   }

@@ -115,7 +115,7 @@ export default class Home extends Mixins(SyncMixin) {
       ? startsWith(img, "linear")
         ? img
         : `url(${img})`
-      : `url(${this.defaultBgImage})`;
+      : "";
   }
 
   get mergedStyle() {

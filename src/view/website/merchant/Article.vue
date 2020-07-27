@@ -3,8 +3,12 @@
     <div class="header">
       <div class="title">{{ article.title }}</div>
       <div class="info">
-        <span @click="openWebsite"> {{ article | safe("merchant.name") }}</span>
-        <span> {{ article.updated_at | defaultDate }} </span>
+        <span class="declare"> 原创 </span>
+        <span v-if="article.user && article.user.nickname">
+          {{ article | safe("user.nickname") }}
+        </span>
+        <span class="name" @click="openWebsite"> {{ website.name }}</span>
+        <span> {{ article.created_at | distanceFromDatetime(true) }} </span>
       </div>
     </div>
     <ai-rich-text-sections-editor
@@ -30,8 +34,14 @@ import AiRichTextSectionsEditor from "@/view/component/AiRichTextSectionsEditor.
   },
 })
 export default class Home extends Mixins(SyncMixin) {
+  website: any = {};
+
   get article() {
     return this.entity;
+  }
+
+  get isInUnion() {
+    return this.$route.name === "websiteUnionArticle";
   }
 
   created() {
@@ -39,7 +49,17 @@ export default class Home extends Mixins(SyncMixin) {
     this.id = this.$route.params.articleId;
     this.loadEntity({
       query: {
-        extras: "merchant",
+        extras: "merchant,user",
+      },
+    });
+
+    this.loadEntityExtra({
+      store: this.isInUnion ? "union" : "merchant",
+      id: this.isInUnion
+        ? this.$route.params.unionId
+        : this.$route.params.merchantId,
+      success: (resp) => {
+        this.website = resp.data;
       },
     });
   }
@@ -51,48 +71,48 @@ export default class Home extends Mixins(SyncMixin) {
 
   openWebsite() {
     this.$router.push({
-      name: "websiteMerchant",
-      params: {
-        merchantId: this.article.merchant_id,
-      },
+      name: this.isInUnion ? "websiteUnion" : "websiteMerchant",
     });
   }
 }
 </script>
 <style lang="scss" scoped>
 .article {
-  padding: 10px;
-  height: 100vh;
-
-  img {
-    width: 100%;
-  }
+  min-height: 100vh;
+  padding: 10px 15px;
 
   .header {
     .title {
-      font-size: 18px;
+      font-size: 20px;
       font-family: PingFangSC-Semibold, PingFang SC;
       font-weight: 600;
       color: rgba(74, 74, 74, 1);
-      line-height: 3;
+      line-height: 1.5;
+      margin-top: 15px;
+      margin-bottom: 15px;
     }
     .info {
       font-size: 13px;
       font-family: PingFangSC-Regular, PingFang SC;
-      font-weight: 600;
       color: rgba(155, 155, 155, 1);
-      line-height: 1;
-      margin-bottom: 20px;
+      line-height: 1.8;
 
-      span:nth-child(1) {
-        color: #0099cc;
-        margin-right: 10px;
+      span {
+        margin-right: 8px;
+      }
+
+      .name {
+        color: rgba(55, 76, 109, 1);
+      }
+      .declare {
+        color: #fff;
+        background: rgba(155, 155, 155, 1);
+        padding: 3px 6px;
+        border-radius: 5px;
       }
     }
   }
   .content {
-    padding: 0px 5px;
-    background: #fff;
     min-height: 70%;
   }
 }

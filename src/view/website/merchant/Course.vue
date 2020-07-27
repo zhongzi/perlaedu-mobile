@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper course">
     <div class="header">
-      <img :src="course.cover" />
+      <img :src="course.cover | alioss({ width: 300 })" />
       <div class="setting" v-if="isOwner" @click="openEditingCourse">
         <i class="iconfont icon-setting" />
       </div>

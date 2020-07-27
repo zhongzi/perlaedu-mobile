@@ -63,6 +63,7 @@
         :gap="gap"
         :loading="listLoading"
         :loadedAll="!hasMoreData"
+        :option="waterfallOptions"
         @load="loadData"
       >
         <template v-slot:header>
@@ -152,6 +153,7 @@ export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Object, default: () => ({}) }) sliderOptions: object;
   @Prop({ type: Boolean, default: false }) enableSlideBefore: boolean;
   @Prop({ type: Boolean, default: true }) enableSlideAfter: boolean;
+  @Prop({ type: Object, default: () => ({}) }) waterfallOptions: object;
   @Prop({ type: Number, default: 8 }) gap: number;
 
   hasMoreData: boolean = true;

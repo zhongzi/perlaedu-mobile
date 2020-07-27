@@ -1,12 +1,18 @@
 <template>
   <div class="wrapper">
-    <ai-card
-      class="campaign"
-      v-if="campaign"
-      :cover="campaign.cover | alioss({ width: 200, height: 250 })"
-      :content="campaign.title"
-      @click.native="gotoCampaign"
-    />
+    <ai-card class="campaign" v-if="campaign" @click.native="gotoCampaign">
+      <template v-slot:header>
+        <div class="header">
+          <img
+            class="cover"
+            :src="campaign.cover | alioss({ width: 200, height: 250 })"
+          />
+        </div>
+      </template>
+      <template v-slot:footer>
+        <div class="title">{{ campaign.title }}</div>
+      </template>
+    </ai-card>
   </div>
 </template>
 
@@ -34,11 +40,23 @@ export default class Home extends Vue {
 .wrapper {
   .campaign {
     height: 172px;
-    overflow: hidden;
     text-align: center;
-    padding: 5px;
-
     margin-bottom: 20px;
+
+    .title {
+      margin: 5px auto;
+    }
+    .header {
+      height: 132px;
+      border-radius: 4px;
+      margin: 4px;
+      overflow: hidden;
+
+      .cover {
+        object-fit: fill;
+        border-radius: 4px;
+      }
+    }
   }
 }
 </style>

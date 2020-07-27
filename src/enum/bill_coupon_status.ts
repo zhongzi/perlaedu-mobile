@@ -12,7 +12,7 @@ const BillCouponStatus = {
     color: "#F5A623",
   },
   issued: {
-    text: "发卡",
+    text: "发券",
     color: "#F5A623",
   },
   taken: {

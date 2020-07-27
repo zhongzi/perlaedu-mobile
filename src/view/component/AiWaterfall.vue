@@ -49,7 +49,7 @@
             <slot name="slider" :item="item" :index="index">
               <div :class="b('dialog-content-item')">
                 <img
-                  :src="item[imgKey]"
+                  :src="item[imgKey] | alioss(originOption)"
                   @click="showDialog = false"
                   v-if="index <= curSlideNum + 3"
                 />
@@ -75,6 +75,7 @@ import differenceBy from "lodash/differenceBy";
 import intersectionBy from "lodash/intersectionBy";
 import concat from "lodash/concat";
 import forEach from "lodash/forEach";
+import merge from "lodash/merge";
 
 @Component({
   name: "ai-waterfall",
@@ -88,11 +89,16 @@ export default class Home extends Vue {
   @Prop({ type: String, default: "cover" }) imgKey: string;
   @Prop({ type: Boolean, default: false }) loading: boolean;
   @Prop({ type: Boolean, default: false }) loadedAll: boolean;
+  @Prop({ type: Object, default: null }) option: any;
   @Prop({ type: Number, default: 8 }) gap: number;
 
   showDialog: boolean = false;
   curSlideNum: number = 0;
   innerPreviewList: any = [];
+
+  get originOption() {
+    return cloneDeep(merge({ width: 300 }, this.option || {}));
+  }
 
   get swiperOptions() {
     return {
@@ -132,7 +138,10 @@ export default class Home extends Vue {
       cloneDeep(differenceBy(this.list, this.innerPreviewList, "id")),
       (item) => {
         item[this.imgKey] = this.$options.filters.alioss
-          ? this.$options.filters.alioss(item[this.imgKey], { width: 150 })
+          ? this.$options.filters.alioss(
+              item[this.imgKey],
+              cloneDeep(merge({ width: 150 }, this.option || {}))
+            )
           : item[this.imgKey];
       }
     );

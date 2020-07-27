@@ -66,22 +66,17 @@ export default class Home extends Vue {
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
   border-radius: 8px;
-  padding: 5px;
   margin-bottom: 15px;
 
   .cover {
-    width: 96px;
     height: 130px;
-    padding: 5px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin: 4px;
+    border-radius: 4px;
+    overflow: hidden;
 
     img {
-      max-width: 100%;
-      max-height: 100%;
       border-radius: 4px;
+      object-fit: fill;
     }
   }
 }
@@ -107,11 +102,11 @@ export default class Home extends Vue {
   overflow: hidden;
   text-overflow: ellipsis;
 
+  margin: 0px 10px;
   text-align: center;
   font-size: 13px;
   font-family: PingFangSC-Regular, PingFang SC;
-  font-weight: 400;
   color: rgba(74, 74, 74, 1);
-  line-height: 18px;
+  line-height: 3;
 }
 </style>

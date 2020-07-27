@@ -1,8 +1,16 @@
 <template>
   <div class="wrapper album">
-    <ai-list-stored resource="albumPhoto" :query="query" scrollType="waterfall">
+    <ai-list-stored
+      v-if="album.merchant"
+      resource="albumPhoto"
+      :query="query"
+      scrollType="waterfall"
+      :waterfallOptions="{
+        w_text: album.merchant.name,
+      }"
+    >
       <template v-slot:item="{ item }">
-        <album-photo :photo="item" :key="item.id" />
+        <album-photo :photo="item" :key="item.id" :merchant="album.merchant" />
       </template>
       <template v-slot:innerFooter>
         <ai-copyright :manual="true" />

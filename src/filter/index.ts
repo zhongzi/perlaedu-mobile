@@ -20,21 +20,54 @@ function parseDate(value) {
   return parseISO(value);
 }
 
-function distanceFromDatetime(value: Date | string): string {
-  return distanceFromSeconds(differenceInSeconds(parseDate(value), new Date()));
+function distanceFromDatetime(
+  value: Date | string,
+  simplify: boolean = false
+): string {
+  return distanceFromSeconds(
+    differenceInSeconds(new Date(), parseDate(value)),
+    simplify
+  );
 }
 
-function distanceFromSeconds(seconds) {
+function distanceFromSeconds(seconds, simplify = false) {
+  console.log(seconds);
   seconds = Number(seconds);
   const d = Math.floor(seconds / (3600 * 24));
   const h = Math.floor((seconds % (3600 * 24)) / 3600);
   const m = Math.floor((seconds % 3600) / 60);
   const s = Math.floor(seconds % 60);
 
-  const dDisplay = d > 0 ? d + "天" : "";
-  const hDisplay = h > 0 ? h + "小时" : "";
-  const mDisplay = m > 0 ? m + "分钟" : "";
-  const sDisplay = s > 0 ? s + "秒" : "";
+  let dDisplay = "";
+  if (d > 0) {
+    dDisplay = d + "天";
+    if (simplify) {
+      return ["今天", "昨天", "前天"][d] || dDisplay + "前";
+    }
+  }
+  let hDisplay = "";
+  if (h > 0) {
+    hDisplay = h + "小时";
+    if (simplify) {
+      return hDisplay + "前";
+    }
+  }
+
+  let mDisplay = "";
+  if (m > 0) {
+    mDisplay = m + "分";
+    if (simplify) {
+      return mDisplay + "钟前";
+    }
+  }
+
+  let sDisplay = "";
+  if (s > 0) {
+    sDisplay = m + "秒";
+    if (simplify) {
+      return sDisplay + "前";
+    }
+  }
   return dDisplay + hDisplay + mDisplay + sDisplay;
 }
 

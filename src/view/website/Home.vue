@@ -31,15 +31,15 @@ export default class Home extends Vue {
   ];
 
   get showMenu() {
-    let hide = this.$route.meta.hideMenu;
-    if (!hide) {
-      this.$route.matched.forEach((route: any) => {
-        if (route.meta.hideMenu) {
-          hide = route.meta.hideMenu;
-        }
-      });
-    }
-    return !hide;
+    // let hide = this.$route.meta.hideMenu;
+    // if (!hide) {
+    //   this.$route.matched.forEach((route: any) => {
+    //     if (route.meta.hideMenu) {
+    //       hide = route.meta.hideMenu;
+    //     }
+    //   });
+    // }
+    return ["websiteMerchant", "websiteUnion"].indexOf(this.$route.name) >= 0;
   }
 
   onClick(menu) {

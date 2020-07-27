@@ -60,20 +60,18 @@ export default class Home extends Vue {
 .wrapper {
   width: 194px;
   height: 148px;
-  margin: 0px 0px 15px;
+  margin-bottom: 15px;
+  box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
 
   .header {
     height: 110px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 5px;
+    margin: 4px;
+    border-radius: 4px;
+    overflow: hidden;
 
     .cover {
-      max-width: 100%;
-      max-height: 100%;
-      background: rgba(216, 216, 216, 1);
       border-radius: 4px;
+      object-fit: fill;
     }
   }
 
