@@ -52,6 +52,7 @@ export default class Home extends Vue {
     return {
       scope: "merchant",
       keyword: this.keyword,
+      openid: this.$auth.user.openid,
       status: this.curTab.value,
       extras: "item,union,merchant, hashed_id",
     };

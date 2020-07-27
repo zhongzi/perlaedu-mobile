@@ -77,6 +77,7 @@ export default class Home extends Mixins(SyncMixin) {
   padding-bottom: 80px;
 
   .resources {
+    overflow: hidden;
     .section {
       padding: 0px 20px;
     }

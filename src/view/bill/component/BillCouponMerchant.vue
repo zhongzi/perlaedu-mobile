@@ -6,7 +6,7 @@
       :cover="merchant.cover_url | alioss({ width: 120, height: 80 })"
       :title="merchant.name"
       :showBottomLine="false"
-      :remark="'共' + (merchant.count_persons || 0) + '位学生正在学习'"
+      :remark="(merchant.count_persons || 0) + '人正在关注'"
     >
       <template v-slot:right>
         <hui-button @click.native="openWebsiteMerchant" class="button">
@@ -49,7 +49,6 @@ export default class Home extends Vue {
   border-radius: 8px;
 
   .merchant {
-    padding: 15px 10px;
     height: 68px;
 
     .button {

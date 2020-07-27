@@ -6,7 +6,7 @@
       :refresh.sync="refresh"
       scrollType="slider"
       :enableEmpty="false"
-      :sliderOptions="{ slidesPerView: 3.1, spaceBetween: 12 }"
+      :sliderOptions="{ slidesPerView: 3.2, spaceBetween: 5 }"
       :enableSlideBefore="true"
       class="list"
     >
@@ -100,7 +100,7 @@ export default class Home extends Mixins(SyncMixin) {
     overflow-x: scroll;
     flex: 1;
     .item:nth-child(1) {
-      margin-left: 15px;
+      margin-left: 20px;
     }
   }
 }

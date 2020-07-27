@@ -32,7 +32,7 @@ export default class Home extends Vue {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 
   width: 100%;
   height: 100%;
@@ -57,7 +57,6 @@ export default class Home extends Vue {
   }
   &__body {
     width: 100%;
-    padding: 10px 0px;
   }
 
   &__footer {

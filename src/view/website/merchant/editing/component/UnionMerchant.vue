@@ -3,13 +3,16 @@
     <ai-card>
       <template v-slot:header>
         <div class="header">
-          <ai-cell
-            class="union"
-            :cover="union.cover_url | alioss({ width: 100, height: 125 })"
-            :title="union.title"
-          >
+          <ai-cell class="union">
+            <template v-slot:cover>
+              <div class="cover">
+                <img
+                  :src="union.cover_url | alioss({ width: 240, height: 160 })"
+                />
+              </div>
+            </template>
             <template v-slot:title>
-              <span class="title"> {{ union.title }} </span>
+              <span class="title"> {{ union.name }} </span>
             </template>
             <template v-slot:subtitle>
               <div class="subtitle">
@@ -85,11 +88,19 @@ export default class Home extends Vue {
     height: 80px;
     padding: 10px;
 
-    & ::v-deep img {
-      width: 54px;
-      height: 54px;
-      box-shadow: 0px 3px 14px 0px rgba(0, 0, 0, 0.04);
-      border-radius: 8px;
+    .cover {
+      width: 86px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 5px;
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 4px;
+      }
     }
 
     .title {

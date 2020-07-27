@@ -74,15 +74,7 @@ export default class Home extends Mixins(SyncMixin) {
       return;
     }
 
-    this.$hui.confirm.show({
-      title: "核销确认",
-      message: "本操作将不可撤回，请谨慎操作， 是否确认继续核销?",
-      confirmText: "确认",
-      cancelText: "取消",
-      onConfirm: () => {
-        this.save();
-      },
-    });
+    this.save();
   }
 
   save() {
@@ -117,7 +109,9 @@ export default class Home extends Mixins(SyncMixin) {
     width: 100%;
   }
   .remark {
-    margin: 10px 0px 20px;
+    & ::v-deep .ai-input__label {
+      margin: 30px auto;
+    }
   }
 }
 </style>

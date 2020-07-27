@@ -59,7 +59,7 @@ import merge from "lodash/merge";
   },
 })
 export default class Home extends Vue {
-  @Prop({ type: [String, Number] }) unionId: string | number;
+  @Prop({ type: Object, default: null }) union: any;
 
   curIdx: number = 0;
 
@@ -81,7 +81,7 @@ export default class Home extends Vue {
   get innerQuery() {
     return merge(
       {
-        union_id: this.unionId,
+        union_id: this.union.id,
         extras: JSON.stringify({
           Union: ["count_merchants"],
           UnionMerchant: ["union", "merchant"],

@@ -23,7 +23,7 @@
             </div>
           </template>
           <template v-slot:body>
-            <div class="body">
+            <div class="title">
               {{ item.title }}
             </div>
           </template>
@@ -128,8 +128,8 @@ export default class Home extends Mixins(SyncMixin) {
         }
       }
     }
-    .body {
-      padding: 5px 10px;
+    .title {
+      padding: 15px 10px;
     }
   }
 }

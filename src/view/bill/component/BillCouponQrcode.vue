@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper qrcode">
-    <template v-if="coupon">
+    <template v-if="coupon && coupon.verification_code">
       <div class="title">
         {{ title }}
       </div>

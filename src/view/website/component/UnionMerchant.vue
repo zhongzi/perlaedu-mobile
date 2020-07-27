@@ -70,6 +70,7 @@ export default class Home extends Vue {
       color: rgba(74, 74, 74, 1);
       line-height: 20px;
       text-shadow: 0px 14px 20px rgba(0, 0, 0, 0.2);
+      padding: 10px 0px;
     }
   }
 }
