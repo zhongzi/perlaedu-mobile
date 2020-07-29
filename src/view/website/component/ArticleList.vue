@@ -64,7 +64,7 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .article {
-  padding: 0px 27px 20px;
+  padding: 0px 20px 20px;
 
   .list {
     padding-bottom: 20px;
@@ -77,10 +77,15 @@ export default class Home extends Vue {
 
   .image {
     padding: 5px;
+    max-height: 183px;
+    border-radius: 4px;
+    overflow: hidden;
+
     img {
-      border-radius: 5px;
+      border-radius: 4px;
       width: 100%;
-      vertical-align: bottom;
+      object-fit: fill;
+      display: block;
     }
   }
 }

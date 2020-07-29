@@ -9,6 +9,9 @@
         w_text: album.merchant.name,
       }"
     >
+      <template v-slot:header>
+        <merchant-cell :merchant="merchant" class="merchant" />
+      </template>
       <template v-slot:item="{ item }">
         <album-photo :photo="item" :key="item.id" :merchant="album.merchant" />
       </template>
@@ -28,12 +31,14 @@ import AiListStored from "@/view/component/AiListStored.vue";
 import AiCopyright from "@/view/component/AiCopyright.vue";
 
 import AlbumPhoto from "../component/AlbumPhoto.vue";
+import MerchantCell from "../component/MerchantCell.vue";
 
 @Component({
   components: {
     AiListStored,
     AlbumPhoto,
     AiCopyright,
+    MerchantCell,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
@@ -42,6 +47,10 @@ export default class Home extends Mixins(SyncMixin) {
   }
   get album() {
     return this.entity;
+  }
+
+  get merchant() {
+    return this.album.merchant;
   }
 
   get query() {
@@ -55,7 +64,10 @@ export default class Home extends Mixins(SyncMixin) {
     this.id = this.albumId;
     this.loadEntity({
       query: {
-        extras: "merchant,count_photo",
+        extras: JSON.stringify({
+          Album: ["merchant", "count_photo"],
+          Merchant: ["count_persons"],
+        }),
         sort: "id asc",
       },
     });
@@ -82,5 +94,8 @@ export default class Home extends Mixins(SyncMixin) {
 <style lang="scss" scoped>
 .album {
   height: 100vh;
+  .merchant {
+    margin: 20px;
+  }
 }
 </style>

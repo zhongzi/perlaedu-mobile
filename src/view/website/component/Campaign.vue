@@ -42,9 +42,11 @@ export default class Home extends Vue {
     height: 172px;
     text-align: center;
     margin-bottom: 20px;
+    box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
 
     .title {
       margin: 5px auto;
+      line-height: 1.5;
     }
     .header {
       height: 132px;

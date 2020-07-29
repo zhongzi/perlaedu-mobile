@@ -19,6 +19,11 @@ const Article = () =>
 const Album = () =>
   import(/* webpackChunkName: "website" */ "@/view/website/merchant/Album.vue");
 
+const Teacher = () =>
+  import(
+    /* webpackChunkName: "website" */ "@/view/website/merchant/Teacher.vue"
+  );
+
 import editingRoutes from "./editing";
 
 const merchantRoutes: any = [
@@ -38,7 +43,7 @@ const merchantRoutes: any = [
         path: "",
         name: "websiteMerchant",
         component: Merchant,
-        meta: { title: "机构官网" },
+        meta: { title: "机构门户" },
       },
       {
         path: "courses/:courseId",
@@ -57,6 +62,12 @@ const merchantRoutes: any = [
         name: "websiteMerchantArticle",
         component: Article,
         meta: { title: "最新动态" },
+      },
+      {
+        path: "teachers/:teacherId",
+        name: "websiteMerchantTeacher",
+        component: Teacher,
+        meta: { title: "师资简介" },
       },
     ].concat(editingRoutes),
   },

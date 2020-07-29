@@ -3,14 +3,23 @@
     <ai-cell
       v-if="merchant"
       class="merchant"
-      :cover="merchant.cover_url | alioss({ width: 120, height: 80 })"
       :title="merchant.name"
       :showBottomLine="false"
       :remark="'共' + (merchant.count_persons || 0) + '人正在关注'"
     >
+      <template v-slot:cover>
+        <div class="cover">
+          <img
+            :src="
+              merchant.cover_url
+                | alioss({ width: 150, height: 100, mode: 'fill' })
+            "
+          />
+        </div>
+      </template>
       <template v-slot:right>
         <hui-button @click.native="openWebsiteMerchant" class="button">
-          进入官网
+          进入门户
         </hui-button>
       </template>
     </ai-cell>
@@ -43,13 +52,29 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 .wrapper {
   background: #fff;
-  padding: 10px;
+  padding: 6px 12px 6px 6px;
 
   box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
   border-radius: 8px;
 
   .merchant {
-    height: 68px;
+    min-height: 68px;
+
+    .cover {
+      width: 86px;
+      min-width: 86px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 5px;
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 4px;
+      }
+    }
 
     .button {
       min-width: 90px;

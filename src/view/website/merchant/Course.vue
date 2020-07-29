@@ -12,8 +12,7 @@
     </div>
     <div class="content">
       <h3 class="resource title">{{ course.title }}</h3>
-      <merchant-cell :merchant="merchant" class="resource unions" />
-      <coupon-list :merchant="merchant" class="resource unions" />
+      <merchant-cell :merchant="merchant" class="resource merchant" />
       <ai-section class="resource description">
         <template v-slot:header>
           <i class="iconfont icon-course course-icon" />
@@ -37,7 +36,6 @@ import AiSection from "@/view/component/AiSection.vue";
 import AiRichTextSectionsEditor from "@/view/component/AiRichTextSectionsEditor.vue";
 
 import MerchantCell from "../component/MerchantCell.vue";
-import CouponList from "../component/CouponList.vue";
 
 import _get from "lodash/get";
 import isEqual from "lodash/isEqual";
@@ -45,7 +43,6 @@ import isEmpty from "lodash/isEmpty";
 
 @Component({
   components: {
-    CouponList,
     AiSection,
     MerchantCell,
     AiRichTextSectionsEditor,
@@ -87,7 +84,10 @@ export default class Home extends Mixins(SyncMixin) {
 
   @Watch("course", { deep: true })
   onCouseChanged() {
-    this.$store.commit("updateTitle", `${this.course.title}-课程详情`);
+    this.$store.commit(
+      "updateTitle",
+      `${this.course.title}-${this.course.merchant.name}`
+    );
   }
 
   openEditingCourse() {
@@ -183,14 +183,14 @@ export default class Home extends Mixins(SyncMixin) {
     border-radius: 10px;
 
     min-height: 50vh;
-    padding: 25px 23px;
+    padding: 25px 20px;
 
     .resource {
       margin-bottom: 10px;
     }
 
     .description {
-      padding: 10px;
+      padding: 10px 0px;
       border-radius: 10px;
     }
 

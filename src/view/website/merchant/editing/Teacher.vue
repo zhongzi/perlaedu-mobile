@@ -2,29 +2,23 @@
   <div class="wrapper">
     <ai-image-uploader
       class="cover"
-      v-model="innerCourse.cover"
+      v-model="innerTeacher.cover_url"
       type="website"
       :prefix="'merchants/' + merchantId + '/teachers'"
+      :resizeOption="{ width: 180, height: 240 }"
       triggerName="teacher-cover"
     />
     <div class="fields">
-      <ai-input class="field" label="课程名称" v-model="innerCourse.title" />
+      <ai-input class="field" label="姓名" v-model="innerTeacher.realname" />
       <ai-line />
-      <ai-selection-stored
-        resource="billProject"
-        label="购买链接"
-        :query="query"
-        :enableUnsetOption="true"
-        v-model="innerCourse.bill_id"
-      >
-      </ai-selection-stored>
+      <ai-input class="field" label="手机号码" v-model="innerTeacher.phone" />
       <ai-line />
       <ai-section class="field description">
         <template v-slot:header>
           <span> 详情 </span>
         </template>
         <ai-rich-text-sections-editor
-          v-model="innerCourse.description"
+          v-model="innerTeacher.sections"
           imageType="merchant"
           :imagePrefix="'merchants/' + merchantId + '/teachers'"
         />
@@ -70,18 +64,13 @@ import cloneDeep from "lodash/cloneDeep";
   },
 })
 export default class Home extends Mixins(SyncMixin) {
-  innerCourse: any = {
-    id: "",
-    cover: "",
-    title: "",
-    description: "",
-    bill_id: "",
-    subject_id: "",
+  innerTeacher: any = {
+    id: null,
+    cover_url: "",
+    realname: "",
+    phone: "",
+    sections: [],
   };
-
-  get query() {
-    return {};
-  }
 
   get teacher() {
     return this.entity;
@@ -96,37 +85,36 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   created() {
-    this.store = "teacher";
+    this.store = "person";
     this.load();
   }
 
   @Watch("teacher", { deep: true })
-  onCourseChanged() {
-    if (isEqual(this.teacher, this.innerCourse)) return;
+  onTeacherChanged() {
+    if (isEqual(this.teacher, this.innerTeacher)) return;
 
-    this.innerCourse = merge(this.innerCourse, this.teacher);
+    this.innerTeacher = cloneDeep(merge(this.innerTeacher, this.teacher));
   }
 
   load() {
     if (this.teacherId) {
       this.id = this.teacherId;
-      this.loadEntity();
-    }
-  }
-
-  onSelected(subject) {
-    console.log(subject);
-    if (isEmpty(this.innerCourse.title)) {
-      this.innerCourse.title = subject.title;
+      this.loadEntity({
+        query: {
+          extras: "sections",
+        },
+      });
     }
   }
 
   onSubmit() {
     if (!this.merchantId) return;
 
-    this.id = this.teacher.id;
+    this.id = this.innerTeacher.id;
     this.saveEntity({
-      res: cloneDeep(merge(this.innerCourse, { merchant_id: this.merchantId })),
+      res: cloneDeep(
+        merge(this.innerTeacher, { merchant_id: this.merchantId })
+      ),
       success: () => {
         this.$nextTick(() => {
           this.$router.go(-1);

@@ -132,7 +132,6 @@ export default class Home extends Mixins(SyncMixin) {
 
 <style lang="scss" scoped>
 .coupon {
-  margin: 5px auto 20px;
   .dialog {
     background: rgb(246, 97, 86);
     text-align: center;

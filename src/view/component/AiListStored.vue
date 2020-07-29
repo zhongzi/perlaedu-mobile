@@ -86,7 +86,7 @@
         </template>
         <template v-slot:footer>
           <slot name="footer">
-            <span> 全部加载完毕</span>
+            <span> </span>
           </slot>
         </template>
       </ai-waterfall>
@@ -231,7 +231,6 @@ export default class Home extends Mixins(SyncMixin) {
     width: 100%;
 
     font-size: 16px;
-    font-family: PingFangSC-Semibold, PingFang SC;
     font-weight: 600;
     color: rgba(74, 74, 74, 1);
     line-height: 2.5;

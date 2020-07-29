@@ -3,13 +3,20 @@
     <ai-cell
       v-if="union"
       class="union"
-      :title="union.name"
       :showBottomLine="false"
       :remark="'共' + (union.count_merchants || 0) + '家机构'"
     >
+      <template v-slot:title>
+        <span class="title"> {{ union.name }} </span>
+      </template>
       <template v-slot:cover>
         <div class="cover">
-          <img :src="union.cover_url | alioss({ width: 240, height: 160 })" />
+          <img
+            :src="
+              union.cover_url
+                | alioss({ width: 150, height: 100, mode: 'fill' })
+            "
+          />
         </div>
       </template>
       <template v-slot:right>
@@ -50,13 +57,14 @@ export default class Home extends Vue {
   background: #fff;
   box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
   border-radius: 8px;
+  padding: 6px 12px 6px 6px;
 
   .union {
-    height: 68px;
-    padding: 5px 10px 5px 0px;
+    min-height: 68px;
 
     .cover {
       width: 86px;
+      min-width: 86px;
       height: 58px;
       display: flex;
       align-items: center;
@@ -79,6 +87,11 @@ export default class Home extends Vue {
       font-weight: 400;
       color: rgba(74, 74, 74, 1);
       line-height: 18px;
+    }
+    .title {
+      font-size: 14px;
+      color: rgba(74, 74, 74, 1);
+      line-height: 20px;
     }
   }
 }

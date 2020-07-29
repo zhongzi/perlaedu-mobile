@@ -1,7 +1,7 @@
 <template>
   <div :class="b()">
     <vue-aliplayer
-      v-show="video.play_auth"
+      v-if="video.play_auth"
       ref="player"
       :class="b('player')"
       :width="width"
@@ -41,7 +41,7 @@ import VueAliplayer from "vue-aliplayer";
 export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: [String, Number] }) videoId: string | number;
   @Prop({ type: String, default: "100%" }) width: string;
-  @Prop({ type: String, default: "100%" }) height: string;
+  @Prop({ type: String, default: "200px" }) height: string;
   @Prop({ type: Boolean, default: true }) autoplay: boolean;
   @Prop({ type: Boolean, default: true }) showInfo: boolean;
 
@@ -138,7 +138,6 @@ export default class Home extends Mixins(SyncMixin) {
   align-items: center;
 
   width: 100%;
-  height: 100%;
 
   &__info {
     width: 100%;
@@ -147,8 +146,8 @@ export default class Home extends Mixins(SyncMixin) {
       font-size: 18px;
       font-weight: 400;
       color: rgba(74, 74, 74, 1);
-      line-height: 2;
-      padding: 0px 20px;
+      line-height: 1.2;
+      padding: 0px 20px 10px;
     }
     &-desc {
       font-size: 13px;

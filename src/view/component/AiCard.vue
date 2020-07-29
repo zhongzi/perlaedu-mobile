@@ -45,8 +45,6 @@ export default class Home extends Vue {
 
   &__header {
     width: 100%;
-    max-height: 80%;
-    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;

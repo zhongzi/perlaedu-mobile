@@ -10,7 +10,7 @@
       <template v-slot:item="{ item }">
         <div class="item">
           <ai-state-check @update:checked="(v) => onCheckedChanged(item, v)">
-            <teacher :teacher="item" :enablePreview="false" class="teacher" />
+            <teacher :teacher="item" routeName="" class="teacher" />
           </ai-state-check>
         </div>
       </template>

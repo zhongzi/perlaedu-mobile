@@ -3,7 +3,7 @@
     <ai-card @click.native="onClick">
       <template v-slot:header>
         <div class="header">
-          <img class="cover" :src="innerVideo.cover || defaultVideoCover" />
+          <img class="cover" :src="cover" />
         </div>
       </template>
       <template v-slot:footer>
@@ -47,6 +47,16 @@ export default class Home extends Vue {
     return require("@/asset/image/default_video_cover.jpg");
   }
 
+  get cover() {
+    return this.innerVideo.cover
+      ? this.$options.filters.alioss(this.innerVideo.cover, {
+          width: 320,
+          height: 180,
+          mode: "fill",
+        })
+      : this.defaultVideoCover;
+  }
+
   get innerVideo() {
     return this.video.video || this.video;
   }
@@ -58,10 +68,11 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .wrapper {
-  width: 194px;
   height: 148px;
   margin-bottom: 15px;
   box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  overflow: hidden;
 
   .header {
     height: 110px;
@@ -78,11 +89,11 @@ export default class Home extends Vue {
   .title {
     display: flex;
     align-items: center;
-    margin: 0px 10px 10px;
+    margin: 0px 10px;
 
-    line-height: 18px;
+    line-height: 1.5;
     i {
-      font-size: 24px;
+      font-size: 20px;
       color: rgba(237, 139, 65, 1);
       margin-right: 10px;
     }
@@ -99,9 +110,6 @@ export default class Home extends Vue {
 .dialog {
   & ::v-deep .h-dialog__dialog {
     border-radius: 0px;
-  }
-  .player {
-    height: 500px;
   }
 }
 </style>

@@ -3,8 +3,8 @@
     <template v-if="isEditing">
       <quill-editor :value="value" :options="options" @change="onChanged" />
     </template>
-    <template v-else>
-      <section v-if="value" class="ql-editor" v-html="value" />
+    <template v-else-if="value">
+      <section class="ql-editor" v-html="value" />
     </template>
   </div>
 </template>
@@ -81,7 +81,6 @@ export default class Home extends Mixins(UploaderMixin) {
 .ai-text-editor {
   .ql-editor {
     padding: 5px;
-    font-size: 13px;
     line-height: 2;
     text-align: justify;
   }
@@ -92,6 +91,12 @@ export default class Home extends Mixins(UploaderMixin) {
 
   & ::v-deep .quill-editor {
     border: 1px dashed #000;
+  }
+
+  & ::v-deep .ql-editor {
+    padding: 5px;
+    line-height: 2;
+    text-align: justify;
   }
 }
 </style>

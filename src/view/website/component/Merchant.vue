@@ -111,6 +111,7 @@ export default class Home extends Mixins(SyncMixin) {
           color: rgba(74, 74, 74, 1);
           line-height: 20px;
         }
+        margin-bottom: 12px;
       }
 
       .address {
@@ -143,7 +144,7 @@ export default class Home extends Mixins(SyncMixin) {
           font-family: PingFangSC-Regular, PingFang SC;
           font-weight: 400;
           color: rgba(74, 74, 74, 1);
-          line-height: 20px;
+          line-height: 1;
         }
       }
     }

@@ -1,6 +1,6 @@
 <template>
-  <div class="wrapper add-teacher-entry">
-    <ai-card @click.native="showPicker = true">
+  <div class="wrapper">
+    <ai-card @click.native="showPicker = true" class="add-teacher-entry">
       <template v-slot:header>
         <div class="cover">
           <i class="iconfont icon-plus" />
@@ -80,7 +80,7 @@ export default class Home extends Mixins(SyncMixin) {
 </script>
 <style lang="scss" scoped>
 .add-teacher-entry {
-  min-width: 104px;
+  width: 104px;
   height: 160px;
   padding: 0px 5px;
   background: rgba(255, 255, 255, 1);
@@ -92,7 +92,7 @@ export default class Home extends Mixins(SyncMixin) {
   margin-bottom: 10px;
 
   & ::v-deep .ai-card__header {
-    height: 100%;
+    height: 85%;
   }
   .cover {
     width: 100%;

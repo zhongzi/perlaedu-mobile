@@ -147,6 +147,8 @@ export default class Home extends Mixins(SyncMixin) {
 </script>
 <style lang="scss" scoped>
 .wrapper {
+  padding-bottom: 50px;
+
   .fields {
     position: relative;
     top: -15px;

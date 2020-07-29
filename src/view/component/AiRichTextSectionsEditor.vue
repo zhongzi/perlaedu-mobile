@@ -10,7 +10,11 @@
           <template v-if="isEditing">
             <ai-input v-model="item.title" placeholder="填写章节标题(选填)" />
           </template>
-          <template v-else>{{ item.title }}</template>
+          <template v-else-if="item.title">
+            <div class="content">
+              {{ item.title }}
+            </div>
+          </template>
         </div>
         <div :class="b('content')">
           <div
@@ -35,6 +39,7 @@
                   v-model="c.url"
                   :prefix="imageKey"
                   :type="imageType"
+                  :flag="false"
                 />
               </template>
               <template v-else>
@@ -47,21 +52,10 @@
                   :video-id="c.videoId"
                   :autoplay="false"
                   :showInfo="false"
-                  style="height: 400px;"
                 />
               </template>
-              <template v-else>
-                <div
-                  @click="uploadVideo(c)"
-                  style="
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 100%;
-                    min-height: 200px;
-                    background: rgba(0, 0, 0, 0.4);
-                  "
-                >
+              <template v-else-if="isEditing">
+                <div @click="uploadVideo(c)" class="video-uploader">
                   <i
                     class="iconfont icon-video"
                     style="font-size: 72px; color: #fff;"
@@ -276,7 +270,7 @@ export default class Home extends Vue {
 
 <style lang="scss">
 .ai-rich-text-sections-editor {
-  margin-bottom: 15px;
+  margin-bottom: 70px;
 
   &__container {
     width: 100%;
@@ -330,7 +324,6 @@ export default class Home extends Vue {
   }
 
   &__title {
-    margin: 0 auto 15px;
     font-size: 20px;
     font-weight: 500;
     text-align: center;
@@ -339,6 +332,10 @@ export default class Home extends Vue {
       font-size: 20px;
       width: 181px;
       text-align: center;
+    }
+
+    .content {
+      margin-top: 25px;
     }
   }
 
@@ -374,6 +371,14 @@ export default class Home extends Vue {
 
       .video {
         margin: 5px 0px;
+      }
+      .video-uploader {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 200px;
+        background: rgba(0, 0, 0, 0.4);
       }
 
       .icon-close {

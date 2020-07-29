@@ -1,6 +1,6 @@
 <template>
-  <div class="wrapper add-album-entry">
-    <ai-card @click.native="showDialog = true">
+  <div class="wrapper">
+    <ai-card @click.native="showDialog = true" class="add-album-entry">
       <template v-slot:header>
         <div class="cover">
           <i class="iconfont icon-plus" />
@@ -73,7 +73,6 @@ export default class Home extends Mixins(SyncMixin) {
 <style lang="scss" scoped>
 .add-album-entry {
   margin: 10px 0px;
-  width: 194px;
   height: 148px;
 
   padding: 0px 5px;
@@ -82,10 +81,8 @@ export default class Home extends Mixins(SyncMixin) {
   border-radius: 8px;
   box-sizing: border-box;
 
-  margin-right: 12px;
-
   & ::v-deep .ai-card__header {
-    height: 100%;
+    height: 85%;
   }
   .cover {
     width: 100%;

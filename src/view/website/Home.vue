@@ -69,7 +69,4 @@ export default class Home extends Vue {
 .wrapper {
   height: 100%;
 }
-.website {
-  margin-bottom: 64px;
-}
 </style>

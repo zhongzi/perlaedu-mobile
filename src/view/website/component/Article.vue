@@ -5,10 +5,9 @@
         <div class="title">{{ article.title }}</div>
       </template>
       <template v-slot:right>
-        <img
-          :src="article.cover | alioss({ width: 40, height: 30 })"
-          class="image"
-        />
+        <div class="cover">
+          <img :src="article.cover | alioss({ width: 48, height: 27 })" />
+        </div>
       </template>
     </ai-cell>
   </div>
@@ -47,14 +46,19 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .wrapper {
-  margin: 10px 10px 10px 15px;
+  padding: 8px 10px;
 
-  .image {
+  .cover {
     width: 71px;
     height: 40px;
-    max-width: 71px;
-    max-height: 40px;
     border-radius: 4px;
+    overflow: hidden;
+
+    img {
+      border-radius: 4px;
+      width: 100%;
+      object-fit: fill;
+    }
   }
 }
 </style>

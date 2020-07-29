@@ -1,5 +1,17 @@
 import isEmpty from "lodash/isEmpty";
+import forEach from "lodash/forEach";
 import { Base64 } from "js-base64";
+
+function removeParams(url, ps = []) {
+  if (isEmpty(url) || isEmpty(ps) || url.indexOf("?") < 0) return url;
+
+  const parts = url.split("?");
+  const params = new URLSearchParams(parts[1]);
+  forEach(ps, (p) => {
+    params.delete(p);
+  });
+  return parts[0] + "?" + params.toString();
+}
 
 export default function (
   url: string,
@@ -26,8 +38,9 @@ export default function (
     dppx?: number;
   } = {}
 ): string {
+  url = removeParams(url, ["x-oss-process"]);
   if (isEmpty(url)) {
-    return "";
+    return null;
   }
 
   const wx = undefined;

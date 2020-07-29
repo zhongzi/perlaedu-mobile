@@ -3,6 +3,7 @@
     <template v-slot:header>
       <ai-input-switchable
         v-model="title"
+        tip="点击修改相册名称"
         @onBlur="onBlur"
         mode="unnormal"
         class="title"

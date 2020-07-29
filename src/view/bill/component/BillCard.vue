@@ -45,7 +45,6 @@ export default class Home extends Vue {
 .bill-card {
   position: relative;
   min-width: 300px;
-  height: 95px;
   min-height: 95px;
   background: rgba(255, 255, 255, 1);
   border-radius: 8px;

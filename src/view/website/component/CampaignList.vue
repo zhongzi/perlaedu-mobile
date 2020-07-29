@@ -58,11 +58,11 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 .campaign {
   & ::v-deep .ai-list-stored__title {
-    padding: 0px 27px;
+    padding: 0px 20px;
   }
 
   & ::v-deep .ai-slider__swiper-item:nth-child(1) {
-    margin-left: 27px;
+    margin-left: 20px;
   }
 }
 </style>

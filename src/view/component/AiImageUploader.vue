@@ -4,7 +4,7 @@
       <div :class="b('result')" :id="triggerName">
         <img
           v-if="value && enablePreview"
-          :src="value"
+          :src="value | alioss(resizeOption)"
           :class="b('result-image')"
         />
         <div :class="b('result-icon')">
@@ -17,7 +17,7 @@
       :class="b('cropper')"
       mimes="image/*"
       :upload-handler="uploadHandler"
-      :cropper-options="cropperOptions"
+      :cropper-options="innerCropperOptions"
       :output-options="outputOptions"
       :output-quality="outputQuality"
       :trigger="'#' + triggerName"
@@ -32,6 +32,7 @@ import UploaderMixin from "@/mixin/Uploader";
 import AvatarCropper from "vue-avatar-cropper";
 
 import isEqual from "lodash/isEqual";
+import merge from "lodash/merge";
 
 @Component({
   name: "ai-image-uploader",
@@ -44,24 +45,35 @@ export default class Home extends Mixins(UploaderMixin) {
   @Prop({ type: String, default: "other" }) type: string;
   @Prop({ type: String, default: "defaultTrigger" }) triggerName: string;
   @Prop({ type: [String, Number], default: "" }) prefix: string | number;
+  @Prop({ type: Object, default: () => ({ width: 200, height: 150 }) })
+  resizeOption: any;
   @Prop({ type: Boolean, default: true }) enablePreview: boolean;
   @Prop({ type: Boolean, default: true }) enableGif: boolean;
+  @Prop({ type: Boolean, default: true }) flag: boolean;
   @Prop({
     type: Object,
     default: () => ({
-      aspectRatio: 16 / 9,
+      aspectRatio: 0,
       autoCropArea: 1,
       viewMode: 2,
       movable: false,
       zoomable: false,
     }),
   })
-  cropperOptions: object;
+  cropperOptions: any;
   @Prop({ type: Object, default: () => ({}) }) outputOptions: object;
   @Prop({ type: Number, default: 1 }) outputQuality: number;
 
   mimetype: string = "image/png";
   showCropper: boolean = false;
+
+  get innerCropperOptions() {
+    return merge(this.cropperOptions, {
+      aspectRatio: this.flag
+        ? this.resizeOption.width / this.resizeOption.height
+        : this.cropperOptions.aspectRatio,
+    });
+  }
 
   onChanged(file, reader) {
     if (this.enableGif && isEqual(file.type, "image/gif")) {
@@ -114,6 +126,10 @@ export default class Home extends Mixins(UploaderMixin) {
 .ai-image-uploader {
   text-align: center;
   width: 100%;
+
+  & ::v-deep .avatar-cropper-mark {
+    background: rgba(0, 0, 0, 0.7);
+  }
 
   &__result {
     position: relative;

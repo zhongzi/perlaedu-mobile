@@ -33,10 +33,26 @@
       </template>
       <template v-slot:body>
         <div class="numbers">
-          <ai-number :num="unionMerchant.benefits" label="贡献" />
-          <ai-number :num="unionMerchant.contributions" label="收益" />
-          <ai-number :num="unionMerchant.contributions_pure" label="净收益" />
-          <ai-number :num="unionMerchant.rank" label="净收益排名" />
+          <ai-number
+            class="number"
+            :num="unionMerchant.benefits"
+            label="贡献"
+          />
+          <ai-number
+            class="number"
+            :num="unionMerchant.contributions"
+            label="受益"
+          />
+          <ai-number
+            class="number"
+            :num="unionMerchant.contributions_pure"
+            label="净受益"
+          />
+          <ai-number
+            class="number"
+            :num="unionMerchant.rank"
+            label="净受益排名"
+          />
         </div>
       </template>
     </ai-card>
@@ -85,11 +101,12 @@ export default class Home extends Vue {
   }
 
   .union {
-    height: 80px;
+    min-height: 68px;
     padding: 10px;
 
     .cover {
       width: 86px;
+      min-width: 86px;
       height: 58px;
       display: flex;
       align-items: center;
@@ -140,6 +157,11 @@ export default class Home extends Vue {
     align-items: center;
     justify-content: space-around;
     margin: 10px 0px;
+
+    .number {
+      flex-basis: 1;
+      min-width: 80px;
+    }
   }
 }
 </style>

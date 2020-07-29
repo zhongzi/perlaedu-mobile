@@ -1,11 +1,6 @@
 <template>
   <div :class="b()">
-    <ai-list-stored
-      resource="billOrderCost"
-      :query="query"
-      :enableScroll="false"
-      :enableEmpty="false"
-    >
+    <ai-list-stored resource="billOrderCost" :query="query" scrollType="none">
       <template v-slot:header>
         <span :class="b('title')">
           核销记录:

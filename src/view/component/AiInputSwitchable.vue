@@ -17,7 +17,8 @@
     <div v-else :class="b('label')" @click="isEditing = !isEditing">
       {{ value }}
       <div :class="b('label-tip')">
-        <i class="iconfont icon-edit-line" />点击编辑
+        <i class="iconfont icon-edit-line" />
+        {{ tip }}
       </div>
     </div>
   </div>
@@ -36,6 +37,7 @@ export default class Home extends Mixins(PatchMixin) {
   @Prop({ type: String, default: "text" }) type: string;
   @Prop({ type: String, default: "text" }) placeholder: string;
   @Prop({ type: String, default: "normal" }) mode: string;
+  @Prop({ type: String, default: "点击修改" }) tip: string;
 
   isEditing: boolean = false;
 
@@ -56,7 +58,6 @@ export default class Home extends Mixins(PatchMixin) {
   text-align: center;
   position: relative;
   padding-top: 20px;
-  padding-bottom: 20px;
   overflow-wrap: anywhere;
 
   &__input {
@@ -82,10 +83,12 @@ export default class Home extends Mixins(PatchMixin) {
     &-tip {
       position: absolute;
       top: 5px;
-      right: 20px;
+      right: 0px;
+      width: 100%;
 
       display: flex;
       align-items: center;
+      justify-content: center;
 
       font-size: 9px;
       color: #9b9b9b;

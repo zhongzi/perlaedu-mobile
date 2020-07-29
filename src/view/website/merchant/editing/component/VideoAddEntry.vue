@@ -66,7 +66,6 @@ export default class Home extends Mixins(SyncMixin) {
 <style lang="scss" scoped>
 .add-video-entry {
   margin: 10px 0px 15px;
-  width: 194px;
   height: 148px;
 
   padding: 0px 5px;
@@ -75,7 +74,7 @@ export default class Home extends Mixins(SyncMixin) {
   border-radius: 8px;
 
   & ::v-deep .ai-card__header {
-    height: 100%;
+    height: 85%;
   }
   .cover {
     width: 100%;

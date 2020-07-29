@@ -60,7 +60,6 @@ export default class Home extends Mixins(SyncMixin) {
 <style lang="scss" scoped>
 .union {
   .item {
-    margin: 10px 0px;
   }
 }
 </style>

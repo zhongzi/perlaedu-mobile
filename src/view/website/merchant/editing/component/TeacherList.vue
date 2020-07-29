@@ -6,7 +6,7 @@
       :refresh.sync="refresh"
       scrollType="slider"
       :enableEmpty="false"
-      :sliderOptions="{ slidesPerView: 3.2, spaceBetween: 5 }"
+      :sliderOptions="{ slidesPerView: 3.1, spaceBetween: 5 }"
       :enableSlideBefore="true"
       class="list"
     >
@@ -19,7 +19,7 @@
       </template>
       <template v-slot:item="{ item, tag }">
         <ai-button-float-delete @delete="onDelete(item, tag)" class="item">
-          <teacher :websiteTeacher="item" />
+          <teacher :websiteTeacher="item" :enablePreview="false" />
         </ai-button-float-delete>
       </template>
     </ai-list-stored>
@@ -59,7 +59,10 @@ export default class Home extends Mixins(SyncMixin) {
     return merge(
       {
         merchant_id: this.merchant && this.merchant.id,
-        extras: "teacher",
+        extras: JSON.stringify({
+          WebsiteTeacher: ["teacher"],
+          Person: ["sections"],
+        }),
       },
       this.query || {}
     );

@@ -8,7 +8,7 @@
       ref="waterfall"
       :class="b('list')"
       :imgsArr="innerPreviewList"
-      :srcKey="imgKey"
+      :srcKey="imgWaterKey"
       :mobileGap="gap"
       :gap="gap"
       @scrollReachBottom="$emit('load')"
@@ -22,10 +22,10 @@
             name="item"
             :item="value"
             :index="index"
-            :image="value[imgKey]"
+            :image="value[imgWaterKey]"
             v-if="value"
           >
-            <img :src="value[imgKey]" />
+            <img :src="value[imgWaterKey]" />
           </slot>
         </div>
       </template>
@@ -90,11 +90,15 @@ export default class Home extends Vue {
   @Prop({ type: Boolean, default: false }) loading: boolean;
   @Prop({ type: Boolean, default: false }) loadedAll: boolean;
   @Prop({ type: Object, default: null }) option: any;
-  @Prop({ type: Number, default: 8 }) gap: number;
+  @Prop({ type: Number, default: 15 }) gap: number;
 
   showDialog: boolean = false;
   curSlideNum: number = 0;
   innerPreviewList: any = [];
+
+  get imgWaterKey() {
+    return this.imgKey + "Water";
+  }
 
   get originOption() {
     return cloneDeep(merge({ width: 300 }, this.option || {}));
@@ -137,7 +141,7 @@ export default class Home extends Vue {
     const outLi = forEach(
       cloneDeep(differenceBy(this.list, this.innerPreviewList, "id")),
       (item) => {
-        item[this.imgKey] = this.$options.filters.alioss
+        item[this.imgWaterKey] = this.$options.filters.alioss
           ? this.$options.filters.alioss(
               item[this.imgKey],
               cloneDeep(merge({ width: 150 }, this.option || {}))
@@ -171,6 +175,7 @@ export default class Home extends Vue {
   & ::v-deep .h-dialog__dialog {
     max-height: 90%;
     overflow-y: scroll;
+    background: inherit;
   }
 
   & ::v-deep .ai-slider__title {

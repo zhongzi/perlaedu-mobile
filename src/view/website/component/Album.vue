@@ -6,7 +6,7 @@
           <img
             class="cover"
             :src="
-              album.cover | alioss({ width: 184, height: 110, mode: 'fill' })
+              album.cover | alioss({ width: 320, height: 180, mode: 'fill' })
             "
           />
         </div>
@@ -51,7 +51,6 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .wrapper {
-  width: 194px;
   height: 148px;
 
   background: rgba(255, 255, 255, 1);

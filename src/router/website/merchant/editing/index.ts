@@ -12,11 +12,6 @@ const Course = () =>
     /* webpackChunkName: "website-editing" */ "@/view/website/merchant/editing/Course.vue"
   );
 
-const Teacher = () =>
-  import(
-    /* webpackChunkName: "website-editing" */ "@/view/website/merchant/editing/Teacher.vue"
-  );
-
 const Album = () =>
   import(
     /* webpackChunkName: "website-editing" */ "@/view/website/merchant/editing/Album.vue"
@@ -30,6 +25,11 @@ const Article = () =>
 const Video = () =>
   import(
     /* webpackChunkName: "website-editing" */ "@/view/website/merchant/editing/Video.vue"
+  );
+
+const Teacher = () =>
+  import(
+    /* webpackChunkName: "website-editing" */ "@/view/website/merchant/editing/Teacher.vue"
   );
 
 const editingRoutes: any = [
@@ -51,12 +51,6 @@ const editingRoutes: any = [
         name: "websiteEditing",
         component: Editing,
         meta: { title: "机构设置" },
-      },
-      {
-        path: "teachers",
-        name: "websiteEditingTeachers",
-        component: Teacher,
-        meta: { title: "机构设置-老师" },
       },
       {
         path: "courses/:courseId",
@@ -81,6 +75,12 @@ const editingRoutes: any = [
         name: "websiteEditingVideo",
         component: Video,
         meta: { title: "机构设置-视频" },
+      },
+      {
+        path: "teachers/:teacherId",
+        name: "websiteEditingTeacher",
+        component: Teacher,
+        meta: { title: "机构设置-师资" },
       },
     ],
   },

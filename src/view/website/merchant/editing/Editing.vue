@@ -4,8 +4,9 @@
     <div class="resources">
       <div class="section">
         <union-merchant-list class="resource" :query="query" />
-        <universe-coupon class="resource" :merchant="merchant" />
-        <campaigns-entry class="resource" />
+        <universe-coupon class="resource coupon" :merchant="merchant" />
+        <ai-line />
+        <campaigns-entry class="resource campaign" />
       </div>
 
       <course-list class="resource slide" :query="query" :merchant="merchant" />
@@ -35,9 +36,11 @@ import TeacherList from "./component/TeacherList.vue";
 import VideoList from "./component/VideoList.vue";
 import AlbumList from "./component/AlbumList.vue";
 import ArticleList from "./component/ArticleList.vue";
+import AiLine from "@/view/component/AiLine.vue";
 
 @Component({
   components: {
+    AiLine,
     Merchant,
     UnionMerchantList,
     UniverseCoupon,
@@ -78,8 +81,17 @@ export default class Home extends Mixins(SyncMixin) {
 
   .resources {
     overflow: hidden;
+
     .section {
       padding: 0px 20px;
+
+      .coupon {
+        padding: 0px 7px;
+      }
+
+      .campaign {
+        margin: 10px auto;
+      }
     }
 
     .resource {

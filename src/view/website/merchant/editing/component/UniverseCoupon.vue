@@ -38,7 +38,6 @@
       </template>
     </ai-cell>
     <universe-coupon-count :merchant="merchant" />
-    <ai-line />
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper website">
     <div class="cover">
-      <img :src="merchant.cover_url | alioss({ width: 300, height: 200 })" />
+      <img :src="merchant.cover_url | alioss({ width: 320, height: 180 })" />
       <div
         class="setting"
         v-if="isOwner"
@@ -10,7 +10,7 @@
         <i class="iconfont icon-setting" />
       </div>
     </div>
-    <div class="content" :style="mergedStyle">
+    <div class="content" :style="mergedStyle" v-if="merchant.id">
       <div class="block">
         <merchant :merchant="merchant" />
         <div class="section unions">
@@ -38,6 +38,7 @@
       <div class="section articles">
         <article-list :query="query" />
       </div>
+      <ai-copyright :manual="true" />
     </div>
   </div>
 </template>
@@ -46,6 +47,8 @@
 import { Component, Vue, Watch, Mixins } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
+
+import AiCopyright from "@/view/component/AiCopyright.vue";
 
 import Merchant from "../component/Merchant.vue";
 import UnionList from "../component/UnionList.vue";
@@ -74,6 +77,7 @@ import startsWith from "lodash/startsWith";
     AlbumList,
     VideoList,
     ArticleList,
+    AiCopyright,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
@@ -141,7 +145,7 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   updateTitle() {
-    const name = (this.merchant.name || "") + " - 移动微官网";
+    const name = (this.merchant.name || "") + " - 门户";
     this.$store.commit("updateTitle", name);
   }
 }
@@ -181,8 +185,15 @@ export default class Home extends Mixins(SyncMixin) {
     padding-bottom: 80px;
 
     .block {
-      margin: 0px 27px;
+      margin: 0px 20px;
     }
+  }
+
+  .unions {
+    margin: 12px auto;
+  }
+  .coupons {
+    margin: 10px auto 20px;
   }
 }
 </style>

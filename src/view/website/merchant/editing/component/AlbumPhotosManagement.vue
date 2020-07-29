@@ -17,8 +17,9 @@
         />
       </template>
       <template v-slot:item="{ item, tag }">
-        <ai-button-float-delete @delete="onDelete(item, tag)">
+        <ai-button-float-delete @delete="onDelete(item, tag)" class="photo">
           <album-photo :photo="item" />
+          <album-cover-action :photo="item" :album="album" class="cover" />
         </ai-button-float-delete>
       </template>
     </ai-list-stored>
@@ -53,6 +54,7 @@ import AiButtonFloatDelete from "@/view/component/AiButtonFloatDelete.vue";
 import AiImageMultiUploader from "@/view/component/AiImageMultiUploader.vue";
 
 import AlbumPhoto from "../../../component/AlbumPhoto.vue";
+import AlbumCoverAction from "./AlbumCoverAction.vue";
 
 import cloneDeep from "lodash/cloneDeep";
 import merge from "lodash/merge";
@@ -67,6 +69,7 @@ import map from "lodash/map";
     AiButtonFloatDelete,
     AlbumPhoto,
     AiImageMultiUploader,
+    AlbumCoverAction,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
@@ -147,6 +150,16 @@ export default class Home extends Mixins(SyncMixin) {
 
   .popup {
     padding: 20px;
+  }
+  .photo {
+    position: relative;
+
+    .cover {
+      position: absolute;
+      bottom: 10px;
+      left: 0px;
+      right: 5px;
+    }
   }
 }
 </style>

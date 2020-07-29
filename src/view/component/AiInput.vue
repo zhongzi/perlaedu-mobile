@@ -29,7 +29,7 @@ export default class Home extends Mixins(PatchMixin) {
   @Prop({ type: String, default: null }) label: string;
   @Prop({ type: [String, Number], default: "" }) value: string | number;
   @Prop({ type: String, default: "text" }) type: string;
-  @Prop({ type: String, default: "text" }) placeholder: string;
+  @Prop({ type: String, default: "请输入" }) placeholder: string;
   @Prop({ type: String, default: "" }) mode: string;
 
   onBlur() {
