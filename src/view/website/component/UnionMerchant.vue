@@ -7,7 +7,7 @@
       <template v-slot:header>
         <img
           class="cover"
-          :src="merchant.cover_url | alioss({ width: 200, height: 250 })"
+          :src="merchant.cover_url | alioss({ width: 200, height: 150 })"
         />
       </template>
       <template v-slot:body>

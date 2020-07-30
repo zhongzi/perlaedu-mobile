@@ -1,6 +1,6 @@
 <template>
   <div :class="b()">
-    <i :class="['iconfont', 'icon-' + icon]" />
+    <i :class="['iconfont', 'icon-' + icon]" v-if="enableIcon" />
     <span>{{ label }}</span>
   </div>
 </template>
@@ -14,6 +14,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 export default class Home extends Vue {
   @Prop({ type: String, default: "" }) label: string;
   @Prop({ type: String, default: "money" }) icon: string;
+  @Prop({ type: Boolean, default: true }) enableIcon: string;
 }
 </script>
 <style lang="scss" scoped>
@@ -28,13 +29,14 @@ export default class Home extends Vue {
   border-radius: 8px;
   opacity: 0.9;
   color: #ff9e16;
+  i {
+    margin-right: 10px;
+  }
   span {
     font-size: 13px;
     font-weight: 500;
     color: rgba(255, 158, 22, 1);
     line-height: 18px;
-
-    margin-left: 10px;
   }
 }
 </style>

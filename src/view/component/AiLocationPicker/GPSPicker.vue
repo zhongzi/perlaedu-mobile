@@ -1,5 +1,15 @@
 <template>
-  <div ref="map" :class="b()" />
+  <div :class="b()">
+    <div ref="map" :class="b('map')" />
+    <hui-button
+      @click.native="setupGPSOnDefault"
+      type="error"
+      :class="b('btn')"
+    >
+      <i class="iconfont icon-location" />
+      当前位置
+    </hui-button>
+  </div>
 </template>
 
 <script lang="ts">
@@ -39,11 +49,6 @@ export default class Home extends Vue {
       this.centerMarker = new this.qq.maps.Marker({
         map: this.map,
       });
-
-      this.locationFetcher = new this.qq.maps.Geolocation(
-        this.$configs.qqMapKey,
-        this.$configs.qqMapName
-      );
 
       this.geocoder = new this.qq.maps.Geocoder({
         complete: (result) => {
@@ -93,21 +98,33 @@ export default class Home extends Vue {
       return;
     }
 
+    if (!this.locationFetcher) {
+      this.locationFetcher = new this.qq.maps.Geolocation(
+        this.$configs.qqMapKey,
+        this.$configs.qqMapName
+      );
+    }
+
+    this.$hui.loading.show("查询中...");
     if (this.locationFetcher) {
       this.locationFetcher.getLocation(
         (position) => {
+          this.$hui.loading.hide();
           this.setupGPS(position.lat, position.lng);
           this.$emit("position", position);
         },
         (e) => {
           console.log(e);
+          this.$hui.loading.hide();
+          this.$hui.toast.error("获取当前位置失败，请稍后重试");
         },
         {
-          timeout: 8000,
+          timeout: 60000,
         }
       );
     } else {
       navigator.geolocation.getCurrentPosition((pos) => {
+        this.$hui.loading.hide();
         this.setupGPS(pos.coords.latitude, pos.coords.longitude);
       });
     }
@@ -142,6 +159,15 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .ai-gps-picker {
+  position: relative;
   height: 100%;
+  &__map {
+    height: 100%;
+  }
+  &__btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
 }
 </style>

@@ -1,24 +1,16 @@
 <template>
   <div class="wrapper actions">
-    <div class="title">使用记录</div>
     <ai-list-stored
       resource="billCouponAction"
       :query="query"
-      :height="800"
       scrollType="none"
     >
       <template v-slot:item="{ item }">
         <ai-cell class="action">
-          <template v-slot:title>
-            {{ item | safe("merchant.name", "") }}
-            {{ item | safe("staff.realname", "") }}
-          </template>
           <template v-slot:subtitle>
-            <div>时间: {{ item.created_at | defaultDate }}</div>
-            <div>备注: {{ item.remark }}</div>
-          </template>
-          <template v-slot:right>
-            {{ getItemActionText(item) }}
+            <span>{{ item.created_at | date("MM-dd HH:mm") }} </span>
+            <span>{{ item | safe("merchant.name", "") }} </span>
+            <span>{{ getItemActionText(item) }} </span>
           </template>
         </ai-cell>
       </template>
@@ -59,18 +51,13 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .actions {
-  background: #fff;
   min-height: 68px;
   padding: 15px 10px;
   border-radius: 8px;
-  box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
 
-  .title {
-    font-weight: 600;
-    line-height: 2;
-  }
   .action {
     width: 100%;
+    min-height: 25px;
     & ::v-deep .ai-cell__left-info-header-title {
       font-size: 12px;
     }

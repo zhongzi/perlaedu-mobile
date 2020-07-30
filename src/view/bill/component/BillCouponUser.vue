@@ -1,12 +1,15 @@
 <template>
-  <div class="wrapper coupon-user">
-    <ai-cell v-if="user" class="user" :title="username" :showBottomLine="false">
+  <div class="wrapper user">
+    <ai-cell v-if="user" class="user" :showBottomLine="false">
       <template v-slot:cover>
         <img class="cover" :src="user.avatar | alioss({ width: 120 })" />
       </template>
+      <template v-slot:title>
+        <div class="title">{{ username }}</div>
+      </template>
       <template v-slot:right v-if="showAction">
         <hui-button @click.native="onClick" class="button">
-          TA过往核销记录
+          核销记录
         </hui-button>
       </template>
     </ai-cell>
@@ -49,15 +52,32 @@ export default class Home extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.coupon-user {
-  background: #fff;
-  padding: 15px 10px;
-  border-radius: 8px;
-  box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
-
+.user {
   .cover {
-    width: 48px;
-    border-radius: 50%;
+    width: 50px;
+    border-radius: 10px;
+    margin-right: 10px;
+  }
+  .title {
+    font-size: 16px;
+    font-family: Helvetica;
+    color: rgba(74, 74, 74, 1);
+    line-height: 19px;
+    letter-spacing: 1px;
+    font-weight: 400;
+  }
+  .button {
+    height: 32px;
+    background: rgba(250, 142, 69, 1);
+    border-radius: 4px;
+
+    font-size: 13px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
+    line-height: 18px;
+
+    border: none;
   }
 }
 </style>

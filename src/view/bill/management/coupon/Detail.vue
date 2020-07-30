@@ -1,15 +1,18 @@
 <template>
   <div class="wrapper coupon">
-    <bill-coupon-user class="card" :user="coupon.user" />
-    <bill-coupon class="card" :coupon="coupon" :showActions="false" />
+    <bill-coupon-user :user="coupon.user" class="user" />
+    <bill-coupon :coupon="coupon" />
     <div class="container">
-      <bill-coupon-description class="card" :coupon="coupon" />
-      <bill-coupon-source class="card" :coupon="coupon" />
-      <bill-coupon-action class="card" :coupon="coupon" />
+      <bill-coupon-description class="section" :coupon="coupon" />
+      <bill-coupon-verification
+        class="section"
+        :coupon="coupon"
+        v-if="coupon.status === 'taken'"
+        :isStaff="true"
+      />
+      <bill-coupon-tip class="section" :coupon="coupon" :isStaff="true" />
+      <bill-coupon-source class="section" :coupon="coupon" />
     </div>
-    <ai-fixed-footer v-if="coupon.status === 'taken'">
-      <bill-coupon-verification :coupon="coupon" />
-    </ai-fixed-footer>
   </div>
 </template>
 
@@ -18,25 +21,20 @@ import { Component, Vue, Watch, Mixins } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
 
-import AiFixedFooter from "@/view/component/AiFixedFooter.vue";
-
 import BillCouponUser from "../../component/BillCouponUser.vue";
 import BillCoupon from "../../component/BillCoupon.vue";
 import BillCouponDescription from "../../component/BillCouponDescription.vue";
-import BillCouponStatus from "../../component/BillCouponStatus.vue";
 import BillCouponVerification from "../../component/BillCouponVerification.vue";
-import BillCouponAction from "../../component/BillCouponAction.vue";
+import BillCouponTip from "../../component/BillCouponTip.vue";
 import BillCouponSource from "../../component/BillCouponSource.vue";
 
 @Component({
   components: {
-    AiFixedFooter,
     BillCouponUser,
     BillCoupon,
     BillCouponDescription,
-    BillCouponStatus,
     BillCouponVerification,
-    BillCouponAction,
+    BillCouponTip,
     BillCouponSource,
   },
 })
@@ -69,35 +67,20 @@ export default class Home extends Mixins(SyncMixin) {
 </script>
 <style lang="scss" scoped>
 .coupon {
-  background: linear-gradient(
-    119deg,
-    rgba(255, 146, 73, 1) 0%,
-    rgba(226, 99, 14, 1) 100%
-  );
+  padding: 20px 10px;
 
-  box-sizing: border-box;
-  min-height: 90vh;
-  padding: 20px;
-
-  .card {
-    margin-bottom: 10px;
+  .user {
+    margin: 10px;
   }
 
   .container {
     background-color: #fff;
     border-radius: 8px;
+    margin: 5px;
+    padding: 5px 17px;
 
-    .card {
-      margin: 0px;
-      padding-top: 0px;
-      box-shadow: none;
-    }
-  }
-  .dialog {
-    padding: 20px;
-    text-align: center;
-    img {
-      width: 100%;
+    .section {
+      margin: 10px auto 30px;
     }
   }
 }

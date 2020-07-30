@@ -10,7 +10,7 @@
         <i class="iconfont icon-direction" />
       </template>
     </ai-cell>
-    <hui-popup v-model="showPicker" position="right">
+    <hui-popup v-model="showPicker" position="right" v-if="showPicker">
       <div :class="b('popup')">
         <gps-picker
           :class="b('map')"
@@ -89,24 +89,31 @@ export default class Home extends Mixins(StopBodyScrollMixin) {
   }
 
   updateCurAddress(position) {
-    if (!isEmpty(this.innerValue.location)) return;
-    this.innerValue = merge(this.innerValue, {
-      location: {
-        province: position.province,
-        city: position.city,
-        zone: position.district,
-        address: position.addr,
-      },
-    });
+    this.innerValue = cloneDeep(
+      merge(this.innerValue, {
+        location: {
+          province: position.province,
+          city: position.city,
+          zone: position.district,
+          address: position.addr,
+        },
+      })
+    );
+    this.resetAddress();
   }
 
   updateAddress(location) {
     this.innerValue = merge(this.innerValue, {
       location: location,
-      address: `${location.province || ""}${location.city || ""}${
-        location.zone || ""
-      }${location.address || ""}`,
     });
+    this.resetAddress();
+  }
+
+  resetAddress() {
+    const location = this.innerValue.location;
+    this.innerValue.address = `${location.province || ""}${
+      location.city || ""
+    }${location.zone || ""}${location.address || ""}`;
   }
 
   onSubmit() {

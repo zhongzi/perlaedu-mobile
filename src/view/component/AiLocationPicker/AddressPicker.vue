@@ -5,21 +5,18 @@
         :class="b('selection')"
         label="省份/直辖市"
         v-model="province"
-        :autoDefault="false"
         :options="provinces"
       />
       <ai-selection
         :class="b('selection')"
         label="城市"
         v-model="city"
-        :autoDefault="true"
         :options="cities"
       />
       <ai-selection
         :class="b('selection')"
         label="区域"
         v-model="zone"
-        :autoDefault="false"
         :options="zones"
       />
     </div>
@@ -56,7 +53,6 @@ export default class Home extends Vue {
   }
 
   reset() {
-    console.log(this.value);
     if (isEmpty(this.value)) return;
 
     this.province = this.value.province;
@@ -92,8 +88,10 @@ export default class Home extends Vue {
   onProvinceChanged(newV, oldV) {
     if (isEmpty(oldV)) return;
 
-    this.city = "";
-    this.zone = "";
+    if (this.cities.indexOf(this.city) < 0) {
+      this.city = "";
+      this.zone = "";
+    }
     this.emitChanged();
   }
 
@@ -101,7 +99,9 @@ export default class Home extends Vue {
   onCityChanged(newV, oldV) {
     if (isEmpty(oldV)) return;
 
-    this.zone = "";
+    if (this.zones.indexOf(this.zone) < 0) {
+      this.zone = "";
+    }
     this.emitChanged();
   }
 

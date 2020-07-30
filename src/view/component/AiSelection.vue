@@ -5,9 +5,6 @@
     </div>
     <div :class="b('input')">
       <select :class="b('select')" v-model="innerValue" @blur="fixIOSScroll">
-        <option v-if="enableAllOption" :value="0" :class="b('select-option')">
-          全部
-        </option>
         <option
           v-if="enableUnsetOption"
           :value="-1"
@@ -15,6 +12,9 @@
         >
           暂不设置</option
         >
+        <option v-if="enableAllOption" :value="0" :class="b('select-option')">
+          全部
+        </option>
         <template v-for="(option, index) in options">
           <option
             :value="option | safe(valueKey, option)"
@@ -70,7 +70,7 @@ export default class Home extends Mixins(PatchMixin) {
   innerValue: any = null;
 
   created() {
-    this.emitDefaultValue();
+    this.resetValue();
   }
 
   @Watch("options", { deep: true })
@@ -81,7 +81,7 @@ export default class Home extends Mixins(PatchMixin) {
   @Watch("value", { deep: true })
   onValueChanged() {
     if (isEqual(this.value, this.innerValue)) return;
-    this.innerValue = cloneDeep(this.value);
+    this.resetValue();
   }
 
   @Watch("innerValue", { deep: true })
@@ -91,9 +91,15 @@ export default class Home extends Mixins(PatchMixin) {
 
   emitDefaultValue() {
     if (!this.autoDefault) return;
+    if (!isEmpty(this.value)) return;
     if (isEmpty(this.options)) return;
 
     this.innerValue = _get(this.options[0], this.valueKey, this.options[0]);
+  }
+
+  resetValue() {
+    this.innerValue = cloneDeep(this.value);
+    this.emitDefaultValue();
   }
 
   emitValue() {

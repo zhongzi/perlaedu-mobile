@@ -15,21 +15,19 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .description {
-  background: #fff;
-  padding: 15px 10px;
-  border-radius: 8px;
-  box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
-
   .title {
-    font-weight: 600;
+    font-size: 14px;
+    font-family: Helvetica;
+    color: rgba(84, 84, 84, 1);
     line-height: 2;
+    letter-spacing: 1px;
   }
   .content {
-    font-size: 14px;
-    font-family: PingFangSC-Medium, PingFang SC;
-    font-weight: 500;
-    color: #9b9b9b;
-    line-height: 1.2;
+    font-size: 13px;
+    font-family: Helvetica;
+    color: rgba(165, 165, 165, 1);
+    line-height: 16px;
+    letter-spacing: 1px;
   }
 }
 </style>

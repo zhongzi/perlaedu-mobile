@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper coupons">
-    <hui-tab-rounded v-model="curTabIdx" :tabs="tabs" label="label" />
+    <hui-tab v-model="curTabIdx" :tabs="tabs" label="label" />
     <div class="container">
       <ai-list-stored resource="billCoupon" :query="query">
         <template v-slot:item="{ item, tag }">
@@ -38,7 +38,6 @@ export default class Home extends Vue {
     { label: "可用券", value: "taken" },
     { label: "已使用", value: "used" },
     { label: "过期券", value: ["expired", "canceled"] },
-    { label: "全部", value: null },
   ];
 
   curTabIdx: number = 0;
@@ -66,6 +65,23 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 .coupons {
   width: 100%;
+  margin: 20px 0px;
+
+  & ::v-deep .h-tab_state-select {
+    color: rgba(237, 139, 65, 1);
+  }
+
+  & ::v-deep .h-tab__item {
+    font-size: 13px;
+    font-family: Helvetica;
+    height: 30px;
+    letter-spacing: 1px;
+  }
+
+  & ::v-deep .h-tab__indicator-line {
+    background-color: rgba(237, 139, 65, 1);
+  }
+
   .header {
     min-height: 87px;
     display: flex;
@@ -81,7 +97,7 @@ export default class Home extends Vue {
   }
   .container {
     background: #fff;
-    padding: 0px 20px;
+    padding: 10px 10px;
     min-height: 80vh;
   }
 }

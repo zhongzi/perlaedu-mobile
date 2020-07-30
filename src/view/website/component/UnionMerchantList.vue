@@ -107,6 +107,9 @@ export default class Home extends Vue {
   }
   .slider {
     margin-top: 5px;
+    & ::v-deep .swiper-wrapper {
+      margin-bottom: 30px;
+    }
   }
 }
 </style>

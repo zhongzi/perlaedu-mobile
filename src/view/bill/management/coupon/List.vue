@@ -56,15 +56,6 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .coupons {
-  min-height: 90vh;
-  padding: 10px 20px;
-  background: linear-gradient(
-    119deg,
-    rgba(255, 146, 73, 1) 0%,
-    rgba(226, 99, 14, 1) 100%
-  );
-  & ::v-deep .ai-infinite-scroll__pullup {
-    color: #fff;
-  }
+  padding: 20px 10px;
 }
 </style>

@@ -46,7 +46,7 @@ export default class Home extends Mixins(SyncMixin) {
     return BillItemValueType[this.coupon.value_type];
   }
 
-  take() {
+  take(telephone = null) {
     if (!this.coupon.is_takeable) {
       this.$router.push({
         name: "billProfileHome",
@@ -59,6 +59,7 @@ export default class Home extends Mixins(SyncMixin) {
         item_id: this.coupon.id,
         union_id: unionId,
         merchant_id: this.merchant.id,
+        telephone: telephone,
         referrer_openid: this.$store.state.expose2,
         issuer: {
           union_id: unionId,
@@ -79,10 +80,10 @@ export default class Home extends Mixins(SyncMixin) {
 
   created() {
     this.store = "billCoupon";
-    this.$bus.$on("website:coupon:take", (coupon) => {
-      if (coupon.id !== this.coupon.id) return;
+    this.$bus.$on("website:coupon:take", (info) => {
+      if (info.coupon.id !== this.coupon.id) return;
 
-      this.take();
+      this.take(info.telephone);
     });
   }
 
