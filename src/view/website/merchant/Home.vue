@@ -37,8 +37,17 @@ export default class Home extends Mixins(SyncMixin) {
     this.loadEntity({
       requireColumns: ["count_persons"],
       query: {
-        extras:
-          "location,website,me,count_persons,scene_qrcode_url,union_merchant",
+        extras: JSON.stringify({
+          Merchant: [
+            "location",
+            "website",
+            "me",
+            "count_persons",
+            "scene_qrcode_url",
+            "union_merchant",
+          ],
+          Website: ["skin"],
+        }),
       },
     });
   }

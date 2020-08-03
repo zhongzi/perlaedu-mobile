@@ -8,7 +8,12 @@
       scrollType="none"
     >
       <template v-slot:header>
-        <div>最新动态</div>
+        <img
+          v-if="skin.title"
+          :src="skin.title.image"
+          :style="skin.title.style"
+        />
+        <div v-else>最新动态</div>
       </template>
       <template v-slot:item="{ item, index }">
         <div v-if="index === 0" class="image" @click="openArticle(item)">
@@ -33,6 +38,7 @@ import AArticle from "./Article.vue";
 
 import merge from "lodash/merge";
 import isEmpty from "lodash/isEmpty";
+import _get from "lodash/get";
 
 @Component({
   components: {
@@ -43,6 +49,11 @@ import isEmpty from "lodash/isEmpty";
 })
 export default class Home extends Vue {
   @Prop({ type: Object, default: null }) query: any;
+  @Prop({ type: Object, default: null }) merchant: any;
+
+  get skin() {
+    return _get(this.merchant, "website.skin.article", {});
+  }
 
   get innerQuery() {
     return merge({}, this.query || {});

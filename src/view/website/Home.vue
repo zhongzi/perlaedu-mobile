@@ -1,7 +1,14 @@
 <template>
   <div class="wrapper website">
     <router-view />
-    <ai-bottom-navigation :menus="menus" @click="onClick" v-if="showMenu" />
+    <ai-bottom-navigation
+      :menus="menus"
+      @click="onClick"
+      v-if="showMenu"
+      :style="mergedStyle.style"
+      :color="mergedStyle | safe('icon.color')"
+      :activeColor="mergedStyle | safe('icon.activeColor')"
+    />
   </div>
 </template>
 
@@ -29,6 +36,7 @@ export default class Home extends Vue {
       icon: "user",
     },
   ];
+  mergedStyle: any = {};
 
   get showMenu() {
     // let hide = this.$route.meta.hideMenu;
@@ -40,6 +48,12 @@ export default class Home extends Vue {
     //   });
     // }
     return ["websiteMerchant", "websiteUnion"].indexOf(this.$route.name) >= 0;
+  }
+
+  created() {
+    this.$bus.$on("website:menu:style", (style) => {
+      this.mergedStyle = style;
+    });
   }
 
   onClick(menu) {

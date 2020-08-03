@@ -7,7 +7,10 @@
         @click="onClick(menu)"
         :key="index"
       >
-        <i :class="['iconfont', 'icon-' + menu.icon]" />
+        <i
+          :class="['iconfont', 'icon-' + menu.icon]"
+          :style="{ color: curMenu === menu ? activeColor : color }"
+        />
         <span> {{ menu.name }} </span>
       </div>
     </template>
@@ -23,6 +26,8 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 export default class Home extends Vue {
   @Prop({ type: Array, default: null }) menus: any;
   @Prop({ type: Number, default: 0 }) curIdx: number;
+  @Prop({ type: String, default: 0 }) color: string;
+  @Prop({ type: String, default: 0 }) activeColor: string;
 
   curMenu: any = null;
 

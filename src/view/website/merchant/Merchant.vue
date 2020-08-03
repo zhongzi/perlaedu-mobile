@@ -21,22 +21,22 @@
         </div>
       </div>
       <div class="section campaigns">
-        <campaign-list :query="query" />
+        <campaign-list :query="query" :merchant="merchant" />
       </div>
       <div class="section courses">
-        <course-list :query="query" />
+        <course-list :query="query" :merchant="merchant" />
       </div>
       <div class="section teachers">
-        <teacher-list :query="query" />
+        <teacher-list :query="query" :merchant="merchant" />
       </div>
       <div class="section albums">
-        <album-list :query="query" />
+        <album-list :query="query" :merchant="merchant" />
       </div>
       <div class="section videos">
-        <video-list :query="query" />
+        <video-list :query="query" :merchant="merchant" />
       </div>
       <div class="section articles">
-        <article-list :query="query" />
+        <article-list :query="query" :merchant="merchant" />
       </div>
       <ai-copyright :manual="true" />
     </div>
@@ -103,35 +103,12 @@ export default class Home extends Mixins(SyncMixin) {
     return _get(this.merchant, "website") || {};
   }
 
-  get defaultBgImage() {
-    return require("@/asset/image/default_website_bg" +
-      this.$densityStr +
-      ".png");
-  }
-
   get skin() {
     return this.website.skin || {};
   }
 
-  get bgImage() {
-    const img = this.skin.bgImage;
-    return !isEmpty(img)
-      ? startsWith(img, "linear")
-        ? img
-        : `url(${img})`
-      : "";
-  }
-
   get mergedStyle() {
-    return merge(
-      {
-        backgroundImage: this.bgImage,
-        backgroundRepeat: "repeat-y",
-        backgroundPosition: "center top",
-        backgroundSize: "contain",
-      },
-      this.skin.style || {}
-    );
+    return this.skin.home;
   }
 
   created() {
@@ -142,6 +119,8 @@ export default class Home extends Mixins(SyncMixin) {
   @Watch("merchant", { deep: true })
   onMerchantChanged() {
     this.updateTitle();
+
+    this.$bus.$emit("website:menu:style", this.skin.menu);
   }
 
   updateTitle() {
@@ -159,6 +138,7 @@ export default class Home extends Mixins(SyncMixin) {
 
     img {
       width: 100%;
+      display: block;
     }
     .setting {
       position: absolute;

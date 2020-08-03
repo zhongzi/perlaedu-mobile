@@ -8,7 +8,12 @@
       :sliderOptions="{ slidesPerView: 1.8, spaceBetween: 15 }"
     >
       <template v-slot:header>
-        <div>精彩视频</div>
+        <img
+          v-if="skin.title"
+          :src="skin.title.image"
+          :style="skin.title.style"
+        />
+        <div v-else>精彩视频</div>
       </template>
       <template v-slot:item="{ item }">
         <a-video :video="item" :key="item.id" />
@@ -26,6 +31,7 @@ import AiListStored from "@/view/component/AiListStored.vue";
 import AVideo from "./Video.vue";
 
 import merge from "lodash/merge";
+import _get from "lodash/get";
 
 @Component({
   components: {
@@ -35,6 +41,11 @@ import merge from "lodash/merge";
 })
 export default class Home extends Vue {
   @Prop({ type: Object, default: null }) query: any;
+  @Prop({ type: Object, default: null }) merchant: any;
+
+  get skin() {
+    return _get(this.merchant, "website.skin.video", {});
+  }
 
   get innerQuery() {
     return merge(
