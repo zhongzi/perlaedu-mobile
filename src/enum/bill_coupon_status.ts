@@ -1,6 +1,6 @@
 const BillCouponStatus = {
   pending: {
-    text: "尚未获得",
+    text: "获取中",
     color: "#F5A623",
   },
   refer: {
@@ -16,7 +16,8 @@ const BillCouponStatus = {
     color: "#F5A623",
   },
   taken: {
-    text: "已获得",
+    text: "已领取",
+    action: "领取",
     color: "#F5A623",
   },
   used_pending: {
@@ -25,6 +26,7 @@ const BillCouponStatus = {
   },
   used: {
     text: "已核销",
+    action: "核销",
     color: "#F5A623",
   },
   expired: {

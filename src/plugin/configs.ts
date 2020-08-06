@@ -8,7 +8,7 @@ import forEach from "lodash/forEach";
 const configs = cloneDeep(require("../configs.json"));
 
 // 加载预设配置项
-const keys = ["gBillCouponId", "guaranteeBillURL", "guaranteeBillWithdrawURL"];
+const keys = ["guaranteeBillURL", "guaranteeBillWithdrawURL"];
 
 const loadDictionary = (callback) => {
   dictionaryApi

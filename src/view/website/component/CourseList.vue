@@ -16,7 +16,12 @@
         <div v-else>热门课程</div>
       </template>
       <template v-slot:item="{ item }">
-        <course :course="item" :key="item.id" class="item" />
+        <course
+          :course="item"
+          :key="item.id"
+          class="item"
+          :style="skin.content"
+        />
       </template>
     </ai-list-stored>
   </div>
@@ -44,7 +49,7 @@ export default class Home extends Vue {
   @Prop({ type: Object, default: null }) merchant: any;
 
   get skin() {
-    return _get(this.merchant, "website.skin.album", {});
+    return _get(this.merchant, "website.skin.course", {});
   }
 
   get innerQuery() {

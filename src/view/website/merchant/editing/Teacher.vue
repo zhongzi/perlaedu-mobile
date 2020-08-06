@@ -3,8 +3,8 @@
     <ai-image-uploader
       class="cover"
       v-model="innerTeacher.cover_url"
-      type="website"
-      :prefix="'merchants/' + merchantId + '/teachers'"
+      type="merchant"
+      :prefix="merchantId + '/teachers/' + innerTeacher.id || ''"
       :resizeOption="{ width: 180, height: 240 }"
       triggerName="teacher-cover"
     />
@@ -20,7 +20,7 @@
         <ai-rich-text-sections-editor
           v-model="innerTeacher.sections"
           imageType="merchant"
-          :imagePrefix="'merchants/' + merchantId + '/teachers'"
+          :imagePrefix="merchantId + '/teachers/' + innerTeacher.id || ''"
         />
       </ai-section>
     </div>

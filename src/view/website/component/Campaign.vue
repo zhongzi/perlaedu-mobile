@@ -43,6 +43,7 @@ export default class Home extends Vue {
     text-align: center;
     margin-bottom: 20px;
     box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
+    background: rgba(255, 255, 255, 0.8);
 
     .title {
       margin: 5px auto;

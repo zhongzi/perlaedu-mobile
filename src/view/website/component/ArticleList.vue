@@ -83,7 +83,7 @@ export default class Home extends Vue {
 
   & ::v-deep .ai-list-stored__list {
     border-radius: 8px;
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.8);
   }
 
   .image {

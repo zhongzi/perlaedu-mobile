@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <ai-card @click.native="onClick">
+    <ai-card @click.native="onClick" class="video">
       <template v-slot:header>
         <div class="header">
           <img class="cover" :src="cover" />
@@ -73,6 +73,10 @@ export default class Home extends Vue {
   box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
   border-radius: 8px;
   overflow: hidden;
+
+  .video {
+    background: rgba(255, 255, 255, 0.8);
+  }
 
   .header {
     height: 110px;

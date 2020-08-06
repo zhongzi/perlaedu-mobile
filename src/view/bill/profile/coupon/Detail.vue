@@ -2,14 +2,20 @@
   <div class="wrapper coupon">
     <bill-coupon :coupon="coupon" />
     <div class="container">
-      <bill-coupon-description class="section" :coupon="coupon" />
-      <bill-coupon-verification
-        class="section"
-        :coupon="coupon"
-        v-if="coupon.status === 'taken'"
-      />
-      <bill-coupon-tip class="section" :coupon="coupon" />
-      <bill-coupon-source class="section" :coupon="coupon" />
+      <template v-if="!isPending">
+        <bill-coupon-description class="section" :coupon="coupon" />
+        <bill-coupon-verification
+          class="section"
+          :coupon="coupon"
+          v-if="coupon.status === 'taken'"
+        />
+        <bill-coupon-tip class="section" :coupon="coupon" />
+        <bill-coupon-source class="section" :coupon="coupon" />
+      </template>
+      <template v-else>
+        <bill-coupon-description class="section" :coupon="coupon" />
+        <bill-coupon-pending :coupon="coupon" />
+      </template>
     </div>
   </div>
 </template>
@@ -24,6 +30,10 @@ import BillCouponDescription from "../../component/BillCouponDescription.vue";
 import BillCouponVerification from "../../component/BillCouponVerification.vue";
 import BillCouponTip from "../../component/BillCouponTip.vue";
 import BillCouponSource from "../../component/BillCouponSource.vue";
+import BillCouponPending from "../../component/BillCouponPending.vue";
+
+import isEmpty from "lodash/isEmpty";
+import _get from "lodash/get";
 
 @Component({
   components: {
@@ -32,6 +42,7 @@ import BillCouponSource from "../../component/BillCouponSource.vue";
     BillCouponVerification,
     BillCouponTip,
     BillCouponSource,
+    BillCouponPending,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
@@ -43,15 +54,69 @@ export default class Home extends Mixins(SyncMixin) {
     return this.coupon.status === "taken";
   }
 
+  get isPending() {
+    return this.coupon.status === "pending";
+  }
+
   created() {
     this.store = "billCoupon";
     this.$bus.$on("bill:coupon:refresh", this.load);
     this.load();
+    this.configShare();
   }
 
   @Watch("$route", { deep: true })
   onRouteChanged() {
     this.load();
+  }
+
+  @Watch("coupon", { deep: true })
+  onCouponChanged() {
+    this.configShare();
+  }
+
+  configShare() {
+    if (
+      isEmpty(this.coupon.union) &&
+      isEmpty(this.coupon.merchant) &&
+      isEmpty(this.coupon.share)
+    ) {
+      return;
+    }
+    const title = _get(this.coupon, "share.title", "送您一份好课好礼");
+    const desc = _get(this.coupon, "share.desc", "快来和我一起上课吧");
+    const imgUrl = _get(this.coupon, "share.imgUrl", this.coupon.user.avatar);
+
+    let link = _get(this.coupon, "share.url");
+    if (isEmpty(link)) {
+      if (!isEmpty(this.coupon.merchant)) {
+        link = this.$tools.resolveURL(this.$router, {
+          name: "websiteMerchant",
+          params: {
+            merchantId: this.coupon.merchant_id,
+          },
+          query: {
+            expose: this.$auth.openid,
+          },
+        });
+      } else if (!isEmpty(this.coupon.union)) {
+        link = this.$tools.resolveURL(this.$router, {
+          name: "websiteUnion",
+          params: {
+            unionId: this.coupon.union_id,
+          },
+          query: {
+            expose: this.$auth.openid,
+          },
+        });
+      }
+    }
+    this.$bus.$emit("config:share", {
+      title,
+      desc,
+      link,
+      imgUrl,
+    });
   }
 
   load() {
@@ -60,7 +125,22 @@ export default class Home extends Mixins(SyncMixin) {
       query: {
         require_code: true,
         require_refresh_code: true,
-        extras: "item,union,merchant,hashed_id,source,referrer,user,link",
+        extras: JSON.stringify({
+          BillCoupon: [
+            "item",
+            "union",
+            "merchant",
+            "hashed_id",
+            "sources",
+            "referrer",
+            "user",
+            "links",
+            "count_source",
+            "count_source_on_links",
+          ],
+          BillCouponLink: ["source", "link"],
+          BillItemLink: ["source", "target"],
+        }),
       },
     });
   }

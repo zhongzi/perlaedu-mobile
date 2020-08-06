@@ -65,6 +65,7 @@ import _get from "lodash/get";
 import merge from "lodash/merge";
 import isEmpty from "lodash/isEmpty";
 import startsWith from "lodash/startsWith";
+import cloneDeep from "lodash/cloneDeep";
 
 @Component({
   components: {
@@ -82,7 +83,8 @@ import startsWith from "lodash/startsWith";
 })
 export default class Home extends Mixins(SyncMixin) {
   get merchant() {
-    return this.entity;
+    const skin = {};
+    return merge(cloneDeep(this.entity), { website: { skin: skin } });
   }
 
   get isOwner() {
@@ -118,9 +120,18 @@ export default class Home extends Mixins(SyncMixin) {
 
   @Watch("merchant", { deep: true })
   onMerchantChanged() {
+    this.checkNoWebsite();
     this.updateTitle();
-
     this.$bus.$emit("website:menu:style", this.skin.menu);
+  }
+
+  checkNoWebsite() {
+    if (isEmpty(this.merchant)) return;
+    if (isEmpty(this.merchant.website)) {
+      this.$router.push({
+        name: "websiteMerchantPending",
+      });
+    }
   }
 
   updateTitle() {

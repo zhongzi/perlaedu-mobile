@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "11491738",
+      "name": "下载",
+      "font_class": "-download-s",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "1899143",
+      "name": "wechat",
+      "font_class": "-wechat",
+      "unicode": "e759",
+      "unicode_decimal": 59225
+    },
+    {
       "icon_id": "2207679",
       "name": "icon-location",
       "font_class": "-location",

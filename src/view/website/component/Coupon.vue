@@ -4,7 +4,7 @@
       <template v-slot:title>
         <div class="title">
           <span> {{ coupon.title }} </span>
-          <i class="iconfont icon-info" @click="showInfo" />
+          <i class="iconfont icon-info" @click="showDialog = true" />
         </div>
       </template>
       <template v-slot:subtitle>
@@ -14,52 +14,129 @@
         </div>
       </template>
       <template v-slot:right>
-        <hui-button @click.native="take" class="action">
+        <hui-button @click.native="openBag" class="action">
           {{ coupon.is_takeable ? "立即领取" : "我的卡包" }}
         </hui-button>
       </template>
     </ai-cell>
+    <hui-dialog v-model="showDialog">
+      <div class="dialog" :style="dlgStyle">
+        <div class="cover" v-if="merchant.cover_url">
+          <img :src="merchant.cover_url | alioss({ width: 125, height: 85 })" />
+        </div>
+        <div class="title">
+          <span>{{ merchant.name }}</span>
+          <span>{{ coupon.title }}</span>
+        </div>
+        <div class="links">
+          <template v-for="link in links">
+            <coupon-simple
+              :coupon="link.target"
+              class="link"
+              :key="link.target_id"
+              v-if="!link.is_refer"
+            />
+          </template>
+          <ai-input
+            v-if="coupon.is_takeable"
+            placeholder="请输入您的手机号码领取礼包"
+            v-model="telephone"
+            class="telephone"
+          />
+        </div>
+        <hui-button class="action" @click.native="save" :style="btnStyle">
+          {{ coupon.is_takeable ? "收下去使用" : "已领取, 前往卡包使用" }}
+        </hui-button>
+      </div>
+    </hui-dialog>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
+import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
 
+import AiInput from "@/view/component/AiInput.vue";
 import AiCell from "@/view/component/AiCell.vue";
+import CouponSimple from "./CouponSimple.vue";
 
 import { BillItemValueType } from "@/enum/bill_item_value_type";
 
 import _get from "lodash/get";
+import isEmpty from "lodash/isEmpty";
 
 @Component({
   components: {
+    AiInput,
     AiCell,
+    CouponSimple,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Object, default: null }) merchant: any;
   @Prop({ type: Object, default: null }) coupon: any;
+  @Prop({ type: Boolean, default: true }) enableDialog: boolean;
+
+  showDialog: boolean = false;
+  telephone: string = "";
+
+  get links() {
+    return this.coupon.links || [];
+  }
+
+  get dlgStyle() {
+    return {
+      backgroundImage:
+        "url(" +
+        require("@/asset/image/dlg-coupon-bg" + this.$densityStr + ".png") +
+        ")",
+    };
+  }
+
+  get btnStyle() {
+    return {
+      backgroundImage:
+        "url(" + require("@/asset/image/btn" + this.$densityStr + ".png") + ")",
+    };
+  }
 
   get valueType() {
     return BillItemValueType[this.coupon.value_type];
   }
 
-  take(telephone = null) {
+  @Watch("coupon")
+  onCouponChanged() {
+    this.showDialog = this.coupon.is_takeable;
+  }
+
+  openBag() {
     if (!this.coupon.is_takeable) {
       this.$router.push({
         name: "billProfileHome",
       });
+      return true;
+    }
+
+    this.showDialog = true;
+    return false;
+  }
+
+  save() {
+    if (this.openBag()) return;
+
+    if (isEmpty(this.telephone) || !/^1[3456789]\d{9}$/.test(this.telephone)) {
+      this.$hui.$toast.error("手机号码作为核销唯一凭证， 请正确填写且不可为空");
       return;
     }
+
     const unionId = _get(this.merchant, "union_merchant.union_id", 0);
     this.saveEntity({
       res: {
         item_id: this.coupon.id,
         union_id: unionId,
         merchant_id: this.merchant.id,
-        telephone: telephone,
+        telephone: this.telephone,
         referrer_openid: this.$store.state.expose2,
         issuer: {
           union_id: unionId,
@@ -68,9 +145,9 @@ export default class Home extends Mixins(SyncMixin) {
         },
       },
       success: () => {
-        this.showInfo(false);
+        this.showDialog = false;
         this.$hui.toast.info("认领成功， 请到【我的】卡券列表查看使用");
-        this.$bus.$emit("website:coupon:taked");
+        this.$bus.$emit("bill:item:taked");
       },
       failure: (error) => {
         this.$hui.toast.error(error.response.data.message);
@@ -80,15 +157,7 @@ export default class Home extends Mixins(SyncMixin) {
 
   created() {
     this.store = "billCoupon";
-    this.$bus.$on("website:coupon:take", (info) => {
-      if (info.coupon.id !== this.coupon.id) return;
-
-      this.take(info.telephone);
-    });
-  }
-
-  showInfo(show = true) {
-    this.$bus.$emit("website:coupon:dialog:show", show);
+    this.showDialog = this.coupon.is_takeable;
   }
 }
 </script>
@@ -101,8 +170,7 @@ export default class Home extends Mixins(SyncMixin) {
   );
   box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
-
-  padding: 10px 20px;
+  padding: 10px;
 
   .title {
     font-size: 14px;
@@ -134,8 +202,6 @@ export default class Home extends Mixins(SyncMixin) {
       rgba(255, 255, 255, 0.55) 100%,
       rgba(255, 255, 255, 0.55) 100%
     );
-    box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06),
-      0px 3px 4px 0px rgba(255, 153, 19, 0.52);
     border-radius: 6px;
     opacity: 0.96;
     border: none;
@@ -145,6 +211,106 @@ export default class Home extends Mixins(SyncMixin) {
     color: rgba(255, 122, 6, 1);
     line-height: 17px;
     text-shadow: 0px 8px 14px rgba(0, 0, 0, 0.06);
+  }
+
+  & ::v-deep .h-dialog__dialog {
+    background: inherit;
+    width: 100% !important;
+  }
+
+  .dialog {
+    position: relative;
+    background-origin: border-box;
+    background-size: cover;
+    background-position: center;
+
+    text-align: center;
+    border-radius: 6px;
+    width: 100%;
+    min-height: 500px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    .cover {
+      position: absolute;
+      top: -25px;
+      left: calc(50% - 62.5px);
+      width: 125px;
+      height: 85px;
+      border-radius: 4px;
+      overflow: hidden;
+      border: solid 2px #fff;
+
+      img {
+        border-radius: 4px;
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .title {
+      font-size: 20px;
+      font-family: PingFangSC-Semibold, PingFang SC;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 1);
+      line-height: 1.3;
+      text-shadow: 0px 2px 4px rgba(218, 77, 25, 1);
+
+      padding-top: 70px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .links {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      margin-top: 15px;
+
+      .link {
+        margin-bottom: 10px;
+      }
+    }
+    .telephone {
+      background: #fff;
+      border-radius: 8px;
+      width: 100%;
+
+      & ::v-deep .ai-input__input {
+        font-size: 14px;
+        font-family: FZLTZHK--GBK1-0, FZLTZHK--GBK1;
+        font-weight: normal;
+        color: rgba(155, 155, 155, 1);
+        line-height: 19px;
+        text-align: center;
+        padding: 5px 0px;
+        border-radius: 8px;
+      }
+    }
+    .action {
+      background-size: cover;
+      background-color: inherit;
+      border: none;
+
+      width: 280px;
+      height: 70px;
+
+      font-size: 18px;
+      font-family: PingFangSC-Semibold, PingFang SC;
+      font-weight: 600;
+      color: rgba(175, 75, 4, 1);
+      line-height: 30px;
+      text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.26);
+      padding-bottom: 15px;
+
+      margin-top: 10px;
+      margin-bottom: 40px;
+    }
   }
 }
 </style>

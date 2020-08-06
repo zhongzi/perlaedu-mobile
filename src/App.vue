@@ -9,6 +9,7 @@
       <router-view v-if="!$route.meta.keepAlive"></router-view>
     </transition>
     <ai-copyright />
+    <ai-tip-share v-model="showTip" />
   </div>
 </template>
 <script lang="ts">
@@ -24,9 +25,13 @@ import AiCopyright from "@/view/component/AiCopyright.vue";
   },
 })
 export default class Home extends Vue {
+  showTip: boolean = false;
   created() {
     this.$auth.entry = window.location.href;
     this.$bus.$on("config:share", this.configShare);
+    this.$bus.$on("config:share:tip:show", () => {
+      this.showTip = true;
+    });
   }
 
   configShare({ title, desc, link, imgUrl, success }) {

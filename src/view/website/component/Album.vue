@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <ai-card @click.native="openAlbum">
+    <ai-card @click.native="openAlbum" class="album">
       <template v-slot:header>
         <div class="header">
           <img
@@ -53,10 +53,13 @@ export default class Home extends Vue {
 .wrapper {
   height: 148px;
 
-  background: rgba(255, 255, 255, 1);
   box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
   border-radius: 8px;
   margin-bottom: 15px;
+
+  .album {
+    background: rgba(255, 255, 255, 0.8);
+  }
 
   .header {
     height: 110px;

@@ -13,7 +13,7 @@
         <ai-image-multi-uploader
           @input="savePhotos"
           type="merchant"
-          :prefix="'websites/' + album.merchant_id + '/photos'"
+          :prefix="album.merchant_id + '/albums/' + album.id + '/photos'"
         />
       </template>
       <template v-slot:item="{ item, tag }">
@@ -29,7 +29,7 @@
           class="cover"
           v-model="photo.cover"
           type="merchant"
-          :prefix="'websites/' + album.merchant_id + '/photos'"
+          :prefix="album.merchant_id + '/albums/' + album.id + '/photos'"
         />
         <div class="fields">
           <ai-input class="field" label="相片标题" v-model="photo.title" />

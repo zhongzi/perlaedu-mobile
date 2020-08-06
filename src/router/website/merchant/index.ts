@@ -24,6 +24,11 @@ const Teacher = () =>
     /* webpackChunkName: "website" */ "@/view/website/merchant/Teacher.vue"
   );
 
+const Pending = () =>
+  import(
+    /* webpackChunkName: "website" */ "@/view/website/merchant/Pending.vue"
+  );
+
 import editingRoutes from "./editing";
 
 const merchantRoutes: any = [
@@ -68,6 +73,12 @@ const merchantRoutes: any = [
         name: "websiteMerchantTeacher",
         component: Teacher,
         meta: { title: "师资简介" },
+      },
+      {
+        path: "pending",
+        name: "websiteMerchantPending",
+        component: Pending,
+        meta: { title: "申请开通门户服务" },
       },
     ].concat(editingRoutes),
   },

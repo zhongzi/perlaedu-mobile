@@ -45,7 +45,7 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 .coupon-simple {
   width: 286px;
-  height: 79px;
+  max-height: 79px;
   box-shadow: 0px 3px 10px 0px rgba(255, 255, 255, 0.26);
   border-radius: 8px;
   background-size: cover;
@@ -53,31 +53,31 @@ export default class Home extends Vue {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0px 20px 0px 10px;
+  padding: 3px 10px;
 
   .value {
     width: 40%;
+    text-align: center;
     span:nth-child(1) {
       font-size: 40px;
       font-family: PingFangSC-Semibold, PingFang SC;
       font-weight: 600;
       color: rgba(255, 255, 255, 1);
-      line-height: 56px;
     }
     span:nth-child(2) {
       font-size: 20px;
       font-family: PingFangSC-Semibold, PingFang SC;
       font-weight: 600;
       color: rgba(255, 255, 255, 1);
-      line-height: 28px;
     }
   }
   .title {
+    flex: 1;
+    text-align: center;
     font-size: 20px;
     font-family: PingFangSC-Semibold, PingFang SC;
     font-weight: 600;
     color: rgba(255, 255, 255, 1);
-    line-height: 28px;
   }
 }
 </style>

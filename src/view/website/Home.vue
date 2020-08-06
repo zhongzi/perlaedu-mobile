@@ -5,7 +5,7 @@
       :menus="menus"
       @click="onClick"
       v-if="showMenu"
-      :style="mergedStyle.style"
+      :style="mergedStyle | safe('style', {})"
       :color="mergedStyle | safe('icon.color')"
       :activeColor="mergedStyle | safe('icon.activeColor')"
     />

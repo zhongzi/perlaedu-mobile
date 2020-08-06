@@ -11,7 +11,9 @@
           :class="['iconfont', 'icon-' + menu.icon]"
           :style="{ color: curMenu === menu ? activeColor : color }"
         />
-        <span> {{ menu.name }} </span>
+        <span :style="{ color: curMenu === menu ? activeColor : color }">
+          {{ menu.name }}
+        </span>
       </div>
     </template>
   </div>

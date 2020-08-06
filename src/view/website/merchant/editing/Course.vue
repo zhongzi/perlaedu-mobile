@@ -3,8 +3,8 @@
     <ai-image-uploader
       class="cover"
       v-model="innerCourse.cover"
-      type="website"
-      :prefix="'merchants/' + merchantId + '/courses'"
+      type="merchant"
+      :prefix="merchantId + '/courses/' + innerCourse.id || ''"
       triggerName="course-cover"
     />
     <div class="fields">
@@ -35,7 +35,7 @@
         <ai-rich-text-sections-editor
           v-model="innerCourse.description"
           imageType="merchant"
-          :imagePrefix="'merchants/' + merchantId + '/courses'"
+          :imagePrefix="merchantId + '/courses/' + innerCourse.id || ''"
         />
       </ai-section>
     </div>

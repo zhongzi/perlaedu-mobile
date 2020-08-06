@@ -1,16 +1,16 @@
 <template>
   <div class="wrapper merchant">
-    <div class="container">
+    <div class="container" :style="skin">
       <div class="info">
         <div class="name">
-          <span> {{ merchant.name }} </span>
+          <span :style="skin.title"> {{ merchant.name }} </span>
         </div>
         <div class="address" @click="show = true">
           <i class="iconfont icon-location" />
           <p>{{ merchant.location | safe("address") }}</p>
         </div>
         <div class="phone" @click="onCall(merchant.phone)">
-          <i class="iconfont icon-call" />
+          <i class="iconfont icon-call" :style="skin.icon.phone" />
           <span> {{ merchant.phone }} </span>
         </div>
       </div>
@@ -60,6 +60,12 @@ export default class Home extends Mixins(SyncMixin) {
   showDialog: boolean = false;
   show: boolean = false;
 
+  get skin() {
+    const skin = _get(this.merchant, "website.skin.merchant", {});
+    console.log(skin);
+    return skin;
+  }
+
   get isFollowed() {
     return !isEmpty(this.merchant.me);
   }
@@ -86,6 +92,7 @@ export default class Home extends Mixins(SyncMixin) {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    color: rgba(74, 74, 74, 1);
 
     .follower {
       width: 130px;
@@ -108,7 +115,6 @@ export default class Home extends Mixins(SyncMixin) {
           font-size: 18px;
           font-family: PingFangSC-Regular, PingFang SC;
           font-weight: 600;
-          color: rgba(74, 74, 74, 1);
           line-height: 20px;
         }
         margin-bottom: 12px;
@@ -128,7 +134,6 @@ export default class Home extends Mixins(SyncMixin) {
           font-size: 14px;
           font-family: PingFangSC-Regular, PingFang SC;
           font-weight: 400;
-          color: rgba(74, 74, 74, 1);
           line-height: 20px;
           margin: 0px;
         }
@@ -143,7 +148,6 @@ export default class Home extends Mixins(SyncMixin) {
           font-size: 14px;
           font-family: PingFangSC-Regular, PingFang SC;
           font-weight: 400;
-          color: rgba(74, 74, 74, 1);
           line-height: 1;
         }
       }

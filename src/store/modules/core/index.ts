@@ -1,5 +1,6 @@
 import person from "./person";
 import merchant from "./merchant";
+import agent from "./agent";
 import album from "./album";
 import albumPhoto from "./album_photo";
 import article from "./article";
@@ -16,6 +17,7 @@ import websiteVideo from "./website_video";
 export default {
   person,
   merchant,
+  agent,
   album,
   albumPhoto,
   article,

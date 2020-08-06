@@ -14,9 +14,9 @@ const BillItemValueType = {
     unit: "个",
     color: "#F5A623",
   },
-  package: {
-    text: "卡包",
-    unit: "套",
+  other: {
+    text: "",
+    unit: "份",
     color: "#F5A623",
   },
 };

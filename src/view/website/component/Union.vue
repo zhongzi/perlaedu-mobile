@@ -33,6 +33,8 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 
 import AiCell from "@/view/component/AiCell.vue";
 
+import _get from "lodash/get";
+
 @Component({
   components: {
     AiCell,

@@ -39,12 +39,13 @@ export default class Home extends Mixins(SyncMixin) {
       query: {
         extras: JSON.stringify({
           Merchant: [
-            "location",
-            "website",
-            "me",
             "count_persons",
+            "me",
+            "location",
             "scene_qrcode_url",
             "union_merchant",
+            "website",
+            "coupon",
           ],
           Website: ["skin"],
         }),
@@ -55,7 +56,7 @@ export default class Home extends Mixins(SyncMixin) {
   share() {
     if (isEmpty(this.merchant)) return;
 
-    const name = this.merchant.name + " - 移动微官网";
+    const name = this.merchant.name + " - 机构门户";
     this.$bus.$emit("config:share", {
       title: name,
       desc: "马上点击进入获取更多优惠与精彩信息",

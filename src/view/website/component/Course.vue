@@ -38,6 +38,7 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 .wrapper {
   margin-bottom: 15px;
+  color: rgba(74, 74, 74, 1);
 
   .course {
     display: flex;
@@ -54,7 +55,6 @@ export default class Home extends Vue {
       font-size: 13px;
       font-family: PingFangSC-Regular, PingFang SC;
       font-weight: 400;
-      color: rgba(74, 74, 74, 1);
       line-height: 20px;
     }
   }

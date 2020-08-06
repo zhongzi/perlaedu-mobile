@@ -35,7 +35,7 @@ import isEmpty from "lodash/isEmpty";
 })
 export default class Home extends Vue {
   tabs: any = [
-    { label: "可用券", value: "taken" },
+    { label: "可用券", value: ["taken", "pending"] },
     { label: "已使用", value: "used" },
     { label: "过期券", value: ["expired", "canceled"] },
   ];
@@ -49,11 +49,11 @@ export default class Home extends Vue {
 
   get query() {
     return {
-      scope: "merchant",
       keyword: this.keyword,
       openid: this.$auth.user.openid,
       status: this.curTab.value,
-      extras: "item,union,merchant, hashed_id",
+      extras:
+        "item,union,merchant, hashed_id, count_source_on_links, count_source",
     };
   }
 

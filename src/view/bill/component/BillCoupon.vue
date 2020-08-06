@@ -19,6 +19,14 @@
             :class="b('header-right-btn')"
           />
         </template>
+        <template v-else-if="isPending">
+          <bill-button
+            v-if="!isInDetail"
+            label="激活"
+            :enableIcon="false"
+            :class="b('header-right-btn')"
+          />
+        </template>
         <template v-else>
           <img :src="statusImg" />
         </template>
@@ -37,11 +45,23 @@
         </template>
       </div>
       <div :class="b('footer-right')">
-        <template v-if="coupon.end_at">
-          有效期至 {{ coupon.end_at | defaultDay }}
+        <template v-if="isPending">
+          <span class="progress">
+            进度:
+            {{
+              ((coupon.count_source * 100) / coupon.count_source_on_links)
+                | round(2)
+            }}
+            %
+          </span>
         </template>
         <template v-else>
-          有效
+          <template v-if="coupon.end_at">
+            有效期至 {{ coupon.end_at | defaultDay }}
+          </template>
+          <template v-else>
+            有效
+          </template>
         </template>
       </div>
     </div>
@@ -70,16 +90,25 @@ export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Object, default: null }) coupon: any;
 
   get couponStyle() {
-    return {
-      backgroundImage:
-        "url(" +
-        require("@/asset/image/coupon-bg" + this.$densityStr + ".png") +
-        ")",
-    };
+    return this.coupon.id
+      ? {
+          backgroundImage:
+            "url(" +
+            require("@/asset/image/coupon-bg" +
+              (this.isPending ? "-pending" : "") +
+              this.$densityStr +
+              ".png") +
+            ")",
+        }
+      : {};
   }
 
   get isTaken() {
     return this.status === BillCouponStatus.taken;
+  }
+
+  get isPending() {
+    return this.status === BillCouponStatus.pending;
   }
 
   get statusImg() {
@@ -157,20 +186,21 @@ export default class Home extends Mixins(SyncMixin) {
   height: 130px;
   background-size: cover;
   background-origin: border-box;
-  padding: 10px 30px 20px;
+  padding: 10px 30px 25px;
 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
   &__header {
-    flex: 2;
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: space-between;
 
     &-left {
       flex: 2;
+      min-width: 0px;
 
       display: flex;
       justify-content: space-between;
@@ -185,13 +215,13 @@ export default class Home extends Mixins(SyncMixin) {
         0px 4px 4px rgba(255, 143, 13, 0.4);
 
       &-value {
-        min-width: 100px;
+        width: 100px;
         span:nth-child(1) {
           font-size: 36px;
         }
       }
       &-title {
-        max-width: 100px;
+        width: calc(100% - 100px);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -199,11 +229,20 @@ export default class Home extends Mixins(SyncMixin) {
     }
 
     &-right {
-      flex: 1.5;
-
       &-btn {
         float: right;
         height: 35px;
+      }
+
+      .progress {
+        float: right;
+        font-size: 18px;
+        font-family: PingFangSC-Semibold, PingFang SC;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 1);
+        line-height: 25px;
+        text-shadow: 0px 6px 12px rgba(254, 196, 77, 0.44),
+          0px 4px 4px rgba(255, 143, 13, 0.4);
       }
 
       img {
@@ -214,7 +253,6 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   &__footer {
-    flex: 1;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -254,6 +292,10 @@ export default class Home extends Mixins(SyncMixin) {
       color: rgba(182, 103, 14, 1);
       line-height: 18px;
       text-shadow: 0px 6px 12px rgba(254, 196, 77, 0.44);
+
+      .progress {
+        color: #fff;
+      }
     }
   }
 }
