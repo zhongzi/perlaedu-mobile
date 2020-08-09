@@ -10,7 +10,7 @@
           <p>{{ merchant.location | safe("address") }}</p>
         </div>
         <div class="phone" @click="onCall(merchant.phone)">
-          <i class="iconfont icon-call" :style="skin.icon.phone" />
+          <i class="iconfont icon-call" :style="skin | safe('icon.phone')" />
           <span> {{ merchant.phone }} </span>
         </div>
       </div>
