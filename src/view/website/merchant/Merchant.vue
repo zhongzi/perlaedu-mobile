@@ -83,8 +83,7 @@ import cloneDeep from "lodash/cloneDeep";
 })
 export default class Home extends Mixins(SyncMixin) {
   get merchant() {
-    const skin = {};
-    return merge(cloneDeep(this.entity), { website: { skin: skin } });
+    return this.entity;
   }
 
   get isOwner() {
@@ -116,6 +115,7 @@ export default class Home extends Mixins(SyncMixin) {
   created() {
     this.store = "merchant";
     this.id = this.$route.params.merchantId;
+    this.checkNoWebsite();
   }
 
   @Watch("merchant", { deep: true })
