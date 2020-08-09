@@ -126,7 +126,7 @@ export default class Home extends Mixins(SyncMixin) {
     if (this.openBag()) return;
 
     if (isEmpty(this.telephone) || !/^1[3456789]\d{9}$/.test(this.telephone)) {
-      this.$hui.$toast.error("手机号码作为核销唯一凭证， 请正确填写且不可为空");
+      this.$hui.toast.error("手机号码作为核销唯一凭证， 请正确填写且不可为空");
       return;
     }
 
