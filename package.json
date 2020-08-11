@@ -21,6 +21,7 @@
     "@jukejia/vincent-canvas": "^0.1.6",
     "@sentry/browser": "^5.15.5",
     "@sentry/integrations": "^5.15.5",
+    "@zhongzi/hui": "0.0.2",
     "axios": "^0.19.2",
     "better-scroll": "^2.0.0-beta.10",
     "core-js": "^3.6.5",

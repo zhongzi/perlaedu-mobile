@@ -6,8 +6,8 @@ import router from "./router";
 import store from "./store";
 import "./registerServiceWorker";
 
-import Hui from "hui";
-import "hui/dist/styles/hui.css";
+import Hui from "@zhongzi/hui";
+import "@zhongzi/hui/dist/styles/hui.css";
 
 import * as Sentry from "@sentry/browser";
 import * as Integrations from "@sentry/integrations";
