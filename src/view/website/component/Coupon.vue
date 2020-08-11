@@ -158,6 +158,7 @@ export default class Home extends Mixins(SyncMixin) {
   created() {
     this.store = "billCoupon";
     this.showDialog = this.coupon.is_takeable;
+    this.telephone = _get(this.$auth, "user.phone");
   }
 }
 </script>
