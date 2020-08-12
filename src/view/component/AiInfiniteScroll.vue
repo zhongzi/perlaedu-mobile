@@ -1,7 +1,7 @@
 <template>
   <div ref="wrapper" :style="{ height: height }" :class="b()">
-    <div :class="b('content')">
-      <div :style="mergedStyle">
+    <div :class="b('content')" :style="mergedStyle">
+      <div>
         <slot :list="list" name="header" />
         <slot :list="list" name="list">
           <div :class="b('list')">
@@ -165,6 +165,7 @@ export default class Home extends Vue {
       click: true,
       stopPropagation: true,
       nestedScroll: true,
+      bindToWrapper: true,
     };
     if (this.enablePullDown) {
       options["pullDownRefresh"] = {
@@ -202,6 +203,7 @@ export default class Home extends Vue {
 
   _initPullDown() {
     this.scroll.on("pullingDown", () => {
+      console.log("pullingDown");
       this.beforePullDown = false;
       this.isPullingDown = true;
       this.isLoading = true;

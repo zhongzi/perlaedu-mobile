@@ -1,9 +1,14 @@
 <template>
   <div :class="b()">
-    <hui-button :class="b('action')" @click.native="$emit('cancel')">
+    <hui-button
+      v-if="cancelLabel"
+      :class="b('action')"
+      @click.native="$emit('cancel')"
+    >
       {{ cancelLabel }}
     </hui-button>
     <hui-button
+      v-if="submitLabel"
       :class="b('action')"
       @click.native="$emit('submit')"
       type="primary"

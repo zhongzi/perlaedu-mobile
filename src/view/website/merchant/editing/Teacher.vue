@@ -113,8 +113,13 @@ export default class Home extends Mixins(SyncMixin) {
     this.id = this.innerTeacher.id;
     this.saveEntity({
       res: cloneDeep(
-        merge(this.innerTeacher, { merchant_id: this.merchantId })
+        merge(this.innerTeacher, {
+          merchant_id: this.merchantId,
+        })
       ),
+      query: {
+        website_teacher_required: true,
+      },
       success: () => {
         this.$nextTick(() => {
           this.$router.go(-1);

@@ -7,13 +7,13 @@
         </div>
       </template>
     </ai-card>
-    <hui-dialog v-model="showDialog" :appendToBody="true">
+    <ai-dialog v-model="showDialog">
       <div class="form">
         <h2>新建相册</h2>
         <ai-input v-model="title" placeholder="输入相册名称" class="input" />
         <ai-submit-actions @submit="onSubmit" @cancel="onCancel" />
       </div>
-    </hui-dialog>
+    </ai-dialog>
   </div>
 </template>
 
@@ -25,6 +25,7 @@ import SyncMixin from "@/mixin/SyncMixin";
 import AiCard from "@/view/component/AiCard.vue";
 import AiInput from "@/view/component/AiInput.vue";
 import AiSubmitActions from "@/view/component/AiSubmitActions.vue";
+import AiDialog from "@/view/component/AiDialog.vue";
 
 import map from "lodash/map";
 import isEmpty from "lodash/isEmpty";
@@ -34,6 +35,7 @@ import isEmpty from "lodash/isEmpty";
     AiCard,
     AiInput,
     AiSubmitActions,
+    AiDialog,
   },
 })
 export default class Home extends Mixins(SyncMixin) {

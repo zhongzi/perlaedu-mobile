@@ -1,14 +1,19 @@
 <template>
   <div :class="b()">
-    <div :class="b('header')">
-      <ai-input v-model="keyword" placeholder="输入视频名称或标签" />
-    </div>
     <ai-list-stored
+      scrollType="scroll"
       resource="video"
       :query="query"
       :refresh="refresh"
-      scrollHeight="80vh"
     >
+      <template v-slot:header>
+        <div :class="b('header')">
+          <ai-input v-model="keyword" placeholder="输入视频名称或标签" />
+          <hui-button type="primary" @click.native.stop="upload">
+            上传新视频
+          </hui-button>
+        </div>
+      </template>
       <template v-slot:item="{ item }">
         <ai-cell :class="b('item')" :showBottomLine="true">
           <template v-slot:cover>
@@ -29,11 +34,7 @@
       </template>
     </ai-list-stored>
     <ai-fixed-footer>
-      <ai-submit-actions
-        @submit="upload"
-        @cancel="$emit('cancel')"
-        submitLabel="上传新视频"
-      />
+      <ai-submit-actions @cancel="$emit('cancel')" :submitLabel="null" />
     </ai-fixed-footer>
     <hui-dialog v-model="showDialog">
       <div :class="b('dialog')">

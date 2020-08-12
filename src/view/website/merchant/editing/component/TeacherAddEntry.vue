@@ -8,11 +8,16 @@
       </template>
       <template v-slot:body> </template>
     </ai-card>
-    <hui-popup v-model="showPicker" position="right" ref="popup">
-      <div class="popup" v-if="showPicker">
-        <teacher-picker :query="query" @submit="onSubmit" @cancel="onCancel" />
-      </div>
-    </hui-popup>
+    <ai-popup v-model="showPicker">
+      <teacher-picker
+        :query="query"
+        @submit="onSubmit"
+        @cancel="onCancel"
+        class="popup"
+        @add="addTeacher"
+        :enableAddAction="true"
+      />
+    </ai-popup>
   </div>
 </template>
 
@@ -22,6 +27,7 @@ import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import SyncMixin from "@/mixin/SyncMixin";
 
 import AiCard from "@/view/component/AiCard.vue";
+import AiPopup from "@/view/component/AiPopup.vue";
 
 import TeacherPicker from "./TeacherPicker.vue";
 
@@ -30,6 +36,7 @@ import map from "lodash/map";
 @Component({
   components: {
     AiCard,
+    AiPopup,
     TeacherPicker,
   },
 })
@@ -49,12 +56,20 @@ export default class Home extends Mixins(SyncMixin) {
     this.store = "websiteTeacher";
   }
 
-  mounted() {
-    document.body.appendChild((this.$refs.popup as any).$el);
-  }
-
   onCancel() {
     this.showPicker = false;
+  }
+
+  addTeacher() {
+    this.showPicker = false;
+    this.$nextTick(() => {
+      this.$router.push({
+        name: "websiteEditingTeacher",
+        params: {
+          teacherId: "new",
+        },
+      });
+    });
   }
 
   onSubmit(teachers) {
@@ -81,7 +96,7 @@ export default class Home extends Mixins(SyncMixin) {
 <style lang="scss" scoped>
 .add-teacher-entry {
   width: 104px;
-  height: 160px;
+  height: 170px;
   padding: 0px 5px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
@@ -106,8 +121,5 @@ export default class Home extends Mixins(SyncMixin) {
       color: rgba(195, 195, 195, 1);
     }
   }
-}
-.popup {
-  height: 100vh;
 }
 </style>

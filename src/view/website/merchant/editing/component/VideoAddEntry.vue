@@ -7,19 +7,20 @@
         </div>
       </template>
     </ai-card>
-    <hui-popup v-model="showPicker" position="right" class="popup" ref="popup">
+    <ai-popup v-model="showPicker">
       <ai-video-selector @selected="onSelected" @cancel="showPicker = false" />
-    </hui-popup>
+    </ai-popup>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
+import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
 
 import AiCard from "@/view/component/AiCard.vue";
 import AiVideoSelector from "@/view/component/AiVideoSelector.vue";
+import AiPopup from "@/view/component/AiPopup.vue";
 
 import map from "lodash/map";
 import isEmpty from "lodash/isEmpty";
@@ -28,6 +29,7 @@ import isEqual from "lodash/isEqual";
 @Component({
   components: {
     AiCard,
+    AiPopup,
     AiVideoSelector,
   },
 })
@@ -38,10 +40,6 @@ export default class Home extends Mixins(SyncMixin) {
 
   created() {
     this.store = "websiteVideo";
-  }
-
-  mounted() {
-    document.body.appendChild((this.$refs.popup as any).$el);
   }
 
   onSelected(video) {
@@ -87,19 +85,6 @@ export default class Home extends Mixins(SyncMixin) {
     i {
       color: rgba(195, 195, 195, 1);
     }
-  }
-}
-.form {
-  padding: 30px;
-  text-align: center;
-
-  & ::v-deep input {
-    padding-left: 10px;
-  }
-}
-.popup {
-  & ::v-deep .h-popup__content {
-    height: 100vh;
   }
 }
 </style>

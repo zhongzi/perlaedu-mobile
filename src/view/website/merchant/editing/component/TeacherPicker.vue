@@ -7,7 +7,12 @@
       :query="innerQuery"
       :enableEmpty="false"
     >
-      <template v-slot:item="{ item }">
+      <template v-slot:item="{ item, index }">
+        <div class="item" v-if="index === 0 && enableAddAction">
+          <div class="plus" @click.stop="$emit('add')">
+            <i class="iconfont icon-plus" />
+          </div>
+        </div>
         <div class="item">
           <ai-state-check @update:checked="(v) => onCheckedChanged(item, v)">
             <teacher :teacher="item" routeName="" class="teacher" />
@@ -25,7 +30,6 @@
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
-import StopBodyScrollMixin from "@/mixin/StopBodyScrollMixin";
 
 import AiListStored from "@/view/component/AiListStored.vue";
 import AiStateCheck from "@/view/component/AiStateCheck.vue";
@@ -48,8 +52,9 @@ import filter from "lodash/filter";
     Teacher,
   },
 })
-export default class Home extends Mixins(StopBodyScrollMixin) {
+export default class Home extends Vue {
   @Prop({ type: Object, default: null }) query: any;
+  @Prop({ type: Boolean, default: false }) enableAddAction: any;
 
   keyword: string = "";
   selectedTeachers: any = [];
@@ -76,7 +81,6 @@ export default class Home extends Mixins(StopBodyScrollMixin) {
       this.selectedTeachers.push(teacher);
     }
   }
-
   onCancel() {
     this.$emit("cancel");
   }
@@ -104,6 +108,20 @@ export default class Home extends Mixins(StopBodyScrollMixin) {
       width: 100%;
       height: 100%;
       margin-bottom: 0px;
+    }
+
+    .plus {
+      min-height: 180px;
+      box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(216, 216, 216, 0.19);
+      border-radius: 4px;
+      i {
+        color: rgba(195, 195, 195, 1);
+      }
     }
   }
 }
