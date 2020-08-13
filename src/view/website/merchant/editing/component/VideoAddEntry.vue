@@ -8,7 +8,11 @@
       </template>
     </ai-card>
     <ai-popup v-model="showPicker">
-      <ai-video-selector @selected="onSelected" @cancel="showPicker = false" />
+      <ai-video-selector
+        @selected="onSelected"
+        @cancel="showPicker = false"
+        :query="query"
+      />
     </ai-popup>
   </div>
 </template>
@@ -38,6 +42,13 @@ export default class Home extends Mixins(SyncMixin) {
 
   showPicker: boolean = false;
 
+  get query() {
+    return {
+      merchant_id: this.merchant && this.merchant.id,
+      website_unjoined: true,
+    };
+  }
+
   created() {
     this.store = "websiteVideo";
   }
@@ -49,6 +60,7 @@ export default class Home extends Mixins(SyncMixin) {
         merchant_id: this.$auth.user.curr_merch_id,
       },
       success: () => {
+        this.$emit("refresh");
         this.showPicker = false;
       },
       failure: (err) => {

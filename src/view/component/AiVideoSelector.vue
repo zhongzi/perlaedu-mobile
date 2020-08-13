@@ -3,7 +3,7 @@
     <ai-list-stored
       scrollType="scroll"
       resource="video"
-      :query="query"
+      :query="innerQuery"
       :refresh="refresh"
     >
       <template v-slot:header>
@@ -53,7 +53,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 
 import AiInput from "./AiInput.vue";
 import AiCell from "./AiCell.vue";
@@ -64,6 +64,7 @@ import AiFixedFooter from "./AiFixedFooter.vue";
 import AiSubmitActions from "./AiSubmitActions.vue";
 
 import _get from "lodash/get";
+import merge from "lodash/merge";
 
 @Component({
   name: "ai-video-selector",
@@ -78,6 +79,8 @@ import _get from "lodash/get";
   },
 })
 export default class Home extends Vue {
+  @Prop({ type: Object, default: null }) query: any;
+
   curVideo: any = null;
   keyword: string = "";
   refresh: boolean = true;
@@ -88,14 +91,16 @@ export default class Home extends Vue {
     return require("@/asset/image/default_video_cover.jpg");
   }
 
-  get query() {
-    return {
-      merchant_id: _get(this.$auth, "user.curr_merch_id", 0),
-      filters: JSON.stringify({
-        title: [this.keyword],
-        keywords: [this.keyword],
-      }),
-    };
+  get innerQuery() {
+    return merge(
+      {
+        filters: JSON.stringify({
+          title: [this.keyword],
+          keywords: [this.keyword],
+        }),
+      },
+      this.query
+    );
   }
 
   upload() {
@@ -130,9 +135,6 @@ export default class Home extends Vue {
       max-height: 100px;
       margin-right: 5px;
     }
-  }
-  &__dialog-player {
-    height: 500px;
   }
 }
 </style>

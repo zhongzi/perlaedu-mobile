@@ -9,24 +9,11 @@
           <hui-progress :percentage="progress" />
           <div>{{ progress >= 100 ? "已上传" : "上传中..." }}</div>
         </div>
-        <div :class="b('uploader-progress-snapshoting')">
-          <hui-progress v-if="!snapshotCover" />
-          <hui-progress v-else :percentage="progress" />
-          <div>
-            {{
-              snapshotCover
-                ? "已截图"
-                : progress === 100
-                ? "截图中..."
-                : "待处理..."
-            }}
-          </div>
-        </div>
       </div>
     </div>
     <div :class="b('form')">
       <p class="field">
-        <img v-if="snapshotCover" :src="snapshotCover" />
+        <img v-if="form.cover" :src="snapshotCover" />
       </p>
       <ai-input class="field" label="视频名称" v-model="form.title" />
       <ai-input class="field" label="视频描述" v-model="form.description" />
@@ -103,7 +90,9 @@ export default class Home extends Mixins(SyncMixin) {
 
   @Watch("video", { deep: true })
   onVideoChanged() {
-    this.form = cloneDeep(this.video);
+    if (!this.form.id || this.form.id <= 0) {
+      this.form = cloneDeep(this.video);
+    }
   }
 
   load_script(name, url) {
@@ -232,7 +221,6 @@ export default class Home extends Mixins(SyncMixin) {
       },
       res: merge(this.form, {
         id: this.video.id,
-        cover: this.snapshotCover,
       }),
       success: (resp) => {
         this.$emit("uploaded", resp.data);

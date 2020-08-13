@@ -7,6 +7,12 @@ export default class StopBodyScrollMixin extends Vue {
   SBSAuto: boolean = true;
 
   stopBodyScroll(isFixed) {
+    this.$nextTick(() => {
+      this._stopBodyScroll(isFixed);
+    });
+  }
+
+  _stopBodyScroll(isFixed) {
     if (isFixed) {
       this.SBSTop = window.scrollY;
 
