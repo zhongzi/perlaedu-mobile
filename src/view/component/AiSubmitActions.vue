@@ -2,14 +2,14 @@
   <div :class="b()">
     <hui-button
       v-if="cancelLabel"
-      :class="b('action')"
+      :class="b('cancel')"
       @click.native="$emit('cancel')"
     >
       {{ cancelLabel }}
     </hui-button>
     <hui-button
       v-if="submitLabel"
-      :class="b('action')"
+      :class="b('submit')"
       @click.native="$emit('submit')"
       type="primary"
     >
@@ -35,12 +35,36 @@ export default class Home extends Vue {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 10px 20px;
 
-  &__action {
-    width: 100%;
+  &__cancel {
+    width: 126px;
+    height: 48px;
+    background: rgba(239, 239, 239, 1);
+    border-radius: 25px;
+    border: none;
 
-    margin: 10px;
-    min-height: 48px;
+    font-size: 14px;
+    font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
+    font-weight: bold;
+    color: rgba(155, 155, 155, 1);
+    line-height: 19px;
+    letter-spacing: 1px;
+  }
+
+  &__submit {
+    width: 160px;
+    height: 48px;
+    background: rgba(250, 142, 69, 1);
+    border-radius: 25px;
+    border: none;
+
+    font-size: 14px;
+    font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 1);
+    line-height: 19px;
+    letter-spacing: 1px;
   }
 }
 </style>

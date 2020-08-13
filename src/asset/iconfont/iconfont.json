@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "6928827",
+      "name": "play",
+      "font_class": "-play",
+      "unicode": "e726",
+      "unicode_decimal": 59174
+    },
+    {
       "icon_id": "11491738",
       "name": "下载",
       "font_class": "-download-s",

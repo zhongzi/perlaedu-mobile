@@ -1,14 +1,20 @@
 <template>
   <div :class="b()">
-    <div :class="b('vec')" @click="$emit('input', !value)">
-      <input
-        :class="b('vec-input')"
-        type="checkbox"
-        :value="value"
-        @blur="fixIOSScroll"
-        @input="(e) => $emit('input', e.target.value)"
-      />
-      <div :class="b('vec-fake', { checked: value })" />
+    <div :class="b('vec')" @click="onInput(!innerValue)">
+      <template v-if="mode === 'input'">
+        <input
+          :class="b('vec-input')"
+          type="checkbox"
+          :value="innerValue"
+          @blur="fixIOSScroll"
+        />
+        <div :class="b('vec-fake', { checked: innerValue })" />
+      </template>
+      <template v-else>
+        <div :class="[b('vec-icon'), { [b('vec-icon-active')]: innerValue }]">
+          <i class="iconfont icon-checked" />
+        </div>
+      </template>
     </div>
     <slot>
       {{ title }}
@@ -27,6 +33,18 @@ import PatchMixin from "@/mixin/PatchMixin";
 export default class Home extends Mixins(PatchMixin) {
   @Prop({ type: Boolean, default: false }) value: boolean;
   @Prop({ type: String, default: "" }) title: string;
+  @Prop({ type: String, default: "input" }) mode: string;
+
+  innerValue: boolean = false;
+
+  created() {
+    this.innerValue = this.value;
+  }
+
+  onInput(v) {
+    this.innerValue = v;
+    this.$emit("input", this.innerValue);
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -37,10 +55,32 @@ export default class Home extends Mixins(PatchMixin) {
   &__vec {
     position: relative;
     margin-right: 5px;
+    width: 34px;
+    height: 44px;
+
+    &-icon {
+      width: 24px;
+      height: 24px;
+      background: rgba(241, 241, 241, 1);
+      border-radius: 6px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      color: rgb(211, 211, 211);
+
+      i {
+        font-size: 12px;
+      }
+    }
+    &-icon-active {
+      background: rgba(255, 147, 0, 1);
+
+      color: #fff;
+    }
 
     &-input {
-      width: 14px;
-      height: 14px;
       border-radius: 4px;
       border: 2px solid rgba(255, 255, 255, 1);
       visibility: hidden;
@@ -53,8 +93,8 @@ export default class Home extends Mixins(PatchMixin) {
       position: absolute;
       top: 0;
       left: 0;
-      width: 14px;
-      height: 14px;
+      bottom: 0;
+      right: 0;
       border-radius: 4px;
       border: 2px solid #fff;
       background: rgba(255, 255, 255, 0);

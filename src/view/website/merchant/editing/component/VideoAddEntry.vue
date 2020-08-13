@@ -53,12 +53,17 @@ export default class Home extends Mixins(SyncMixin) {
     this.store = "websiteVideo";
   }
 
-  onSelected(video) {
+  onSelected(videos) {
+    if (isEmpty(videos)) {
+      return;
+    }
     this.saveEntity({
-      res: {
-        video_id: video.id,
-        merchant_id: this.$auth.user.curr_merch_id,
-      },
+      res: map(videos, (video) => {
+        return {
+          video_id: video.id,
+          merchant_id: this.merchant && this.merchant.id,
+        };
+      }),
       success: () => {
         this.$emit("refresh");
         this.showPicker = false;
