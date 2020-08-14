@@ -1,6 +1,6 @@
 import Vue from "vue";
 
-import dictionaryApi from "@/api/core/dictionary";
+import settingApi from "@/api/core/setting";
 
 import cloneDeep from "lodash/cloneDeep";
 import forEach from "lodash/forEach";
@@ -11,7 +11,7 @@ const configs = cloneDeep(require("../configs.json"));
 const keys = ["guaranteeBillURL", "guaranteeBillWithdrawURL"];
 
 const loadDictionary = (callback) => {
-  dictionaryApi
+  settingApi
     .list({
       query: {
         key: keys,

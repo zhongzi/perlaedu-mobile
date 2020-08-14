@@ -13,6 +13,7 @@ import video from "./video";
 import website from "./website";
 import websiteTeacher from "./website_teacher";
 import websiteVideo from "./website_video";
+import setting from "./setting";
 
 export default {
   person,
@@ -30,4 +31,5 @@ export default {
   website,
   websiteTeacher,
   websiteVideo,
+  setting,
 };
