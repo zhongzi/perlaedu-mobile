@@ -83,13 +83,25 @@ export default class Home extends Mixins(SyncMixin) {
     ) {
       return;
     }
-    const title = _get(this.coupon, "share.title", "送您一份好课好礼");
-    const desc = _get(this.coupon, "share.desc", "快来和我一起上课吧");
-    const imgUrl = _get(this.coupon, "share.imgUrl", this.coupon.user.avatar);
+    const title = _get(
+      this.coupon,
+      "share.title",
+      `${this.$auth.user.nickname} 给你赠送一份 ${this.coupon.merchant.name} 的大礼包`
+    );
+    const desc = _get(
+      this.coupon,
+      "share.desc",
+      "我已经成功领取，名额有限，快来抢！"
+    );
+    const imgUrl = _get(
+      this.coupon,
+      "share.imgUrl",
+      this.coupon.merchant.cover_url || this.coupon.merchant.logo_url
+    );
 
     let link = _get(this.coupon, "share.url");
     if (isEmpty(link)) {
-      if (!isEmpty(this.coupon.merchant)) {
+      if (this.coupon.merchant_id > 0) {
         link = this.$tools.resolveURL(this.$router, {
           name: "websiteMerchant",
           params: {
@@ -99,7 +111,7 @@ export default class Home extends Mixins(SyncMixin) {
             expose: this.$auth.openid,
           },
         });
-      } else if (!isEmpty(this.coupon.union)) {
+      } else if (this.coupon.union_id > 0) {
         link = this.$tools.resolveURL(this.$router, {
           name: "websiteUnion",
           params: {

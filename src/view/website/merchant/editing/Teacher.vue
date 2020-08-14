@@ -44,6 +44,8 @@ import AiLine from "@/view/component/AiLine.vue";
 import AiSection from "@/view/component/AiSection.vue";
 import AiFixedFooter from "@/view/component/AiFixedFooter.vue";
 
+import { PersonRole } from "@/enum/person_role";
+
 import isEqual from "lodash/isEqual";
 import isEmpty from "lodash/isEmpty";
 import _get from "lodash/get";
@@ -110,13 +112,19 @@ export default class Home extends Mixins(SyncMixin) {
   onSubmit() {
     if (!this.merchantId) return;
 
+    let person = cloneDeep(
+      merge(this.innerTeacher, {
+        merchant_id: this.merchantId,
+      })
+    );
+
     this.id = this.innerTeacher.id;
+    if (!this.id) {
+      person.role = PersonRole.teacher.value;
+    }
+
     this.saveEntity({
-      res: cloneDeep(
-        merge(this.innerTeacher, {
-          merchant_id: this.merchantId,
-        })
-      ),
+      res: person,
       query: {
         website_teacher_required: true,
       },

@@ -5,11 +5,19 @@
         <div class="name">
           <span :style="skin.title"> {{ merchant.name }} </span>
         </div>
-        <div class="address" @click="show = true">
+        <div
+          class="address"
+          @click="show = true"
+          v-if="merchant.location.address"
+        >
           <i class="iconfont icon-location" />
-          <p>{{ merchant.location | safe("address") }}</p>
+          <p>{{ merchant.location.address }}</p>
         </div>
-        <div class="phone" @click="onCall(merchant.phone)">
+        <div
+          class="phone"
+          @click="onCall(merchant.phone)"
+          v-if="merchant.phone"
+        >
           <i class="iconfont icon-call" :style="skin | safe('icon.phone')" />
           <span> {{ merchant.phone }} </span>
         </div>
@@ -18,7 +26,9 @@
         <hui-button type="primary" @click.native="onFollow">
           {{ isFollowed ? "已关注" : "点击关注" }}
         </hui-button>
-        <span> {{ merchant.count_persons }} 人正在关注</span>
+        <span>
+          {{ merchant.count_persons + (followed ? 1 : 0) }} 人正在关注</span
+        >
       </div>
     </div>
     <ai-location
@@ -31,8 +41,11 @@
     <hui-dialog v-model="showDialog">
       <div class="dialog">
         <img :src="merchant.scene_qrcode_url" />
-        <span>【微信扫码关注】</span>
-        <p>本机构将不定时派发现金红包优惠券</p>
+        <div>【微信扫码关注】</div>
+        <div>本机构将不定时派发现金红包优惠券</div>
+      </div>
+      <div class="close" @click="showDialog = false">
+        <i class="iconfont icon-close" />
       </div>
     </hui-dialog>
   </div>
@@ -44,6 +57,8 @@ import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 import SyncMixin from "@/mixin/SyncMixin";
 
 import AiLocation from "@/view/component/AiLocation.vue";
+
+import { PersonRole } from "@/enum/person_role";
 
 import isEmpty from "lodash/isEmpty";
 import isEqual from "lodash/isEqual";
@@ -60,14 +75,15 @@ export default class Home extends Mixins(SyncMixin) {
   showDialog: boolean = false;
   show: boolean = false;
 
+  followed: boolean = false;
+
   get skin() {
     const skin = _get(this.merchant, "website.skin.merchant", {});
-    console.log(skin);
     return skin;
   }
 
   get isFollowed() {
-    return !isEmpty(this.merchant.me);
+    return !isEmpty(this.merchant.me) || this.followed;
   }
 
   created() {
@@ -80,9 +96,27 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   onFollow() {
-    if (this.isFollowed) return;
+    if (this.isFollowed || this.followed) return;
 
-    this.showDialog = true;
+    if (!this.$auth.user.is_subscribed) {
+      this.showDialog = true;
+      return;
+    }
+
+    this.beGuest();
+  }
+
+  beGuest() {
+    this.saveEntity({
+      res: {
+        merchant_id: this.merchant.id,
+        role: PersonRole.guest.value,
+      },
+      success: () => {
+        this.followed = true;
+        this.$hui.toast.info("关注成功");
+      },
+    });
   }
 }
 </script>
@@ -154,10 +188,26 @@ export default class Home extends Mixins(SyncMixin) {
     }
   }
   .dialog {
+    padding: 50px;
     text-align: center;
-    padding: 20px 10px;
+
     img {
       width: 100%;
+    }
+    div {
+      font-size: 12px;
+      line-height: 1.5;
+    }
+  }
+  .close {
+    position: relative;
+    text-align: center;
+    bottom: -50px;
+    i {
+      padding: 10px;
+      border: 1px solid #fff;
+      border-radius: 50%;
+      color: #fff;
     }
   }
 }

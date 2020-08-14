@@ -178,6 +178,7 @@ export default class Home extends Mixins(SyncMixin) {
     border-radius: 12px;
     padding-top: 20px;
     padding-bottom: 80px;
+    min-height: calc(100vh - 250px);
 
     .block {
       margin: 0px 20px;

@@ -19,6 +19,7 @@ auth.fetchLoggedUser = function (next, to) {
     .then((resp) => {
       const data = resp.data.data;
       if (data.user) {
+        data.user.is_subscribed = data.is_subscribed;
         data.user.is_manager = data.is_manager;
         data.user.agent = data.agent;
         this.login({ user: data.user });

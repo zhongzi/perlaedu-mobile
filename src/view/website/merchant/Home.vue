@@ -56,10 +56,10 @@ export default class Home extends Mixins(SyncMixin) {
   share() {
     if (isEmpty(this.merchant)) return;
 
-    const name = this.merchant.name + " - 机构门户";
+    const name = `${this.$auth.user.nickname} 给你推荐 ${this.merchant.name}`;
     this.$bus.$emit("config:share", {
       title: name,
-      desc: "马上点击进入获取更多优惠与精彩信息",
+      desc: "这是一家非常棒的培训机构哦， 快来了解",
       imgUrl: this.merchant.cover_url || this.merchant.logo_url,
     });
   }
