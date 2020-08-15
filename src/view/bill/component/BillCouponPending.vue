@@ -20,7 +20,7 @@
           </div>
         </template>
       </div>
-      <hui-button type="primary" class="action" @click.native="make">
+      <hui-button type="primary" class="action" @click.native="takeAction">
         {{
           coupon.links[0].is_refer
             ? "送好友课时好礼，激活本券"
@@ -55,12 +55,13 @@
           <i class="iconfont icon-wechat" />
           <span> 分享给微信好友 </span>
         </div>
-        <div class="poster" @click="showPoster" v-if="false">
+        <div class="poster" @click="showPoster = true" v-if="poster">
           <i class="iconfont icon-download-s" />
           <span> 生成海报 </span>
         </div>
       </div>
     </hui-popup>
+    <ai-poster v-model="showPoster" :poster="poster" :context="posterContext" />
   </div>
 </template>
 
@@ -71,6 +72,7 @@ import { BillCouponStatus } from "@/enum/bill_coupon_status";
 
 import AiLineHeader from "@/view/component/AiLineHeader.vue";
 import AiCell from "@/view/component/AiCell.vue";
+import AiPoster from "@/view/component/AiPoster.vue";
 
 import isEmpty from "lodash/isEmpty";
 import _get from "lodash/get";
@@ -79,6 +81,7 @@ import _get from "lodash/get";
   components: {
     AiLineHeader,
     AiCell,
+    AiPoster,
   },
 })
 export default class Home extends Vue {
@@ -86,12 +89,68 @@ export default class Home extends Vue {
   @Prop({ type: Boolean, default: false }) isStaff: boolean;
 
   showPopup: boolean = false;
+  showPoster: boolean = false;
+
+  get poster() {
+    return _get(
+      this.coupon,
+      "item.share.poster",
+      _get(this.coupon, "merchant.website.share.poster")
+    );
+  }
+
+  get posterContext() {
+    return {
+      coupon: this.coupon,
+      merchant: this.coupon.merchant,
+      website: this.coupon.merchant.website,
+      user: this.$auth.user,
+      qrcode: this.$tools.makeQrcode(_get(this.poster, "link", this.shareLink)),
+    };
+  }
+
+  get shareLink() {
+    let link = _get(this.coupon, "share.url");
+    if (isEmpty(link)) {
+      if (this.coupon.merchant_id > 0) {
+        link = this.$tools.resolveURL(this.$router, {
+          name: "websiteMerchant",
+          params: {
+            merchantId: this.coupon.merchant_id,
+          },
+          query: {
+            expose: this.$auth.openid,
+          },
+        });
+      } else if (this.coupon.union_id > 0) {
+        link = this.$tools.resolveURL(this.$router, {
+          name: "websiteUnion",
+          params: {
+            unionId: this.coupon.union_id,
+          },
+          query: {
+            expose: this.$auth.openid,
+          },
+        });
+      }
+    }
+    return link;
+  }
 
   get detailTitle() {
     if (this.coupon.count_source > 0) {
       return "已送给" + this.coupon.count_source + "位好友好课好礼";
     }
     return "暂无任何好友领取好课好礼";
+  }
+
+  created() {
+    this.configShare();
+  }
+
+  @Watch("coupon", { deep: true })
+  onCouponChanged() {
+    this.configShare();
   }
 
   getAction(link) {
@@ -103,7 +162,7 @@ export default class Home extends Vue {
     this.$bus.$emit("config:share:tip:show");
   }
 
-  make() {
+  takeAction() {
     if (this.coupon.links[0].is_refer) {
       this.showPopup = true;
       return;
@@ -114,8 +173,36 @@ export default class Home extends Vue {
     });
   }
 
-  showPoster() {
-    return;
+  configShare() {
+    if (
+      isEmpty(this.coupon.union) &&
+      isEmpty(this.coupon.merchant) &&
+      isEmpty(this.coupon.item.share)
+    ) {
+      return;
+    }
+    const title = _get(
+      this.coupon.item,
+      "share.title",
+      `${this.$auth.user.nickname} 给你赠送一份 ${this.coupon.merchant.name} 的大礼包`
+    );
+    const desc = _get(
+      this.coupon.item,
+      "share.desc",
+      "我已经成功领取，名额有限，快来抢！"
+    );
+    const imgUrl = _get(
+      this.coupon.item,
+      "share.imgUrl",
+      this.coupon.merchant.cover_url || this.coupon.merchant.logo_url
+    );
+
+    this.$bus.$emit("config:share", {
+      title,
+      desc,
+      imgUrl,
+      link: this.shareLink,
+    });
   }
 }
 </script>

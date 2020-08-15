@@ -7,6 +7,9 @@
     ref="popup"
   >
     <slot />
+    <div :class="b('close')">
+      <i class="iconfont icon-close-circle" @click="$emit('input', false)" />
+    </div>
   </hui-dialog>
 </template>
 <script lang="ts">
@@ -41,6 +44,19 @@ export default class Home extends Mixins(StopBodyScrollMixin) {
 .ai-dialog {
   & ::v-deep .h-popup__content {
     height: 100vh;
+  }
+
+  &__close {
+    width: 100%;
+    text-align: center;
+    margin: 5px;
+
+    i {
+      background: rgba(255, 255, 255, 0.8);
+      color: rgba(0, 0, 0, 0.5);
+      border-radius: 50%;
+      font-size: 32px;
+    }
   }
 }
 </style>

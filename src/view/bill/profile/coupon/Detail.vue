@@ -62,73 +62,11 @@ export default class Home extends Mixins(SyncMixin) {
     this.store = "billCoupon";
     this.$bus.$on("bill:coupon:refresh", this.load);
     this.load();
-    this.configShare();
   }
 
   @Watch("$route", { deep: true })
   onRouteChanged() {
     this.load();
-  }
-
-  @Watch("coupon", { deep: true })
-  onCouponChanged() {
-    this.configShare();
-  }
-
-  configShare() {
-    if (
-      isEmpty(this.coupon.union) &&
-      isEmpty(this.coupon.merchant) &&
-      isEmpty(this.coupon.share)
-    ) {
-      return;
-    }
-    const title = _get(
-      this.coupon,
-      "share.title",
-      `${this.$auth.user.nickname} 给你赠送一份 ${this.coupon.merchant.name} 的大礼包`
-    );
-    const desc = _get(
-      this.coupon,
-      "share.desc",
-      "我已经成功领取，名额有限，快来抢！"
-    );
-    const imgUrl = _get(
-      this.coupon,
-      "share.imgUrl",
-      this.coupon.merchant.cover_url || this.coupon.merchant.logo_url
-    );
-
-    let link = _get(this.coupon, "share.url");
-    if (isEmpty(link)) {
-      if (this.coupon.merchant_id > 0) {
-        link = this.$tools.resolveURL(this.$router, {
-          name: "websiteMerchant",
-          params: {
-            merchantId: this.coupon.merchant_id,
-          },
-          query: {
-            expose: this.$auth.openid,
-          },
-        });
-      } else if (this.coupon.union_id > 0) {
-        link = this.$tools.resolveURL(this.$router, {
-          name: "websiteUnion",
-          params: {
-            unionId: this.coupon.union_id,
-          },
-          query: {
-            expose: this.$auth.openid,
-          },
-        });
-      }
-    }
-    this.$bus.$emit("config:share", {
-      title,
-      desc,
-      link,
-      imgUrl,
-    });
   }
 
   load() {
@@ -150,6 +88,8 @@ export default class Home extends Mixins(SyncMixin) {
             "count_source",
             "count_source_on_links",
           ],
+          Merchant: ["website"],
+          Website: ["share"],
           BillCouponLink: ["source", "link"],
           BillItemLink: ["source", "target"],
         }),
