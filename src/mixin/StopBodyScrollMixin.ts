@@ -19,10 +19,12 @@ export default class StopBodyScrollMixin extends Vue {
       this.SBSBody.style.position = "fixed";
       this.SBSBody.style.top = -this.SBSTop + "px";
       this.SBSBody.style.maxWidth = "100vw";
+      this.SBSBody.style.width = "100vw";
     } else {
       this.SBSBody.style.position = "";
       this.SBSBody.style.top = "";
       this.SBSBody.style.maxWidth = "initial";
+      this.SBSBody.style.width = "initial";
 
       window.scrollTo(0, this.SBSTop);
     }

@@ -55,7 +55,7 @@
           <i class="iconfont icon-wechat" />
           <span> 分享给微信好友 </span>
         </div>
-        <div class="poster" @click="showPoster = true" v-if="poster">
+        <div class="poster" @click="showPosterClick" v-if="poster">
           <i class="iconfont icon-download-s" />
           <span> 生成海报 </span>
         </div>
@@ -160,6 +160,11 @@ export default class Home extends Vue {
   showShareTip() {
     this.showPopup = false;
     this.$bus.$emit("config:share:tip:show");
+  }
+
+  showPosterClick() {
+    this.showPopup = false;
+    this.showPoster = true;
   }
 
   takeAction() {

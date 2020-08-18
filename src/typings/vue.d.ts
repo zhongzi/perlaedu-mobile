@@ -10,5 +10,6 @@ declare module "vue/types/vue" {
     $densityStr: any;
     $PosterBuilder: any;
     $bus: any;
+    $db: any;
   }
 }

@@ -73,7 +73,7 @@ export default class Home extends Vue {
       }
     } else {
       this.$router.push({
-        name: "billProfileHome",
+        name: "student",
       });
     }
   }

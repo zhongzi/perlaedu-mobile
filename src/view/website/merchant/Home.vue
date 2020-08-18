@@ -25,6 +25,7 @@ export default class Home extends Mixins(SyncMixin) {
   @Watch("merchant", { deep: true })
   onMerchantChanged() {
     this.share();
+    this.view();
   }
 
   @Watch("$route", { deep: true })
@@ -61,6 +62,14 @@ export default class Home extends Mixins(SyncMixin) {
       title: name,
       desc: "这是一家非常棒的培训机构哦， 快来了解",
       imgUrl: this.merchant.cover_url || this.merchant.logo_url,
+    });
+  }
+
+  view() {
+    if (isEmpty(this.merchant)) return;
+
+    this.$db.nsSet("websites", this.merchant.id, {
+      date: new Date().getTime(),
     });
   }
 }

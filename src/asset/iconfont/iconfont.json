@@ -225,7 +225,7 @@
     {
       "icon_id": "15324305",
       "name": "日程",
-      "font_class": "richeng",
+      "font_class": "-plan",
       "unicode": "e709",
       "unicode_decimal": 59145
     },
@@ -267,7 +267,7 @@
     {
       "icon_id": "15324311",
       "name": "消息",
-      "font_class": "xiaoxi",
+      "font_class": "-message",
       "unicode": "e710",
       "unicode_decimal": 59152
     },

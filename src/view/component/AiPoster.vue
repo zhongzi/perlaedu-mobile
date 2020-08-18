@@ -11,10 +11,9 @@ import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 
 import AiDialog from "@/view/component/AiDialog.vue";
 
-import PosterBuilder from "@/service/poster";
-
 import forEach from "lodash/forEach";
 import template from "lodash/template";
+import cloneDeep from "lodash/cloneDeep";
 
 @Component({
   name: "ai-poster",
@@ -65,13 +64,13 @@ export default class Home extends Vue {
     const name = this.renderContent(this.poster.name);
     const baseWidth = this.poster.baseWidth;
     const template = this.poster.template;
-    const elements = this.poster.elements;
+    const elements = cloneDeep(this.poster.elements);
     forEach(elements, (element) => {
       element.value = this.renderContent(element.value);
     });
 
     if (!this.posterBuilder) {
-      this.posterBuilder = new PosterBuilder();
+      this.posterBuilder = new this.$PosterBuilder();
     }
 
     console.log(

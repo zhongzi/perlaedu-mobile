@@ -3,6 +3,8 @@ import Konva from "konva";
 
 import findIndex from "lodash/findIndex";
 import debounce from "lodash/debounce";
+import isArray from "lodash/isArray";
+import values from "lodash/values";
 
 class PosterBuilder {
   id: any = null;
@@ -21,22 +23,22 @@ class PosterBuilder {
 
   constructor(
     id = null,
-    baseWidth = null,
     name = null,
     template = null,
     elements = null,
+    baseWidth = null,
     callback = null
   ) {
     this.id && this.setData(id, baseWidth, name, template, elements, callback);
   }
 
-  setData(id, baseWidth, name, template, elements, callback = null) {
+  setData(id, name, template, elements, baseWidth, callback = null) {
     this.id = id;
-    this.baseWidth = baseWidth;
     this.scale = 1;
     this.name = name;
     this.template = template;
-    this.elements = elements;
+    this.elements = isArray(elements) ? elements : values(elements);
+    this.baseWidth = baseWidth;
     this.callback = callback;
     this.renderStatus = new Array(this.elements.length);
 
@@ -206,4 +208,5 @@ class PosterBuilder {
 
 export default function (pVue: typeof Vue, options = {}) {
   pVue.prototype.$PosterBuilder = PosterBuilder;
+  pVue.prototype.$posterBuilder = new PosterBuilder();
 }
