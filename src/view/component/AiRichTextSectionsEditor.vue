@@ -108,9 +108,14 @@
         添加模块
       </button>
     </div>
-    <hui-popup v-model="showPicker" position="right" ref="popup">
-      <ai-video-selector @selected="onSelected" @cancel="showPicker = false" />
-    </hui-popup>
+    <ai-popup v-model="showPicker" position="right">
+      <ai-video-selector
+        @selected="onSelected"
+        @cancel="showPicker = false"
+        :class="b('video-selector')"
+        :multiple="false"
+      />
+    </ai-popup>
   </div>
 </template>
 
@@ -122,6 +127,7 @@ import AiImageUploader from "./AiImageUploader.vue";
 import AiVideoSelector from "./AiVideoSelector.vue";
 import AiVideoAliPlayer from "./AiVideoAliPlayer.vue";
 import AiInput from "./AiInput.vue";
+import AiPopup from "./AiPopup.vue";
 
 import cloneDeep from "lodash/cloneDeep";
 import isString from "lodash/isString";
@@ -136,6 +142,7 @@ import "quill/dist/quill.core.css";
     AiVideoSelector,
     AiVideoAliPlayer,
     AiInput,
+    AiPopup,
   },
 })
 export default class Home extends Vue {
@@ -435,6 +442,10 @@ export default class Home extends Vue {
       line-height: 2;
       border: none;
     }
+  }
+
+  &__video-selector {
+    min-height: 100vh;
   }
 }
 </style>

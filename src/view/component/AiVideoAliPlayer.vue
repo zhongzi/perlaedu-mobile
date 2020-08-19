@@ -163,6 +163,10 @@ export default class Home extends Mixins(SyncMixin) {
     & ::v-deep video {
       height: 100% !important;
     }
+
+    & ::v-deep .prism-big-play-btn {
+      z-index: 30 !important;
+    }
   }
 }
 </style>

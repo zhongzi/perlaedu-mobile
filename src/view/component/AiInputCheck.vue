@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch, Mixins } from "vue-property-decorator";
 
 import PatchMixin from "@/mixin/PatchMixin";
 
@@ -38,6 +38,11 @@ export default class Home extends Mixins(PatchMixin) {
   innerValue: boolean = false;
 
   created() {
+    this.innerValue = this.value;
+  }
+
+  @Watch("value")
+  onValueChanged() {
     this.innerValue = this.value;
   }
 

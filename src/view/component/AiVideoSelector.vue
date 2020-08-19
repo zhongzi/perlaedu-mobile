@@ -36,7 +36,11 @@
               </div>
             </template>
             <template v-slot:right>
-              <ai-input-check @input="(v) => checked(item, v)" mode="icon" />
+              <ai-input-check
+                :value="selectedVideos.includes(item)"
+                @input="(v) => checked(item, v)"
+                mode="icon"
+              />
             </template>
           </ai-cell>
         </div>
@@ -83,6 +87,7 @@ import _get from "lodash/get";
 import merge from "lodash/merge";
 import pull from "lodash/pull";
 import filter from "lodash/filter";
+import isEmpty from "lodash/isEmpty";
 
 @Component({
   name: "ai-video-selector",
@@ -100,6 +105,7 @@ import filter from "lodash/filter";
 })
 export default class Home extends Vue {
   @Prop({ type: Object, default: null }) query: any;
+  @Prop({ type: Boolean, default: true }) multiple: boolean;
 
   curVideo: any = null;
   keyword: string = "";
@@ -134,7 +140,14 @@ export default class Home extends Vue {
   }
 
   checkedOver() {
-    this.$emit("selected", this.selectedVideos);
+    if (isEmpty(this.selectedVideos)) {
+      this.$hui.toast.info("尚未选择任何视频");
+      return;
+    }
+    this.$emit(
+      "selected",
+      this.multiple ? this.selectedVideos : this.selectedVideos[0]
+    );
   }
 
   onUploaded(video) {
@@ -144,7 +157,11 @@ export default class Home extends Vue {
 
   checked(item, flag) {
     if (flag) {
-      this.selectedVideos.push(item);
+      if (this.multiple) {
+        this.selectedVideos.push(item);
+      } else {
+        this.selectedVideos = [item];
+      }
     } else {
       this.selectedVideos = filter(this.selectedVideos, (v) => {
         return v.id !== item.id;
@@ -212,12 +229,17 @@ export default class Home extends Vue {
       font-weight: bold;
       color: rgba(74, 74, 74, 1);
       line-height: 19px;
+      max-width: 100%;
+      word-break: break-word;
+      margin: 0px 10px;
     }
 
     &-video {
       position: relative;
       width: 89px;
       height: 60px;
+      min-width: 89px;
+      min-height: 60px;
       background: linear-gradient(
         136deg,
         rgba(255, 207, 51, 1) 0%,
@@ -225,7 +247,6 @@ export default class Home extends Vue {
       );
       border-radius: 12px;
       overflow: hidden;
-      margin-right: 10px;
 
       display: flex;
       align-items: center;
