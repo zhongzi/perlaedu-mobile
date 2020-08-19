@@ -11,6 +11,7 @@
       :type="type"
       :placeholder="placeholder"
       :value="value"
+      :disabled="disabled"
       @blur="onBlur"
       @input="(e) => $emit('input', e.target.value)"
     />
@@ -31,6 +32,7 @@ export default class Home extends Mixins(PatchMixin) {
   @Prop({ type: String, default: "text" }) type: string;
   @Prop({ type: String, default: "请输入" }) placeholder: string;
   @Prop({ type: String, default: "" }) mode: string;
+  @Prop({ type: Boolean, default: false }) disabled: boolean;
 
   onBlur() {
     this.fixIOSScroll();

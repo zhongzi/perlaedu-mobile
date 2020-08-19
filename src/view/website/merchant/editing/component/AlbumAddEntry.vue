@@ -7,7 +7,7 @@
         </div>
       </template>
     </ai-card>
-    <ai-dialog v-model="showDialog">
+    <ai-dialog v-model="showDialog" :enableCloseIcon="false">
       <div class="form">
         <h2>新建相册</h2>
         <ai-input v-model="title" placeholder="输入相册名称" class="input" />

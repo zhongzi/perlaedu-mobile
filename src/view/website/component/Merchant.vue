@@ -83,7 +83,11 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   get isFollowed() {
-    return !isEmpty(this.merchant.me) || this.followed;
+    return (
+      (!isEmpty(this.merchant.me) &&
+        (this.merchant.me.role & PersonRole.guest.value) > 0) ||
+      this.followed
+    );
   }
 
   created() {
@@ -96,7 +100,7 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   onFollow() {
-    if (this.isFollowed || this.followed) return;
+    if (this.isFollowed) return;
 
     if (!this.$auth.user.is_subscribed) {
       this.showDialog = true;
@@ -107,10 +111,13 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   beGuest() {
+    const role = _get(this.merchant, "me.role") || 0;
+    this.id = _get(this.merchant, "me.id");
     this.saveEntity({
       res: {
+        id: this.id,
         merchant_id: this.merchant.id,
-        role: PersonRole.guest.value,
+        role: role | PersonRole.guest.value,
       },
       success: () => {
         this.followed = true;

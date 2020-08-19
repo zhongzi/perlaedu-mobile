@@ -7,7 +7,7 @@
     ref="popup"
   >
     <slot />
-    <div :class="b('close')">
+    <div :class="b('close')" v-if="enableCloseIcon">
       <i class="iconfont icon-close-circle" @click="$emit('input', false)" />
     </div>
   </hui-dialog>
@@ -23,7 +23,8 @@ import StopBodyScrollMixin from "@/mixin/StopBodyScrollMixin";
 export default class Home extends Mixins(StopBodyScrollMixin) {
   @Prop({ type: Boolean, default: false }) value: boolean;
   @Prop({ type: String, default: "right" }) position: string;
-  @Prop({ type: Boolean, default: true }) appendToBody: any;
+  @Prop({ type: Boolean, default: true }) appendToBody: boolean;
+  @Prop({ type: Boolean, default: true }) enableCloseIcon: boolean;
 
   created() {
     this.SBSAuto = false;

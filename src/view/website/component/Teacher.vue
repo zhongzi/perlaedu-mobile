@@ -37,7 +37,7 @@ export default class Home extends Vue {
   @Prop({ type: String, default: "websiteMerchantTeacher" }) routeName: string;
 
   get innerTeacher() {
-    return this.teacher || _get(this.websiteTeacher, "teacher", {});
+    return this.teacher || _get(this.websiteTeacher, "teacher") || {};
   }
 
   onClick() {

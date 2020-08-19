@@ -7,7 +7,12 @@
       :prefix="merchant.id"
     />
     <div class="fields">
-      <ai-input class="field" label="机构名称" v-model="innerMerchant.name" />
+      <ai-input
+        class="field"
+        label="机构名称"
+        v-model="innerMerchant.name"
+        :disabled="true"
+      />
       <ai-line />
       <ai-location-picker
         class="field"
