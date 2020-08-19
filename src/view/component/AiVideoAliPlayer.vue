@@ -73,6 +73,14 @@ export default class Home extends Mixins(SyncMixin) {
     this.store = "video";
   }
 
+  beforeDestroy() {
+    console.log("beforeDestroy");
+    const player = this.$refs.player as any;
+    setTimeout(() => {
+      player.pause();
+    }, 2000);
+  }
+
   @Watch("videoId")
   onVideoIdChanged(val) {
     this.loadVideo();

@@ -116,7 +116,7 @@ export default class Home extends Mixins(SyncMixin) {
     this.saveEntity({
       res: {
         id: this.id,
-        merchant_id: this.merchant.id,
+        merchant_id: (!this.id && this.merchant.id) || undefined,
         role: role | PersonRole.guest.value,
       },
       success: () => {

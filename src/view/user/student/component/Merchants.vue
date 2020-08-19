@@ -57,7 +57,9 @@ export default class Home extends Vue {
       ? {
           only_student: true,
         }
-      : {};
+      : {
+          require_person: true,
+        };
   }
 }
 </script>
