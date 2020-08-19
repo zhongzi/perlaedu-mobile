@@ -60,8 +60,8 @@ export default class Home extends Mixins(PatchMixin) {
   &__vec {
     position: relative;
     margin-right: 5px;
-    width: 34px;
-    height: 44px;
+    width: 24px;
+    height: 24px;
 
     &-icon {
       width: 24px;
@@ -108,10 +108,10 @@ export default class Home extends Mixins(PatchMixin) {
         &:before {
           content: "";
           position: absolute;
-          top: 2px;
-          left: 4px;
-          width: 5px;
-          height: 8px;
+          top: 0px;
+          left: 6px;
+          width: 8px;
+          height: 15px;
           border: solid white;
           border-width: 0 2px 2px 0;
           transform: rotate(45deg);
