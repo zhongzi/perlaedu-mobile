@@ -148,6 +148,7 @@ export default class Home extends Mixins(SyncMixin) {
   submit() {
     this.innerItem.project_id = this.$route.params.projectId;
     this.id = this.innerItem.id;
+    this.innerItem.value = this.innerItem.is_welfare ? 0 : this.innerItem.value;
 
     this.saveEntity({
       res: this.innerItem,
