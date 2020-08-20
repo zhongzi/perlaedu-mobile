@@ -23,13 +23,13 @@
       <hui-button type="primary" class="action" @click.native="takeAction">
         {{
           coupon.links[0].is_refer
-            ? "送好友课时好礼，激活本券"
+            ? "送好友好课好礼，激活本券"
             : "马上去使用 " +
               (coupon.links.length === 1 ? coupon.links[0].source.title : "")
         }}</hui-button
       >
     </div>
-    <div class="detail" v-if="coupon.is_refer">
+    <div class="detail">
       <ai-line-header :title="detailTitle" class="header" />
       <div class="sources">
         <template v-for="source in coupon.sources">
