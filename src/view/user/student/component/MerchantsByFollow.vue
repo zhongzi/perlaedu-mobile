@@ -42,7 +42,7 @@ export default class Home extends Vue {
   }
 
   & ::v-deep .ai-slider__swiper-item:nth-child(1) {
-    margin-left: 20px;
+    margin-left: 23px;
   }
 }
 </style>

@@ -41,10 +41,17 @@ export default class Home extends Vue {
 .merchant {
   width: 194px;
   height: 148px;
+  max-width: 194px;
+  max-height: 148px;
   margin-bottom: 15px;
 
   .card {
     box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
+    padding: 5px;
+
+    .cover {
+      border-radius: 4px;
+    }
 
     .name {
       text-align: center;

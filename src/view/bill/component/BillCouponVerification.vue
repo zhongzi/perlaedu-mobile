@@ -79,11 +79,6 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   onSubmit() {
-    if (isEmpty(this.remark)) {
-      this.$hui.toast.info("核销备注不可为空");
-      return;
-    }
-
     this.save();
   }
 

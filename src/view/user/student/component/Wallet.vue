@@ -8,7 +8,7 @@
         </div>
         <div class="title">课时券</div>
       </div>
-      <div class="entry">
+      <div class="entry" v-if="user.score">
         <div class="number">
           <span> {{ user.score || 0 }} </span>
         </div>
@@ -50,7 +50,7 @@ export default class Home extends Vue {
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 
     .entry {
       .number {

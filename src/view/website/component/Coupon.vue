@@ -14,7 +14,7 @@
         </div>
       </template>
       <template v-slot:right>
-        <hui-button @click.native="openBag" class="action">
+        <hui-button @click.native="openDialog" class="action">
           {{ coupon.is_takeable ? "立即领取" : "我的卡包" }}
         </hui-button>
       </template>
@@ -110,11 +110,9 @@ export default class Home extends Mixins(SyncMixin) {
     this.showDialog = this.coupon.is_takeable;
   }
 
-  openBag() {
+  openDialog() {
     if (!this.coupon.is_takeable) {
-      this.$router.push({
-        name: "billProfileHome",
-      });
+      this.openBag();
       return true;
     }
 
@@ -122,8 +120,15 @@ export default class Home extends Mixins(SyncMixin) {
     return false;
   }
 
+  openBag() {
+    this.$router.push({
+      name: "billProfileHome",
+    });
+    return true;
+  }
+
   save() {
-    if (this.openBag()) return;
+    if (this.openDialog()) return;
 
     if (isEmpty(this.telephone) || !/^1[3456789]\d{9}$/.test(this.telephone)) {
       this.$hui.toast.error("手机号码作为核销唯一凭证， 请正确填写且不可为空");
@@ -146,8 +151,10 @@ export default class Home extends Mixins(SyncMixin) {
       },
       success: () => {
         this.showDialog = false;
-        this.$hui.toast.info("认领成功， 请到【我的】卡券列表查看使用");
-        this.$bus.$emit("bill:item:taked");
+        this.$hui.toast.info("认领成功， 正在跳转请稍后...");
+        setTimeout(() => {
+          this.openBag();
+        }, 3000);
       },
       failure: (error) => {
         this.$hui.toast.error(error.response.data.message);

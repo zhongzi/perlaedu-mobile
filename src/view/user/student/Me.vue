@@ -8,7 +8,7 @@
         <span class="name">{{ user.nickname }}</span>
       </template>
       <template v-slot:right>
-        <div class="icons">
+        <div class="icons" v-if="false">
           <i class="iconfont icon-message" />
           <i class="iconfont icon-plan" />
         </div>
@@ -46,7 +46,7 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 .student {
   .header {
-    padding: 30px 40px 10px;
+    padding: 30px 30px 10px;
 
     .avatar {
       width: 45px;

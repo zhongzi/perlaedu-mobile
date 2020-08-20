@@ -26,6 +26,7 @@ import SyncMixin from "@/mixin/SyncMixin";
 import AiSlider from "@/view/component/AiSlider.vue";
 import Merchant from "./Merchant.vue";
 
+import filter from "lodash/filter";
 import keys from "lodash/keys";
 import values from "lodash/values";
 import map from "lodash/map";
@@ -60,7 +61,10 @@ export default class Home extends Mixins(SyncMixin) {
 
   sort() {
     const vals = values(this.merchantIds);
-    this.merchants = map(orderBy(vals, ["date"], ["desc"]), "ref");
+    this.merchants = filter(
+      map(orderBy(vals, ["date"], ["desc"]), "ref"),
+      (e) => e
+    );
   }
 
   load() {
@@ -77,7 +81,7 @@ export default class Home extends Mixins(SyncMixin) {
   width: 100%;
   height: 100%;
   .item {
-    margin-left: 20px;
+    margin-left: 23px;
   }
 }
 </style>

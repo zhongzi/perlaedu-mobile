@@ -66,7 +66,7 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 .history {
   .header {
-    margin-left: 21px;
+    margin-left: 25px;
 
     font-size: 16px;
     font-family: PingFangSC-Semibold, PingFang SC;
