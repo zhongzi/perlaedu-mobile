@@ -7,7 +7,7 @@
       :sliderOptions="{ slidesPerView: 1.8, initialSlide: 0, freeMode: true }"
     >
       <template v-slot:item="{ item }">
-        <merchant :merchant="item" :key="item.id" />
+        <merchant :merchant="item" :key="item.id" class="item" />
       </template>
     </ai-list-stored>
   </div>
@@ -37,11 +37,7 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .merchants-by-follow {
-  & ::v-deep .ai-list-stored__title {
-    padding: 0px 20px;
-  }
-
-  & ::v-deep .ai-slider__swiper-item:nth-child(1) {
+  .item {
     margin-left: 23px;
   }
 }

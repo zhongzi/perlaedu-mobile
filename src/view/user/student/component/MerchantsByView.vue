@@ -7,7 +7,6 @@
           slidesPerView: 1.8,
           initialSlide: 0,
           freeMode: true,
-          spaceBetween: 0,
         }"
       >
         <template v-slot:item="{ item }">
@@ -45,15 +44,15 @@ export default class Home extends Mixins(SyncMixin) {
   created() {
     this.merchantIds = this.$db.nsGet("websites");
 
-    this.store = "merchant";
+    this.store = "website";
     this.load();
   }
 
   @Watch("list", { deep: true })
   onListChanged() {
-    this.list.forEach((m) => {
-      if (this.merchantIds[m.id]) {
-        this.merchantIds[m.id]["ref"] = m;
+    this.list.forEach((w) => {
+      if (this.merchantIds[w.target_id]) {
+        this.merchantIds[w.target_id]["ref"] = w.target;
       }
     });
     this.sort();
@@ -70,7 +69,9 @@ export default class Home extends Mixins(SyncMixin) {
   load() {
     this.loadList({
       query: {
-        id: keys(this.merchantIds),
+        target_id: keys(this.merchantIds),
+        target_class: "Merchant",
+        extras: "target",
       },
     });
   }

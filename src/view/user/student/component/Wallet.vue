@@ -6,7 +6,7 @@
         <div class="number">
           <span> {{ user.count_coupon || 0 }} </span>张
         </div>
-        <div class="title">课时券</div>
+        <div class="title">好课好券</div>
       </div>
       <div class="entry" v-if="user.score">
         <div class="number">

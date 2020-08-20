@@ -39,10 +39,6 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .merchant {
-  width: 194px;
-  height: 148px;
-  max-width: 194px;
-  max-height: 148px;
   margin-bottom: 15px;
 
   .card {
@@ -51,6 +47,8 @@ export default class Home extends Vue {
 
     .cover {
       border-radius: 4px;
+      width: 184px;
+      height: 110px;
     }
 
     .name {
@@ -61,6 +59,9 @@ export default class Home extends Vue {
       color: rgba(74, 74, 74, 1);
       line-height: 2;
       text-shadow: 0px 14px 20px rgba(0, 0, 0, 0.2);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 }
