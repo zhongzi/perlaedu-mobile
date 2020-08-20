@@ -46,8 +46,11 @@ export default class Home extends Vue {
     background: rgba(255, 255, 255, 0.8);
 
     .title {
-      margin: 5px auto;
+      margin: 5px 10px;
       line-height: 1.5;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .header {
       height: 132px;
