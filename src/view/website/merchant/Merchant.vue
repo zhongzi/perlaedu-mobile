@@ -41,6 +41,7 @@
         <article-list :query="query" :merchant="merchant" />
       </div>
       <ai-copyright :manual="true" />
+      <guide-entry class="block" />
     </div>
   </div>
 </template>
@@ -61,6 +62,7 @@ import TeacherList from "../component/TeacherList.vue";
 import AlbumList from "../component/AlbumList.vue";
 import VideoList from "../component/VideoList.vue";
 import ArticleList from "../component/ArticleList.vue";
+import GuideEntry from "../guide/component/Entry.vue";
 
 import isEqual from "lodash/isEqual";
 import _get from "lodash/get";
@@ -81,6 +83,7 @@ import cloneDeep from "lodash/cloneDeep";
     VideoList,
     ArticleList,
     AiCopyright,
+    GuideEntry,
   },
 })
 export default class Home extends Mixins(SyncMixin) {

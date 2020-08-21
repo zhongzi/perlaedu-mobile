@@ -47,12 +47,12 @@ export default class Home extends Vue {
     overflow: hidden;
     outline: 0;
     background: rgba(0, 0, 0, 0.8);
-    z-index: 9;
+    z-index: 999;
   }
 
   &__tip {
     position: fixed;
-    z-index: 10;
+    z-index: 1000;
     top: 0;
     right: 0;
     bottom: 0;

@@ -1,6 +1,7 @@
 <template>
-  <div :class="b()">
-    <template v-if="menus">
+  <ai-fixed-footer :class="b()">
+    <slot name="header" />
+    <div v-if="menus" :class="b('menus')" :style="cusStyle">
       <div
         v-for="(menu, index) in menus"
         :class="[b('menu'), { [b('menu-active')]: curMenu === menu }]"
@@ -15,19 +16,25 @@
           {{ menu.name }}
         </span>
       </div>
-    </template>
-  </div>
+    </div>
+  </ai-fixed-footer>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 
+import AiFixedFooter from "./AiFixedFooter.vue";
+
 @Component({
   name: "ai-bottom-navigation",
+  components: {
+    AiFixedFooter,
+  },
 })
 export default class Home extends Vue {
   @Prop({ type: Array, default: null }) menus: any;
   @Prop({ type: Number, default: 0 }) curIdx: number;
+  @Prop({ type: Object, default: null }) cusStyle: any;
   @Prop({ type: String, default: 0 }) color: string;
   @Prop({ type: String, default: 0 }) activeColor: string;
 
@@ -49,20 +56,16 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .ai-bottom-navigation {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+  &__menus {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 
-  width: 100%;
-  height: 64px;
-  background: rgba(255, 255, 255, 1);
-  border-radius: 16px 16px 0px 0px;
-
-  position: fixed;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  z-index: 99;
+    width: 100%;
+    height: 64px;
+    border-radius: 16px 16px 0px 0px;
+    background: rgba(255, 255, 255, 1);
+  }
 
   &__menu {
     display: flex;

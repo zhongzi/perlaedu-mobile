@@ -74,9 +74,6 @@ export default class Home extends Vue {
   .section {
     margin: 20px 21px;
   }
-  .s-share {
-    margin: 0px 12px;
-  }
   .s-merchant {
     margin: 0px;
   }

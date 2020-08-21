@@ -24,14 +24,13 @@ export default class Home extends Vue {}
   z-index: 199;
   position: fixed;
   left: 0;
+  right: 0;
   bottom: 0;
   width: 100%;
-  background-color: #fafafa;
 
   &__body {
     &-default {
       height: 100%;
-      padding: 5px;
     }
   }
 }

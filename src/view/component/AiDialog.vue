@@ -28,16 +28,23 @@ export default class Home extends Mixins(StopBodyScrollMixin) {
 
   created() {
     this.SBSAuto = false;
+    this.value && this.reset();
   }
 
   @Watch("value")
   onShowChanged() {
     this.stopBodyScroll(this.value);
-    if (this.value && this.appendToBody) {
-      document.body.appendChild((this.$refs.popup as any).$el);
-    } else {
-      document.body.removeChild((this.$refs.popup as any).$el);
-    }
+    this.reset();
+  }
+
+  reset() {
+    this.$nextTick(() => {
+      if (this.value && this.appendToBody) {
+        document.body.appendChild((this.$refs.popup as any).$el);
+      } else {
+        document.body.removeChild((this.$refs.popup as any).$el);
+      }
+    });
   }
 }
 </script>
@@ -53,10 +60,10 @@ export default class Home extends Mixins(StopBodyScrollMixin) {
     margin: 5px;
 
     i {
-      background: rgba(255, 255, 255, 0.8);
-      color: rgba(0, 0, 0, 0.5);
+      color: #fff;
       border-radius: 50%;
-      font-size: 32px;
+      border: 0.5px solid #fff;
+      font-size: 40px;
     }
   }
 }

@@ -11,5 +11,6 @@ declare module "vue/types/vue" {
     $PosterBuilder: any;
     $bus: any;
     $db: any;
+    $wework: any;
   }
 }

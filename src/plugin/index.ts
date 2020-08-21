@@ -6,7 +6,19 @@ import weixin from "./weixin";
 import alipay from "./alipay";
 import poster from "./poster";
 import db from "./db";
+import wework from "./wework";
 
 const retina = require("@jukejia/retina");
 
-export default [bus, retina, auth, configs, tools, weixin, alipay, poster, db];
+export default [
+  bus,
+  retina,
+  auth,
+  configs,
+  tools,
+  weixin,
+  alipay,
+  poster,
+  db,
+  wework,
+];

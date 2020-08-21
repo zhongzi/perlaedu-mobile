@@ -8,6 +8,11 @@ const urljoin = require("url-join");
 const isProduction = process.env.NODE_ENV === "production";
 
 const tools = {
+  regxs: {
+    telephone: (t) => {
+      return /^1(3|4|5|6|7|8|9)\d{9}$/.test(t);
+    },
+  },
   shadowLink: (
     link: string = null,
     campaign: any = null,

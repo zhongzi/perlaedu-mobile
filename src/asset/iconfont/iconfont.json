@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "518144",
+      "name": "5 学校名称",
+      "font_class": "-zhaosheng",
+      "unicode": "e889",
+      "unicode_decimal": 59529
+    },
+    {
+      "icon_id": "2506436",
+      "name": "管理员",
+      "font_class": "-management",
+      "unicode": "e6d9",
+      "unicode_decimal": 59097
+    },
+    {
+      "icon_id": "5661118",
+      "name": "官网",
+      "font_class": "-website",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    },
+    {
       "icon_id": "6928827",
       "name": "play",
       "font_class": "-play",
@@ -610,7 +631,7 @@
     {
       "icon_id": "13314446",
       "name": "课程历史",
-      "font_class": "kechenglishi",
+      "font_class": "-history",
       "unicode": "e6dc",
       "unicode_decimal": 59100
     },

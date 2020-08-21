@@ -5,7 +5,7 @@
       :menus="menus"
       @click="onClick"
       v-if="showMenu"
-      :style="mergedStyle | safe('style', {})"
+      :cusStyle="mergedStyle | safe('style', {})"
       :color="mergedStyle | safe('icon.color')"
       :activeColor="mergedStyle | safe('icon.activeColor')"
     />
@@ -17,12 +17,15 @@ import { Component, Vue } from "vue-property-decorator";
 
 import AiBottomNavigation from "@/view/component/AiBottomNavigation.vue";
 
+import GuideEntry from "./guide/component/Entry.vue";
+
 import isEqual from "lodash/isEqual";
 import find from "lodash/find";
 
 @Component({
   components: {
     AiBottomNavigation,
+    GuideEntry,
   },
 })
 export default class Home extends Vue {
@@ -48,6 +51,10 @@ export default class Home extends Vue {
     //   });
     // }
     return ["websiteMerchant", "websiteUnion"].indexOf(this.$route.name) >= 0;
+  }
+
+  get isInMerchantWebsite() {
+    return this.$route.name === "websiteMerchant";
   }
 
   created() {
