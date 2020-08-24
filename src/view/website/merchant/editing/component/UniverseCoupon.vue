@@ -12,6 +12,7 @@
         <ai-input-switch v-model="enableUniverseCoupon" />
       </template>
     </ai-cell>
+    <!--
     <ai-cell class="body" :showBottomLine="false">
       <template v-slot:left>
         <div class="left">
@@ -38,6 +39,7 @@
       </template>
     </ai-cell>
     <universe-coupon-count :merchant="merchant" />
+    -->
   </div>
 </template>
 

@@ -129,7 +129,7 @@ export default class Home extends Mixins(SyncMixin) {
     if (isEmpty(this.coupon.item)) return "";
 
     const valueType = BillItemValueType[this.coupon.item.value_type];
-    return valueType.unit + valueType.text;
+    return valueType.unit;
   }
 
   get origin() {

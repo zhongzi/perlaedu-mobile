@@ -2,7 +2,7 @@
   <div :class="b()" :style="simpleStyle">
     <div class="value">
       <span> {{ value }}</span>
-      <span> {{ unit | safe("unit") }}{{ unit | safe("text") }}</span>
+      <span> {{ unit | safe("unit") }}</span>
     </div>
     <div class="title">
       {{ coupon.title }}

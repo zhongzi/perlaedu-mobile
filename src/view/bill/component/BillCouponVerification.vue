@@ -92,7 +92,7 @@ export default class Home extends Mixins(SyncMixin) {
       },
       success: () => {
         this.showDialog = false;
-        this.$bus.$emit("coupon:refresh");
+        this.$bus.$emit("bill:coupon:refresh");
         this.$hui.toast.info("核销成功");
       },
     });

@@ -10,7 +10,7 @@
       <template v-slot:subtitle>
         <div class="value" v-if="valueType">
           <span> {{ coupon.value }} </span>
-          {{ valueType.unit + valueType.text }}
+          {{ valueType.unit }}
         </div>
       </template>
       <template v-slot:right>

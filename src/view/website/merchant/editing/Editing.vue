@@ -4,9 +4,7 @@
     <div class="resources">
       <div class="section">
         <union-merchant-list class="resource" :query="query" />
-        <!--
         <universe-coupon class="resource coupon" :merchant="merchant" />
-          -->
         <ai-line />
 
         <campaigns-entry class="resource campaign" />

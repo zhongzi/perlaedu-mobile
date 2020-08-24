@@ -5,9 +5,9 @@
     <div class="container">
       <bill-coupon-description class="section" :coupon="coupon" />
       <bill-coupon-verification
+        v-if="coupon.status === 'taken'"
         class="section"
         :coupon="coupon"
-        v-if="coupon.status === 'taken'"
         :isStaff="true"
       />
       <bill-coupon-tip class="section" :coupon="coupon" :isStaff="true" />
@@ -47,7 +47,7 @@ export default class Home extends Mixins(SyncMixin) {
     this.store = "billCoupon";
     this.load();
 
-    this.$bus.$on("coupon:refresh", this.load);
+    this.$bus.$on("bill:coupon:refresh", this.load);
   }
 
   @Watch("$route", { deep: true })
