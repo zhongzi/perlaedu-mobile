@@ -2,11 +2,11 @@
   <div class="wrapper editing-universe-coupon">
     <ai-cell class="header" :showBottomLine="false">
       <template v-slot:title>
-        <span class="title"> 开启免费课时</span>
-        <i class="iconfont icon-info title-icon" />
+        <span class="title"> 开启卡券运营机制</span>
+        <!-- <i class="iconfont icon-info title-icon" /> -->
       </template>
       <template v-slot:subtitle>
-        <span> 免费送好友课时各自得一张100元课时券</span>
+        <span> 激活老带新，免费送好友好课好券各得1张好课好券</span>
       </template>
       <template v-slot:right>
         <ai-input-switch v-model="enableUniverseCoupon" />

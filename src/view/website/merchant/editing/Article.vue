@@ -70,14 +70,7 @@ import cloneDeep from "lodash/cloneDeep";
 })
 export default class Home extends Mixins(SyncMixin) {
   isLink: boolean = false;
-  innerArticle: any = {
-    id: "",
-    cover: this.$configs.defaultCoverNews,
-    title: "",
-    description: "",
-    remark: "",
-    url: "",
-  };
+  innerArticle: any = {};
 
   get article() {
     return this.entity;
@@ -92,6 +85,14 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   created() {
+    this.innerArticle = {
+      id: "",
+      cover: require("@/asset/image/default/cover-article.png"),
+      title: "",
+      description: "",
+      remark: "",
+      url: "",
+    };
     this.store = "article";
     this.load();
   }

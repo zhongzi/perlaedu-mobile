@@ -37,7 +37,7 @@
               <template v-if="isEditing">
                 <ai-image-uploader
                   v-model="c.url"
-                  :prefix="imageKey"
+                  :prefix="imagePrefix"
                   :type="imageType"
                   :flag="false"
                 />
@@ -149,7 +149,7 @@ export default class Home extends Vue {
   @Prop([Array, String]) value: Array<Object> | String;
   @Prop({ type: Boolean, default: true }) isEditing: Boolean;
   @Prop({ type: String, default: "" }) imageType: string;
-  @Prop({ type: String, default: "" }) imageKey: string;
+  @Prop({ type: String, default: "" }) imagePrefix: string;
 
   details: Array<any> = [];
   curNode: any = null;

@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper course">
     <ai-image-uploader
       class="cover"
       v-model="innerCourse.cover"
@@ -79,15 +79,7 @@ import cloneDeep from "lodash/cloneDeep";
   },
 })
 export default class Home extends Mixins(SyncMixin) {
-  innerCourse: any = {
-    id: "",
-    cover: "",
-    title: "",
-    description: "",
-    bill_id: "",
-    subject_id: "",
-  };
-
+  innerCourse: any = {};
   get query() {
     return {};
   }
@@ -105,6 +97,15 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   created() {
+    this.innerCourse = {
+      id: "",
+      cover: require("@/asset/image/default/cover-course.png"),
+      title: "",
+      description: "",
+      bill_id: "",
+      subject_id: "",
+    };
+
     this.store = "course";
     this.load();
   }
@@ -146,7 +147,7 @@ export default class Home extends Mixins(SyncMixin) {
 }
 </script>
 <style lang="scss" scoped>
-.wrapper {
+.course {
   padding-bottom: 50px;
 
   .fields {
@@ -154,6 +155,7 @@ export default class Home extends Mixins(SyncMixin) {
     top: -15px;
     background: #fff;
     border-radius: 12px 12px 0px 0px;
+    height: 60vh;
 
     padding-top: 17px;
     padding-left: 17px;
