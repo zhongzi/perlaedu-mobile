@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "3485023",
+      "name": "分享",
+      "font_class": "-share",
+      "unicode": "e64e",
+      "unicode_decimal": 58958
+    },
+    {
       "icon_id": "518144",
       "name": "5 学校名称",
       "font_class": "-zhaosheng",

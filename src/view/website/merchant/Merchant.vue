@@ -2,12 +2,17 @@
   <div class="wrapper website">
     <div class="cover">
       <img :src="merchant.cover_url | alioss({ width: 320, height: 180 })" />
-      <div
-        class="setting"
-        v-if="isOwner"
-        @click="$router.push({ name: 'websiteEditing' })"
-      >
-        <i class="iconfont icon-setting" />
+      <div class="float">
+        <i
+          v-if="isOwner"
+          class="iconfont icon-setting"
+          @click="$router.push({ name: 'websiteEditing' })"
+        />
+        <i
+          v-if="isEnabledPoster"
+          class="iconfont icon-share"
+          @click="$bus.$emit('inner:config:poster')"
+        />
       </div>
     </div>
     <div class="content" :style="mergedStyle" v-if="merchant.id">
@@ -93,6 +98,10 @@ export default class Home extends Mixins(SyncMixin) {
     // return merge(cloneDeep(this.entity), { website: { skin: skin } });
   }
 
+  get isEnabledPoster() {
+    return _get(this.merchant, "website.share.poster");
+  }
+
   get isOwner() {
     return (
       this.merchant.id &&
@@ -158,18 +167,21 @@ export default class Home extends Mixins(SyncMixin) {
       width: 100%;
       display: block;
     }
-    .setting {
+    .float {
       position: absolute;
       top: 13px;
       right: 10px;
 
-      padding: 5px 7px;
-      background: #ff940f;
-      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
 
       i {
         font-size: 28px;
         color: rgba(255, 255, 255, 0.91);
+        padding: 7px;
+        margin: 5px auto;
+        background: #ff940f;
+        border-radius: 10px;
       }
     }
   }

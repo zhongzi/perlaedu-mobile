@@ -10,6 +10,7 @@
     </transition>
     <ai-copyright />
     <ai-tip-share v-model="showTip" />
+    <ai-poster v-model="showPoster" :poster="poster" :context="posterContext" />
   </div>
 </template>
 <script lang="ts">
@@ -17,20 +18,32 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 
 import AiTipShare from "./view/component/AiTipShare.vue";
 import AiCopyright from "@/view/component/AiCopyright.vue";
+import AiPoster from "@/view/component/AiPoster.vue";
 
 @Component({
   components: {
     AiTipShare,
     AiCopyright,
+    AiPoster,
   },
 })
 export default class Home extends Vue {
   showTip: boolean = false;
+  showPoster: boolean = false;
+  poster: any = {};
+  posterContext: any = {};
+
   created() {
     this.$auth.entry = window.location.href;
+
     this.$bus.$on("config:share", this.configShare);
     this.$bus.$on("config:share:tip:show", () => {
       this.showTip = true;
+    });
+
+    this.$bus.$on("config:poster", this.configPoster);
+    this.$bus.$on("config:poster:show", () => {
+      this.showPoster = true;
     });
   }
 
@@ -52,6 +65,12 @@ export default class Home extends Vue {
         },
       });
     });
+  }
+
+  configPoster(poster, context, show) {
+    this.poster = poster;
+    this.posterContext = context;
+    this.showPoster = show;
   }
 }
 </script>

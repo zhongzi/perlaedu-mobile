@@ -61,7 +61,6 @@
         </div>
       </div>
     </hui-popup>
-    <ai-poster v-model="showPoster" :poster="poster" :context="posterContext" />
   </div>
 </template>
 
@@ -72,7 +71,6 @@ import { BillCouponStatus } from "@/enum/bill_coupon_status";
 
 import AiLineHeader from "@/view/component/AiLineHeader.vue";
 import AiCell from "@/view/component/AiCell.vue";
-import AiPoster from "@/view/component/AiPoster.vue";
 
 import isEmpty from "lodash/isEmpty";
 import _get from "lodash/get";
@@ -81,7 +79,6 @@ import _get from "lodash/get";
   components: {
     AiLineHeader,
     AiCell,
-    AiPoster,
   },
 })
 export default class Home extends Vue {
@@ -89,7 +86,6 @@ export default class Home extends Vue {
   @Prop({ type: Boolean, default: false }) isStaff: boolean;
 
   showPopup: boolean = false;
-  showPoster: boolean = false;
 
   get poster() {
     return _get(
@@ -164,7 +160,8 @@ export default class Home extends Vue {
 
   showPosterClick() {
     this.showPopup = false;
-    this.showPoster = true;
+
+    this.$bus.$emit("config:poster", this.poster, this.posterContext, true);
   }
 
   takeAction() {

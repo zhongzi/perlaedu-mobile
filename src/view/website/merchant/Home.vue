@@ -10,6 +10,8 @@ import { Component, Vue, Mixins, Watch } from "vue-property-decorator";
 import SyncMixin from "@/mixin/SyncMixin";
 
 import isEmpty from "lodash/isEmpty";
+import _get from "lodash/get";
+import merge from "lodash/merge";
 
 @Component
 export default class Home extends Mixins(SyncMixin) {
@@ -17,9 +19,47 @@ export default class Home extends Mixins(SyncMixin) {
     return this.entity;
   }
 
+  get poster() {
+    return _get(this.merchant, "website.share.poster");
+  }
+
+  get shareLink() {
+    let link = _get(this.poster, "share.url");
+    if (isEmpty(link)) {
+      link = this.$tools.resolveURL(this.$router, {
+        name: "websiteMerchant",
+        params: {
+          merchantId: this.merchant.id,
+        },
+        query: {
+          expose: this.$auth.openid,
+        },
+      });
+    }
+    return link;
+  }
+
+  get posterContext() {
+    return {
+      merchant: this.merchant,
+      website: this.merchant.website,
+      user: this.$auth.user,
+      qrcode: this.$tools.makeQrcode(_get(this.poster, "link", this.shareLink)),
+    };
+  }
+
   created() {
     this.store = "merchant";
     this.loadMerchant();
+
+    this.$bus.$on("inner:config:poster", (poster, context, show) => {
+      this.$bus.$emit(
+        "config:poster",
+        merge(this.poster, poster || {}),
+        merge(this.posterContext, context || {}),
+        show || true
+      );
+    });
   }
 
   @Watch("merchant", { deep: true })
@@ -48,7 +88,7 @@ export default class Home extends Mixins(SyncMixin) {
             "website",
             "coupon",
           ],
-          Website: ["skin"],
+          Website: ["skin", "share"],
         }),
       },
     });
