@@ -25,8 +25,8 @@ export default class Home extends Vue {
     this.innerChecked = this.checked;
   }
 
-  @Watch("checked")
-  onChecked() {
+  @Watch("checked", { deep: true })
+  onCheckedChanged() {
     this.innerChecked = this.checked;
   }
 

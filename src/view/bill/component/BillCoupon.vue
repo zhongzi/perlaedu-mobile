@@ -11,22 +11,12 @@
         </div>
       </div>
       <div :class="b('header-right')">
-        <template v-if="isTaken">
-          <bill-button
-            v-if="!isInDetail"
-            label="立即使用"
-            :enableIcon="false"
-            :class="b('header-right-btn')"
-          />
-        </template>
-        <template v-else-if="isPending">
-          <bill-button
-            v-if="!isInDetail"
-            label="激活"
-            :enableIcon="false"
-            :class="b('header-right-btn')"
-          />
-        </template>
+        <bill-button
+          v-if="showActions && (isTaken || isPending)"
+          :label="isTaken ? '立即使用' : isPending ? '激活' : ''"
+          :enableIcon="false"
+          :class="b('header-right-btn')"
+        />
         <template v-else>
           <img :src="statusImg" />
         </template>
@@ -34,13 +24,22 @@
     </div>
     <div :class="b('footer')">
       <div :class="b('footer-left')">
-        <template v-if="origin">
+        <template v-if="!showUser && origin">
           <img
             :src="origin.cover_url | alioss({ width: 20, height: 15 })"
             @click.stop="openOrigin"
           />
           <span @click.stop="openOrigin">
             {{ origin.name }}
+          </span>
+        </template>
+        <template v-else>
+          <img
+            class="cover"
+            :src="coupon.user.avatar | alioss({ width: 120 })"
+          />
+          <span @click.stop="openOrigin">
+            {{ coupon.user.nickname }}
           </span>
         </template>
       </div>
@@ -88,6 +87,10 @@ import isEmpty from "lodash/isEmpty";
 })
 export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Object, default: null }) coupon: any;
+  @Prop({ type: String, default: "billProfileCouponDetail" })
+  couponClickedRoute: string;
+  @Prop({ type: Boolean, default: false }) showUser: boolean;
+  @Prop({ type: Boolean, default: true }) showActions: boolean;
 
   get couponStyle() {
     return this.coupon.id
@@ -136,14 +139,6 @@ export default class Home extends Mixins(SyncMixin) {
     return this.coupon.merchant || this.coupon.union;
   }
 
-  get isInDetail() {
-    return (
-      ["billProfileCouponDetail", "billManagementCouponDetail"].indexOf(
-        this.$route.name
-      ) >= 0
-    );
-  }
-
   openOrigin() {
     if (this.coupon.merchant) {
       this.$router.push({
@@ -166,16 +161,15 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   openCoupon() {
-    const routeName = "billProfileCouponDetail";
-    if (this.$route.name === routeName) {
-      this.$emit("click");
-    } else {
+    if (this.couponClickedRoute) {
       this.$router.push({
-        name: routeName,
+        name: this.couponClickedRoute,
         params: {
           couponId: this.coupon.id,
         },
       });
+    } else {
+      this.$emit("click", this.coupon);
     }
   }
 }

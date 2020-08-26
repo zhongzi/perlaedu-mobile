@@ -1,17 +1,9 @@
 <template>
   <div class="wrapper coupons">
+    <merchants @click="(m) => (curMerchant = m)" />
     <hui-tab v-model="curTabIdx" :tabs="tabs" label="label" />
     <div class="container">
-      <ai-list-stored resource="billCoupon" :query="query">
-        <template v-slot:item="{ item, tag }">
-          <bill-coupon
-            :key="item.id"
-            :coupon="item"
-            :outerTag="tag"
-            class="item"
-          />
-        </template>
-      </ai-list-stored>
+      <bill-coupon-list :query="query" scrollHeight="70vh" />
     </div>
   </div>
 </template>
@@ -19,18 +11,18 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
-import AiListStored from "@/view/component/AiListStored.vue";
 import AiSearch from "@/view/component/AiSearch.vue";
 
-import BillCoupon from "../../component/BillCoupon.vue";
+import BillCouponList from "../../component/BillCouponList.vue";
+import Merchants from "./Merchants.vue";
 
 import isEmpty from "lodash/isEmpty";
 
 @Component({
   components: {
-    AiListStored,
     AiSearch,
-    BillCoupon,
+    BillCouponList,
+    Merchants,
   },
 })
 export default class Home extends Vue {
@@ -40,6 +32,7 @@ export default class Home extends Vue {
     { label: "过期券", value: ["expired", "canceled"] },
   ];
 
+  curMerchant: any = {};
   curTabIdx: number = 0;
   keyword: string = "";
 
@@ -49,16 +42,14 @@ export default class Home extends Vue {
 
   get query() {
     return {
+      merchant_id: this.curMerchant && this.curMerchant.id,
       keyword: this.keyword,
       openid: this.$auth.user.openid,
       status: this.curTab.value,
+      sort: "status asc, id desc",
       extras:
         "item,union,merchant, hashed_id, count_source_on_links, count_source",
     };
-  }
-
-  onClick() {
-    this.$hui.toast.info("即将开通， 敬请关注");
   }
 }
 </script>
@@ -98,7 +89,6 @@ export default class Home extends Vue {
   .container {
     background: #fff;
     padding: 10px 10px;
-    min-height: 80vh;
   }
 }
 </style>

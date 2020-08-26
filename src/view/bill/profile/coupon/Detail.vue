@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper coupon">
-    <bill-coupon :coupon="coupon" />
+    <bill-coupon :coupon="coupon" :showActions="false" />
     <div class="container">
       <template v-if="!isPending">
         <bill-coupon-description class="section" :coupon="coupon" />
