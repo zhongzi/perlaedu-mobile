@@ -50,7 +50,6 @@ export default class Home extends Mixins(SyncMixin) {
 
   created() {
     this.store = "merchant";
-    this.loadMerchant();
 
     this.$bus.$on("inner:config:poster", (poster, context, show) => {
       this.$bus.$emit(
@@ -60,6 +59,16 @@ export default class Home extends Mixins(SyncMixin) {
         show || true
       );
     });
+
+    if (!this.$route.params.merchantId && this.$auth.user.curr_merch_id) {
+      return this.$router.push({
+        name: "websiteMerchant",
+        params: {
+          merchantId: this.$auth.user.curr_merch_id,
+        },
+      });
+    }
+    this.loadMerchant();
   }
 
   @Watch("merchant", { deep: true })
@@ -75,6 +84,7 @@ export default class Home extends Mixins(SyncMixin) {
 
   loadMerchant() {
     this.id = this.$route.params.merchantId;
+
     this.loadEntity({
       requireColumns: ["count_persons"],
       query: {
@@ -91,7 +101,24 @@ export default class Home extends Mixins(SyncMixin) {
           Website: ["skin", "share"],
         }),
       },
+      success: () => {
+        this.checkNoWebsite();
+      },
+      failure: (e) => {
+        if (e.response.status === 404) {
+          this.checkNoWebsite();
+          return;
+        }
+      },
     });
+  }
+
+  checkNoWebsite() {
+    if (isEmpty(this.merchant) || isEmpty(this.merchant.website)) {
+      this.$router.push({
+        name: "newWebsiteGuide",
+      });
+    }
   }
 
   share() {

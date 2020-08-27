@@ -33,54 +33,53 @@ import editingRoutes from "./editing";
 
 const merchantRoutes: any = [
   {
-    path: "merchants/:merchantId",
+    path: "merchants",
     component: Home,
     name: "websiteMerchantHome",
-    redirect: {
-      name: "websiteMerchant",
-    },
     meta: {
       requireOpenid: true,
       requireAuth: true,
     },
     children: [
       {
-        path: "",
-        name: "websiteMerchant",
+        path: ":merchantId",
         component: Merchant,
+        name: "websiteMerchant",
         meta: { title: "机构门户" },
+        children: [
+          {
+            path: "courses/:courseId",
+            name: "websiteMerchantCourse",
+            component: Course,
+            meta: { title: "课程详情" },
+          },
+          {
+            path: "albums/:albumId",
+            name: "websiteMerchantAlbum",
+            component: Album,
+            meta: { title: "机构相册" },
+          },
+          {
+            path: "articles/:articleId",
+            name: "websiteMerchantArticle",
+            component: Article,
+            meta: { title: "最新动态" },
+          },
+          {
+            path: "teachers/:teacherId",
+            name: "websiteMerchantTeacher",
+            component: Teacher,
+            meta: { title: "师资简介" },
+          },
+          {
+            path: "pending",
+            name: "websiteMerchantPending",
+            component: Pending,
+            meta: { title: "申请开通门户服务" },
+          },
+        ].concat(editingRoutes),
       },
-      {
-        path: "courses/:courseId",
-        name: "websiteMerchantCourse",
-        component: Course,
-        meta: { title: "课程详情" },
-      },
-      {
-        path: "albums/:albumId",
-        name: "websiteMerchantAlbum",
-        component: Album,
-        meta: { title: "机构相册" },
-      },
-      {
-        path: "articles/:articleId",
-        name: "websiteMerchantArticle",
-        component: Article,
-        meta: { title: "最新动态" },
-      },
-      {
-        path: "teachers/:teacherId",
-        name: "websiteMerchantTeacher",
-        component: Teacher,
-        meta: { title: "师资简介" },
-      },
-      {
-        path: "pending",
-        name: "websiteMerchantPending",
-        component: Pending,
-        meta: { title: "申请开通门户服务" },
-      },
-    ].concat(editingRoutes),
+    ],
   },
 ];
 

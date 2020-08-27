@@ -131,23 +131,12 @@ export default class Home extends Mixins(SyncMixin) {
   created() {
     this.store = "merchant";
     this.id = this.$route.params.merchantId;
-    this.checkNoWebsite();
   }
 
   @Watch("merchant", { deep: true })
   onMerchantChanged() {
-    this.checkNoWebsite();
     this.updateTitle();
     this.$bus.$emit("website:menu:style", this.skin.menu);
-  }
-
-  checkNoWebsite() {
-    if (isEmpty(this.merchant)) return;
-    if (isEmpty(this.merchant.website)) {
-      this.$router.push({
-        name: "newWebsiteGuide",
-      });
-    }
   }
 
   updateTitle() {
