@@ -46,7 +46,7 @@
         <article-list :query="query" :merchant="merchant" />
       </div>
       <ai-copyright :manual="true" />
-      <guide-entry class="block" />
+      <guide-entry class="block" v-if="showGuide" />
     </div>
   </div>
 </template>
@@ -92,6 +92,13 @@ import cloneDeep from "lodash/cloneDeep";
   },
 })
 export default class Home extends Mixins(SyncMixin) {
+  get showGuide() {
+    return !(
+      this.merchant.id === this.$auth.user.curr_merch_id &&
+      this.$auth.user.is_manager
+    );
+  }
+
   get merchant() {
     return this.entity;
     // const skin = {};

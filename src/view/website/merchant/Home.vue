@@ -60,7 +60,10 @@ export default class Home extends Mixins(SyncMixin) {
       );
     });
 
-    if (!this.$route.params.merchantId && this.$auth.user.curr_merch_id) {
+    if (
+      this.$route.params.merchantId === "myself" &&
+      this.$auth.user.curr_merch_id
+    ) {
       return this.$router.push({
         name: "websiteMerchant",
         params: {

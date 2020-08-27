@@ -24,6 +24,16 @@ const websiteRoutes: any = [
         name: "newWebsiteGuide",
         meta: { title: "30天免费门户网站体验资格申请" },
       },
+      {
+        path: "merchants",
+        redirect: {
+          name: "websiteMerchant",
+          params: {
+            merchantId: "myself",
+          },
+        },
+        meta: { title: "精品门户" },
+      },
     ].concat(merchantRoutes, unionRoutes),
   },
 ];
