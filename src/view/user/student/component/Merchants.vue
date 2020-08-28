@@ -55,9 +55,11 @@ export default class Home extends Vue {
   get query() {
     return this.curNav.value === "learning"
       ? {
+          "Person.openid": this.$auth.user.openid,
           only_student: true,
         }
       : {
+          "Person.openid": this.$auth.user.openid,
           require_person: true,
         };
   }
