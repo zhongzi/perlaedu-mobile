@@ -9,6 +9,9 @@ import { Component, Vue, Mixins, Watch } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
 
+import countAPI from "@/api/common/count";
+import { CountType } from "@/enum/count_type";
+
 import isEmpty from "lodash/isEmpty";
 import _get from "lodash/get";
 import merge from "lodash/merge";
@@ -50,6 +53,7 @@ export default class Home extends Mixins(SyncMixin) {
 
   created() {
     this.store = "merchant";
+    this.$bus.$on("count:share", this.countShare);
 
     this.$bus.$on("inner:config:poster", (poster, context, show) => {
       this.$bus.$emit(
@@ -137,9 +141,38 @@ export default class Home extends Mixins(SyncMixin) {
 
   view() {
     if (isEmpty(this.merchant)) return;
+    this.countView();
 
     this.$db.nsSet("websites", this.merchant.id, {
       date: new Date().getTime(),
+    });
+  }
+
+  countView() {
+    countAPI.list({
+      query: {
+        related_id: this.merchant.id,
+        type_: CountType.merchant_pv.value,
+        tag: this.$store.state.expose2,
+        openid: this.$store.state.expose,
+        referee: this.$store.state.expose2,
+      },
+      headers: {},
+      args: {},
+    });
+  }
+
+  countShare() {
+    countAPI.list({
+      query: {
+        related_id: this.merchant.id,
+        type_: CountType.merchant_ps.value,
+        tag: this.$store.state.expose2,
+        openid: this.$store.state.expose,
+        referee: this.$store.state.expose2,
+      },
+      headers: {},
+      args: {},
     });
   }
 }

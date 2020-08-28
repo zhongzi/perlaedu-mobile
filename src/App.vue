@@ -61,6 +61,7 @@ export default class Home extends Vue {
         link: link || window.location.href,
         imgUrl: imgUrl,
         success: () => {
+          this.defaultShareSuccess();
           success && success();
         },
       });
@@ -71,6 +72,10 @@ export default class Home extends Vue {
     this.poster = poster;
     this.posterContext = context;
     this.showPoster = show;
+  }
+
+  defaultShareSuccess() {
+    this.$bus.$emit("count:share");
   }
 }
 </script>

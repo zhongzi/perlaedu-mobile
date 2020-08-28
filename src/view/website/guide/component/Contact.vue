@@ -12,7 +12,6 @@
       </template>
       <template v-slot:right>
         <hui-button class="action" @click.native="showDialog = true">
-          <i class="iconfont icon-phone" />
           <span>联系领取 </span>
         </hui-button>
       </template>
