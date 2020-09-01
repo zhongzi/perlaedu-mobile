@@ -9,7 +9,7 @@
       </template>
       <template v-slot:right v-if="showAction">
         <hui-button @click.native="onClick" class="button">
-          核销记录
+          发/销卡记录
         </hui-button>
       </template>
     </ai-cell>
@@ -45,7 +45,9 @@ export default class Home extends Vue {
     this.$router.push({
       name: "billManagementCoupons",
       query: {
-        openid: this.user.openid,
+        query: JSON.stringify({
+          openid: this.user.openid,
+        }),
       },
     });
   }

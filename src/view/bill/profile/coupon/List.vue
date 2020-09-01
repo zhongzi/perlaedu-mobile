@@ -3,7 +3,11 @@
     <merchants @click="(m) => (curMerchant = m)" />
     <hui-tab v-model="curTabIdx" :tabs="tabs" label="label" />
     <div class="container">
-      <bill-coupon-list :query="query" scrollHeight="70vh" />
+      <bill-coupon-list
+        :query="query"
+        scrollHeight="70vh"
+        couponClickedRoute="billProfileCouponDetail"
+      />
     </div>
   </div>
 </template>

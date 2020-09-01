@@ -10,16 +10,18 @@
           {{ coupon | safe("item.title") }}
         </div>
       </div>
-      <div :class="b('header-right')">
+      <div
+        :class="b('header-right')"
+        v-if="showActions && (isTaken || isPending)"
+      >
         <bill-button
-          v-if="showActions && (isTaken || isPending)"
           :label="isTaken ? '立即使用' : isPending ? '激活' : ''"
           :enableIcon="false"
           :class="b('header-right-btn')"
         />
-        <template v-else>
-          <img :src="statusImg" />
-        </template>
+      </div>
+      <div v-else class="status">
+        <img :src="statusImg" />
       </div>
     </div>
     <div :class="b('footer')">
@@ -33,7 +35,7 @@
             {{ origin.name }}
           </span>
         </template>
-        <template v-else>
+        <template v-else-if="coupon.user">
           <img
             class="cover"
             :src="coupon.user.avatar | alioss({ width: 120 })"
@@ -87,8 +89,7 @@ import isEmpty from "lodash/isEmpty";
 })
 export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Object, default: null }) coupon: any;
-  @Prop({ type: String, default: "billProfileCouponDetail" })
-  couponClickedRoute: string;
+  @Prop({ type: String, default: null }) couponClickedRoute: string;
   @Prop({ type: Boolean, default: false }) showUser: boolean;
   @Prop({ type: Boolean, default: true }) showActions: boolean;
 
@@ -192,9 +193,12 @@ export default class Home extends Mixins(SyncMixin) {
     align-items: center;
     justify-content: space-between;
 
+    position: relative;
+
     &-left {
       flex: 2;
       min-width: 0px;
+      z-index: 20;
 
       display: flex;
       justify-content: space-between;
@@ -238,10 +242,14 @@ export default class Home extends Mixins(SyncMixin) {
         text-shadow: 0px 6px 12px rgba(254, 196, 77, 0.44),
           0px 4px 4px rgba(255, 143, 13, 0.4);
       }
+    }
+    .status {
+      position: absolute;
+      width: 100%;
 
       img {
-        float: right;
         width: 70px;
+        float: right;
       }
     }
   }

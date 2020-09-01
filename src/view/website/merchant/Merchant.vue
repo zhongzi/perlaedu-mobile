@@ -5,6 +5,11 @@
       <div class="float">
         <i
           v-if="isOwner"
+          class="iconfont icon-trend"
+          @click="$router.push({ name: 'billManagementCoupons' })"
+        />
+        <i
+          v-if="isOwner"
           class="iconfont icon-setting"
           @click="$router.push({ name: 'websiteEditing' })"
         />

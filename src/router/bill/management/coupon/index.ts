@@ -32,7 +32,7 @@ const couponRoutes: any = [
         path: "",
         name: "billManagementCoupons",
         component: List,
-        meta: { title: "已核销列表" },
+        meta: { title: "券明细" },
       },
       {
         path: "balances",

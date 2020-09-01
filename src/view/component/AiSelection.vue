@@ -5,15 +5,8 @@
     </div>
     <div :class="b('input')">
       <select :class="b('select')" v-model="innerValue" @blur="fixIOSScroll">
-        <option
-          v-if="enableUnsetOption"
-          :value="-1"
-          :class="b('select-option')"
-        >
-          暂不设置</option
-        >
-        <option v-if="enableAllOption" :value="0" :class="b('select-option')">
-          全部
+        <option v-if="defaultName" value="" :class="b('select-option')">
+          {{ defaultName }}
         </option>
         <template v-for="(option, index) in options">
           <option
@@ -69,6 +62,12 @@ export default class Home extends Mixins(PatchMixin) {
 
   innerValue: any = null;
 
+  get defaultName() {
+    if (this.enableUnsetOption) return "暂不设置";
+    if (this.enableAllOption) return "全部";
+    return;
+  }
+
   created() {
     this.resetValue();
   }
@@ -94,7 +93,11 @@ export default class Home extends Mixins(PatchMixin) {
     if (!isEmpty(this.value)) return;
     if (isEmpty(this.options)) return;
 
-    this.innerValue = _get(this.options[0], this.valueKey, this.options[0]);
+    if (this.enableAllOption || this.enableUnsetOption) {
+      this.innerValue = "";
+    } else {
+      this.innerValue = _get(this.options[0], this.valueKey, this.options[0]);
+    }
   }
 
   resetValue() {
@@ -137,15 +140,23 @@ export default class Home extends Mixins(PatchMixin) {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    background: #fff;
+    border-radius: 4px;
+
+    padding: 0px 10px;
   }
 
   &__select {
     width: 100%;
+    min-height: 40px;
+
     font-size: 14px;
     color: rgba(165, 165, 165, 1);
     border: none;
     outline: none;
     background: #fff;
+    border-radius: 8px;
 
     -webkit-appearance: none;
 
@@ -156,7 +167,8 @@ export default class Home extends Mixins(PatchMixin) {
     }
   }
   &__icon {
-    font-size: 10px;
+    font-size: 8px;
+    color: #d8d8d8;
   }
 }
 </style>
