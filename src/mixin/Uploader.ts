@@ -1,5 +1,7 @@
 import { Component, Vue } from "vue-property-decorator";
 
+import imageCompression from "browser-image-compression";
+
 import FileApi from "@/api/common/file";
 import axios from "axios";
 
@@ -19,16 +21,37 @@ export default class UploaderMixin extends Vue {
   }
 
   upload(file, type, prefix, suffix, callback, callbackPrg) {
-    const key = urljoin(prefix, uuidv4() + suffix);
-
-    this.fetchToken(type, key).then((resp) => {
-      const token = resp.data.token;
-      this.sendFile(file, key, token, callbackPrg)
-        .then(() => {
-          callback(token.url);
-        })
-        .catch((error) => console.log(error));
+    this.compression(file, (compressedFile) => {
+      const key = urljoin(prefix, uuidv4() + suffix);
+      this.fetchToken(type, key).then((resp) => {
+        const token = resp.data.token;
+        this.sendFile(compressedFile, key, token, callbackPrg)
+          .then(() => {
+            callback(token.url);
+          })
+          .catch((error) => console.log(error));
+      });
     });
+  }
+
+  compression(file, callback) {
+    // console.log('originalFile instanceof Blob', file instanceof Blob); // true
+    // console.log(`originalFile size ${file.size / 1024 / 1024} MB`);
+
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 750,
+      useWebWorker: true,
+    };
+    imageCompression(file, options)
+      .then(function (compressedFile) {
+        // console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
+        // console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+        callback && callback(compressedFile);
+      })
+      .catch(function (error) {
+        console.log(error.message);
+      });
   }
 
   fetchToken(type, key) {
