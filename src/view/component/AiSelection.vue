@@ -60,7 +60,7 @@ export default class Home extends Mixins(PatchMixin) {
   @Prop({ type: Boolean, default: false }) enableAllOption: boolean;
   @Prop({ type: Boolean, default: false }) enableUnsetOption: boolean;
 
-  innerValue: any = null;
+  innerValue: any = "";
 
   get defaultName() {
     if (this.enableUnsetOption) return "暂不设置";
@@ -70,6 +70,7 @@ export default class Home extends Mixins(PatchMixin) {
 
   created() {
     this.resetValue();
+    this.emitValue();
   }
 
   @Watch("options", { deep: true })
@@ -79,6 +80,7 @@ export default class Home extends Mixins(PatchMixin) {
 
   @Watch("value", { deep: true })
   onValueChanged() {
+    console.log(this.value);
     if (isEqual(this.value, this.innerValue)) return;
     this.resetValue();
   }
@@ -110,6 +112,11 @@ export default class Home extends Mixins(PatchMixin) {
 
     const option = isEmpty(this.valueKey)
       ? this.innerValue
+      : isEmpty(this.innerValue)
+      ? {
+          [this.labelKey]: this.defaultName,
+          [this.valueKey]: this.innerValue,
+        }
       : find(this.options, { [this.valueKey]: this.innerValue });
     this.$emit("selected", option);
   }
@@ -143,8 +150,6 @@ export default class Home extends Mixins(PatchMixin) {
 
     background: #fff;
     border-radius: 4px;
-
-    padding: 0px 10px;
   }
 
   &__select {

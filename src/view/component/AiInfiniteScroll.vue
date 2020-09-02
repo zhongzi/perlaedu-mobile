@@ -5,9 +5,11 @@
         <slot :list="list" name="header" />
         <slot :list="list" name="list">
           <div :class="b('list')">
+            <slot name="item-before" />
             <template v-for="(item, index) in list">
               <slot name="item" :list="list" :item="item" :index="index" />
             </template>
+            <slot name="item-after" />
           </div>
         </slot>
         <div v-show="isEmpty" :class="b('empty')">

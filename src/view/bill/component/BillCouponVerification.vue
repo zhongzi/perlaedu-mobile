@@ -1,11 +1,7 @@
 <template>
   <div class="wrapper">
-    <hui-button
-      type="primary"
-      class="btn-verify"
-      @click.native="showDialog = true"
-    >
-      {{ isStaff ? "立即核销" : "立即使用" }}</hui-button
+    <hui-button type="primary" class="btn-verify" @click.native="btnClicked">
+      {{ btnName }}</hui-button
     >
     <hui-dialog v-model="showDialog">
       <div class="dialog">
@@ -53,6 +49,16 @@ export default class Home extends Mixins(SyncMixin) {
   showDialog: boolean = false;
   remark: string = "";
 
+  get code() {
+    return this.$route.query.code;
+  }
+
+  get btnName() {
+    if (!this.isStaff) return "立即使用";
+    if (this.code) return "立即核销";
+    return "立即核销(暂不可用)";
+  }
+
   get qrcode() {
     return this.$tools.resolveQrcode(this.$router, {
       name: "billManagementCouponDetail",
@@ -74,6 +80,15 @@ export default class Home extends Mixins(SyncMixin) {
     this.showDialog && this.$bus.$emit("bill:coupon:refresh");
   }
 
+  btnClicked() {
+    if (this.isStaff && !this.code) {
+      this.$hui.toast.error("暂不可用, 请扫客户核销二维码");
+      return;
+    }
+
+    this.showDialog = true;
+  }
+
   onCancel() {
     this.showDialog = false;
   }
@@ -87,7 +102,7 @@ export default class Home extends Mixins(SyncMixin) {
       res: {
         coupon_id: this.coupon.id,
         action: "used",
-        verification_code: this.$route.query.code,
+        verification_code: this.code,
         remark: this.remark,
       },
       success: () => {

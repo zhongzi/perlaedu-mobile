@@ -6,6 +6,209 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "16917649",
+      "name": "绘画",
+      "font_class": "huihua",
+      "unicode": "e71d",
+      "unicode_decimal": 59165
+    },
+    {
+      "icon_id": "16917650",
+      "name": "古筝",
+      "font_class": "-guzheng",
+      "unicode": "e71e",
+      "unicode_decimal": 59166
+    },
+    {
+      "icon_id": "16917651",
+      "name": "跆拳道",
+      "font_class": "-taiquandao",
+      "unicode": "e71f",
+      "unicode_decimal": 59167
+    },
+    {
+      "icon_id": "16917652",
+      "name": "钢琴",
+      "font_class": "gangqin",
+      "unicode": "e720",
+      "unicode_decimal": 59168
+    },
+    {
+      "icon_id": "16917653",
+      "name": "高尔夫",
+      "font_class": "-gaoerfu",
+      "unicode": "e721",
+      "unicode_decimal": 59169
+    },
+    {
+      "icon_id": "16917654",
+      "name": "绘本",
+      "font_class": "-huiben",
+      "unicode": "e722",
+      "unicode_decimal": 59170
+    },
+    {
+      "icon_id": "16917655",
+      "name": "街舞",
+      "font_class": "-jiewu",
+      "unicode": "e723",
+      "unicode_decimal": 59171
+    },
+    {
+      "icon_id": "16917656",
+      "name": "烘培",
+      "font_class": "hongpei",
+      "unicode": "e724",
+      "unicode_decimal": 59172
+    },
+    {
+      "icon_id": "16917657",
+      "name": "爵士",
+      "font_class": "-jueshiwu",
+      "unicode": "e725",
+      "unicode_decimal": 59173
+    },
+    {
+      "icon_id": "16917658",
+      "name": "吉他",
+      "font_class": "jita",
+      "unicode": "e727",
+      "unicode_decimal": 59175
+    },
+    {
+      "icon_id": "16917659",
+      "name": "乐高",
+      "font_class": "legao",
+      "unicode": "e728",
+      "unicode_decimal": 59176
+    },
+    {
+      "icon_id": "16917660",
+      "name": "棒球",
+      "font_class": "-bangqiu",
+      "unicode": "e729",
+      "unicode_decimal": 59177
+    },
+    {
+      "icon_id": "16917661",
+      "name": "机器人",
+      "font_class": "jiqiren",
+      "unicode": "e72a",
+      "unicode_decimal": 59178
+    },
+    {
+      "icon_id": "16917662",
+      "name": "主持",
+      "font_class": "zhuchi",
+      "unicode": "e72b",
+      "unicode_decimal": 59179
+    },
+    {
+      "icon_id": "16917663",
+      "name": "模特",
+      "font_class": "-mote",
+      "unicode": "e72c",
+      "unicode_decimal": 59180
+    },
+    {
+      "icon_id": "16917664",
+      "name": "数学",
+      "font_class": "shuxue",
+      "unicode": "e72d",
+      "unicode_decimal": 59181
+    },
+    {
+      "icon_id": "16917665",
+      "name": "拉丁",
+      "font_class": "-ladingwu",
+      "unicode": "e72e",
+      "unicode_decimal": 59182
+    },
+    {
+      "icon_id": "16917666",
+      "name": "书法",
+      "font_class": "-shufa",
+      "unicode": "e72f",
+      "unicode_decimal": 59183
+    },
+    {
+      "icon_id": "16917667",
+      "name": "架子鼓",
+      "font_class": "-jiazigu",
+      "unicode": "e730",
+      "unicode_decimal": 59184
+    },
+    {
+      "icon_id": "16917668",
+      "name": "篮球",
+      "font_class": "lanqiu",
+      "unicode": "e731",
+      "unicode_decimal": 59185
+    },
+    {
+      "icon_id": "16917669",
+      "name": "游泳",
+      "font_class": "youyong",
+      "unicode": "e732",
+      "unicode_decimal": 59186
+    },
+    {
+      "icon_id": "16917670",
+      "name": "珠心算",
+      "font_class": "-zhuxinsuan",
+      "unicode": "e733",
+      "unicode_decimal": 59187
+    },
+    {
+      "icon_id": "16917671",
+      "name": "全脑",
+      "font_class": "-quannao",
+      "unicode": "e734",
+      "unicode_decimal": 59188
+    },
+    {
+      "icon_id": "16917672",
+      "name": "萨克斯",
+      "font_class": "-sakesi",
+      "unicode": "e735",
+      "unicode_decimal": 59189
+    },
+    {
+      "icon_id": "16917673",
+      "name": "中国舞",
+      "font_class": "-zhongguowu",
+      "unicode": "e736",
+      "unicode_decimal": 59190
+    },
+    {
+      "icon_id": "16917674",
+      "name": "声乐",
+      "font_class": "-shengyue",
+      "unicode": "e737",
+      "unicode_decimal": 59191
+    },
+    {
+      "icon_id": "16917675",
+      "name": "手工",
+      "font_class": "shougong",
+      "unicode": "e738",
+      "unicode_decimal": 59192
+    },
+    {
+      "icon_id": "16917676",
+      "name": "英语",
+      "font_class": "yingyu",
+      "unicode": "e739",
+      "unicode_decimal": 59193
+    },
+    {
+      "icon_id": "16917677",
+      "name": "小提琴",
+      "font_class": "-xiaotiqin",
+      "unicode": "e73a",
+      "unicode_decimal": 59194
+    },
+    {
       "icon_id": "3185960",
       "name": "趋势",
       "font_class": "-trend",
@@ -179,13 +382,6 @@
       "font_class": "-course",
       "unicode": "e6fd",
       "unicode_decimal": 59133
-    },
-    {
-      "icon_id": "15324274",
-      "name": "icon_taiquandao",
-      "font_class": "-taiquandao",
-      "unicode": "e6fe",
-      "unicode_decimal": 59134
     },
     {
       "icon_id": "15324275",

@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper coupon">
     <bill-coupon-user :user="coupon.user" class="user" />
-    <bill-coupon :coupon="coupon" />
+    <bill-coupon :coupon="coupon" :showActions="false" />
     <div class="container">
       <bill-coupon-description class="section" :coupon="coupon" />
       <bill-coupon-verification

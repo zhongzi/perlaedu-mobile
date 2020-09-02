@@ -16,9 +16,11 @@
             <span>{{ item.title }}</span>
           </template>
         </ai-cell>
-        <div class="remark" v-if="issue && issue.user">
-          <div>推荐人: {{ referrer.nickname }}</div>
-          <div>领取时间: {{ issue.created_at | date("yyyy/MM/dd HH:mm") }}</div>
+        <div class="remark">
+          <div v-if="referrer.nickname">推荐人: {{ referrer.nickname }}</div>
+          <div v-if="issue.created_at">
+            领取时间: {{ issue.created_at | date("yyyy/MM/dd HH:mm") }}
+          </div>
         </div>
       </div>
       <hui-button class="float-button" @click.native.stop="openDetail">

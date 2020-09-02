@@ -17,8 +17,14 @@
             </slot>
           </div>
         </template>
+        <template v-slot:item-before>
+          <slot name="item-before" />
+        </template>
         <template v-slot:item="{ item, index }">
           <slot name="item" :item="item" :index="index" :tag="tag" />
+        </template>
+        <template v-slot:item-after>
+          <slot name="item-after" />
         </template>
         <template v-slot:empty v-if="enableEmpty">
           <slot name="empty">

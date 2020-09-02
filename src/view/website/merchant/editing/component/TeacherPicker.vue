@@ -7,12 +7,14 @@
       :query="innerQuery"
       :enableEmpty="false"
     >
-      <template v-slot:item="{ item, index }">
-        <div class="item" v-if="index === 0 && enableAddAction">
+      <template v-slot:item-before>
+        <div class="item" v-if="enableAddAction">
           <div class="plus" @click.stop="$emit('add')">
             <i class="iconfont icon-plus" />
           </div>
         </div>
+      </template>
+      <template v-slot:item="{ item }">
         <div class="item">
           <ai-state-check @update:checked="(v) => onCheckedChanged(item, v)">
             <teacher :teacher="item" routeName="" class="teacher" />

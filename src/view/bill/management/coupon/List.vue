@@ -8,16 +8,18 @@
         :query="querySelection"
         :enableAllOption="true"
         :autoDefault="true"
+        @selected="(o) => (curItem = o)"
       />
       <ai-selection-enum
-        v-model="curStatus"
+        v-model="curStatusId"
         :status="statusEnum"
         :enableAllOption="true"
         :autoDefault="true"
+        @selected="(o) => (curStatus = o)"
       />
-      <hui-button type="primary" class="action" @click.native="exportXlxs">
+      <hui-button type="primary" class="action" @click.native="confirm">
         <i class="iconfont icon-download" />
-        <span>导出</span>
+        <span>下载</span>
       </hui-button>
     </div>
     <bill-coupon-list
@@ -45,6 +47,7 @@ import BillCouponM from "../../component/BillCouponM.vue";
 import { BillCouponStatus } from "@/enum/bill_coupon_status";
 
 import merge from "lodash/merge";
+import isEmpty from "lodash/isEmpty";
 
 @Component({
   components: {
@@ -54,8 +57,10 @@ import merge from "lodash/merge";
   },
 })
 export default class Home extends Mixins(SyncMixin) {
-  curItemId: number = null;
-  curStatus: string = null;
+  curItemId: number | string = "";
+  curItem: any = null;
+  curStatusId: string = "taken";
+  curStatus: any = null;
   curComp: any = BillCouponM;
   downloading: boolean = false;
 
@@ -65,15 +70,17 @@ export default class Home extends Mixins(SyncMixin) {
 
   get querySelection() {
     return {
-      merchant_id: this.$auth.user.curr_merch_id,
+      merchant_id: this.$route.query.merchantId,
     };
   }
 
   get query() {
-    let q = merge(
+    return merge(
       {
+        item_id: isEmpty(this.curItemId) ? null : this.curItemId,
+        merchant_id: this.$route.query.merchantId,
         project_id: 0,
-        status: this.curStatus,
+        status: this.curStatusId,
         extras: JSON.stringify({
           BillCoupon: [
             "user",
@@ -90,22 +97,30 @@ export default class Home extends Mixins(SyncMixin) {
       },
       JSON.parse((this.$route.query.query as any) || "{}")
     );
-    if (this.curItemId && this.curItemId > 0) {
-      q.item_id = this.curItemId;
-    }
-    return q;
   }
 
   created() {
     this.store = "billCoupon";
   }
 
-  exportXlxs() {
+  confirm() {
     if (this.downloading) {
       this.$hui.toast.info("正在下载, 请关注微信公众号消息");
       return;
     }
 
+    this.$hui.confirm.show({
+      title: "下载确认",
+      message: `您正在下载 [${this.curItem.title}] 卡券处于 [${this.curStatus.key}] 状态记录明细, 是否继续下载?`,
+      confirmText: "确认",
+      cancelText: "取消",
+      onConfirm: () => {
+        this.exportXlxs();
+      },
+    });
+  }
+
+  exportXlxs() {
     this.downloading = true;
     this.loadList({
       reset: true,
@@ -134,6 +149,9 @@ export default class Home extends Mixins(SyncMixin) {
 .coupons {
   padding: 20px 10px;
   .header {
+    background: #fff;
+    padding-right: 5px;
+
     display: flex;
     align-items: center;
     justify-content: space-between;

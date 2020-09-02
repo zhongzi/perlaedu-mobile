@@ -5,6 +5,7 @@
     :enableAllOption="enableAllOption"
     :enableUnsetOption="enableUnsetOption"
     :autoDefault="autoDefault"
+    @selected="(o) => $emit('selected', o)"
     @input="update"
   />
 </template>

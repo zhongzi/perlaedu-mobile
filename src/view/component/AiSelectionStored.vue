@@ -1,6 +1,6 @@
 <template>
   <ai-selection
-    :value="value"
+    :value="value ? value + '' : ''"
     :options="list"
     :label="label"
     :labelKey="labelKey"
@@ -45,6 +45,12 @@ export default class Home extends Mixins(SyncMixin) {
       query: this.query,
       limit: this.limit,
     });
+    console.log(this.value);
+  }
+
+  @Watch("value", { deep: true })
+  onValueChanged() {
+    console.log(this.value);
   }
 }
 </script>

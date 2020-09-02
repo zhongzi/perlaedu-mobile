@@ -6,7 +6,15 @@
         <i
           v-if="isOwner"
           class="iconfont icon-trend"
-          @click="$router.push({ name: 'billManagementCoupons' })"
+          @click="
+            $router.push({
+              name: 'billManagementCoupons',
+              query: {
+                merchantId: merchant.id,
+                curItemId: merchant.website.coupon_id,
+              },
+            })
+          "
         />
         <i
           v-if="isOwner"
