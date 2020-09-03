@@ -49,7 +49,8 @@ export default class Home extends Vue {
 
   configShare({ title, desc, link, imgUrl, success }) {
     imgUrl = this.$options.filters.alioss(
-      imgUrl || "https://files.perlaedu.com/merchant/logo.bg.png"
+      imgUrl || "https://files.perlaedu.com/merchant/logo.bg.png",
+      { width: 100, height: 100 }
     );
 
     console.log(title, desc, link, imgUrl);
