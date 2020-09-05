@@ -42,8 +42,12 @@ export default class Home extends Mixins(SyncMixin) {
     this.store = this.resource;
     this.loadList({
       reset: true,
-      query: this.query,
-      limit: this.limit,
+      query: Object.assign(
+        {
+          limit: this.limit,
+        },
+        this.query
+      ),
     });
     console.log(this.value);
   }
