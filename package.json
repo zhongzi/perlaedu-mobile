@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@jukejia/egret-utils": "^0.4.9",
-    "@jukejia/retina": "^0.4.1",
+    "@jukejia/retina": "^0.4.2",
     "@jukejia/swift-resource": "^1.2.6",
     "@jukejia/vincent-canvas": "^0.1.6",
     "@sentry/browser": "^5.15.5",
