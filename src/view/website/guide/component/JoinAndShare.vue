@@ -281,7 +281,6 @@ export default class Home extends Vue {
   position: relative;
   background-origin: border-box;
   background-size: cover;
-  background-position: center;
 
   text-align: center;
   border-radius: 6px;
