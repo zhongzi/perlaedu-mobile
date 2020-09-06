@@ -121,6 +121,7 @@ export default class Home extends Vue {
   get innerQuery() {
     return merge(
       {
+        merchant_id: this.$auth.user.curr_merch_id,
         filters: JSON.stringify({
           title: [this.keyword],
           keywords: [this.keyword],
