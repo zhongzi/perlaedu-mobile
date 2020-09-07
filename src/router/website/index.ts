@@ -4,6 +4,9 @@ const Home = () =>
 const Guide = () =>
   import(/* webpackChunkName: "website" */ "@/view/website/guide/Guide.vue");
 
+const Pending = () =>
+  import(/* webpackChunkName: "website" */ "@/view/website/Pending.vue");
+
 import merchantRoutes from "./merchant";
 import unionRoutes from "./union";
 
@@ -18,6 +21,14 @@ const websiteRoutes: any = [
       hideCopyright: true,
     },
     children: [
+      {
+        path: "pending",
+        component: Pending,
+        name: "websitePending",
+        meta: {
+          title: "门户正在升级中",
+        },
+      },
       {
         path: "guide",
         component: Guide,

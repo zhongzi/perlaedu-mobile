@@ -109,21 +109,26 @@ export default class Home extends Mixins(SyncMixin) {
         }),
       },
       success: () => {
-        this.checkNoWebsite();
+        this.checkWebsite();
       },
       failure: (e) => {
         if (e.response.status === 404) {
-          this.checkNoWebsite();
+          this.checkWebsite();
           return;
         }
       },
     });
   }
 
-  checkNoWebsite() {
+  checkWebsite() {
     if (isEmpty(this.merchant) || isEmpty(this.merchant.website)) {
       this.$router.push({
         name: "newWebsiteGuide",
+      });
+    }
+    if (this.merchant.website.status !== "approved") {
+      this.$router.push({
+        name: "websitePending",
       });
     }
   }
