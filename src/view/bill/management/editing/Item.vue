@@ -12,14 +12,14 @@
     />
     <ai-input
       v-model.number="innerItem.price"
-      :placeholder="innerItem.is_welfare ? '优惠金额' : '金额'"
+      :placeholder="innerItem.is_welfare ? '优惠金额' : '支付金额'"
       mode="border"
       class="field"
     />
     <ai-input
       v-if="!innerItem.is_welfare"
       v-model.number="innerItem.value"
-      placeholder="价值量，例如课时量、储值卡金额等"
+      placeholder="价值金额, 默认与支付金额一样"
       mode="border"
       class="field"
     />
