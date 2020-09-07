@@ -14,6 +14,7 @@
     >
       <ai-panel
         :open.sync="open"
+        :showIcon="false"
         :enableHeaderClickable="false"
         :class="b('panel')"
       >
@@ -51,7 +52,9 @@
           </bill-card>
         </template>
         <template>
-          {{ innerItem.description }}
+          <div class="remark">
+            {{ innerItem.description }}
+          </div>
         </template>
       </ai-panel>
     </ai-cell-swiper>
@@ -226,6 +229,10 @@ export default class Home extends Mixins(SyncMixin) {
     p {
       margin: 0px;
     }
+  }
+
+  .remark {
+    padding: 0px 20px;
   }
 }
 </style>

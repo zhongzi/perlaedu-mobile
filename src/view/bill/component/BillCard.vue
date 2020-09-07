@@ -66,7 +66,7 @@ export default class Home extends Vue {
     align-items: center;
     justify-content: space-between;
 
-    padding: 10px 20px;
+    padding: 20px;
 
     height: 100%;
 

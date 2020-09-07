@@ -13,6 +13,7 @@
     >
       <ai-panel
         :class="b('panel')"
+        :showIcon="false"
         :open="innerPanelOpened && !isEmptyDesc"
         :enableHeaderClickable="false"
         @update:open="(v) => (innerPanelOpened = v)"
@@ -43,7 +44,9 @@
           </bill-card>
         </template>
         <template>
-          {{ innerItem.description }}
+          <div class="remark">
+            {{ innerItem.description }}
+          </div>
         </template>
       </ai-panel>
     </ai-cell-swiper>
@@ -131,6 +134,9 @@ export default class Home extends Mixins(SyncMixin) {
     i {
       font-size: 24px;
     }
+  }
+  .remark {
+    padding: 0px 20px;
   }
 }
 </style>

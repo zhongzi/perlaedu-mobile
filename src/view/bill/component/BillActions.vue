@@ -169,10 +169,10 @@ export default class Home extends Mixins(SyncMixin, PayMixin) {
     }
     this.poster.setData(
       "pay-poster",
-      this.posterJson.baseWidth,
       `${this.project.title}.${this.project.merchant.title}.png`,
       this.posterJson.template,
       this.posterJson.elements,
+      this.posterJson.baseWidth,
       (url) => {
         this.posterURL = url;
       }
