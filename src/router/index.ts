@@ -41,7 +41,7 @@ export default new Router({
       meta: {
         requireOpenid: true,
         requireAuth: true,
-        pathname: "/lotteries/",
+        pathname: "/campaigns/",
         title: "收银台",
       },
     },

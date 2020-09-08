@@ -8,7 +8,6 @@ import billOrderItem from "./bill_order_item";
 import billOrderCost from "./bill_order_cost";
 import billProject from "./bill_project";
 import billChannel from "./bill_channel";
-import payOrder from "./pay_order";
 
 export default {
   billItem,
@@ -20,5 +19,4 @@ export default {
   billOrderCost,
   billProject,
   billChannel,
-  payOrder,
 };

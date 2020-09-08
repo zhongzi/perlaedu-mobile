@@ -43,11 +43,11 @@ export default class Home extends Mixins(SyncMixin) {
   created() {
     // ios环境微信支付patch
     // 微信支付安全目录检测以最后一个/得到， 经过测试包含#
-    // 比如：https://ai.perlaedu.com/lotteries/#/flask-trade?type=bill&related_id=1
+    // 比如：https://ai.perlaedu.com/pay/#/flask-trade?type=bill&related_id=1
     // 拿到的安全目录为: https://ai.perlaedu.com/lotteries/#/
     // 因此两种处理方式
     // 1，配置安全目录为上述
-    // 2, 让第一次进入直接为:https://ai.perlaedu.com/lotteries/根目录
+    // 2, 让第一次进入直接为:https://ai.perlaedu.com/pay/根目录
     //    又或者采用网上方案在进入之前在#号前面增加一个?以此达到相同安全目录
 
     if (!window.location.href.match(/\?#/)) {
