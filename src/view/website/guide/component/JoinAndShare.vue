@@ -76,7 +76,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Mixins } from "vue-property-decorator";
+
+import SyncMixin from "@/mixin/SyncMixin";
 
 import AiCell from "@/view/component/AiCell.vue";
 import AiCard from "@/view/component/AiCard.vue";
@@ -95,7 +97,7 @@ import isEmpty from "lodash/isEmpty";
     AiLine,
   },
 })
-export default class Home extends Vue {
+export default class Home extends Mixins(SyncMixin) {
   isJoinedCur: boolean = false;
   localKey: string = "newJoinWebsite";
 
@@ -125,6 +127,8 @@ export default class Home extends Vue {
   }
 
   created() {
+    this.store = "crmClue";
+
     this.telephone = this.$auth.user.phone;
     if (!this.isJoined) {
       this.showDialog = true;
@@ -154,25 +158,30 @@ export default class Home extends Vue {
       return;
     }
 
-    this.$wework
-      .notifyForNewWebsite(
-        this.$auth.user.nickname,
-        this.$auth.user.openid,
-        this.telephone,
-        this.$route.query.merchant,
-        this.$store.state.expose2
-      )
-      .then(() => {
+    const clue: any = {
+      code: this.$route.query.code || this.$configs.crmChannelCode,
+      source_id: this.$route.query.source_id,
+      source_class: this.$route.query.source_class,
+      phone: this.telephone,
+      openid: this.$auth.openid,
+      referrer_openid: this.$store.state.expose2,
+      url: window.location.href,
+    };
+
+    this.saveEntity({
+      res: clue,
+      success: () => {
         this.$db.nsSet(this.localKey, this.telephone, {
           date: new Date().getTime(),
         });
         this.$hui.toast.info("领取成功");
         this.isJoinedCur = true;
         this.showDialog = false;
-      })
-      .catch((e) => {
+      },
+      failure: () => {
         this.$hui.toast.error("领取失败");
-      });
+      },
+    });
   }
 }
 </script>

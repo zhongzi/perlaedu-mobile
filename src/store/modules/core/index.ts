@@ -1,3 +1,4 @@
+import oauth from "./oauth";
 import person from "./person";
 import merchant from "./merchant";
 import agent from "./agent";
@@ -16,6 +17,7 @@ import websiteVideo from "./website_video";
 import setting from "./setting";
 
 export default {
+  oauth,
   person,
   merchant,
   agent,

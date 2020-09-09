@@ -50,7 +50,6 @@ export default class Home extends Mixins(UploaderMixin) {
               "bold",
               "italic",
               "underline",
-              "strike",
             ],
             [
               "link",

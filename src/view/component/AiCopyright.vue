@@ -1,6 +1,6 @@
 <template>
   <div class="copyright" v-if="showCopyright" :style="copyrightStyle">
-    <a href="http://www.jiaowu.ai">由AI教务提供技术支持 </a>
+    <a :href="url">由AI教务提供技术支持 </a>
   </div>
 </template>
 
@@ -10,6 +10,19 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 @Component
 export default class Home extends Vue {
   @Prop({ type: Boolean, default: false }) manual: boolean;
+
+  get url() {
+    const openid = this.$auth.openid || "";
+    const referrerOpenid =
+      this.$store.state.expose2 || this.$store.state.expose || "";
+    const sourceId = this.$route.params.merchantId;
+    const sourceClass = sourceId ? "Merchant" : "";
+    return `https://www.jiaowu.art?code=${
+      this.$configs.crmChannelCode
+    }&sourceId=${
+      sourceId || ""
+    }&sourceClass=${sourceClass}&openid=${openid}&referrerOpenid=${referrerOpenid}`;
+  }
 
   get showCopyright() {
     if (this.manual) return true;

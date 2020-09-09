@@ -17,6 +17,7 @@ const NotFound = () =>
 import billRoutes from "./bill";
 import websiteRoutes from "./website";
 import userRoutes from "./user";
+import crmRoutes from "./crm";
 import termsOfServiceRoutes from "./terms_of_service";
 
 patchVueRouter(Router);
@@ -78,7 +79,13 @@ export default new Router({
         title: "404",
       },
     },
-  ].concat(billRoutes, termsOfServiceRoutes, websiteRoutes, userRoutes),
+  ].concat(
+    billRoutes,
+    termsOfServiceRoutes,
+    websiteRoutes,
+    userRoutes,
+    crmRoutes
+  ),
   scrollBehavior: (to, from, savedPosition) => {
     if (savedPosition) {
       return savedPosition;

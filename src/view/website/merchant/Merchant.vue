@@ -59,7 +59,7 @@
         <article-list :query="query" :merchant="merchant" />
       </div>
       <ai-copyright :manual="true" />
-      <guide-entry class="block" v-if="showGuide" />
+      <guide-entry class="block" v-if="!isOwner" />
     </div>
   </div>
 </template>

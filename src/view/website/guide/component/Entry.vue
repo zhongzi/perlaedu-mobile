@@ -52,8 +52,13 @@ export default class Home extends Vue {
   }
 
   openGuide() {
+    const merchantId = this.$route.params.merchantId;
     return this.$router.push({
       name: "newWebsiteGuide",
+      query: {
+        source_id: merchantId,
+        source_class: merchantId ? "Merchant" : undefined,
+      },
     });
   }
 }
