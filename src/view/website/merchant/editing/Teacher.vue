@@ -112,6 +112,14 @@ export default class Home extends Mixins(SyncMixin) {
   onSubmit() {
     if (!this.merchantId) return;
 
+    if (
+      isEmpty(this.innerTeacher.phone) ||
+      !this.$tools.regxs.telephone(this.innerTeacher.phone)
+    ) {
+      this.$hui.toast.error("请输入正确的手机号码");
+      return;
+    }
+
     let person = cloneDeep(
       merge(this.innerTeacher, {
         merchant_id: this.merchantId,

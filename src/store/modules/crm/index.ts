@@ -1,9 +1,9 @@
 import crmClue from "./clue";
-import crmClueAction from "./clue_action";
+import crmCustomerAction from "./customer_action";
 import crmCustomer from "./customer";
 
 export default {
   crmClue,
-  crmClueAction,
   crmCustomer,
+  crmCustomerAction,
 };

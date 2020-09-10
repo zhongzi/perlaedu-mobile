@@ -1,14 +1,15 @@
 <template>
   <div class="wrapper actions">
+    <action-add-action :customer="customer" class="add" />
     <ai-list-stored
       class="list"
-      resource="crmClueAction"
-      scrollHeight="60vh"
+      resource="crmCustomerAction"
+      scrollHeight="70vh"
       :query="query"
       :refresh.sync="refresh"
     >
       <template v-slot:item="{ item, tag }">
-        <crm-clue-action :action="item" :outerTag="tag" class="item" />
+        <crm-customer-action :action="item" :outerTag="tag" class="item" />
       </template>
     </ai-list-stored>
   </div>
@@ -19,7 +20,8 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 
 import AiListStored from "@/view/component/AiListStored.vue";
 
-import CrmClueAction from "./CrmClueAction.vue";
+import CrmCustomerAction from "./CrmCustomerAction.vue";
+import ActionAddAction from "./ActionAddAction.vue";
 
 import merge from "lodash/merge";
 import isEmpty from "lodash/isEmpty";
@@ -27,11 +29,12 @@ import isEmpty from "lodash/isEmpty";
 @Component({
   components: {
     AiListStored,
-    CrmClueAction,
+    CrmCustomerAction,
+    ActionAddAction,
   },
 })
 export default class Home extends Vue {
-  @Prop({ type: Object, default: null }) clue: any;
+  @Prop({ type: Object, default: null }) customer: any;
 
   refresh: boolean = true;
 
@@ -42,9 +45,9 @@ export default class Home extends Vue {
   }
   get query() {
     return {
-      clue_id: this.clue.id,
+      customer_id: this.customer.id,
       extras: JSON.stringify({
-        CrmClueAction: ["user"],
+        CrmCustomerAction: ["user"],
         OAuth: ["avatar"],
       }),
     };
@@ -60,6 +63,11 @@ export default class Home extends Vue {
   }
   .item {
     margin: 10px 0px;
+  }
+  .add {
+    & ::v-deep button {
+      width: 100%;
+    }
   }
 }
 </style>

@@ -83,9 +83,10 @@ module.exports = {
     },
   },
   configureWebpack: (config) => {
-    config.output.filename = isTesting
-      ? "[name].[hash].js"
-      : "[name].[contenthash].js";
+    config.output.filename =
+      isTesting || !isProduction
+        ? "[name].[hash].js"
+        : "[name].[contenthash].js";
 
     isProduction &&
       isNeedPublish &&

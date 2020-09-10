@@ -31,6 +31,7 @@ export default class Home extends Vue {}
   &__body {
     &-default {
       height: 100%;
+      text-align: center;
     }
   }
 }

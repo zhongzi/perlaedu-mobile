@@ -1,6 +1,6 @@
-const CrmClueStatus = {
+const CrmCustomerStatus = {
   pending: {
-    text: "新线索",
+    text: "新客户",
     color: "#F5A623",
   },
   following: {
@@ -17,4 +17,4 @@ const CrmClueStatus = {
   },
 };
 
-export { CrmClueStatus };
+export { CrmCustomerStatus };

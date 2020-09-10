@@ -10,9 +10,6 @@ const clueRoutes: any = [
     path: "clues",
     component: Home,
     name: "crmClueHome",
-    redirect: {
-      name: "crmClueList",
-    },
     meta: {
       requireOpenid: true,
       requireAuth: true,

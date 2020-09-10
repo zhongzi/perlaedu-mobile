@@ -28,7 +28,7 @@ export default new Router({
     {
       path: "/",
       redirect: {
-        name: "websiteHome",
+        name: "student",
       },
       meta: {
         requireOpenid: true,

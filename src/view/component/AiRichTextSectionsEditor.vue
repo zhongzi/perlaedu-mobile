@@ -132,6 +132,7 @@ import AiPopup from "./AiPopup.vue";
 
 import cloneDeep from "lodash/cloneDeep";
 import isString from "lodash/isString";
+import isEmpty from "lodash/isEmpty";
 
 import "quill/dist/quill.core.css";
 
@@ -149,6 +150,7 @@ import "quill/dist/quill.core.css";
 export default class Home extends Vue {
   @Prop([Array, String]) value: Array<Object> | String;
   @Prop({ type: Boolean, default: true }) isEditing: Boolean;
+  @Prop({ type: Boolean, default: true }) jsonable: Boolean;
   @Prop({ type: String, default: "" }) imageType: string;
   @Prop({ type: String, default: "" }) imagePrefix: string;
 
@@ -178,7 +180,7 @@ export default class Home extends Vue {
   @Watch("details", { deep: true })
   onDetailsChanged(val: any) {
     let data = val;
-    if (isString(this.value)) {
+    if (!this.jsonable) {
       data = val.length > 0 ? JSON.stringify(val) : "";
     }
     this.$emit("input", data);
@@ -227,7 +229,7 @@ export default class Home extends Vue {
       type: type,
       desc: "",
       url: "",
-      videoId: null,
+      videoId: "",
     };
     val.content.push(c);
     this.$forceUpdate();

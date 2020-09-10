@@ -7,6 +7,16 @@ const Detail = () =>
     /* webpackChunkName: "crm-customer" */ "@/view/crm/customer/Detail.vue"
   );
 
+const Editing = () =>
+  import(
+    /* webpackChunkName: "crm-customer" */ "@/view/crm/customer/Editing.vue"
+  );
+
+const EditingAction = () =>
+  import(
+    /* webpackChunkName: "crm-customer" */ "@/view/crm/customer/EditingAction.vue"
+  );
+
 const customerRoutes: any = [
   {
     path: "customers",
@@ -31,6 +41,18 @@ const customerRoutes: any = [
         name: "crmCustomerDetail",
         component: Detail,
         meta: { title: "客户详情" },
+      },
+      {
+        path: ":customerId/editing",
+        name: "crmCustomerEditing",
+        component: Editing,
+        meta: { title: "客户详情" },
+      },
+      {
+        path: ":customerId/ections/:actionId/editing",
+        name: "crmCustomerActionEditing",
+        component: EditingAction,
+        meta: { title: "客户跟踪信息编辑" },
       },
     ],
   },

@@ -15,9 +15,14 @@ import isSameDay from "date-fns/isSameDay";
 import _isPast from "date-fns/isPast";
 import differenceInDays from "date-fns/differenceInDays";
 import differenceInSeconds from "date-fns/differenceInSeconds";
+import isEmpty from "lodash/isEmpty";
 
 function parseDate(value) {
   return parseISO(value);
+}
+
+function emptyReplace(s, d = "-") {
+  return isEmpty(s) ? d : s;
 }
 
 function distanceFromDatetime(
@@ -148,6 +153,7 @@ const filters: { [k: string]: any } = {
   distanceFromSeconds,
   distanceFromDatetime,
   prettyBytes,
+  emptyReplace,
 };
 
 export default filters;

@@ -1,17 +1,17 @@
 <template>
-  <div class="wrapper add-action">
-    <hui-button type="info" @click.native="open = true">
-      新跟进记录
-    </hui-button>
-    <ai-dialog v-model="open">
-      <div class="dialog">
-        <div class="title">添加跟进记录</div>
-        <ai-rich-text-quill-editor v-model="remark" />
-        <hui-button type="info" @click.native="add" class="action"
-          >提交</hui-button
-        >
-      </div>
-    </ai-dialog>
+  <div class="wrapper action-editing">
+    <div class="title">跟进记录</div>
+    <ai-rich-text-sections-editor
+      v-model="remark"
+      class="content"
+      :jsonable="false"
+      imageType="crm"
+    />
+    <ai-fixed-footer>
+      <hui-button type="info" @click.native="add" class="action"
+        >提交</hui-button
+      >
+    </ai-fixed-footer>
   </div>
 </template>
 
@@ -21,7 +21,8 @@ import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 import SyncMixin from "@/mixin/SyncMixin";
 
 import AiDialog from "@/view/component/AiDialog.vue";
-import AiRichTextQuillEditor from "@/view/component/AiRichTextQuillEditor.vue";
+import AiFixedFooter from "@/view/component/AiFixedFooter.vue";
+import AiRichTextSectionsEditor from "@/view/component/AiRichTextSectionsEditor.vue";
 
 import isEmpty from "lodash/isEmpty";
 import _get from "lodash/get";
@@ -29,28 +30,36 @@ import _get from "lodash/get";
 @Component({
   components: {
     AiDialog,
-    AiRichTextQuillEditor,
+    AiFixedFooter,
+    AiRichTextSectionsEditor,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
-  @Prop({ type: Object, default: null }) clue: any;
-
-  action: any = null;
+  customerId: any = null;
   remark: string = null;
-  open: boolean = false;
+
+  get isNew() {
+    return this.id === "new";
+  }
+
+  get action() {
+    return this.entity;
+  }
 
   created() {
-    this.store = "crmClueAction";
+    this.store = "crmCustomerAction";
+    this.id = this.$route.params.actionId;
+    this.id = this.id !== "new" ? this.id : null;
+    this.customerId = this.$route.params.customerId;
+    this.id && this.loadEntity();
+  }
 
-    this.$bus.$on("inner:action:edit", (action) => {
-      this.action = action;
-      this.remark = action.remark;
-      this.open = true;
-    });
+  @Watch("action", { deep: true })
+  onActionChanged() {
+    this.remark = this.action.remark;
   }
 
   add() {
-    this.open = false;
     this.$hui.confirm.show({
       title: "添加跟进记录确认",
       message: `确认添加吗？`,
@@ -59,28 +68,23 @@ export default class Home extends Mixins(SyncMixin) {
       onConfirm: () => {
         this.submit();
       },
-      onCancel: () => {
-        this.open = true;
-      },
+      onCancel: () => {},
     });
   }
 
   submit() {
     if (isEmpty(this.remark)) return;
 
-    this.id = _get(this.action, "id");
     this.saveEntity({
       res: {
         id: this.id,
-        clue_id: _get(this.action, "clue_id", this.clue.id),
+        customer_id: this.customerId,
         remark: this.remark,
       },
       success: () => {
         this.$nextTick(() => {
-          this.action = null;
           this.remark = null;
-          this.open = false;
-          this.$bus.$emit("inner:action:list:refresh");
+          this.$router.go(-1);
         });
       },
     });
@@ -88,7 +92,7 @@ export default class Home extends Mixins(SyncMixin) {
 }
 </script>
 <style lang="scss" scoped>
-.dialog {
+.action-editing {
   padding: 20px 10px;
   display: flex;
   flex-direction: column;
@@ -99,6 +103,9 @@ export default class Home extends Mixins(SyncMixin) {
     font-size: 18px;
     font-weight: 600;
     line-height: 2;
+  }
+  .content {
+    min-height: 80vh;
   }
 
   .action {

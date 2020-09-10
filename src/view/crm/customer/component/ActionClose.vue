@@ -11,10 +11,10 @@ import SyncMixin from "@/mixin/SyncMixin";
 
 @Component
 export default class Home extends Mixins(SyncMixin) {
-  @Prop({ type: Object, default: null }) clue: any;
+  @Prop({ type: Object, default: null }) customer: any;
 
   created() {
-    this.store = "crmClue";
+    this.store = "crmCustomer";
   }
 
   close() {
@@ -30,7 +30,7 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   submit() {
-    this.id = this.clue.id;
+    this.id = this.customer.id;
     this.saveEntity({
       res: {
         id: this.id,

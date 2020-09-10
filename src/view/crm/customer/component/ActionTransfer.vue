@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper transfer">
     <hui-button type="primary" @click.native="open = true">
-      转移跟进关系
+      转移关系
     </hui-button>
     <ai-dialog v-model="open">
       <div class="dialog">
@@ -41,7 +41,7 @@ import isEmpty from "lodash/isEmpty";
   },
 })
 export default class Home extends Mixins(SyncMixin) {
-  @Prop({ type: Object, default: null }) clue: any;
+  @Prop({ type: Object, default: null }) customer: any;
 
   follower: any = null;
   followeOpenid: string = null;
@@ -49,15 +49,16 @@ export default class Home extends Mixins(SyncMixin) {
 
   get query() {
     return {
-      kind: "agent",
+      kind: ["agent", "admin"],
     };
   }
 
   created() {
-    this.store = "crmClue";
+    this.store = "crmCustomer";
   }
 
   transfer() {
+    this.open = false;
     this.$hui.confirm.show({
       title: "跟进关系变更确认",
       message: `确定变更跟进关系到 [${this.follower.nickname}] 名下吗?`,
@@ -66,13 +67,16 @@ export default class Home extends Mixins(SyncMixin) {
       onConfirm: () => {
         this.submit();
       },
+      onCancel: () => {
+        this.open = true;
+      },
     });
   }
 
   submit() {
     if (isEmpty(this.followeOpenid)) return;
 
-    this.id = this.clue.id;
+    this.id = this.customer.id;
     this.saveEntity({
       res: {
         id: this.id,
