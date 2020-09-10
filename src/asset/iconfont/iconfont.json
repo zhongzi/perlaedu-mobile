@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "3834212",
+      "name": "围棋",
+      "font_class": "-weiqi",
+      "unicode": "e6a2",
+      "unicode_decimal": 59042
+    },
+    {
+      "icon_id": "10035981",
+      "name": "语文",
+      "font_class": "-yuwen",
+      "unicode": "e746",
+      "unicode_decimal": 59206
+    },
+    {
+      "icon_id": "15535875",
+      "name": "write",
+      "font_class": "-zuowen",
+      "unicode": "e672",
+      "unicode_decimal": 58994
+    },
+    {
       "icon_id": "16917649",
       "name": "绘画",
       "font_class": "huihua",
