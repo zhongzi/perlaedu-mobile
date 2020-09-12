@@ -11,7 +11,7 @@ import { Component, Vue } from "vue-property-decorator";
 export default class Home extends Vue {
   open() {
     this.$router.push({
-      name: "billProfileHome",
+      name: "billProfileCoupons",
     });
   }
 }

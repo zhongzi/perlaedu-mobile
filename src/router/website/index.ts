@@ -14,7 +14,6 @@ const websiteRoutes: any = [
   {
     path: "/websites",
     component: Home,
-    name: "websiteHome",
     meta: {
       requireOpenid: true,
       requireAuth: true,

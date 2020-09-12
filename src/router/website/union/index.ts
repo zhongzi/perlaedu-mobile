@@ -18,7 +18,6 @@ const unionRoutes: any = [
   {
     path: "unions/:unionId",
     component: Home,
-    name: "websiteUnionHome",
     redirect: {
       name: "websiteUnion",
     },

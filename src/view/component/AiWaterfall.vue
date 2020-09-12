@@ -90,7 +90,7 @@ export default class Home extends Vue {
   @Prop({ type: Boolean, default: false }) loading: boolean;
   @Prop({ type: Boolean, default: false }) loadedAll: boolean;
   @Prop({ type: Object, default: null }) option: any;
-  @Prop({ type: Number, default: 15 }) gap: number;
+  @Prop({ type: Number, default: 10 }) gap: number;
 
   showDialog: boolean = false;
   curSlideNum: number = 0;

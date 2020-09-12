@@ -19,7 +19,6 @@ const editingRoutes: any = [
   {
     path: "editing",
     component: Home,
-    name: "billEditingHome",
     meta: {
       requireOpenid: true,
       requireAuth: true,

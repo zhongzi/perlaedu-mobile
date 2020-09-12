@@ -35,7 +35,6 @@ const merchantRoutes: any = [
   {
     path: "merchants/:merchantId",
     component: Home,
-    name: "websiteMerchantHome",
     meta: {
       requireOpenid: true,
       requireAuth: true,

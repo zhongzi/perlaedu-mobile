@@ -1,7 +1,7 @@
 <template>
   <div :class="b()">
     <slot>
-      <div :class="b('result')" :id="triggerName">
+      <div :class="b('result')" :id="innerTriggerName">
         <img
           v-if="value && enablePreview"
           :src="value | alioss(resizeOption)"
@@ -20,7 +20,7 @@
       :cropper-options="innerCropperOptions"
       :output-options="outputOptions"
       :output-quality="outputQuality"
-      :trigger="'#' + triggerName"
+      :trigger="'#' + innerTriggerName"
       @changed="onChanged"
       ref="cropper"
     />
@@ -43,7 +43,7 @@ import merge from "lodash/merge";
 export default class Home extends Mixins(UploaderMixin) {
   @Prop({ type: String, default: null }) value: string;
   @Prop({ type: String, default: "other" }) type: string;
-  @Prop({ type: String, default: "defaultTrigger" }) triggerName: string;
+  @Prop({ type: String, default: "" }) triggerName: string;
   @Prop({ type: [String, Number], default: "" }) prefix: string | number;
   @Prop({ type: Object, default: () => ({ width: 200, height: 150 }) })
   resizeOption: any;
@@ -66,6 +66,10 @@ export default class Home extends Mixins(UploaderMixin) {
 
   mimetype: string = "image/png";
   showCropper: boolean = false;
+
+  get innerTriggerName() {
+    return "default-trigger-" + this.triggerName;
+  }
 
   get innerCropperOptions() {
     return merge(this.cropperOptions, {

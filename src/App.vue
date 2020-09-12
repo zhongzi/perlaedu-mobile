@@ -53,8 +53,6 @@ export default class Home extends Vue {
       { width: 100, height: 100 }
     );
 
-    console.log(title, desc, link, imgUrl);
-
     this.$weixin.config(() => {
       this.$weixin.configShare({
         title: title,

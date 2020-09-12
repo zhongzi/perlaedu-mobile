@@ -36,7 +36,6 @@ const editingRoutes: any = [
   {
     path: "editing",
     component: Home,
-    name: "websitEditingHome",
     redirect: {
       name: "websiteEditing",
     },

@@ -49,12 +49,6 @@ export default class Home extends Mixins(SyncMixin) {
         this.query
       ),
     });
-    console.log(this.value);
-  }
-
-  @Watch("value", { deep: true })
-  onValueChanged() {
-    console.log(this.value);
   }
 }
 </script>

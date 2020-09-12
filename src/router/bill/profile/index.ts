@@ -15,13 +15,12 @@ const profileRoutes: any = [
   {
     path: "profile",
     component: Home,
-    name: "billProfileHome",
     meta: {
       requireOpenid: true,
       requireAuth: true,
     },
     redirect: {
-      name: "billProfileCoupons",
+      name: "billProfileDashboard",
     },
     children: [
       {

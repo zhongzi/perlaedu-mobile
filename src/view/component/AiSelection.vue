@@ -80,7 +80,6 @@ export default class Home extends Mixins(PatchMixin) {
 
   @Watch("value", { deep: true })
   onValueChanged() {
-    console.log(this.value);
     if (isEqual(this.value, this.innerValue)) return;
     this.resetValue();
   }

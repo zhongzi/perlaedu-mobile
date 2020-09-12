@@ -12,6 +12,9 @@ const customerRoutes: any = [
     path: "customers",
     component: Home,
     name: "crmCustomerHome",
+    redirect: {
+      name: "crmCustomerList",
+    },
     meta: {
       requireOpenid: true,
       requireAuth: true,

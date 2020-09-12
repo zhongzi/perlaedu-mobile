@@ -7,7 +7,6 @@ const crmRoutes: any = [
   {
     path: "/crm",
     component: Home,
-    name: "crmHome",
     redirect: {
       name: "crmClueList",
     },

@@ -122,7 +122,7 @@ export default class Home extends Mixins(SyncMixin) {
 
   openBag() {
     this.$router.push({
-      name: "billProfileHome",
+      name: "billProfileCoupons",
     });
     return true;
   }

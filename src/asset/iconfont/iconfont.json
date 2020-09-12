@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "806560",
+      "name": "小学",
+      "font_class": "-youxiaoxianjie",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
       "icon_id": "3834212",
       "name": "围棋",
       "font_class": "-weiqi",

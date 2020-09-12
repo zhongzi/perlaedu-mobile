@@ -86,7 +86,7 @@ export default class Home extends Mixins(SyncMixin) {
   onCouseChanged() {
     this.$store.commit(
       "updateTitle",
-      `${this.course.title}-${this.course.merchant.name}`
+      `${this.course.title}-${_get(this.course, "merchant.name", "-")}`
     );
   }
 

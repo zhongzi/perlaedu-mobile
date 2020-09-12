@@ -11,7 +11,6 @@ const termsOfServiceRoutes: any = [
   {
     path: "/terms-of-service",
     component: Home,
-    name: "termsOfServiceHome",
     children: [
       {
         path: "bill",

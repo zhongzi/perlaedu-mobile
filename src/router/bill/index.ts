@@ -14,7 +14,6 @@ const billRoutes: any = [
   {
     path: "/bills",
     component: Home,
-    name: "billHome",
     redirect: {
       name: "billManagementDashboard",
     },

@@ -13,7 +13,12 @@
         <merchant-cell :merchant="merchant" class="merchant" />
       </template>
       <template v-slot:item="{ item }">
-        <album-photo :photo="item" :key="item.id" :merchant="album.merchant" />
+        <album-photo
+          :photo="item"
+          :key="item.id"
+          :merchant="album.merchant"
+          class="photo"
+        />
       </template>
       <template v-slot:innerFooter>
         <ai-copyright :manual="true" />
@@ -94,6 +99,7 @@ export default class Home extends Mixins(SyncMixin) {
 <style lang="scss" scoped>
 .album {
   height: 100vh;
+
   .merchant {
     margin: 20px;
   }

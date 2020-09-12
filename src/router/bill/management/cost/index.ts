@@ -15,7 +15,6 @@ const costRoutes: any = [
   {
     path: ":orderId/cost",
     component: Home,
-    name: "billCostHome",
     meta: {
       requireOpenid: true,
       requireAuth: true,

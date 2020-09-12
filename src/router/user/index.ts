@@ -7,7 +7,6 @@ const userRoutes: any = [
   {
     path: "/user",
     component: Home,
-    name: "userHome",
     meta: {
       requireOpenid: true,
       requireAuth: true,

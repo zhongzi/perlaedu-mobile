@@ -15,7 +15,6 @@ const managementRoutes: any = [
   {
     path: "management",
     component: Home,
-    name: "billManagement",
     meta: {
       requireOpenid: true,
       requireAuth: true,

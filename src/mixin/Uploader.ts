@@ -41,7 +41,7 @@ export default class UploaderMixin extends Vue {
     const options = {
       maxSizeMB: 1,
       maxWidthOrHeight: 750,
-      useWebWorker: true,
+      useWebWorker: false,
     };
     imageCompression(file, options)
       .then(function (compressedFile) {

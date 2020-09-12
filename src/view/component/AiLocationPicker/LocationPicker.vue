@@ -128,15 +128,16 @@ export default class Home extends Mixins(StopBodyScrollMixin) {
 
   &__popup {
     height: 100vh;
+    overflow: scroll;
+    padding-bottom: 50px;
   }
 
   &__map {
     height: 50%;
+    min-height: 300px;
   }
 
   &__address {
-    height: 15%;
-    margin: 20px auto;
     box-sizing: border-box;
     padding: 0px 10px;
   }

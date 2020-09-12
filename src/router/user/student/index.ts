@@ -8,7 +8,6 @@ const studentRoutes: any = [
   {
     path: "students/",
     component: Home,
-    name: "studentHome",
     redirect: {
       name: "student",
     },

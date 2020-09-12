@@ -22,7 +22,6 @@ const couponRoutes: any = [
   {
     path: "coupons",
     component: Home,
-    name: "billManagementCouponHome",
     meta: {
       requireOpenid: true,
       requireAuth: true,

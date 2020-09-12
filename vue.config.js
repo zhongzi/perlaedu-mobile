@@ -3,6 +3,7 @@ const uuidv4 = require("uuid/v4");
 const urljoin = require("url-join");
 
 const isProduction = process.env.NODE_ENV === "production";
+const isTesting = process.env.TESTING === "true";
 const isNeedPublish = process.env.NEED_PUBLISH === "true";
 const target = process.env.TARGET;
 
@@ -82,6 +83,10 @@ module.exports = {
     },
   },
   configureWebpack: (config) => {
+    config.output.filename = isTesting
+      ? "[name].[hash].js"
+      : "[name].[contenthash].js";
+
     isProduction &&
       isNeedPublish &&
       config.plugins.push(

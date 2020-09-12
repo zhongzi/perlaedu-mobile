@@ -125,7 +125,6 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   onSelected(subject) {
-    console.log(subject);
     if (isEmpty(this.innerCourse.title)) {
       this.innerCourse.title = subject.title;
     }
@@ -155,7 +154,6 @@ export default class Home extends Mixins(SyncMixin) {
     top: -15px;
     background: #fff;
     border-radius: 12px 12px 0px 0px;
-    height: 60vh;
 
     padding-top: 17px;
     padding-left: 17px;

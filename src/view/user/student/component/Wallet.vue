@@ -29,7 +29,7 @@ export default class Home extends Vue {
 
   openCouponList() {
     this.$router.push({
-      name: "billProfileHome",
+      name: "billProfileCoupons",
     });
   }
 }

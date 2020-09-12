@@ -38,6 +38,7 @@
                 <ai-image-uploader
                   v-model="c.url"
                   :prefix="imagePrefix"
+                  :triggerName="i.toString() + '-' + j.toString()"
                   :type="imageType"
                   :flag="false"
                 />

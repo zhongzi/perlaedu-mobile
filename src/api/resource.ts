@@ -9,5 +9,4 @@ export default function (plural) {
 const resourceV1 = function (plural) {
   return resource(apiV1, plural);
 };
-console.log(resourceV1);
 export { resourceV1 };

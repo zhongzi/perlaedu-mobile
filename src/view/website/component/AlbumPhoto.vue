@@ -15,7 +15,7 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 .wrapper {
   .cover {
-    max-width: 100%;
+    width: 100%;
     max-height: 100%;
     background: rgba(216, 216, 216, 1);
     border-radius: 4px;
