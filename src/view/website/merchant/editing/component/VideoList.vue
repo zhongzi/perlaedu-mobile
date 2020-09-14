@@ -17,9 +17,16 @@
           class="entry"
         />
       </template>
-      <template v-slot:item="{ item, tag }">
+      <template v-slot:item="{ item, tag, index }">
         <ai-button-float-delete @delete="onDelete(item, tag)" class="item">
           <a-video :video="item" :enablePlay="false" />
+          <action-sequence-update
+            v-if="index > 0"
+            class="sequence"
+            resource="websiteVideo"
+            :target="item"
+            @refresh="refresh = true"
+          />
         </ai-button-float-delete>
       </template>
     </ai-list-stored>
@@ -38,6 +45,7 @@ import AiButtonFloatDelete from "@/view/component/AiButtonFloatDelete.vue";
 import AVideo from "@/view/website/component/Video.vue";
 
 import VideoAddEntry from "./VideoAddEntry.vue";
+import ActionSequenceUpdate from "./ActionSequenceUpdate.vue";
 
 import merge from "lodash/merge";
 
@@ -48,6 +56,7 @@ import merge from "lodash/merge";
     AiButtonFloatDelete,
     AVideo,
     VideoAddEntry,
+    ActionSequenceUpdate,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
@@ -107,6 +116,12 @@ export default class Home extends Mixins(SyncMixin) {
 
   .list {
     overflow-x: scroll;
+  }
+
+  .sequence {
+    position: absolute;
+    top: 5px;
+    left: 5px;
   }
 }
 </style>

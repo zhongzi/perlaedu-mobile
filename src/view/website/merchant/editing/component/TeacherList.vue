@@ -17,9 +17,16 @@
           class="entry"
         />
       </template>
-      <template v-slot:item="{ item, tag }">
+      <template v-slot:item="{ item, tag, index }">
         <ai-button-float-delete @delete="onDelete(item, tag)" class="item">
           <teacher :websiteTeacher="item" :enablePreview="false" />
+          <action-sequence-update
+            v-if="index > 0"
+            class="sequence"
+            resource="websiteTeacher"
+            :target="item"
+            @refresh="refresh = true"
+          />
         </ai-button-float-delete>
       </template>
     </ai-list-stored>
@@ -37,6 +44,7 @@ import AiButtonFloatDelete from "@/view/component/AiButtonFloatDelete.vue";
 import Teacher from "@/view/website/component/Teacher.vue";
 
 import TeacherAddEntry from "./TeacherAddEntry.vue";
+import ActionSequenceUpdate from "./ActionSequenceUpdate.vue";
 
 import merge from "lodash/merge";
 
@@ -47,6 +55,7 @@ import merge from "lodash/merge";
     AiButtonFloatDelete,
     Teacher,
     TeacherAddEntry,
+    ActionSequenceUpdate,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
@@ -105,6 +114,12 @@ export default class Home extends Mixins(SyncMixin) {
     .item:nth-child(1) {
       margin-left: 20px;
     }
+  }
+
+  .sequence {
+    position: absolute;
+    top: 5px;
+    left: 5px;
   }
 }
 </style>

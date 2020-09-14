@@ -16,10 +16,17 @@
           :prefix="album.merchant_id + '/albums/' + album.id + '/photos'"
         />
       </template>
-      <template v-slot:item="{ item, tag }">
+      <template v-slot:item="{ item, tag, index }">
         <ai-button-float-delete @delete="onDelete(item, tag)" class="photo">
           <album-photo :photo="item" />
           <album-cover-action :photo="item" :album="album" class="cover" />
+          <action-sequence-update
+            v-if="index > 0"
+            resource="albumPhoto"
+            :target="item"
+            @refresh="refresh = true"
+            class="sequence"
+          />
         </ai-button-float-delete>
       </template>
     </ai-list-stored>
@@ -55,6 +62,7 @@ import AiImageMultiUploader from "@/view/component/AiImageMultiUploader.vue";
 
 import AlbumPhoto from "../../../component/AlbumPhoto.vue";
 import AlbumCoverAction from "./AlbumCoverAction.vue";
+import ActionSequenceUpdate from "./ActionSequenceUpdate.vue";
 
 import cloneDeep from "lodash/cloneDeep";
 import merge from "lodash/merge";
@@ -70,6 +78,7 @@ import map from "lodash/map";
     AlbumPhoto,
     AiImageMultiUploader,
     AlbumCoverAction,
+    ActionSequenceUpdate,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
@@ -156,9 +165,19 @@ export default class Home extends Mixins(SyncMixin) {
 
     .cover {
       position: absolute;
-      bottom: 10px;
+      bottom: 0px;
       left: 0px;
-      right: 5px;
+    }
+    .sequence {
+      position: absolute;
+      bottom: 0px;
+      right: 0px;
+
+      & ::v-deep button {
+        padding: 5px;
+        height: 30px;
+        border: none;
+      }
     }
   }
 }

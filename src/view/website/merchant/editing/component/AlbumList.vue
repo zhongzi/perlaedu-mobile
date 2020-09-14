@@ -17,9 +17,16 @@
           class="entry"
         />
       </template>
-      <template v-slot:item="{ item, tag }">
+      <template v-slot:item="{ item, tag, index }">
         <ai-button-float-delete @delete="onDelete(item, tag)" class="item">
           <album :album="item" routeName="websiteEditingAlbum" />
+          <action-sequence-update
+            v-if="index > 0"
+            class="sequence"
+            resource="album"
+            :target="item"
+            @refresh="refresh = true"
+          />
         </ai-button-float-delete>
       </template>
     </ai-list-stored>
@@ -38,6 +45,7 @@ import AiButtonFloatDelete from "@/view/component/AiButtonFloatDelete.vue";
 import Album from "@/view/website/component/Album.vue";
 
 import AlbumAddEntry from "./AlbumAddEntry.vue";
+import ActionSequenceUpdate from "./ActionSequenceUpdate.vue";
 
 import merge from "lodash/merge";
 
@@ -48,6 +56,7 @@ import merge from "lodash/merge";
     AiButtonFloatDelete,
     Album,
     AlbumAddEntry,
+    ActionSequenceUpdate,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
@@ -100,6 +109,11 @@ export default class Home extends Mixins(SyncMixin) {
   .list {
     overflow-x: scroll;
     flex: 1;
+  }
+  .sequence {
+    position: absolute;
+    top: 5px;
+    left: 5px;
   }
 }
 </style>

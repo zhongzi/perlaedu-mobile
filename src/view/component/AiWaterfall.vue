@@ -76,6 +76,7 @@ import intersectionBy from "lodash/intersectionBy";
 import concat from "lodash/concat";
 import forEach from "lodash/forEach";
 import merge from "lodash/merge";
+import find from "lodash/find";
 
 @Component({
   name: "ai-waterfall",
@@ -149,7 +150,9 @@ export default class Home extends Vue {
           : item[this.imgKey];
       }
     );
-    this.innerPreviewList = concat(inLi, outLi);
+    this.innerPreviewList = map(this.list, (el) => {
+      return find(inLi, { id: el.id }) || find(outLi, { id: el.id });
+    });
   }
 
   onImageClicked(img, index) {
