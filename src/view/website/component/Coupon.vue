@@ -15,7 +15,13 @@
       </template>
       <template v-slot:right>
         <hui-button @click.native="openDialog" class="action">
-          {{ coupon.is_takeable ? "立即领取" : "我的卡包" }}
+          {{
+            coupon.is_takeable
+              ? coupon.is_taken
+                ? "立即领取"
+                : "我的卡包"
+              : "活动已经结束, 前往卡包"
+          }}
         </hui-button>
       </template>
     </ai-cell>
@@ -38,14 +44,20 @@
             />
           </template>
           <ai-input
-            v-if="coupon.is_takeable"
+            v-if="coupon.is_taken"
             placeholder="请输入您的手机号码领取礼包"
             v-model="telephone"
             class="telephone"
           />
         </div>
         <hui-button class="action" @click.native="save" :style="btnStyle">
-          {{ coupon.is_takeable ? "收下去使用" : "已领取, 前往卡包使用" }}
+          {{
+            coupon.is_takeable
+              ? coupon.is_taken
+                ? "收下去使用"
+                : "已领取, 前往卡包使用"
+              : "活动已经结束, 前往卡包"
+          }}
         </hui-button>
       </div>
     </hui-dialog>
@@ -107,11 +119,11 @@ export default class Home extends Mixins(SyncMixin) {
 
   @Watch("coupon")
   onCouponChanged() {
-    this.showDialog = this.coupon.is_takeable;
+    this.showDialog = this.coupon.is_taken;
   }
 
   openDialog() {
-    if (!this.coupon.is_takeable) {
+    if (!this.coupon.is_taken) {
       this.openBag();
       return true;
     }
@@ -164,7 +176,7 @@ export default class Home extends Mixins(SyncMixin) {
 
   created() {
     this.store = "billCoupon";
-    this.showDialog = this.coupon.is_takeable;
+    this.showDialog = this.coupon.is_taken;
     this.telephone = _get(this.$auth, "user.phone");
   }
 }

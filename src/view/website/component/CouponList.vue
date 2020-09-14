@@ -66,7 +66,7 @@ export default class Home extends Mixins(SyncMixin) {
     this.loadEntity({
       query: {
         extras: JSON.stringify({
-          BillItem: ["is_takeable", "links"],
+          BillItem: ["is_takeable", "links", "is_taken"],
           BillItemLink: ["target"],
         }),
       },
