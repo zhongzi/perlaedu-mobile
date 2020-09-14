@@ -48,6 +48,7 @@ export default class Home extends Mixins(SyncMixin) {
       query: {
         merchant_id: this.merchantId,
         openid: this.openid,
+        extras: "phone",
       },
     });
   }
