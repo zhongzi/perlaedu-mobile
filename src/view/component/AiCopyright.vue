@@ -12,16 +12,11 @@ export default class Home extends Vue {
   @Prop({ type: Boolean, default: false }) manual: boolean;
 
   get url() {
-    const openid = this.$auth.openid || "";
-    const referrerOpenid =
-      this.$store.state.expose2 || this.$store.state.expose || "";
-    const sourceId = this.$route.params.merchantId;
+    const expose = this.$store.state.expose;
+    const expose2 = this.$store.state.expose2;
+    const sourceId = this.$route.params.merchantId || "";
     const sourceClass = sourceId ? "Merchant" : "";
-    return `https://www.jiaowu.art?code=${
-      this.$configs.crmChannelCode
-    }&sourceId=${
-      sourceId || ""
-    }&sourceClass=${sourceClass}&openid=${openid}&referrerOpenid=${referrerOpenid}`;
+    return `${this.$configs.website}?code=${this.$configs.crmChannelCode}&sourceId=${sourceId}&sourceClass=${sourceClass}&expose=${expose}&expose2=${expose2}`;
   }
 
   get showCopyright() {

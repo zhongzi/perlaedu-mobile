@@ -163,7 +163,7 @@ export default class Home extends Mixins(SyncMixin) {
       source_id: this.$route.query.source_id,
       source_class: this.$route.query.source_class,
       phone: this.telephone,
-      openid: this.$auth.openid,
+      openid: this.$store.state.expose,
       referrer_openid: this.$store.state.expose2,
       url: window.location.href,
     };
