@@ -1,8 +1,6 @@
 <template>
-  <div class="wrapper action">
-    <hui-button @click.native.stop="onClick" class="button">
-      置顶
-    </hui-button>
+  <div class="wrapper action" @click.stop="onClick">
+    <i :class="['iconfont', icon]" />
   </div>
 </template>
 
@@ -18,6 +16,7 @@ import isEmpty from "lodash/isEmpty";
 export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: String, default: null }) resource: string;
   @Prop({ type: Object, default: null }) target: any;
+  @Prop({ type: String, default: "icon-zhiding-left" }) icon: string;
 
   created() {
     this.store = this.resource;
@@ -33,7 +32,6 @@ export default class Home extends Mixins(SyncMixin) {
         sequence: new Date().getTime(),
       },
       success: () => {
-        this.$hui.toast.info("设置成功");
         this.$emit("refresh");
       },
     });
@@ -42,5 +40,8 @@ export default class Home extends Mixins(SyncMixin) {
 </script>
 <style lang="scss" scoped>
 .action {
+  i {
+    font-size: 15px;
+  }
 }
 </style>

@@ -2,30 +2,27 @@
   <div class="wrapper customer" @click="open">
     <ai-card>
       <template v-slot:header v-if="!isInDetail">
-        <ai-cell
-          class="header"
-          :title="
-            customer | safe('user.nickname', customer.name || customer.phone)
-          "
-        >
+        <ai-cell class="header">
           <template v-slot:cover>
             <div class="left">
               <div class="number">
-                <span> {{ customer.id }}</span>
-                号
+                <span> {{ customer.id }}</span
+                >号
               </div>
-              <img
-                v-if="customer.user"
-                class="cover"
-                :src="customer | safe('user.avatar') | alioss({ width: 120 })"
+              <ai-avatar
+                :avatar="
+                  customer | safe('user.avatar') | alioss({ width: 120 })
+                "
+                :name="
+                  customer
+                    | safe('user.nickname', customer.name || customer.phone)
+                "
+                :remark="customer.created_at | defaultDate"
               />
             </div>
           </template>
-          <template v-slot:subtitle>
-            {{ customer.created_at | defaultDate }}
-          </template>
-          <template v-slot:right v-if="status">
-            <ai-badge :content="status.text" :color="status.color" />
+          <template v-slot:right v-if="customer.follower">
+            <ai-avatar :avatar="customer | safe('follower.avatar')" />
           </template>
         </ai-cell>
       </template>
@@ -159,9 +156,6 @@
               <span class="label">合伙人: </span>
               <span class="value">
                 {{ customer | safe("follower.nickname") }}
-                <template v-if="customer.f_person">
-                  ( {{ customer | safe("f_person.realname") }} )
-                </template>
               </span>
             </div>
             <div class="field">
@@ -214,6 +208,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import AiCard from "@/view/component/AiCard.vue";
 import AiBadge from "@/view/component/AiBadge.vue";
 import AiCell from "@/view/component/AiCell.vue";
+import AiAvatar from "@/view/component/AiAvatar.vue";
 
 import { CrmCustomerStatus } from "@/enum/crm_customer_status";
 import { PersonRole } from "@/enum/person_role";
@@ -229,6 +224,7 @@ import isEmpty from "lodash/isEmpty";
     AiCard,
     AiCell,
     AiBadge,
+    AiAvatar,
     ActionTransfer,
     ActionClose,
   },

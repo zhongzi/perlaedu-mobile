@@ -119,5 +119,9 @@ export default class Home extends Mixins(SyncMixin) {
       color: rgba(237, 139, 65, 1);
     }
   }
+  .sequence {
+    position: relative;
+    top: -5px;
+  }
 }
 </style>

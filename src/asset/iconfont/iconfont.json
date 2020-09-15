@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "826168",
+      "name": "置顶",
+      "font_class": "-zhiding-top",
+      "unicode": "e63d",
+      "unicode_decimal": 58941
+    },
+    {
+      "icon_id": "17182075",
+      "name": "置顶",
+      "font_class": "-zhiding-left",
+      "unicode": "ea76",
+      "unicode_decimal": 60022
+    },
+    {
       "icon_id": "806560",
       "name": "小学",
       "font_class": "-youxiaoxianjie",

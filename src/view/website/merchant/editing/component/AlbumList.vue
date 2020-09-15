@@ -111,9 +111,8 @@ export default class Home extends Mixins(SyncMixin) {
     flex: 1;
   }
   .sequence {
-    position: absolute;
-    top: 5px;
-    left: 5px;
+    position: relative;
+    top: -5px;
   }
 }
 </style>

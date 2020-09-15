@@ -8,7 +8,7 @@
       scrollType="none"
       :enableEmpty="false"
     >
-      <template v-slot:item="{ item, tag }">
+      <template v-slot:item="{ item, tag, index }">
         <ai-card class="item">
           <template v-slot:header>
             <div class="header">
@@ -19,6 +19,14 @@
                   @click="gotoEditingArticle(item)"
                 />
                 <i class="iconfont icon-trash" @click="onDelete(item, tag)" />
+                <action-sequence-update
+                  v-if="index > 0"
+                  resource="article"
+                  :target="item"
+                  icon="icon-zhiding-top"
+                  @refresh="refresh = true"
+                  class="sequence"
+                />
               </div>
             </div>
           </template>
@@ -43,6 +51,7 @@ import AiSection from "@/view/component/AiSection.vue";
 import AiCard from "@/view/component/AiCard.vue";
 
 import ArticleAddEntry from "./ArticleAddEntry.vue";
+import ActionSequenceUpdate from "./ActionSequenceUpdate.vue";
 
 import merge from "lodash/merge";
 
@@ -52,6 +61,7 @@ import merge from "lodash/merge";
     AiSection,
     ArticleAddEntry,
     AiCard,
+    ActionSequenceUpdate,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
@@ -124,6 +134,11 @@ export default class Home extends Mixins(SyncMixin) {
 
         i {
           font-size: 20px;
+          color: #fff;
+        }
+
+        & ::v-deep i {
+          font-size: 24px;
           color: #fff;
         }
       }
