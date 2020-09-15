@@ -10,6 +10,7 @@ class PosterBuilder {
   id: any = null;
   name: any = null;
   baseWidth: any = null;
+  baseHeight: any = null;
   scale: any = null;
   template: any = null;
   elements: any = null;
@@ -27,18 +28,37 @@ class PosterBuilder {
     template = null,
     elements = null,
     baseWidth = null,
+    baseHeight = null,
     callback = null
   ) {
-    this.id && this.setData(id, baseWidth, name, template, elements, callback);
+    this.id &&
+      this.setData(
+        id,
+        baseWidth,
+        baseHeight,
+        name,
+        template,
+        elements,
+        callback
+      );
   }
 
-  setData(id, name, template, elements, baseWidth, callback = null) {
+  setData(
+    id,
+    name,
+    template,
+    elements,
+    baseWidth,
+    baseHeight,
+    callback = null
+  ) {
     this.id = id;
     this.scale = 1;
     this.name = name;
     this.template = template;
     this.elements = isArray(elements) ? elements : values(elements);
     this.baseWidth = baseWidth;
+    this.baseHeight = baseHeight;
     this.callback = callback;
     this.renderStatus = new Array(this.elements.length);
 
@@ -62,6 +82,8 @@ class PosterBuilder {
     }
     this.layer.clear();
     this.stage.add(this.layer);
+    this.stage.width(this.baseWidth);
+    this.stage.height(this.baseHeight);
   }
 
   getURL() {
@@ -82,11 +104,13 @@ class PosterBuilder {
 
   _build() {
     this.buildTemplate((image) => {
-      if (this.baseWidth) {
-        this.scale = image.width / this.baseWidth;
+      if (image) {
+        if (this.baseWidth) {
+          this.scale = image.width / this.baseWidth;
+        }
+        this.stage.width(image.width);
+        this.stage.height(image.height);
       }
-      this.stage.width(image.width);
-      this.stage.height(image.height);
       this.buildElements();
     });
   }
@@ -111,7 +135,9 @@ class PosterBuilder {
   }
 
   buildTemplate(callback) {
-    this.renderImage(this.template, null, callback);
+    this.template
+      ? this.renderImage(this.template, null, callback)
+      : callback && callback();
   }
 
   buildElements() {
@@ -159,8 +185,8 @@ class PosterBuilder {
       };
       element.options.fillPatternRepeat = "no-repeat";
 
-      const zIndex = element.options.zIndex;
-      delete element.options.zIndex;
+      const zIndex = element.options.z;
+      delete element.options.z;
 
       const circle = new Konva.Circle(
         Object.assign({}, { fillPatternImage: image }, element.options)
@@ -179,8 +205,8 @@ class PosterBuilder {
     const self = this;
     image.setAttribute("crossOrigin", "Anonymous");
     image.onload = function () {
-      const zIndex = element.options.zIndex;
-      delete element.options.zIndex;
+      const zIndex = element.options.z;
+      delete element.options.z;
 
       const img = new Konva.Image(
         Object.assign({}, { image: image }, element.options)

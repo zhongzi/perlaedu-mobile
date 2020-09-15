@@ -18,6 +18,7 @@ import billRoutes from "./bill";
 import websiteRoutes from "./website";
 import userRoutes from "./user";
 import crmRoutes from "./crm";
+import posterRoutes from "./poster";
 import termsOfServiceRoutes from "./terms_of_service";
 
 patchVueRouter(Router);
@@ -84,7 +85,8 @@ export default new Router({
     termsOfServiceRoutes,
     websiteRoutes,
     userRoutes,
-    crmRoutes
+    crmRoutes,
+    posterRoutes
   ),
   scrollBehavior: (to, from, savedPosition) => {
     if (savedPosition) {

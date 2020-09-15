@@ -10,7 +10,11 @@
     </transition>
     <ai-copyright />
     <ai-tip-share v-model="showTip" />
-    <ai-poster v-model="showPoster" :poster="poster" :context="posterContext" />
+    <ai-poster-popup
+      v-model="showPoster"
+      :poster="poster"
+      :context="posterContext"
+    />
   </div>
 </template>
 <script lang="ts">
@@ -18,13 +22,13 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 
 import AiTipShare from "./view/component/AiTipShare.vue";
 import AiCopyright from "@/view/component/AiCopyright.vue";
-import AiPoster from "@/view/component/AiPoster.vue";
+import AiPosterPopup from "@/view/component/AiPosterPopup.vue";
 
 @Component({
   components: {
     AiTipShare,
     AiCopyright,
-    AiPoster,
+    AiPosterPopup,
   },
 })
 export default class Home extends Vue {

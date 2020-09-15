@@ -2,7 +2,10 @@
   <div :class="b()" :style="couponStyle" @click="openCoupon">
     <div :class="b('header')">
       <div :class="b('header-left')">
-        <div :class="b('header-left-value')" v-if="coupon.item.price > 0">
+        <div
+          :class="b('header-left-value')"
+          v-if="coupon.item && coupon.item.price > 0"
+        >
           <span>{{ coupon | safe("item.price") }}</span>
           <span>元</span>
         </div>

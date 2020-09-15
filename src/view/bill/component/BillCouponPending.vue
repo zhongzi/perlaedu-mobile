@@ -160,7 +160,6 @@ export default class Home extends Vue {
 
   showPosterClick() {
     this.showPopup = false;
-
     this.$bus.$emit("config:poster", this.poster, this.posterContext, true);
   }
 
