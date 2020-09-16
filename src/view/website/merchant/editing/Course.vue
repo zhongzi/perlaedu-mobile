@@ -35,6 +35,7 @@
         <ai-rich-text-sections-editor
           v-model="innerCourse.description"
           imageType="merchant"
+          :isJson="false"
           :imagePrefix="merchantId + '/courses/' + innerCourse.id || ''"
         />
       </ai-section>
@@ -126,7 +127,7 @@ export default class Home extends Mixins(SyncMixin) {
 
   onSelected(subject) {
     if (isEmpty(this.innerCourse.title)) {
-      this.innerCourse.title = subject.title;
+      this.innerCourse.title = subject && subject.title;
     }
   }
 

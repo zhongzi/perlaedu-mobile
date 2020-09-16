@@ -14,7 +14,11 @@
       </ai-cell>
     </template>
     <template v-slot:body>
-      <ai-rich-text-sections-editor :value="action.remark" :isEditing="false" />
+      <ai-rich-text-sections-editor
+        :value="action.remark"
+        :isEditing="false"
+        class="content"
+      />
     </template>
     <template v-slot:footer>
       <div class="footer">
@@ -91,6 +95,9 @@ export default class Home extends Mixins(SyncMixin) {
       width: 40px;
       border-radius: 50%;
     }
+  }
+  .content {
+    margin-bottom: 0px;
   }
   .footer {
     display: flex;

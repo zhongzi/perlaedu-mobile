@@ -132,7 +132,6 @@ import AiPopup from "./AiPopup.vue";
 
 import cloneDeep from "lodash/cloneDeep";
 import isString from "lodash/isString";
-import isEmpty from "lodash/isEmpty";
 
 import "quill/dist/quill.core.css";
 
@@ -150,7 +149,7 @@ import "quill/dist/quill.core.css";
 export default class Home extends Vue {
   @Prop([Array, String]) value: Array<Object> | String;
   @Prop({ type: Boolean, default: true }) isEditing: Boolean;
-  @Prop({ type: Boolean, default: true }) jsonable: Boolean;
+  @Prop({ type: Boolean, default: false }) isJson: Boolean;
   @Prop({ type: String, default: "" }) imageType: string;
   @Prop({ type: String, default: "" }) imagePrefix: string;
 
@@ -180,7 +179,7 @@ export default class Home extends Vue {
   @Watch("details", { deep: true })
   onDetailsChanged(val: any) {
     let data = val;
-    if (!this.jsonable) {
+    if (!this.isJson) {
       data = val.length > 0 ? JSON.stringify(val) : "";
     }
     this.$emit("input", data);
@@ -192,7 +191,7 @@ export default class Home extends Vue {
 
   detailToArray(val) {
     let ret = val || [];
-    if (isString(val)) {
+    if (!this.isJson) {
       ret = JSON.parse(val || "[]");
     }
     return ret;
