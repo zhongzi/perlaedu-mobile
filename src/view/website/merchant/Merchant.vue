@@ -31,11 +31,9 @@
     <div class="content" :style="mergedStyle" v-if="merchant.id">
       <div class="block">
         <merchant :merchant="merchant" />
-        <!--
         <div class="section unions">
           <union-list :query="query" :merchant="merchant" />
         </div>
-        -->
         <div class="section coupons" v-if="website.coupon_enabled">
           <coupon-list :query="query" :merchant="merchant" />
         </div>

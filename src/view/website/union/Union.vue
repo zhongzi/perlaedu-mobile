@@ -10,6 +10,7 @@
             {{ union.name }}
           </div>
           <div class="desc">
+            <i class="iconfont icon-location" />
             本综合体有{{ union.count_merchants }}家优质培训机构组成
           </div>
           <div class="address" v-if="union.location && union.location.address">
@@ -80,7 +81,7 @@ export default class Home extends Mixins(SyncMixin) {
       ? startsWith(img, "linear")
         ? img
         : `url(${img})`
-      : "linear-gradient(180deg,rgba(224,119,79,0) 0%,rgba(237,146,108,1) 4%,rgba(244,108,55,1) 55%,rgba(218,108,67,1) 100%)";
+      : "linear-gradient(180deg,rgba(237,146,108,1) 0%,rgba(244,108,55,1) 55%,rgba(218,108,67,1) 100%)";
   }
 
   get mergedStyle() {
@@ -107,10 +108,10 @@ export default class Home extends Mixins(SyncMixin) {
 
   .cover {
     position: relative;
-    max-height: 30vh;
 
     img {
       width: 100%;
+      display: block;
     }
     .setting {
       position: absolute;
@@ -127,8 +128,6 @@ export default class Home extends Mixins(SyncMixin) {
   .content {
     min-height: 70vh;
     position: relative;
-    top: -15px;
-    background: rgba(247, 247, 247, 1);
     padding-top: 20px;
     padding-bottom: 100px;
 
@@ -139,19 +138,23 @@ export default class Home extends Mixins(SyncMixin) {
       margin: 0px 27px 20px;
 
       .title {
-        font-size: 18px;
+        font-size: 15px;
         font-family: PingFangSC-Regular, PingFang SC;
-        font-weight: 600;
-        color: rgba(74, 74, 74, 1);
-        line-height: 2;
+        font-weight: 500;
+        color: #4a4a4a;
+        line-height: 21px;
       }
 
       .desc {
-        font-size: 15px;
+        font-size: 13px;
         font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;
-        color: rgba(74, 74, 74, 1);
-        line-height: 2;
+        color: #9b9b9b;
+        line-height: 18px;
+
+        i {
+          color: #d81e06;
+        }
       }
       .address {
         i {

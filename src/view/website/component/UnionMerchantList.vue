@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper union-merchants">
     <ai-list-stored
-      resource="unionMerchant"
+      resource="merchant"
       :query="innerQuery"
       :limit="20"
       scrollType="none"
@@ -10,8 +10,7 @@
     >
       <template v-slot:item="{ item, index }">
         <union-merchant
-          :union="item.union"
-          :merchant="item.merchant"
+          :merchant="item"
           :key="item.id"
           @click.native="curIdx = index"
           mode="logo"
@@ -27,12 +26,7 @@
           class="slider"
         >
           <template v-slot:item="{ item }">
-            <union-merchant
-              :union="item.union"
-              :merchant="item.merchant"
-              :key="item.id"
-              class="item"
-            />
+            <union-merchant :merchant="item" :key="item.id" class="item" />
           </template>
         </ai-slider>
       </template>
@@ -81,11 +75,8 @@ export default class Home extends Vue {
   get innerQuery() {
     return merge(
       {
-        union_id: this.union.id,
-        extras: JSON.stringify({
-          Union: ["count_merchants"],
-          UnionMerchant: ["union", "merchant"],
-        }),
+        "UnionMerchant.union_id": this.union.id,
+        sort: "statistics.person.count_accumulative desc",
       },
       {}
     );
@@ -106,7 +97,7 @@ export default class Home extends Vue {
     margin: 3px;
   }
   .slider {
-    margin-top: 5px;
+    margin-top: 10px;
     & ::v-deep .swiper-wrapper {
       margin-bottom: 30px;
     }

@@ -7,11 +7,19 @@
       <template v-slot:header>
         <img
           class="cover"
-          :src="merchant.cover_url | alioss({ width: 200, height: 150 })"
+          :src="
+            merchant.cover_url
+              | alioss({ width: 320, height: 180, mode: 'fill' })
+          "
         />
       </template>
       <template v-slot:body>
-        <div class="name">{{ merchant.name }}</div>
+        <div class="body">
+          <div>{{ merchant.name }}</div>
+          <div>
+            ( {{ merchant.statistics_person_count_accumulative }} 人关注)
+          </div>
+        </div>
       </template>
     </ai-card>
   </div>
@@ -28,7 +36,6 @@ import AiCard from "@/view/component/AiCard.vue";
   },
 })
 export default class Home extends Vue {
-  @Prop({ type: Object, default: () => ({}) }) union: any;
   @Prop({ type: Object, default: () => ({}) }) merchant: any;
   @Prop({ type: String, default: "simple" }) mode: string;
   @Prop({ type: Boolean, default: false }) isSelected: boolean;
@@ -62,7 +69,10 @@ export default class Home extends Vue {
   }
   .card {
     box-shadow: 0px 14px 20px 0px rgba(0, 0, 0, 0.2);
-    .name {
+    .cover {
+      border-radius: 0px 0px 10px 10px;
+    }
+    .body {
       text-align: center;
       font-size: 14px;
       font-family: PingFangSC-Regular, PingFang SC;

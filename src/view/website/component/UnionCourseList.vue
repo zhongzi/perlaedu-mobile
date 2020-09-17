@@ -55,6 +55,8 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .course {
+  margin-bottom: 10px;
+
   & ::v-deep .ai-list-stored__title {
     padding: 0px 27px;
   }
@@ -65,8 +67,11 @@ export default class Home extends Vue {
     flex-wrap: wrap;
   }
   .title {
-    color: #fff;
-    margin-top: 20px;
+    font-size: 16px;
+    font-family: PingFangSC-Semibold, PingFang SC;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 22px;
   }
 
   .item {
@@ -80,6 +85,7 @@ export default class Home extends Vue {
     }
     & ::v-deep span {
       color: #fff;
+      font-size: 18px;
     }
   }
 }

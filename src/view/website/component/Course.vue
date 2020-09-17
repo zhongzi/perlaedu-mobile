@@ -47,12 +47,13 @@ export default class Home extends Vue {
     justify-content: center;
 
     i {
-      font-size: 32px;
+      font-size: 48px;
+      font-weight: 600px;
       color: rgba(237, 139, 65, 1);
     }
     span {
       text-align: center;
-      font-size: 13px;
+      font-size: 14px;
       font-family: PingFangSC-Regular, PingFang SC;
       font-weight: 400;
       line-height: 20px;

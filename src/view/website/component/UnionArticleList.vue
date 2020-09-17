@@ -12,7 +12,7 @@
       </template>
       <template v-slot:item="{ item, index }">
         <div v-if="index === 0" class="image" @click="openArticle(item)">
-          <img :src="item.cover" />
+          <img :src="item.cover | alioss({ width: 200, height: 250 })" />
         </div>
         <ai-line v-else />
         <a-article :article="item" routeName="websiteUnionArticle" />
@@ -82,21 +82,29 @@ export default class Home extends Vue {
     background: #ffffff;
     box-shadow: 0px 14px 20px 0px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
-    margin: 10px;
+    margin: 10px 0px;
   }
 
   .image {
-    padding: 5px;
+    max-height: 183px;
+    border-radius: 4px;
+    overflow: hidden;
+
     img {
       width: 100%;
       border-radius: 8px;
       vertical-align: bottom;
+      object-fit: fill;
+      display: block;
     }
   }
 
   .title {
-    color: #fff;
-    margin-top: 20px;
+    font-size: 16px;
+    font-family: PingFangSC-Semibold, PingFang SC;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 22px;
   }
 }
 </style>

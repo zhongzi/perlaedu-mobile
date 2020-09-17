@@ -48,6 +48,15 @@ export default class Home extends Vue {
 .wrapper {
   padding: 8px 10px;
 
+  .title {
+    padding-left: 10px;
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #4a4a4a;
+    line-height: 20px;
+  }
+
   .cover {
     width: 71px;
     height: 40px;
