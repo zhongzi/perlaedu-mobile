@@ -11,17 +11,12 @@
       </template>
       <template v-slot:cover>
         <div class="cover">
-          <img
-            :src="
-              union.cover_url
-                | alioss({ width: 150, height: 100, mode: 'fill' })
-            "
-          />
+          <img :src="require('@/asset/logo.union.png')" />
         </div>
       </template>
       <template v-slot:right>
         <hui-button @click.native="gotoUnion" class="button">
-          查看综合体
+          进入综合体
         </hui-button>
       </template>
     </ai-cell>
@@ -65,9 +60,7 @@ export default class Home extends Vue {
     min-height: 68px;
 
     .cover {
-      width: 86px;
-      min-width: 86px;
-      height: 58px;
+      height: 60px;
       display: flex;
       align-items: center;
       justify-content: center;

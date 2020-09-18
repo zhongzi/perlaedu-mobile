@@ -15,6 +15,7 @@
           labelKey="nickname"
           valueKey="openid"
           :query="query"
+          :enableUnsetOption="true"
           @selected="(v) => (follower = v)"
         />
         <hui-button type="primary" @click.native="transfer" class="action"
@@ -58,10 +59,14 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   transfer() {
+    const message = this.follower.id
+      ? `确定变更跟进关系到 [${this.follower.nickname}] 名下吗?`
+      : "您正在清空当前客户跟进关系？";
+
     this.open = false;
     this.$hui.confirm.show({
       title: "跟进关系变更确认",
-      message: `确定变更跟进关系到 [${this.follower.nickname}] 名下吗?`,
+      message: message,
       confirmText: "确认",
       cancelText: "取消",
       onConfirm: () => {
@@ -74,7 +79,7 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   submit() {
-    if (isEmpty(this.followeOpenid)) return;
+    if (!this.follower && !this.follower.id) return;
 
     this.id = this.customer.id;
     this.saveEntity({

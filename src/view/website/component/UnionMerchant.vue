@@ -16,9 +16,6 @@
       <template v-slot:body>
         <div class="body">
           <div>{{ merchant.name }}</div>
-          <div>
-            ( {{ merchant.statistics_person_count_accumulative }} 人关注)
-          </div>
         </div>
       </template>
     </ai-card>
