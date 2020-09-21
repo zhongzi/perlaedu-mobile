@@ -18,13 +18,9 @@
         />
       </template>
       <template v-slot:item="{ item, tag, index }">
-        <course :course="item" routeName="websiteEditingCourse">
-          <template v-slot="{ courseIcon }">
-            <ai-button-float-delete @delete="onDelete(item, tag)" class="item">
-              <i :class="['iconfont', 'icon-' + courseIcon]" />
-            </ai-button-float-delete>
-          </template>
-        </course>
+        <ai-button-float-delete @delete="onDelete(item, tag)" class="item">
+          <course :course="item" routeName="websiteEditingCourse" />
+        </ai-button-float-delete>
         <action-sequence-update
           v-if="index > 0"
           class="sequence"

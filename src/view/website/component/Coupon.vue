@@ -242,6 +242,7 @@ export default class Home extends Mixins(SyncMixin) {
     position: relative;
     background-origin: border-box;
     background-size: cover;
+    background-position: top;
 
     text-align: center;
     border-radius: 6px;

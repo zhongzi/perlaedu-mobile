@@ -3,7 +3,8 @@
     <template v-if="course">
       <div class="course" @click="openCourse">
         <slot :courseIcon="courseIcon">
-          <i :class="['iconfont', 'icon-' + courseIcon]" />
+          <img :src="customeIcon" class="icon" v-if="isCustomedIcon" />
+          <i :class="['iconfont', 'icon-' + courseIcon]" v-else />
         </slot>
         <span> {{ course.title }} </span>
       </div>
@@ -15,6 +16,7 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 import _get from "lodash/get";
+import isEmpty from "lodash/isEmpty";
 
 @Component
 export default class Home extends Vue {
@@ -23,6 +25,14 @@ export default class Home extends Vue {
 
   get courseIcon() {
     return _get(this.course, "subject.icon", "course");
+  }
+
+  get isCustomedIcon() {
+    return !isEmpty(this.customeIcon);
+  }
+
+  get customeIcon() {
+    return this.course.subject_icon;
   }
 
   openCourse() {
@@ -44,12 +54,19 @@ export default class Home extends Vue {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    min-height: 55px;
 
     i {
-      font-size: 48px;
+      font-size: 32px;
       font-weight: 600px;
       color: rgba(237, 139, 65, 1);
+    }
+
+    .icon {
+      width: 36px;
+      height: 36px;
+      display: block;
     }
     span {
       text-align: center;

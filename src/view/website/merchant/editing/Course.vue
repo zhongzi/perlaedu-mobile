@@ -17,6 +17,18 @@
         v-model="innerCourse.subject_id"
       />
       <ai-line />
+      <div class="custome-icon">
+        <div class="label">自定义科目icon（可选）</div>
+        <ai-image-uploader
+          class="icon"
+          triggerName="icon"
+          v-model="innerCourse.subject_icon"
+          type="merchant"
+          :resizeOption="({ width: 200, height: 200 })"
+          :prefix="merchantId + '/courses/' + innerCourse.id || ''"
+        />
+      </div>
+      <ai-line />
       <ai-input class="field" label="课程名称" v-model="innerCourse.title" />
       <ai-line />
       <ai-selection-stored
@@ -105,6 +117,7 @@ export default class Home extends Mixins(SyncMixin) {
       description: "",
       bill_id: "",
       subject_id: "",
+      subject_icon: "",
     };
 
     this.store = "course";
@@ -162,6 +175,37 @@ export default class Home extends Mixins(SyncMixin) {
   }
   .description {
     padding: 10px;
+  }
+
+  .custome-icon {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px;
+
+    .label {
+      font-size: 3.73333vw;
+      font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
+      font-weight: bold;
+      color: #545454;
+      line-height: 5.06667vw;
+      letter-spacing: 1px;
+    }
+
+    .icon {
+      width: 40px;
+      height: 40px;
+
+      & ::v-deep .ai-image-uploader__result {
+        min-height: auto;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      & ::v-deep .iconfont {
+        font-size: 12px;
+      }
+    }
   }
 }
 </style>
