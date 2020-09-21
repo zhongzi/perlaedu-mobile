@@ -20,6 +20,7 @@
         <ai-rich-text-sections-editor
           v-model="innerTeacher.sections"
           imageType="merchant"
+          :isJson="true"
           :imagePrefix="merchantId + '/teachers/' + innerTeacher.id || ''"
         />
       </ai-section>
@@ -103,7 +104,7 @@ export default class Home extends Mixins(SyncMixin) {
       this.id = this.teacherId;
       this.loadEntity({
         query: {
-          extras: "sections",
+          extras: "sections,phone",
         },
       });
     }

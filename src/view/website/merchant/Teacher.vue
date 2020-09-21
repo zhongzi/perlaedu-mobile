@@ -13,6 +13,7 @@
       <merchant-cell :merchant="teacher.merchant" class="merchant" />
       <ai-section class="escription">
         <ai-rich-text-sections-editor
+          :isJson="true"
           :is-editing="false"
           :value="teacher.sections"
         />
