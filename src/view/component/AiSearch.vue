@@ -1,16 +1,20 @@
 <template>
   <div class="ai-search">
-    <span class="ai-search__header">
-      <i class="iconfont icon-search" />
-    </span>
+    <slot name="left">
+      <span class="ai-search__header">
+        <i class="iconfont icon-search" />
+      </span>
+    </slot>
     <input
       class="ai-search__input"
       v-model="innerValue"
       :placeholder="placeholder"
     />
-    <span class="ai-search__footer">
-      <i class="iconfont icon-close" @click="innerValue = ''" />
-    </span>
+    <slot name="right">
+      <span class="ai-search__footer">
+        <i class="iconfont icon-close" @click="innerValue = ''" />
+      </span>
+    </slot>
   </div>
 </template>
 

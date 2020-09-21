@@ -4,15 +4,17 @@
       选择日期范围
     </div>
     <div :class="b('quick')">
-      <template v-for="type in types">
-        <hui-button
-          :type="curType === type ? 'primary' : 'default'"
-          :key="type.name"
-          @click.native="curType = type"
-          :class="b('quick-item')"
-        >
-          {{ type.name }}
-        </hui-button>
+      <template v-if="enableQuick">
+        <template v-for="type in types">
+          <hui-button
+            :type="curType === type ? 'primary' : 'default'"
+            :key="type.name"
+            @click.native="curType = type"
+            :class="b('quick-item')"
+          >
+            {{ type.name }}
+          </hui-button>
+        </template>
       </template>
       <div :class="b('detail')">
         <ai-input-date
@@ -27,10 +29,7 @@
         />
       </div>
     </div>
-    <div :class="b('actions')">
-      <ai-button-round @click.native="$emit('cancel')"> 取消 </ai-button-round>
-      <ai-button-round @click.native="onClick"> 确定 </ai-button-round>
-    </div>
+    <ai-submit-actions @cancel="$emit('cancel')" @submit="onClick" />
   </div>
 </template>
 
@@ -38,6 +37,10 @@
 import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 
 import PatchMixin from "@/mixin/PatchMixin";
+
+import AiButtonRound from "./AiButtonRound.vue";
+import AiInputDate from "./AiInputDate.vue";
+import AiSubmitActions from "./AiSubmitActions.vue";
 
 import startOfDay from "date-fns/startOfDay";
 import endOfDay from "date-fns/endOfDay";
@@ -56,19 +59,18 @@ import addDays from "date-fns/addDays";
 
 import isFunction from "lodash/isFunction";
 
-import AiButtonRound from "@/view/component/AiButtonRound.vue";
-import AiInputDate from "@/view/component/AiInputDate.vue";
-
 @Component({
   name: "ai-input-date-range",
   components: {
     AiButtonRound,
     AiInputDate,
+    AiSubmitActions,
   },
 })
 export default class Home extends Mixins(PatchMixin) {
   @Prop({ type: Array, default: null }) value: any;
   @Prop({ type: Date, default: () => new Date() }) today: any;
+  @Prop({ type: Boolean, default: true }) enableQuick: boolean;
 
   types: any = [
     {
@@ -127,7 +129,7 @@ export default class Home extends Mixins(PatchMixin) {
   }
 
   onClick() {
-    if (!this.curType) {
+    if (this.enableQuick && !this.curType) {
       this.$hui.toast.info("请选择时间范围");
       return;
     }
@@ -143,7 +145,10 @@ export default class Home extends Mixins(PatchMixin) {
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
+
+  padding: 30px 15px;
+  text-align: center;
 
   &__title {
     font-size: 20px;

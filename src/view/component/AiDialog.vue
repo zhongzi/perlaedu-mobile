@@ -55,6 +55,8 @@ export default class Home extends Mixins(StopBodyScrollMixin) {
   }
 
   &__close {
+    position: absolute;
+    bottom: -70px;
     width: 100%;
     text-align: center;
     margin: 5px;

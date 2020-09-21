@@ -150,7 +150,7 @@ router.beforeEach((to: any, from: any, next: any) => {
     ) {
       if (!_get(auth, "user.is_manager", false)) {
         next({
-          name: "Contact",
+          name: "Locking",
           query: to.query,
         });
         return;

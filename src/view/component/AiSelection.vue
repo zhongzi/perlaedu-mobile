@@ -4,6 +4,7 @@
       {{ label }}
     </div>
     <div :class="b('input')">
+      <slot name="left"> </slot>
       <select :class="b('select')" v-model="innerValue" @blur="fixIOSScroll">
         <option v-if="defaultName" value="" :class="b('select-option')">
           {{ defaultName }}

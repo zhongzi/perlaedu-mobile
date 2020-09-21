@@ -5,11 +5,7 @@
         <div class="name">
           <span :style="skin.title"> {{ merchant.name }} </span>
         </div>
-        <div
-          class="address"
-          @click="show = true"
-          v-if="merchant.location.address"
-        >
+        <div class="address" @click="show = true" v-if="merchant.location">
           <i class="iconfont icon-location" />
           <p>{{ merchant.location.address }}</p>
         </div>

@@ -5,7 +5,7 @@
         <img
           :src="
             (innerTeacher.cover_url || innerTeacher.avatar_url)
-              | alioss({ width: 120, height: 160, mode: fill })
+              | alioss({ width: 120, height: 160, mode: 'fill' })
           "
         />
       </div>

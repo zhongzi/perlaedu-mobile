@@ -6,12 +6,12 @@ import { tools } from "../plugin/tools";
 const userAPI = resourceV1("/users");
 const openidAPI = resourceV1("/openids");
 
-auth.fetchLoggedUser = function (next, to) {
+auth.fetchLoggedUser = function (next = null, to = null) {
   userAPI
     .get({
       id: "self",
       query: {
-        next: tools.buildURL(to.fullPath),
+        next: to ? tools.buildURL(to.fullPath) : window.location.href,
       },
       headers: {},
       args: {},
@@ -23,19 +23,19 @@ auth.fetchLoggedUser = function (next, to) {
         data.user.is_manager = data.is_manager;
         data.user.agent = data.agent;
         this.login({ user: data.user });
-        return next(to);
+        return next && next(to);
       }
       location.href = data.next;
-      next(false);
+      next && next(false);
       return;
     })
     .catch((err) => {
-      next(false);
+      next && next(false);
       console.log(err);
     });
 };
 
-auth.fetchOpenid = function (next, to) {
+auth.fetchOpenid = function (next = null, to = null) {
   openidAPI
     .get({
       id: null,
@@ -43,21 +43,21 @@ auth.fetchOpenid = function (next, to) {
       args: {},
       query: {
         expose: "expose",
-        next: tools.buildURL(to.fullPath),
+        next: to ? tools.buildURL(to.fullPath) : window.location.href,
       },
     })
     .then((resp) => {
       const data = resp.data.data;
       if (data.openid) {
         this.login({ openid: data.openid });
-        return next(to);
+        return next && next(to);
       }
       location.href = data.next;
-      next(false);
+      next && next(false);
       return;
     })
     .catch((err) => {
-      next(false);
+      next && next(false);
       console.log(err);
     });
 };

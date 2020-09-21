@@ -25,6 +25,7 @@ const state = {
   version: "1.0 (" + (process.env.VUE_APP_REVISION || "dev") + ")",
   pendingRoute: false,
   pendingTelephone: "",
+  user: {},
   expose: "",
   expose2: "",
   routes: [],
@@ -54,6 +55,9 @@ const mutations = {
   },
   updateVersion(state, version) {
     state.version = version;
+  },
+  updateUser(state, user) {
+    state.user = user;
   },
   beforeRouteEnter(state, { to, from }) {
     state.routerEntering = true;

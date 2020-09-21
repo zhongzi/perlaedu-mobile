@@ -9,6 +9,7 @@ declare module "vue/types/vue" {
     $hui: any;
     $densityStr: any;
     $PosterBuilder: any;
+    $frontURLResolver: any;
     $bus: any;
     $db: any;
     $wework: any;

@@ -11,7 +11,11 @@
     :autoDefault="autoDefault"
     @selected="(o) => $emit('selected', o)"
     @input="(val) => $emit('input', val)"
-  />
+  >
+    <template v-slot:left>
+      <slot name="left" />
+    </template>
+  </ai-selection>
 </template>
 
 <script lang="ts">

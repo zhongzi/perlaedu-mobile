@@ -47,8 +47,5 @@ export default class Home extends Mixins(StopBodyScrollMixin) {
 </script>
 <style lang="scss" scoped>
 .ai-popup {
-  & ::v-deep .h-popup__content {
-    height: 100vh;
-  }
 }
 </style>

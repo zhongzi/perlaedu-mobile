@@ -14,11 +14,15 @@ const Subscription = () =>
 const NotFound = () =>
   import(/* webpackChunkName: "main" */ "@/view/NotFound.vue");
 
+const Locking = () =>
+  import(/* webpackChunkName: "main" */ "@/view/Locking.vue");
+
 import billRoutes from "./bill";
 import websiteRoutes from "./website";
 import userRoutes from "./user";
 import crmRoutes from "./crm";
 import posterRoutes from "./poster";
+import merchantRoutes from "./merchant";
 import termsOfServiceRoutes from "./terms_of_service";
 
 patchVueRouter(Router);
@@ -73,6 +77,14 @@ export default new Router({
       },
     },
     {
+      path: "/locking",
+      name: "Locking",
+      component: Locking,
+      meta: {
+        title: "操作失败",
+      },
+    },
+    {
       path: "*",
       name: "NotFound",
       component: NotFound,
@@ -86,7 +98,8 @@ export default new Router({
     websiteRoutes,
     userRoutes,
     crmRoutes,
-    posterRoutes
+    posterRoutes,
+    merchantRoutes
   ),
   scrollBehavior: (to, from, savedPosition) => {
     if (savedPosition) {

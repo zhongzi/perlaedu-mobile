@@ -6,6 +6,62 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "13670965",
+      "name": "漏斗",
+      "font_class": "-funnel",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "13742463",
+      "name": "续费",
+      "font_class": "-recharge",
+      "unicode": "e669",
+      "unicode_decimal": 58985
+    },
+    {
+      "icon_id": "14114783",
+      "name": "erweima",
+      "font_class": "erweima",
+      "unicode": "e762",
+      "unicode_decimal": 59234
+    },
+    {
+      "icon_id": "17294996",
+      "name": "箭头",
+      "font_class": "-trend-up",
+      "unicode": "e73b",
+      "unicode_decimal": 59195
+    },
+    {
+      "icon_id": "17294997",
+      "name": "下拉",
+      "font_class": "-xiala",
+      "unicode": "e73c",
+      "unicode_decimal": 59196
+    },
+    {
+      "icon_id": "17294998",
+      "name": "日期",
+      "font_class": "-date-range",
+      "unicode": "e73d",
+      "unicode_decimal": 59197
+    },
+    {
+      "icon_id": "17294999",
+      "name": "形状",
+      "font_class": "-birthday",
+      "unicode": "e73e",
+      "unicode_decimal": 59198
+    },
+    {
+      "icon_id": "5101483",
+      "name": "切换",
+      "font_class": "-switch",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
+    },
+    {
       "icon_id": "826168",
       "name": "置顶",
       "font_class": "-zhiding-top",
@@ -1121,7 +1177,7 @@
     {
       "icon_id": "15340932",
       "name": "箭头",
-      "font_class": "-direction-left-copy",
+      "font_class": "-direction-left",
       "unicode": "e792",
       "unicode_decimal": 59282
     }

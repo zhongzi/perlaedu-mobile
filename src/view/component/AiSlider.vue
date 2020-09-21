@@ -18,7 +18,7 @@
       <swiper-slide
         :class="b('swiper-item')"
         v-for="(item, index) in list"
-        :key="item.id"
+        :key="item.id || index"
       >
         <slot name="item" :item="item" :index="index" />
       </swiper-slide>

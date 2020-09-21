@@ -16,11 +16,13 @@ import websiteTeacher from "./website_teacher";
 import websiteVideo from "./website_video";
 import websiteStyle from "./website_style";
 import setting from "./setting";
+import merchantStatistics from "./merchant_statistics";
 
 export default {
   oauth,
   person,
   merchant,
+  merchantStatistics,
   agent,
   album,
   albumPhoto,

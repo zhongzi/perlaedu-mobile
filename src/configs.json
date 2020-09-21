@@ -8,5 +8,6 @@
   "qqMapName": "client-001",
   "crmChannelCode": "ffe7ad61cf1848fb8211aca544019176",
   "defaultCoverNews": "https://files.perlaedu.com//website/default/cover-news.png",
-  "campaignServiceURL": "/campaigns/#/"
+  "campaignServiceURL": "/campaigns/#/",
+  "frontURLBase": "http://localhost:8180"
 }
