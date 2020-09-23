@@ -23,7 +23,7 @@ export default class Home extends Vue {
   onInnerCurTabIdxChanged() {
     this.$emit("input", this.curTabIdx);
 
-    this.$router.push({
+    this.$router.replace({
       query: { tab: this.curTabIdx as any },
     });
   }

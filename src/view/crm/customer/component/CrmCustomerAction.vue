@@ -2,11 +2,11 @@
   <ai-card class="wrapper action">
     <template v-slot:header>
       <ai-cell class="header">
-        <template v-slot:cover>
+        <template v-slot:cover v-if="action.user">
           <img :src="action | safe('user.avatar')" class="cover" />
         </template>
         <template v-slot:title>
-          <span> {{ action | safe("user.nickname") }} </span>
+          <span> {{ action | safe("user.nickname", "来源线索") }} </span>
         </template>
         <template v-slot:right>
           <ai-badge :content="status.text" :color="status.color" />
