@@ -1,6 +1,7 @@
 <template>
   <div class="wrapper editing">
     <merchant :merchant="merchant" />
+    <skin :merchant="merchant" />
     <div class="resources">
       <div class="section">
         <union-merchant-list class="resource" :query="query" />
@@ -27,6 +28,7 @@
 import { Component, Vue, Mixins } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
+import AiLine from "@/view/component/AiLine.vue";
 
 import Merchant from "./component/Merchant.vue";
 import UnionMerchantList from "./component/UnionMerchantList.vue";
@@ -37,7 +39,7 @@ import TeacherList from "./component/TeacherList.vue";
 import VideoList from "./component/VideoList.vue";
 import AlbumList from "./component/AlbumList.vue";
 import ArticleList from "./component/ArticleList.vue";
-import AiLine from "@/view/component/AiLine.vue";
+import Skin from "./component/Skin.vue";
 
 @Component({
   components: {
@@ -51,6 +53,7 @@ import AiLine from "@/view/component/AiLine.vue";
     VideoList,
     AlbumList,
     ArticleList,
+    Skin,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
@@ -70,7 +73,10 @@ export default class Home extends Mixins(SyncMixin) {
     this.id = this.$route.params.merchantId;
     this.loadEntity({
       query: {
-        extras: "location, cover_url",
+        extras: JSON.stringify({
+          Merchant: ["location", "cover_url", "website"],
+          Website: ["skin"],
+        }),
       },
     });
   }

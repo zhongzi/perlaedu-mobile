@@ -4,7 +4,12 @@
       resource="campaignMerchant"
       :query="innerQuery"
       scrollType="slider"
-      :sliderOptions="{ slidesPerView: 1.4, initialSlide: 0, freeMode: true }"
+      :sliderOptions="{
+        slidesPerView: 1.4,
+        initialSlide: 0,
+        freeMode: true,
+        spaceBetween: 10,
+      }"
       :hideIfNoData="true"
     >
       <template v-slot:header>
@@ -68,6 +73,13 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .campaign {
+  & ::v-deep .ai-card__header {
+    min-height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   & ::v-deep .ai-list-stored__title {
     padding: 0px 20px;
   }

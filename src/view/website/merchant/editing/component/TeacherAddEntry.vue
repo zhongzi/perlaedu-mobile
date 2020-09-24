@@ -96,7 +96,7 @@ export default class Home extends Mixins(SyncMixin) {
 <style lang="scss" scoped>
 .add-teacher-entry {
   width: 104px;
-  height: 170px;
+  height: 160px;
   padding: 0px 5px;
   background: rgba(255, 255, 255, 1);
   box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
@@ -107,11 +107,12 @@ export default class Home extends Mixins(SyncMixin) {
   margin-bottom: 10px;
 
   & ::v-deep .ai-card__header {
-    height: 85%;
+    height: 80%;
   }
   .cover {
+    padding: 4px;
     width: 100%;
-    height: 95%;
+    height: calc(100% - 8px);
     display: flex;
     align-items: center;
     justify-content: center;

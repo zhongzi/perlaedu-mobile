@@ -3,8 +3,8 @@
     <ai-list-stored
       resource="course"
       :query="innerQuery"
-      scrollType="slider"
-      :sliderOptions="{ slidesPerView: 5, initialSlide: 0, freeMode: true }"
+      scrollType="none"
+      :limit="100"
       :hideIfNoData="true"
     >
       <template v-slot:header>
@@ -64,12 +64,16 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .course {
-  & ::v-deep .ai-list-stored__title {
-    padding: 0px 20px;
-  }
+  margin-bottom: 20px;
+  padding: 0px 20px;
 
-  & ::v-deep .ai-slider__swiper-item:nth-child(1) {
-    margin-left: 20px;
+  & ::v-deep .ai-list-stored__list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .item {
+    width: 20%;
+    margin: 10px 0px;
   }
 }
 </style>

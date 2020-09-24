@@ -5,7 +5,7 @@
         <img
           :src="
             (innerTeacher.cover_url || innerTeacher.avatar_url)
-              | alioss({ width: 120, height: 160 })
+              | alioss({ width: 120, height: 160, mode: fill })
           "
         />
       </div>
@@ -56,24 +56,23 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .wrapper {
-  width: 104px;
-  height: 170px;
   background: rgba(255, 255, 255, 0.7);
   box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
   margin-bottom: 15px;
 
   .cover {
-    width: 104px;
-    height: 138px;
-    padding: 4px;
     border-radius: 4px;
     overflow: hidden;
+    padding: 4px;
 
     img {
-      object-fit: fill;
       display: block;
       border-radius: 4px;
     }
+  }
+
+  & ::v-deep .ai-card__footer {
+    flex: 1;
   }
 
   .name {
@@ -81,7 +80,7 @@ export default class Home extends Vue {
     overflow: hidden;
     text-overflow: ellipsis;
 
-    margin: 0px 10px 10px;
+    margin: 0px 10px;
     text-align: center;
     font-size: 14px;
     font-family: PingFangSC-Regular, PingFang SC;

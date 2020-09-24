@@ -14,6 +14,7 @@ import video from "./video";
 import website from "./website";
 import websiteTeacher from "./website_teacher";
 import websiteVideo from "./website_video";
+import websiteStyle from "./website_style";
 import setting from "./setting";
 
 export default {
@@ -33,5 +34,6 @@ export default {
   website,
   websiteTeacher,
   websiteVideo,
+  websiteStyle,
   setting,
 };

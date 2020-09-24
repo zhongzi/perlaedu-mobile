@@ -6,7 +6,11 @@
       :refresh.sync="refresh"
       scrollType="slider"
       :enableEmpty="false"
-      :sliderOptions="{ slidesPerView: 3.1, spaceBetween: 5 }"
+      :sliderOptions="{
+        slidesPerView: 3.1,
+        freeMode: true,
+        spaceBetween: 3,
+      }"
       :enableSlideBefore="true"
       class="list"
     >
@@ -94,12 +98,6 @@ export default class Home extends Mixins(SyncMixin) {
 </script>
 <style lang="scss" scoped>
 .editing-teachers {
-  & ::v-deep .ai-section__body {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
   & ::v-deep .ai-section__header {
     margin-left: 20px;
   }
