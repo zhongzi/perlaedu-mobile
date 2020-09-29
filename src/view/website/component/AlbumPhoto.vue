@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <img class="cover" :src="photo.cover | alioss({ width: 100 })" />
+    <img class="cover" :src="innerImage" />
   </div>
 </template>
 
@@ -10,6 +10,14 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 @Component
 export default class Home extends Vue {
   @Prop({ type: Object, default: null }) photo: any;
+  @Prop({ type: String, default: null }) image: string;
+
+  get innerImage() {
+    return (
+      this.image ||
+      this.$options.filters.alioss(this.photo.cover, { width: 100 })
+    );
+  }
 }
 </script>
 <style lang="scss" scoped>

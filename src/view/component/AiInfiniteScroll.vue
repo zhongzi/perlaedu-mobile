@@ -1,18 +1,18 @@
 <template>
   <div ref="wrapper" :style="{ height: height }" :class="b()">
-    <div :class="b('content')" :style="mergedStyle">
-      <div>
+    <div :class="b('content')">
+      <div :style="mergedStyle">
         <slot :list="list" name="header" />
-        <slot :list="list" name="list">
-          <div :class="b('list')">
+        <div :class="b('list')">
+          <slot :list="list" name="list">
             <slot name="item-before" />
             <template v-for="(item, index) in list">
               <slot name="item" :list="list" :item="item" :index="index" />
             </template>
             <slot name="item-after" />
-          </div>
-        </slot>
-        <div v-show="isEmpty" :class="b('empty')">
+          </slot>
+        </div>
+        <div v-show="isEmpty && emptyText" :class="b('empty')">
           <slot :list="list" name="empty">
             {{ emptyText }}
           </slot>
@@ -22,9 +22,7 @@
       <slot v-if="enablePullUp" :isPullingUp="isPullingUp" name="pullup">
         <div v-if="enablePullUp" :class="b('pullup')">
           <div v-if="!isPullingUp">
-            <span v-if="!isLoading && list.length > 0">{{
-              pullingUpText
-            }}</span>
+            <span v-if="!isLoading">{{ pullingUpText }}</span>
           </div>
           <div v-else :class="b('loading')">
             <ai-double-bounce :class="b('animation')" />
@@ -73,7 +71,7 @@ export default class Home extends Vue {
   @Prop({ type: Array, default: () => [] }) list: any;
   @Prop({ type: Number, default: 0 }) listTotal: number;
   @Prop({ type: String, default: "100vh" }) height: string;
-  @Prop({ type: String, default: "暂无记录哦" }) emptyText: string;
+  @Prop({ type: String, default: null }) emptyText: string;
   @Prop({ type: Number, default: 10 }) limit: number;
   @Prop({ type: Boolean, default: true }) enablePullUp: boolean;
   @Prop({ type: Boolean, default: true }) enablePullDown: boolean;
@@ -105,10 +103,6 @@ export default class Home extends Vue {
 
   get mergedStyle() {
     return Object.assign({ minHeight: this.height }, this.contentStyle || {});
-  }
-
-  get hasData() {
-    return this.list && this.list.length > 0;
   }
 
   get pullingUpText() {

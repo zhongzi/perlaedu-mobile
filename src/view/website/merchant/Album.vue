@@ -12,15 +12,16 @@
       <template v-slot:header>
         <merchant-cell :merchant="merchant" class="merchant" />
       </template>
-      <template v-slot:item="{ item }">
+      <template v-slot:item="{ item, image }">
         <album-photo
           :photo="item"
+          :image="image"
           :key="item.id"
           :merchant="album.merchant"
           class="photo"
         />
       </template>
-      <template v-slot:innerFooter>
+      <template v-slot:footer>
         <ai-copyright :manual="true" />
       </template>
     </ai-list-stored>

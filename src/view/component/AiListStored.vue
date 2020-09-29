@@ -67,10 +67,10 @@
         v-else-if="scrollType === 'waterfall'"
         :list="list"
         :gap="gap"
-        :loading="listLoading"
-        :loadedAll="!hasMoreData"
         :option="waterfallOptions"
-        @load="loadData"
+        :loading="listLoading"
+        @pull-down="loadData(true)"
+        @pull-up="loadData"
       >
         <template v-slot:header>
           <div :class="b('title')">

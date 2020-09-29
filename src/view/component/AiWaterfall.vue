@@ -1,41 +1,42 @@
-<!--
-  暂时只支持图片瀑布流管理, 计算元素高度自动将采用元素内涵图片高度进行计算, 所以不需要指定元素高度
-  TODO: 修改了依赖组件的部分代码，时间问题暂时没有重写与通用化
--->
 <template>
   <div :class="b()">
-    <vue-waterfall-easy
-      ref="waterfall"
-      :class="b('list')"
-      :imgsArr="innerPreviewList"
-      :srcKey="imgWaterKey"
-      :mobileGap="gap"
-      :gap="gap"
-      @scrollReachBottom="$emit('load')"
+    <ai-infinite-scroll
+      height="90vh"
+      ref="scroll"
+      :loading="loading"
+      @pull-down="$emit('pull-down')"
+      @pull-up="$emit('pull-up')"
     >
-      <template v-slot:waterfall-head>
+      <template v-slot:header>
         <slot name="header" />
       </template>
-      <template v-slot="{ index, value }">
-        <div @click="onImageClicked(value, index)">
-          <slot
-            name="item"
-            :item="value"
-            :index="index"
-            :image="value[imgWaterKey]"
-            v-if="value"
+      <template v-slot:list>
+        <vue-flex-waterfall
+          :col="2"
+          :colSpacing="gap"
+          :breakByContainer="false"
+          @order-update="refreshScroll"
+        >
+          <div
+            v-for="(item, index) in list"
+            :class="b('item')"
+            :key="item.id"
+            @click="onImageClicked(item, index)"
           >
-            <img :src="value[imgWaterKey]" />
-          </slot>
-        </div>
+            <slot
+              name="item"
+              :item="item"
+              :image="item.cover | alioss(originOption)"
+            >
+              <img :src="item.cover | alioss(originOption)" />
+            </slot>
+          </div>
+        </vue-flex-waterfall>
       </template>
-      <template v-slot:waterfall-over>
-        <slot name="footer"> </slot>
+      <template v-slot:footer>
+        <slot name="footer" />
       </template>
-    </vue-waterfall-easy>
-    <div :class="b('footer')">
-      <slot name="slot" />
-    </div>
+    </ai-infinite-scroll>
     <hui-dialog v-model="showDialog" :appendToBody="true" :class="b('dialog')">
       <div :class="b('dialog-content')">
         <ai-slider
@@ -64,8 +65,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import vueWaterfallEasy from "vue-waterfall-easy/src/vue-waterfall-easy/vue-waterfall-easy.vue";
 
+import AiInfiniteScroll from "./AiInfiniteScroll.vue";
 import AiSlider from "./AiSlider.vue";
 
 import map from "lodash/map";
@@ -78,28 +79,26 @@ import forEach from "lodash/forEach";
 import merge from "lodash/merge";
 import find from "lodash/find";
 
+import VueFlexWaterfall from "vue-flex-waterfall";
+
 @Component({
   name: "ai-waterfall",
   components: {
-    vueWaterfallEasy,
     AiSlider,
+    AiInfiniteScroll,
+    VueFlexWaterfall,
   },
 })
 export default class Home extends Vue {
   @Prop({ type: Array, default: [] }) list: any;
   @Prop({ type: String, default: "cover" }) imgKey: string;
-  @Prop({ type: Boolean, default: false }) loading: boolean;
-  @Prop({ type: Boolean, default: false }) loadedAll: boolean;
-  @Prop({ type: Object, default: null }) option: any;
   @Prop({ type: Number, default: 10 }) gap: number;
+  @Prop({ type: Object, default: null }) option: any;
+  @Prop({ type: Boolean, default: false }) loading: boolean;
 
   showDialog: boolean = false;
   curSlideNum: number = 0;
   innerPreviewList: any = [];
-
-  get imgWaterKey() {
-    return this.imgKey + "Water";
-  }
 
   get originOption() {
     return cloneDeep(merge({ width: 300 }, this.option || {}));
@@ -122,36 +121,14 @@ export default class Home extends Vue {
     };
   }
 
-  created() {
-    this.resetInnerList();
-  }
-
-  @Watch("list", { deep: true })
+  @Watch("list")
   onListChanged() {
-    this.resetInnerList();
+    this.refreshScroll();
   }
 
-  @Watch("loadedAll", { deep: true })
-  onLoadedAllChanged() {
-    if (!this.loadedAll) return;
-    (this.$refs.waterfall as any).waterfallOver();
-  }
-
-  resetInnerList() {
-    const inLi = intersectionBy(this.innerPreviewList, this.list, "id");
-    const outLi = forEach(
-      cloneDeep(differenceBy(this.list, this.innerPreviewList, "id")),
-      (item) => {
-        item[this.imgWaterKey] = this.$options.filters.alioss
-          ? this.$options.filters.alioss(
-              item[this.imgKey],
-              cloneDeep(merge({ width: 150 }, this.option || {}))
-            )
-          : item[this.imgKey];
-      }
-    );
-    this.innerPreviewList = map(this.list, (el) => {
-      return find(inLi, { id: el.id }) || find(outLi, { id: el.id });
+  refreshScroll() {
+    this.$nextTick(() => {
+      (this.$refs.scroll as any).refresh();
     });
   }
 
@@ -163,15 +140,12 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .ai-waterfall {
+  padding: 0px 10px;
   height: 100%;
 
-  &__list {
-    height: 100%;
-
-    & ::v-deep .img-inner-box {
-      background: rgba(0, 0, 0, 0.1);
-      box-shadow: none !important;
-    }
+  &__item {
+    width: calc(50% - 5px);
+    margin-top: 5px;
   }
 }
 .ai-waterfall__dialog {
