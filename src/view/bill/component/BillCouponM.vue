@@ -10,9 +10,7 @@
             {{ user.nickname }}
           </template>
           <template v-slot:subtitle>
-            <ai-badge :color="status.color">
-              {{ status.text }}
-            </ai-badge>
+            <ai-badge :color="status.color" :content="status.text" />
             <span>{{ item.title }}</span>
           </template>
         </ai-cell>
