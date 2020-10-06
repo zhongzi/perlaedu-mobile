@@ -2,9 +2,9 @@
   <div class="wrapper website">
     <router-view />
     <ai-bottom-navigation
+      v-if="showMenu"
       :menus="menus"
       @click="onClick"
-      v-if="showMenu"
       :cusStyle="mergedStyle | safe('style', {})"
       :color="mergedStyle | safe('icon.color')"
       :activeColor="mergedStyle | safe('icon.activeColor')"
@@ -50,7 +50,7 @@ export default class Home extends Vue {
     //     }
     //   });
     // }
-    return ["websiteMerchant", "websiteUnion"].indexOf(this.$route.name) >= 0;
+    return ["websiteMerchant"].indexOf(this.$route.name) >= 0;
   }
 
   get isInMerchantWebsite() {

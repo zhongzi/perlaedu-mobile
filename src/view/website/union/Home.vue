@@ -20,7 +20,11 @@ export default class Home extends Mixins(SyncMixin) {
     this.id = this.$route.params.unionId;
     this.loadEntity({
       query: {
-        extras: "count_merchants,location,website",
+        extras: JSON.stringify({
+          Union: ["count_merchants", "location", "website", "union_merchants"],
+          UnionMerchant: ["merchant"],
+          Merchant: ["logo_url", "count_persons", "cover_url"],
+        }),
       },
     });
     this.share();
@@ -33,7 +37,6 @@ export default class Home extends Mixins(SyncMixin) {
 
   @Watch("union", { deep: true })
   onMerchantChanged() {
-    this.updateTitle();
     this.share();
   }
 

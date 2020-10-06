@@ -212,6 +212,8 @@ export default class SyncMixin extends Vue {
     store.dispatch(action, {
       id: this.id,
       query: kwargs.query,
+      restore: kwargs.restore,
+      requireColumns: kwargs.requireColumns,
       headers: kwargs.headers,
       configs: kwargs.configs,
       success: kwargs.success,

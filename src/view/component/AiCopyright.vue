@@ -48,7 +48,7 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .copyright {
-  width: 150px;
+  width: 200px;
   text-align: center;
   font-size: 12px;
   color: #747474;

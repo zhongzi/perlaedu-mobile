@@ -1,32 +1,35 @@
 <template>
   <div class="wrapper union">
     <template v-if="union.id">
-      <div class="cover">
-        <img :src="cover" />
+      <div class="decorator">
+        <div class="left"></div>
+        <div class="right-top"></div>
+        <div class="right"></div>
       </div>
-      <div class="content" :style="mergedStyle">
-        <div class="info">
-          <div class="title">
-            {{ union.name }}
-          </div>
-          <div class="desc">
-            <i class="iconfont icon-location" />
-            本综合体有{{ union.count_merchants }}家优质培训机构组成
-          </div>
-          <div class="address" v-if="union.location && union.location.address">
-            <i class="iconfont icon-location" />
-            <span>{{ union.location | safe("address") }}</span>
-          </div>
+      <div class="content">
+        <div class="header">
+          <p>{{ union.name }}</p>
+          <p>由 {{ union.count_merchants }} 家优质培训机构组成</p>
+          <p>{{ totalFollowers }} 人正在关注</p>
         </div>
-        <div class="section merchants">
-          <union-merchant-list :union="union" />
+        <div class="merchants">
+          <ai-circle-menu :menus="unionMerchants">
+            <div class="union-logo">
+              <img :src="require('@/asset/logo.union.png')" />
+            </div>
+            <template v-slot:item="{ menu }">
+              <div class="item" @click="openWebiste(menu)" v-if="menu.merchant">
+                <img
+                  :src="getCover(menu) | alioss({ width: 75, height: 75 })"
+                  class="logo"
+                />
+                <span> {{ menu | safe("merchant.name") }}</span>
+              </div>
+            </template>
+          </ai-circle-menu>
         </div>
-        <div class="section courses">
-          <union-course-list :union="union" />
-        </div>
-        <div class="section articles">
-          <union-article-list :union="union" />
-        </div>
+        <ai-copyright :manual="true" />
+        <guide-entry class="guide" />
       </div>
     </template>
   </div>
@@ -37,21 +40,21 @@ import { Component, Vue, Mixins } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
 
-import UnionMerchantList from "../component/UnionMerchantList.vue";
-import UnionCourseList from "../component/UnionCourseList.vue";
-import UnionArticleList from "../component/UnionArticleList.vue";
+import AiCircleMenu from "@/view/component/AiCircleMenu.vue";
+import AiCopyright from "@/view/component/AiCopyright.vue";
 
-import isEqual from "lodash/isEqual";
+import GuideEntry from "../guide/component/Entry.vue";
+
+import sortBy from "lodash/sortBy";
+import sumBy from "lodash/sumBy";
 import _get from "lodash/get";
-import merge from "lodash/merge";
 import isEmpty from "lodash/isEmpty";
-import startsWith from "lodash/startsWith";
 
 @Component({
   components: {
-    UnionMerchantList,
-    UnionCourseList,
-    UnionArticleList,
+    AiCircleMenu,
+    AiCopyright,
+    GuideEntry,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
@@ -59,120 +62,195 @@ export default class Home extends Mixins(SyncMixin) {
     return this.entity;
   }
 
-  get cover() {
-    return isEmpty(this.union.cover_url)
-      ? require("@/asset/image/default_website_cover" +
-          this.$densityStr +
-          ".png")
-      : this.union.cover_url;
-  }
-
-  get website() {
-    return this.union.website || {};
-  }
-
-  get skin() {
-    return this.website.skin || {};
-  }
-
-  get bgImage() {
-    const img = this.skin.bgImage;
-    return !isEmpty(img)
-      ? startsWith(img, "linear")
-        ? img
-        : `url(${img})`
-      : "linear-gradient(180deg,rgba(237,146,108,1) 0%,rgba(244,108,55,1) 55%,rgba(218,108,67,1) 100%)";
-  }
-
-  get mergedStyle() {
-    return merge(
-      {
-        backgroundImage: this.bgImage,
-        backgroundRepeat: "repeat-y",
-        backgroundPosition: "center top",
-        backgroundSize: "contain",
-      },
-      this.union.style || {}
+  get unionMerchants() {
+    return sortBy(
+      this.union.union_merchants || [],
+      (o) => -_get(o, "merchant.count_persons", 0)
     );
+  }
+
+  get totalFollowers() {
+    return sumBy(this.unionMerchants || [], "merchant.count_persons");
   }
 
   created() {
     this.store = "union";
     this.id = this.$route.params.unionId;
   }
+
+  getCover(unionMerchant) {
+    const merchant = unionMerchant.merchant;
+    if (!merchant) return;
+    // return !isEmpty(merchant.logo_url) ? merchant.logo_url : merchant.cover_url;
+    return merchant.cover_url;
+  }
+
+  openWebiste(unionMerchant) {
+    this.$router.push({
+      name: "websiteMerchant",
+      params: {
+        merchantId: unionMerchant.merchant_id,
+      },
+    });
+  }
 }
 </script>
 <style lang="scss" scoped>
 .union {
-  background: rgba(247, 247, 247, 1);
+  background: linear-gradient(
+    133deg,
+    rgba(255, 109, 47, 1) 0%,
+    rgba(255, 100, 82, 1) 100%
+  );
+  box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
+  position: relative;
 
-  .cover {
-    position: relative;
+  img {
+    width: 100%;
+  }
 
-    img {
-      width: 100%;
-      display: block;
-    }
-    .setting {
+  .decorator {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 50vh;
+    overflow-x: hidden;
+
+    .left {
       position: absolute;
-      top: 18px;
-      right: 17px;
+      left: -80px;
+      top: -100px;
 
-      i {
-        font-size: 28px;
-        color: rgba(255, 255, 255, 0.91);
-      }
+      width: 225px;
+      height: 242px;
+      background: linear-gradient(
+        151deg,
+        rgba(255, 185, 100, 1) 0%,
+        rgba(255, 131, 6, 0) 100%
+      );
+      box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
+      border-radius: 50%;
+    }
+
+    .right-top {
+      position: absolute;
+      right: 0px;
+      top: -10px;
+
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(
+        151deg,
+        rgba(255, 185, 100, 1) 0%,
+        rgba(255, 131, 6, 0) 100%
+      );
+      box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
+      border-radius: 50%;
+    }
+
+    .right {
+      position: absolute;
+      right: -100px;
+      top: 80px;
+
+      width: 225px;
+      height: 242px;
+      background: linear-gradient(
+        151deg,
+        rgba(255, 185, 100, 1) 0%,
+        rgba(255, 131, 6, 0) 100%
+      );
+      box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
+      opacity: 0.74;
+      border-radius: 50%;
     }
   }
 
   .content {
-    min-height: 70vh;
     position: relative;
-    padding-top: 20px;
-    padding-bottom: 100px;
+    min-height: 100vh;
+    z-index: 20;
 
-    .info {
-      background: rgba(255, 255, 255, 0.8);
-      border-radius: 8px;
-      padding: 10px 20px;
-      margin: 0px 27px 20px;
+    padding-top: 27px;
 
-      .title {
-        font-size: 15px;
-        font-family: PingFangSC-Regular, PingFang SC;
+    .header {
+      text-align: center;
+
+      p:nth-child(1) {
+        font-size: 24px;
+        font-family: PingFangSC-Semibold, PingFang SC;
+        font-weight: 600;
+        color: #ffffff;
+        line-height: 33px;
+      }
+      p:nth-child(2) {
+        font-size: 16px;
+        font-family: PingFangSC-Medium, PingFang SC;
         font-weight: 500;
-        color: #4a4a4a;
-        line-height: 21px;
+        color: #9c3b10;
+        line-height: 22px;
+      }
+      p:nth-child(3) {
+        font-size: 18px;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 500;
+        color: #ffffff;
+        line-height: 2.5;
+      }
+    }
+
+    .merchants {
+      margin: 50px auto;
+
+      & ::v-deep .center {
+        box-shadow: 0px 5px 11px 0px #c64720;
       }
 
-      .desc {
-        font-size: 13px;
-        font-family: PingFangSC-Regular, PingFang SC;
-        font-weight: 400;
-        color: #9b9b9b;
-        line-height: 18px;
+      .union-logo {
+        padding: 10px;
+        background: #fff;
 
-        i {
-          color: #d81e06;
+        img {
+          width: 100%;
         }
       }
-      .address {
-        i {
-          width: 12px;
-          height: 15px;
-          color: rgba(216, 30, 6, 1);
-          margin-right: 10px;
+
+      .item {
+        width: 60px;
+        height: 60px;
+        position: relative;
+
+        .logo {
+          border-radius: 50%;
+          height: 100%;
+          width: 100%;
+          border: 3px solid #fff;
         }
         span {
-          font-size: 14px;
-          font-family: PingFangSC-Regular, PingFang SC;
-          font-weight: 400;
-          color: rgba(74, 74, 74, 1);
-          line-height: 20px;
-          margin: 0px;
+          text-align: center;
+          display: inline-block;
+          position: relative;
+          left: -20px;
+          width: 100px;
+
+          color: #fff;
+          font-size: 12px;
+          font-weight: 600;
         }
       }
     }
+  }
+  .guide {
+    margin: 0px 20px;
+  }
+
+  & ::v-deep .copyright {
+    font-size: 14px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #9c3b10;
+    line-height: 20px;
   }
 }
 </style>
