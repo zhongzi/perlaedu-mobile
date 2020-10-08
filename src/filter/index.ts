@@ -18,7 +18,10 @@ import differenceInSeconds from "date-fns/differenceInSeconds";
 import isEmpty from "lodash/isEmpty";
 
 function parseDate(value) {
-  return parseISO(value);
+  if (typeof value.getMonth !== "function") {
+    value = parseISO(value);
+  }
+  return value;
 }
 
 function emptyReplace(s, d = "-") {
@@ -27,16 +30,18 @@ function emptyReplace(s, d = "-") {
 
 function distanceFromDatetime(
   value: Date | string,
-  simplify: boolean = false
+  simplify: boolean = false,
+  jsonable: boolean = false,
+  leftValue: Date | string = null
 ): string {
   return distanceFromSeconds(
-    differenceInSeconds(new Date(), parseDate(value)),
-    simplify
+    differenceInSeconds(parseDate(leftValue || new Date()), parseDate(value)),
+    simplify,
+    jsonable
   );
 }
 
-function distanceFromSeconds(seconds, simplify = false) {
-  console.log(seconds);
+function distanceFromSeconds(seconds, simplify = false, jsonable = false): any {
   seconds = Number(seconds);
   const d = Math.floor(seconds / (3600 * 24));
   const h = Math.floor((seconds % (3600 * 24)) / 3600);
@@ -72,6 +77,15 @@ function distanceFromSeconds(seconds, simplify = false) {
     if (simplify) {
       return sDisplay + "前";
     }
+  }
+  if (jsonable) {
+    return {
+      seconds: seconds,
+      d: d,
+      h: h,
+      m: m,
+      s: s,
+    };
   }
   return dDisplay + hDisplay + mDisplay + sDisplay;
 }
@@ -115,10 +129,7 @@ function diffInDays(value: Date | string): number {
   return differenceInDays(new Date(), parseDate(value));
 }
 
-function sameDay(
-  left: Date | string | void,
-  right: Date | string | void
-): boolean {
+function sameDay(left: Date | number, right: Date | number): boolean {
   left = parseDate(left);
   right = parseDate(right);
   return isSameDay(left, right);

@@ -6,19 +6,24 @@
           <template v-slot:cover>
             <div class="left">
               <div class="number">
-                <span> {{ customer.id }}</span
-                >号
+                <crm-job-count-down :customer="customer" />
               </div>
               <ai-avatar
                 :avatar="
-                  customer | safe('user.avatar') | alioss({ width: 120 })
+                  customer
+                    | safe('user.avatar', require('@/asset/logo.bg.png'))
+                    | alioss({ width: 120 })
                 "
                 :name="
                   customer
                     | safe('user.nickname', customer.name || customer.phone)
                 "
-                :remark="customer.created_at | defaultDate"
-              />
+              >
+                <template v-slot:remark>
+                  {{ "NO-" + customer.id }}
+                  {{ customer.created_at | defaultDate }}
+                </template>
+              </ai-avatar>
             </div>
           </template>
           <template v-slot:right v-if="customer.follower">
@@ -28,9 +33,15 @@
       </template>
       <template v-slot:body v-if="isInDetail">
         <div class="edit">
-          <hui-button type="info" @click.native.stop="edit">
-            编辑详情
-          </hui-button>
+          <div class="job" :style="{ color: '#' + jobStageColor }">
+            当前进度: {{ customer | safe("job.title") }}
+          </div>
+          <div class="actions">
+            <action-add-action :customer="customer" />
+            <hui-button type="info" @click.native.stop="edit">
+              编辑详情
+            </hui-button>
+          </div>
         </div>
         <div class="body">
           <div class="section detail">
@@ -213,11 +224,14 @@ import AiAvatar from "@/view/component/AiAvatar.vue";
 import { CrmCustomerStatus } from "@/enum/crm_customer_status";
 import { PersonRole } from "@/enum/person_role";
 
+import ActionAddAction from "./ActionAddAction.vue";
 import ActionTransfer from "./ActionTransfer.vue";
 import ActionClose from "./ActionClose.vue";
+import CrmJobCountDown from "./CrmJobCountDown.vue";
 
 import forIn from "lodash/forIn";
 import isEmpty from "lodash/isEmpty";
+import _get from "lodash/get";
 
 @Component({
   components: {
@@ -227,6 +241,8 @@ import isEmpty from "lodash/isEmpty";
     AiAvatar,
     ActionTransfer,
     ActionClose,
+    ActionAddAction,
+    CrmJobCountDown,
   },
 })
 export default class Home extends Vue {
@@ -236,6 +252,10 @@ export default class Home extends Vue {
 
   get status() {
     return CrmCustomerStatus[this.customer.status];
+  }
+
+  get jobStageColor() {
+    return _get(this.customer, "job_stage.color");
   }
 
   get sourceDetail() {
@@ -304,8 +324,18 @@ export default class Home extends Vue {
     }
   }
   .edit {
-    padding: 10px 10px 0px 0px;
-    text-align: right;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .job {
+      font-weight: 600;
+      text-decoration: underline;
+    }
+    .actions {
+      display: flex;
+    }
   }
   .body {
     padding: 10px;

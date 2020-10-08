@@ -11,9 +11,11 @@
       </slot>
     </template>
     <template v-slot:subtitle>
-      <slot name="remark">
-        {{ remark }}
-      </slot>
+      <div class="remark">
+        <slot name="remark">
+          {{ remark }}
+        </slot>
+      </div>
     </template>
     <template v-slot:right>
       <slot name="right" />
@@ -43,6 +45,10 @@ export default class Home extends Vue {
   &__avatar {
     width: 40px;
     border-radius: 50%;
+    margin-right: 5px;
+  }
+  .remark {
+    font-size: 12px;
   }
 }
 </style>

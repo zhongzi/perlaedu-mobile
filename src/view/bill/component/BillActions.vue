@@ -20,6 +20,7 @@
     </hui-dialog>
     <ai-float-action
       v-if="isManager"
+      icon="qrcode"
       label="收款码"
       @click="onOpen"
       bottom="160px"

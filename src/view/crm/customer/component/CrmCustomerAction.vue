@@ -9,7 +9,7 @@
           <span> {{ action | safe("user.nickname", "来源线索") }} </span>
         </template>
         <template v-slot:right>
-          <ai-badge :content="status.text" :color="status.color" />
+          <ai-badge :content="badgeContent" :color="status.color" />
         </template>
       </ai-cell>
     </template>
@@ -44,6 +44,8 @@ import AiRichTextSectionsEditor from "@/view/component/AiRichTextSectionsEditor.
 
 import { CrmCustomerStatus } from "@/enum/crm_customer_status";
 
+import _get from "lodash/get";
+
 @Component({
   components: {
     AiCell,
@@ -58,6 +60,18 @@ export default class Home extends Mixins(SyncMixin) {
 
   get status() {
     return CrmCustomerStatus[this.action.action];
+  }
+
+  get job() {
+    return _get(this.action, "job");
+  }
+
+  get badgeContent() {
+    let content = `${this.status.text}`;
+    if (this.status === CrmCustomerStatus.following && this.job) {
+      content += ` / ${_get(this.job, "title", "")}`;
+    }
+    return content;
   }
 
   created() {

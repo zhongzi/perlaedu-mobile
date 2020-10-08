@@ -1,11 +1,9 @@
 <template>
   <div :class="b()" :style="style" @click.stop="onClick">
-    <div :class="b('content')">
-      <slot>
-        <i :class="['iconfont', 'icon-' + icon]" />
-        <span> {{ label }} </span>
-      </slot>
-    </div>
+    <slot>
+      <i :class="['iconfont', 'icon-' + icon]" v-if="icon" />
+      <span v-if="label"> {{ label }} </span>
+    </slot>
   </div>
 </template>
 
@@ -16,8 +14,8 @@ import { Component, Vue, Prop } from "vue-property-decorator";
   name: "ai-float-action",
 })
 export default class Home extends Vue {
-  @Prop({ type: String, default: "qrcode" }) icon: string;
-  @Prop({ type: String, default: "二维码" }) label: string;
+  @Prop({ type: String, default: null }) icon: string;
+  @Prop({ type: String, default: null }) label: string;
   @Prop({ type: String, default: null }) top: string;
   @Prop({ type: String, default: null }) left: string;
   @Prop({ type: String, default: "15px" }) right: string;
@@ -47,19 +45,17 @@ export default class Home extends Vue {
   width: 70px;
   height: 70px;
 
-  &__content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-    i {
-      font-size: 24px;
-    }
+  i {
+    font-size: 24px;
+  }
 
-    span {
-      font-size: 12px;
-    }
+  span {
+    font-size: 12px;
   }
 }
 </style>

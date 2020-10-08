@@ -47,7 +47,7 @@ export default class Home extends Vue {
     return {
       customer_id: this.customer.id,
       extras: JSON.stringify({
-        CrmCustomerAction: ["user"],
+        CrmCustomerAction: ["user", "job"],
         OAuth: ["avatar"],
       }),
     };

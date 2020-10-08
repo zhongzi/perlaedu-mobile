@@ -362,7 +362,6 @@ export default class Home extends Vue {
         border-radius: 10px;
 
         .ql-toolbar {
-          background: #fff;
         }
 
         .ql-container {
@@ -407,7 +406,6 @@ export default class Home extends Vue {
     }
 
     &-add {
-      background: #fff;
       border-radius: 0 0 10px 10px;
       margin-top: 10px;
       display: flex;

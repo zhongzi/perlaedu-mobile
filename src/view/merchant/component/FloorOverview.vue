@@ -135,7 +135,7 @@ export default class Home extends Vue {
   get moreCellDatas() {
     return [
       {
-        title: "课时存量",
+        title: "剩余课时量",
         amount: _get(
           this.merchant,
           "statistics.tag.sum_by_merchant.sum_lessons",
@@ -144,7 +144,7 @@ export default class Home extends Vue {
         unit: "课时",
       },
       {
-        title: "课时费存量",
+        title: "剩余课时费",
         amount: _get(
           this.merchant,
           "statistics.tag.sum_by_merchant.sum_prices",
@@ -154,7 +154,7 @@ export default class Home extends Vue {
         decimal: 2,
       },
       {
-        title: "储值卡存量",
+        title: "剩余储值卡",
         amount: _get(
           this.merchant,
           "statistics.tag.sum_by_merchant.sum_cash",

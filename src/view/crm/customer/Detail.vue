@@ -2,14 +2,17 @@
   <div class="wrapper customer-detail">
     <crm-customer :customer="customer" class="header" />
     <ai-tab-rounded v-model="curTabIdx" :tabs="tabs" />
-    <template v-if="curTabIdx === 0">
+    <template v-if="curTab.value === 'detail'">
       <crm-customer :customer="customer" :isInDetail="true" @refresh="load" />
     </template>
-    <template v-else-if="curTabIdx === 1">
+    <template v-else-if="curTab.value === 'action'">
+      <crm-customer-action-list :customer="customer" />
+    </template>
+    <template v-else-if="curTab.value === 'clue'">
       <crm-clue-list :customer="customer" />
     </template>
-    <template v-else>
-      <crm-customer-action-list :customer="customer" />
+    <template v-else-if="curTab.value === 'jobs'">
+      <crm-job-list :customer="customer" />
     </template>
   </div>
 </template>
@@ -25,6 +28,7 @@ import AiFixedFooter from "@/view/component/AiFixedFooter.vue";
 import CrmCustomer from "./component/CrmCustomer.vue";
 import CrmClueList from "./component/CrmClueList.vue";
 import CrmCustomerActionList from "./component/CrmCustomerActionList.vue";
+import CrmJobList from "./component/CrmJobList.vue";
 
 @Component({
   components: {
@@ -33,18 +37,24 @@ import CrmCustomerActionList from "./component/CrmCustomerActionList.vue";
     CrmCustomer,
     CrmClueList,
     CrmCustomerActionList,
+    CrmJobList,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
   tabs: any = [
     { label: "客户详情", value: "detail" },
-    { label: "过往线索", value: "customer" },
+    { label: "工作清单", value: "jobs" },
     { label: "跟踪记录", value: "action" },
+    { label: "过往事件", value: "customer" },
   ];
   curTabIdx: number = 0;
 
   get customer() {
     return this.entity;
+  }
+
+  get curTab() {
+    return this.tabs[this.curTabIdx];
   }
 
   created() {
@@ -73,6 +83,8 @@ export default class Home extends Mixins(SyncMixin) {
             "channel",
             "source",
             "target",
+            "job",
+            "job_stage",
           ],
         }),
       },
