@@ -18,7 +18,7 @@ import differenceInSeconds from "date-fns/differenceInSeconds";
 import isEmpty from "lodash/isEmpty";
 
 function parseDate(value) {
-  if (typeof value.getMonth !== "function") {
+  if (value && typeof value.getMonth !== "function") {
     value = parseISO(value);
   }
   return value;
