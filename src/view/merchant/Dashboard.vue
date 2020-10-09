@@ -46,7 +46,11 @@ import isEmpty from "lodash/isEmpty";
 })
 export default class Home extends Mixins(SyncMixin) {
   get merchant() {
-    return this.entity;
+    return isEmpty(this.entity)
+      ? {
+          id: this.$store.state.user.curr_merch_id,
+        }
+      : this.entity;
   }
 
   get user() {
