@@ -1,11 +1,24 @@
 <template>
   <div class="wrapper customers">
     <ai-tab-rounded v-model="curTabIdx" :tabs="tabs" />
-    <ai-list-stored resource="crmCustomer" :query="query" scrollHeight="90vh">
-      <template v-slot:item="{ item, tag }">
-        <crm-customer :customer="item" :outerTag="tag" :isInDetail="false" />
-      </template>
-    </ai-list-stored>
+    <template v-for="tab in tabs">
+      <keep-alive :key="tab.value">
+        <ai-list-stored
+          v-if="curTab === tab"
+          resource="crmCustomer"
+          :query="query"
+          scrollHeight="90vh"
+        >
+          <template v-slot:item="{ item, tag }">
+            <crm-customer
+              :customer="item"
+              :outerTag="tag"
+              :isInDetail="false"
+            />
+          </template>
+        </ai-list-stored>
+      </keep-alive>
+    </template>
     <ai-float-action @click="add" icon="plus" class="add" />
   </div>
 </template>

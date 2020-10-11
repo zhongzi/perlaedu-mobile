@@ -3,6 +3,7 @@
     <template v-if="!(hideIfNoData && list.length <= 0)">
       <ai-infinite-scroll
         v-if="scrollType === 'scroll'"
+        ref="scroll"
         :height="scrollHeight"
         :loading="listLoading"
         :list="list"

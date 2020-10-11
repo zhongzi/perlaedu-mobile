@@ -2,11 +2,11 @@
   <div id="app">
     <transition>
       <keep-alive>
-        <router-view v-if="$route.meta.keepAlive"></router-view>
+        <router-view v-if="$route.meta.keepAlive" />
       </keep-alive>
     </transition>
     <transition>
-      <router-view v-if="!$route.meta.keepAlive"></router-view>
+      <router-view v-if="!$route.meta.keepAlive" />
     </transition>
     <ai-copyright />
     <ai-tip-share v-model="showTip" />
