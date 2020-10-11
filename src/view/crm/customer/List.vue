@@ -65,6 +65,10 @@ export default class Home extends Vue {
     return this.tabs[this.curTabIdx];
   }
 
+  created() {
+    this.curTabIdx = parseInt(this.$route.query.tab as any) || 0;
+  }
+
   get query() {
     return merge(
       {

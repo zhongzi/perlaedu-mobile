@@ -14,6 +14,7 @@
     <template v-else-if="curTab.value === 'jobs'">
       <crm-job-list :customer="customer" />
     </template>
+    <ai-float-action @click="gotoList" icon="home" class="float-button" />
   </div>
 </template>
 
@@ -24,6 +25,7 @@ import SyncMixin from "@/mixin/SyncMixin";
 
 import AiTabRounded from "@/view/component/AiTabRounded.vue";
 import AiFixedFooter from "@/view/component/AiFixedFooter.vue";
+import AiFloatAction from "@/view/component/AiFloatAction.vue";
 
 import CrmCustomer from "./component/CrmCustomer.vue";
 import CrmClueList from "./component/CrmClueList.vue";
@@ -34,6 +36,7 @@ import CrmJobList from "./component/CrmJobList.vue";
   components: {
     AiTabRounded,
     AiFixedFooter,
+    AiFloatAction,
     CrmCustomer,
     CrmClueList,
     CrmCustomerActionList,
@@ -61,6 +64,15 @@ export default class Home extends Mixins(SyncMixin) {
     this.store = "crmCustomer";
     this.id = this.$route.params.customerId;
     this.load();
+  }
+
+  gotoList() {
+    this.$router.push({
+      name: "crmCustomerList",
+      query: {
+        tab: "1",
+      },
+    });
   }
 
   load() {
@@ -97,6 +109,14 @@ export default class Home extends Mixins(SyncMixin) {
   padding: 10px;
   .header {
     margin-bottom: 10px;
+  }
+
+  .float-button {
+    background: #fd6700;
+    color: #fff;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
   }
 }
 </style>
