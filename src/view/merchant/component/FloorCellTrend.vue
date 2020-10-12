@@ -1,5 +1,6 @@
 <template>
   <div class="wrapper floor-cell-trend">
+    <img class="decoration" :src="icon" v-if="icon" />
     <div class="left">
       <span class="title"> {{ title }} </span>
     </div>
@@ -22,6 +23,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 @Component
 export default class Home extends Vue {
   @Prop({ type: String, default: null }) title: string;
+  @Prop({ type: [String, Object], default: null }) icon: any;
   @Prop({ type: [String, Number], default: null }) numToUp: string | number;
   @Prop({ type: [String, Number], default: null }) numToDown: string | number;
   @Prop({ type: Number, default: 0 }) decimal: number;
@@ -29,6 +31,8 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .floor-cell-trend {
+  position: relative;
+
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -80,6 +84,15 @@ export default class Home extends Vue {
         transform: rotate(180deg);
       }
     }
+  }
+
+  .decoration {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+
+    width: 45px;
+    height: 40px;
   }
 }
 </style>

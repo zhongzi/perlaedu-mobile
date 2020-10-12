@@ -30,6 +30,7 @@ import keys from "lodash/keys";
 import values from "lodash/values";
 import map from "lodash/map";
 import orderBy from "lodash/orderBy";
+import isEmpty from "lodash/isEmpty";
 
 @Component({
   components: {
@@ -67,6 +68,7 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   load() {
+    if (isEmpty(this.merchantIds)) return;
     this.loadList({
       query: {
         target_id: keys(this.merchantIds),

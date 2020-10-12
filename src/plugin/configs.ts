@@ -39,10 +39,11 @@ const loadDictionary = (callback) => {
 // 临时
 const frontURLResolver = {
   makeURL: (uri, query = {}) => {
+    const separator = uri.indexOf("?") !== -1 ? "&" : "?";
     const url = isEmpty(query)
       ? uri
       : uri +
-        "&" +
+        separator +
         Object.keys(query)
           .map((key) => key + "=" + query[key])
           .join("&");
@@ -154,6 +155,11 @@ const frontURLResolver = {
   },
   listGroups: (merchant, query = null) => {
     const uri = `/groups?merchant_id=${merchant.id}`;
+    return frontURLResolver.makeURL(uri, query);
+  },
+  // 课时明细
+  listTagTrans: (merchant, query = null) => {
+    const uri = `/merchants/${merchant.id}/tag_trans`;
     return frontURLResolver.makeURL(uri, query);
   },
 };

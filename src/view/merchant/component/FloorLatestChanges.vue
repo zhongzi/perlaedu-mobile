@@ -15,12 +15,14 @@
       <div class="main">
         <template v-for="(data, index) in cellDatas">
           <floor-cell-trend
-            :key="index"
             class="cell"
+            :key="index"
             :title="data.title"
+            :icon="data.icon"
             :numToUp="data.numToUp"
             :numToDown="data.numToDown"
             :decimal="data.decimal"
+            @click.native="onClick(data)"
           />
         </template>
       </div>
@@ -70,6 +72,9 @@ export default class Home extends Mixins(SyncMixin) {
       },
       {
         title: "课时",
+        icon: require("../asset/image/shape-student" +
+          this.$densityStr +
+          ".png"),
         numToUp: _get(
           this.statistics,
           "tag_transaction.sum_by_merchant.sum_lessons_incr",
@@ -80,6 +85,7 @@ export default class Home extends Mixins(SyncMixin) {
           "tag_transaction.sum_by_merchant.sum_lessons_decr",
           0
         ),
+        listURL: this.$frontURLResolver.listTagTrans(this.merchant),
       },
       {
         title: "课时费",
@@ -97,6 +103,7 @@ export default class Home extends Mixins(SyncMixin) {
       },
       {
         title: "储值卡",
+        icon: require("../asset/image/shape-class" + this.$densityStr + ".png"),
         numToUp: _get(
           this.statistics,
           "tag_transaction.sum_by_merchant.sum_cash_incr",
@@ -108,6 +115,9 @@ export default class Home extends Mixins(SyncMixin) {
           0
         ),
         decimal: 2,
+        listURL: this.$frontURLResolver.listTagTrans(this.merchant, {
+          type_: 3,
+        }),
       },
     ];
   }
@@ -125,6 +135,11 @@ export default class Home extends Mixins(SyncMixin) {
   @Watch("merchant", { deep: true })
   onMerchantChanged() {
     this.load();
+  }
+
+  onClick(menu) {
+    if (!menu.listURL) return;
+    window.location.href = menu.listURL;
   }
 
   load() {
