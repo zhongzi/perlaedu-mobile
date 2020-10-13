@@ -310,7 +310,9 @@ export default class Home extends Vue {
 
       .number {
         margin-right: 10px;
-        min-width: 50px;
+        min-width: 80px;
+        width: 80px;
+
         span {
           font-size: 24px;
           font-weight: 600;

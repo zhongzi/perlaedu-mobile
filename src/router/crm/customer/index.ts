@@ -35,6 +35,7 @@ const customerRoutes: any = [
         name: "crmCustomerList",
         component: List,
         meta: { title: "客户列表", keepAlive: true },
+        // meta: { title: "客户列表" },
       },
       {
         path: ":customerId",

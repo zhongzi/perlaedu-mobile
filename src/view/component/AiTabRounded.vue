@@ -15,10 +15,6 @@ export default class Home extends Vue {
 
   curTabIdx: number = 0;
 
-  created() {
-    this.reset();
-  }
-
   @Watch("curTabIdx")
   onInnerCurTabIdxChanged() {
     this.$emit("input", this.curTabIdx);
@@ -26,15 +22,6 @@ export default class Home extends Vue {
     this.$router.replace({
       query: { tab: this.curTabIdx as any },
     });
-  }
-
-  @Watch("$route", { deep: true })
-  onRrouteChanged() {
-    this.reset();
-  }
-
-  reset() {
-    this.curTabIdx = parseInt(this.$route.query.tab as any) || this.value;
   }
 }
 </script>

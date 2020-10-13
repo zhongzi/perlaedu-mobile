@@ -15,6 +15,9 @@
     "publish:production:html": "scp ./dist/index.html perlaedu:/home/perlaai/perlaedu-mobile"
   },
   "dependencies": {
+    "@better-scroll/infinity": "^2.0.4",
+    "@better-scroll/movable": "^2.0.4",
+    "@better-scroll/nested-scroll": "^2.0.4",
     "@jukejia/egret-utils": "^0.4.9",
     "@jukejia/retina": "^0.4.2",
     "@jukejia/swift-resource": "^1.2.6",
@@ -23,7 +26,7 @@
     "@sentry/integrations": "^5.15.5",
     "@zhongzi/hui": "0.0.2",
     "axios": "^0.19.2",
-    "better-scroll": "^2.0.0-beta.10",
+    "better-scroll": "^2.0.4",
     "browser-image-compression": "^1.0.12",
     "core-js": "^3.6.5",
     "date-fns": "^2.14.0",

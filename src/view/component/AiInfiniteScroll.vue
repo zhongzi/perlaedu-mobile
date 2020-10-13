@@ -136,6 +136,14 @@ export default class Home extends Vue {
     }
   }
 
+  activated() {
+    let pos = this.scrollPos;
+    if (pos !== 0) {
+      this.scroll.scrollTo(0, pos, 0);
+      this.scroll.refresh();
+    }
+  }
+
   mounted() {
     if (this.scroll) {
       return;
@@ -169,7 +177,7 @@ export default class Home extends Vue {
         stop: this.pullDownHeight,
       };
     }
-    this.scroll = new BScroll(this.$refs.wrapper as any, options);
+    this.scroll = new BScroll(this.$refs.wrapper as any, options as any);
     if (this.enablePullDown) {
       this._initPullDown();
     }
@@ -199,7 +207,6 @@ export default class Home extends Vue {
 
   _initPullDown() {
     this.scroll.on("pullingDown", () => {
-      console.log("pullingDown");
       this.beforePullDown = false;
       this.isPullingDown = true;
       this.isLoading = true;
