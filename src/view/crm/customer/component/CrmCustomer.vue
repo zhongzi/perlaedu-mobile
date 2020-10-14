@@ -208,7 +208,6 @@
       :customer="customer"
       @refresh="$emit('refresh')"
       v-if="isInDetail"
-      class="close"
     />
   </div>
 </template>
@@ -391,12 +390,6 @@ export default class Home extends Vue {
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-  .close {
-    display: block;
-    width: 80%;
-    border: none;
-    margin: 20px auto;
   }
 }
 </style>

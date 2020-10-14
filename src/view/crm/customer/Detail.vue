@@ -61,6 +61,8 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   created() {
+    this.curTabIdx = parseInt(this.$route.query.tab as any) || 0;
+
     this.store = "crmCustomer";
     this.id = this.$route.params.customerId;
     this.load();

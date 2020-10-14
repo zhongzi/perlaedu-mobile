@@ -41,6 +41,7 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 .jobs {
   padding: 20px 10px;
+  background: #fff;
 
   .list {
     & ::v-deep .ai-infinite-scroll__list {

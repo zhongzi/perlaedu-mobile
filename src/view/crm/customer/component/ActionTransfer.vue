@@ -18,9 +18,7 @@
           :enableUnsetOption="true"
           @selected="(v) => (follower = v)"
         />
-        <hui-button type="primary" @click.native="transfer" class="action"
-          >确定</hui-button
-        >
+        <ai-submit-actions @cancel="open = false" @submit="transfer" />
       </div>
     </ai-dialog>
   </div>
@@ -30,8 +28,10 @@
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
+
 import AiDialog from "@/view/component/AiDialog.vue";
 import AiSelectionStored from "@/view/component/AiSelectionStored.vue";
+import AiSubmitActions from "@/view/component/AiSubmitActions.vue";
 
 import isEmpty from "lodash/isEmpty";
 
@@ -39,6 +39,7 @@ import isEmpty from "lodash/isEmpty";
   components: {
     AiDialog,
     AiSelectionStored,
+    AiSubmitActions,
   },
 })
 export default class Home extends Mixins(SyncMixin) {

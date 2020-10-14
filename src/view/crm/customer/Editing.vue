@@ -13,9 +13,7 @@
       v-model="innerCustomer.remark"
     />
     <ai-fixed-footer>
-      <hui-button type="info" @click.native="add" class="action"
-        >提交</hui-button
-      >
+      <ai-submit-actions @cancel="$router.go(-1)" @submit="add" />
     </ai-fixed-footer>
   </div>
 </template>
@@ -30,6 +28,7 @@ import AiInputTextarea from "@/view/component/AiInputTextarea.vue";
 import AiLine from "@/view/component/AiLine.vue";
 import AiRichTextQuillEditor from "@/view/component/AiRichTextQuillEditor.vue";
 import AiFixedFooter from "@/view/component/AiFixedFooter.vue";
+import AiSubmitActions from "@/view/component/AiSubmitActions.vue";
 
 import isEmpty from "lodash/isEmpty";
 import _get from "lodash/get";
@@ -42,6 +41,7 @@ import cloneDeep from "lodash/cloneDeep";
     AiLine,
     AiRichTextQuillEditor,
     AiFixedFooter,
+    AiSubmitActions,
   },
 })
 export default class Home extends Mixins(SyncMixin) {

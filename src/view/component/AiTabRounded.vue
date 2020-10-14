@@ -15,6 +15,15 @@ export default class Home extends Vue {
 
   curTabIdx: number = 0;
 
+  created() {
+    this.curTabIdx = this.value;
+  }
+
+  @Watch("value")
+  onValueChanged() {
+    this.curTabIdx = this.value;
+  }
+
   @Watch("curTabIdx")
   onInnerCurTabIdxChanged() {
     this.$emit("input", this.curTabIdx);

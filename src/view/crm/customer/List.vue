@@ -78,10 +78,6 @@ export default class Home extends Vue {
     return this.tabs[this.curTabIdx];
   }
 
-  created() {
-    this.curTabIdx = parseInt(this.$route.query.tab as any) || 0;
-  }
-
   get query() {
     return merge(
       {
@@ -111,6 +107,18 @@ export default class Home extends Vue {
             status: this.curTab.value,
           }
     );
+  }
+
+  created() {
+    this.reset();
+  }
+
+  activated() {
+    this.reset();
+  }
+
+  reset() {
+    this.curTabIdx = parseInt(this.$route.query.tab as any) || 0;
   }
 
   add() {

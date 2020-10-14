@@ -23,10 +23,6 @@
     <template v-slot:footer>
       <div class="footer">
         <div>更新时间: {{ action.created_at | date("MM-dd HH:mm") }}</div>
-        <div class="actions">
-          <hui-button @click.native="edit"> 编辑</hui-button>
-          <hui-button @click.native="remove">删除</hui-button>
-        </div>
       </div>
     </template>
   </ai-card>

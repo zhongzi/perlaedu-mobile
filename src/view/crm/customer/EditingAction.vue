@@ -7,7 +7,7 @@
       :jsonable="false"
       imageType="crm"
     />
-    <ai-dialog v-model="showDialog" :enableCloseIcon="false">
+    <ai-dialog v-model="showDialog">
       <div class="dialog">
         <h3>选择对应跟进任务</h3>
         <ai-selection-stored
@@ -20,9 +20,7 @@
       </div>
     </ai-dialog>
     <ai-fixed-footer>
-      <hui-button type="info" @click.native="setJobId" class="action"
-        >提交</hui-button
-      >
+      <ai-submit-actions @cancel="$router.go(-1)" @submit="setJobId" />
     </ai-fixed-footer>
   </div>
 </template>

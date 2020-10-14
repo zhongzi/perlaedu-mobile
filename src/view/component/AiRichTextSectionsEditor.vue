@@ -132,6 +132,7 @@ import AiPopup from "./AiPopup.vue";
 
 import cloneDeep from "lodash/cloneDeep";
 import isString from "lodash/isString";
+import isEmpty from "lodash/isEmpty";
 
 import "quill/dist/quill.core.css";
 
@@ -173,7 +174,7 @@ export default class Home extends Vue {
 
   @Watch("value")
   onValueChanged(val: any) {
-    this.details = this.detailToArray(val);
+    this.reset();
   }
 
   @Watch("details", { deep: true })
@@ -186,7 +187,14 @@ export default class Home extends Vue {
   }
 
   created() {
+    this.reset();
+  }
+
+  reset() {
     this.details = this.detailToArray(this.value);
+    if (isEmpty(this.details)) {
+      this.onAddDetail();
+    }
   }
 
   detailToArray(val) {

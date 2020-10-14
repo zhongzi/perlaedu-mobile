@@ -24,7 +24,7 @@ export default class Home extends Mixins(StopBodyScrollMixin) {
   @Prop({ type: Boolean, default: false }) value: boolean;
   @Prop({ type: String, default: "right" }) position: string;
   @Prop({ type: Boolean, default: true }) appendToBody: boolean;
-  @Prop({ type: Boolean, default: true }) enableCloseIcon: boolean;
+  @Prop({ type: Boolean, default: false }) enableCloseIcon: boolean;
 
   created() {
     this.SBSAuto = false;

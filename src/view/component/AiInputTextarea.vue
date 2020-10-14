@@ -45,12 +45,12 @@ export default class Home extends Mixins(PatchMixin) {
 .ai-input-textarea {
   width: 100%;
   position: relative;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding: 20px;
   overflow-wrap: anywhere;
 
   &__input {
     width: 100%;
+    min-height: 100px;
     border: none;
     background-color: rgba(255, 255, 255, 0);
     margin: 0px;
