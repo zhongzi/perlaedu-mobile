@@ -9,7 +9,7 @@
         <span> 激活老带新，免费送好友好课好券各得1张好课好券</span>
       </template>
       <template v-slot:right>
-        <ai-input-switch v-model="enableUniverseCoupon" />
+        <ai-input-switch :value="enableUniverseCoupon" @input="trigger" />
       </template>
     </ai-cell>
     <!--
@@ -78,62 +78,39 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   get website() {
-    return this.list[0] || {};
+    return _get(this.merchant, "website");
   }
 
   created() {
     this.store = "website";
     this.enableLoading = false;
-    this.loadWebsite();
-  }
-
-  @Watch("merchant", { deep: true })
-  onMerchantChanged() {
-    this.loadWebsite();
-    return;
   }
 
   @Watch("website", { deep: true })
   onWebsiteChanged() {
-    if (this.enableUniverseCoupon === this.website.coupon_enabled) return;
-
     this.enableUniverseCoupon = this.website.coupon_enabled;
   }
 
-  @Watch("enableUniverseCoupon", { deep: true })
-  onEnableUniverseCoupon() {
-    if (this.enableUniverseCoupon === this.website.enable_universe_coupon)
-      return;
-    this.saveWebsite();
+  trigger(v) {
+    this.saveWebsite(v);
   }
 
-  saveWebsite() {
+  saveWebsite(v) {
+    if (!_get(this.website, "id")) return;
+
     this.id = this.website.id;
     this.saveEntity({
       res: {
         id: this.id,
         target_id: this.merchantId,
         target_class: "Merchant",
-        coupon_enabled: this.enableUniverseCoupon,
+        coupon_enabled: v,
       },
       success: () => {
-        !this.id && this.loadWebsite();
+        this.enableUniverseCoupon = v;
       },
-      failure: (err) => {
-        this.enableUniverseCoupon = !this.enableUniverseCoupon;
-        this.$hui.toast.error(err.response.data.message);
-      },
-    });
-  }
-
-  loadWebsite() {
-    if (!this.merchantId) return;
-
-    this.loadList({
-      query: {
-        target_id: this.merchantId,
-        target_class: "Merchant",
-        limit: 1,
+      failure: (e) => {
+        this.$hui.toast.error(e.response.data.message);
       },
     });
   }

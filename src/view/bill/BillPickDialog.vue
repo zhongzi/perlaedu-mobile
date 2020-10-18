@@ -47,7 +47,7 @@ export default class Home extends Mixins(SyncMixin, StopBodyScrollMixin) {
       differenceWith(
         this.items,
         this.welfareItems,
-        (src, dst) => src.id === dst.id
+        (src: any, dst: any) => src.id === dst.id
       ),
       ["price"]
     );
