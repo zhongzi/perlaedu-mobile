@@ -161,7 +161,7 @@ export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Boolean, default: false }) enableSlideBefore: boolean;
   @Prop({ type: Boolean, default: true }) enableSlideAfter: boolean;
   @Prop({ type: Object, default: () => ({}) }) waterfallOptions: object;
-  @Prop({ type: Number, default: 10 }) gap: number;
+  @Prop({ type: Number, default: 0 }) gap: number;
 
   hasMoreData: boolean = true;
 

@@ -13,15 +13,11 @@ import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 
 import UploaderMixin from "@/mixin/Uploader";
 
-import Quill from "quill";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 
 import { quillEditor } from "vue-quill-editor";
-import ImageUpload from "quill-plugin-image-upload";
-
-Quill.register("modules/imageUpload", ImageUpload);
 
 @Component({
   name: "ai-text-editor",

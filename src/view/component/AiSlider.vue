@@ -49,7 +49,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import "swiper/css/swiper.css";
+import "swiper/swiper-bundle.css";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 
 import merge from "lodash/merge";

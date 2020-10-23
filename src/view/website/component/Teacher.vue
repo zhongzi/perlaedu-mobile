@@ -20,7 +20,6 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 import AiCard from "@/view/component/AiCard.vue";
-import AiRichTextSectionsEditor from "@/view/component/AiRichTextSectionsEditor.vue";
 
 import _get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
@@ -28,7 +27,6 @@ import isEmpty from "lodash/isEmpty";
 @Component({
   components: {
     AiCard,
-    AiRichTextSectionsEditor,
   },
 })
 export default class Home extends Vue {

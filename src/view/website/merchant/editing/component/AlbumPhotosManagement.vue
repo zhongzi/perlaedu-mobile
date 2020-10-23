@@ -1,6 +1,7 @@
 <template>
   <div class="wrapper photos">
     <ai-list-stored
+      class="container"
       resource="albumPhoto"
       :query="innerQuery"
       :refresh.sync="refresh"
@@ -157,6 +158,12 @@ export default class Home extends Mixins(SyncMixin) {
     width: 100%;
   }
 
+  & ::v-deep .ai-waterfall__waterfall {
+    position: relative;
+    left: -10px;
+    padding: 0px 20px;
+  }
+
   .popup {
     padding: 20px;
   }
@@ -170,8 +177,8 @@ export default class Home extends Mixins(SyncMixin) {
     }
     .sequence {
       position: absolute;
-      bottom: 0px;
-      right: 0px;
+      bottom: -15px;
+      left: 5px;
 
       & ::v-deep button {
         padding: 5px;

@@ -12,7 +12,8 @@
       </template>
       <template v-slot:list>
         <vue-flex-waterfall
-          :col="2"
+          :class="b('waterfall')"
+          :col="col"
           :colSpacing="gap"
           :breakByContainer="false"
           @order-update="refreshScroll"
@@ -26,6 +27,7 @@
             <slot
               name="item"
               :item="item"
+              :index="index"
               :image="item.cover | alioss(originOption)"
             >
               <img :src="item.cover | alioss(originOption)" />
@@ -92,7 +94,8 @@ import VueFlexWaterfall from "vue-flex-waterfall";
 export default class Home extends Vue {
   @Prop({ type: Array, default: [] }) list: any;
   @Prop({ type: String, default: "cover" }) imgKey: string;
-  @Prop({ type: Number, default: 10 }) gap: number;
+  @Prop({ type: Number, default: 2 }) col: number;
+  @Prop({ type: Number, default: 0 }) gap: number;
   @Prop({ type: Object, default: null }) option: any;
   @Prop({ type: Boolean, default: false }) loading: boolean;
 
@@ -146,6 +149,10 @@ export default class Home extends Vue {
   &__item {
     width: calc(50% - 5px);
     margin-top: 5px;
+  }
+
+  &__waterfall {
+    width: 100%;
   }
 }
 .ai-waterfall__dialog {
