@@ -1,16 +1,23 @@
 <template>
   <div :class="b()">
-    <vue-file-upload
-      ref="uploader"
-      @input="upload"
-      :multiple="true"
-      accept="image/png,image/gif,image/jpeg,image/webp"
-    >
-      <hui-button :class="b('button')">
+    <template v-if="!isInWeixin">
+      <vue-file-upload
+        ref="uploader"
+        @input="upload"
+        :multiple="true"
+        accept="image/png,image/gif,image/jpeg,image/webp"
+      >
+        <hui-button :class="b('button')">
+          <i class="iconfont icon-upload" />
+        </hui-button>
+      </vue-file-upload>
+    </template>
+    <template v-else>
+      <hui-button :class="b('button')" @click.native="wxChooseImages">
         <i class="iconfont icon-upload" />
       </hui-button>
-    </vue-file-upload>
-    <hui-dialog v-model="showDialog">
+    </template>
+    <hui-dialog v-model="showDialog" :appendToBody="true">
       <div :class="b('dialog')">
         <div :class="b('dialog-list')">
           <template v-for="(file, index) in files">
@@ -41,6 +48,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import VueFileUpload from "vue-upload-component";
 import AiImageUploaderCell from "./AiImageUploaderCell.vue";
 
+import forEach from "lodash/forEach";
 import cloneDeep from "lodash/cloneDeep";
 
 @Component({
@@ -52,11 +60,61 @@ import cloneDeep from "lodash/cloneDeep";
 })
 export default class Home extends Vue {
   @Prop({ type: String, default: "other" }) type: string;
+  @Prop({ type: Number, default: 9 }) count: number;
   @Prop({ type: [String, Number], default: "" }) prefix: string | number;
 
   showDialog: boolean = false;
   files: any = [];
   urls: any = [];
+
+  get isInWeixin() {
+    return this.$weixin && this.$weixin.isInWeixin();
+  }
+
+  async wxLoadImages(localIds) {
+    const vm = this;
+    for (var i = 0; i < localIds.length; i++) {
+      await new Promise((resolve, reject) => {
+        vm.$weixin.jsapi.getLocalImgData({
+          localId: localIds[i],
+          success: (r) => {
+            let localData = r.localData;
+            if (localData.indexOf("data:image") != 0) {
+              localData = "data:image/jpeg;base64," + localData;
+            }
+
+            fetch(localData)
+              .then((r) => r.blob())
+              .then((blob) => {
+                const file = new File([blob], "image.jpeg", {
+                  type: "image/jpeg",
+                });
+                vm.files.push({ file });
+                resolve("done");
+              });
+          },
+          fail: (err) => {
+            reject(err);
+          },
+        });
+      });
+    }
+    vm.showDialog = true;
+  }
+
+  wxChooseImages() {
+    const vm = this;
+    vm.$weixin.config(() => {
+      vm.$weixin.jsapi.chooseImage({
+        count: vm.count,
+        sizeType: ["compressed"],
+        sourceType: ["album"],
+        success: (res) => {
+          vm.wxLoadImages(res.localIds);
+        },
+      });
+    });
+  }
 
   upload(files) {
     this.files = this.files.concat(files);
@@ -71,7 +129,8 @@ export default class Home extends Vue {
     this.$emit("input", cloneDeep(this.urls));
     this.files = [];
     this.urls = [];
-    (this.$refs.uploader as any).clear();
+    const uploader = this.$refs.uploader as any;
+    uploader && uploader.clear();
     this.showDialog = false;
   }
 }

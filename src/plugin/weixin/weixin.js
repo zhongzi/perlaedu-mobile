@@ -94,6 +94,7 @@ export default {
           "showMenuItems",
           "hideMenuItems",
           "chooseImage",
+          "getLocalImgData",
           "uploadImage",
           "previewImage",
           "chooseWXPay",

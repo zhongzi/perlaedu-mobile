@@ -15,7 +15,6 @@
     <avatar-cropper
       v-show="showCropper"
       :class="b('cropper')"
-      mimes="image/*"
       :upload-handler="uploadHandler"
       :cropper-options="innerCropperOptions"
       :output-options="outputOptions"

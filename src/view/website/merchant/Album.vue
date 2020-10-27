@@ -5,6 +5,7 @@
       resource="albumPhoto"
       :query="query"
       scrollType="waterfall"
+      :gap="10"
       :waterfallOptions="{
         w_text: album.merchant.name,
       }"
