@@ -103,7 +103,7 @@ export default class Home extends Mixins(SyncMixin) {
   height: 100vh;
 
   .merchant {
-    margin: 20px;
+    margin: 20px 0px;
   }
 }
 </style>
