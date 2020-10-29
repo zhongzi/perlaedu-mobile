@@ -3,6 +3,7 @@
     <vue-aliplayer
       v-if="video.play_auth"
       ref="player"
+      :cover="video.cover"
       :class="b('player')"
       :width="width"
       :height="height"
