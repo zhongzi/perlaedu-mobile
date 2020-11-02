@@ -67,7 +67,7 @@ export default class Home extends Vue {
     if (isEqual(menu, this.menus[0])) {
       if (
         find(this.$route.matched, (location) => {
-          return location.name === "websiteMerchantHome";
+          return location.name === "websiteMerchant";
         })
       ) {
         this.$router.push({
