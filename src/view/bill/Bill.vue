@@ -77,6 +77,7 @@
       <ai-copyright :manual="true" class="copyright" />
       <bill-actions
         :project="project"
+        :item="selectedPayItem"
         :order="order"
         :payBalance="payBalance"
         :isManager="isManager"
@@ -181,6 +182,11 @@ export default class Home extends Mixins(SyncMixin) {
     );
   }
 
+  get oldPickedItemId() {
+    const items = filter(this.payingOrderitems, { is_welfare: false });
+    return !isEmpty(items) && items[0].item_id;
+  }
+
   get payingOrderitems() {
     return _get(this.project, "paying_order.items", []);
   }
@@ -220,6 +226,9 @@ export default class Home extends Mixins(SyncMixin) {
       referrer_openid: this.$store.state.expose2,
       remark: _get(this.project, "paying_order.remark", ""),
       items: concat([this.selectedPayItemId], this.selectedWelfareItemIds),
+      target_id: _get(this.project, "paying_order.target_id"),
+      target_class: _get(this.project, "paying_order.target_class"),
+      is_enabled_balance: _get(this.project, "paying_order.is_enabled_balance"),
     };
   }
 
@@ -258,9 +267,8 @@ export default class Home extends Mixins(SyncMixin) {
 
     // 恢复所选套餐
     if (this.project.paying_order) {
-      let items = filter(this.payingOrderitems, { is_welfare: false });
-      this.selectedPayItemId = !isEmpty(items)
-        ? items[0].item_id
+      this.selectedPayItemId = this.oldPickedItemId
+        ? this.oldPickedItemId
         : this.selectedPayItemId;
     }
 
@@ -299,7 +307,7 @@ export default class Home extends Mixins(SyncMixin) {
       query: {
         merchant_id: this.merchantId,
         extras: JSON.stringify({
-          BillProject: ["merchant", "paying_order", "items"],
+          BillProject: ["merchant", "paying_order", "items", "channel"],
           BillOrder: ["items"],
           BillOrderItem: ["is_valid"],
         }),

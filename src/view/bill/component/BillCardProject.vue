@@ -7,7 +7,13 @@
   >
     <bill-card :enableRight="false">
       <template slot="left-title">
-        {{ project.title }}
+        <div class="header">
+          <span>{{ project.title }}</span>
+          <i
+            v-if="project.is_enabled_balance"
+            class="iconfont icon-recharge balance"
+          />
+        </div>
       </template>
       <template slot="left-remark">
         {{ project.channel.title }}
@@ -50,3 +56,15 @@ export default class Home extends Mixins(SyncMixin) {
   }
 }
 </script>
+<style lang="scss" scoped>
+.header {
+  display: flex;
+  align-items: center;
+
+  .balance {
+    font-size: 24px;
+    color: #ff8306;
+    margin-left: 10px;
+  }
+}
+</style>

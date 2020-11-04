@@ -14,9 +14,6 @@
             :value="option | safe(valueKey, option)"
             :key="index"
             :class="b('select-option')"
-            :selected="
-              $options.filters.safe(option, valueKey, option) === value
-            "
           >
             <slot
               name="option"
@@ -61,7 +58,7 @@ export default class Home extends Mixins(PatchMixin) {
   @Prop({ type: Boolean, default: false }) enableAllOption: boolean;
   @Prop({ type: Boolean, default: false }) enableUnsetOption: boolean;
 
-  innerValue: any = "";
+  innerValue: any = 4;
 
   get defaultName() {
     if (this.enableUnsetOption) return "暂不设置";
@@ -92,7 +89,7 @@ export default class Home extends Mixins(PatchMixin) {
 
   emitDefaultValue() {
     if (!this.autoDefault) return;
-    if (!isEmpty(this.value)) return;
+    if (!isEmpty(this.value) || this.value !== 0) return;
     if (isEmpty(this.options)) return;
 
     if (this.enableAllOption || this.enableUnsetOption) {
@@ -103,6 +100,7 @@ export default class Home extends Mixins(PatchMixin) {
   }
 
   resetValue() {
+    console.log(this.value);
     this.innerValue = cloneDeep(this.value);
     this.emitDefaultValue();
   }

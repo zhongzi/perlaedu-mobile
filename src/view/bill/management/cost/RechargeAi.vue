@@ -85,7 +85,9 @@ export default class Home extends Mixins(SyncMixin) {
   curMerchant: any = null;
 
   get query() {
+    const id = _get(this.order, "target_id", 0);
     return {
+      id: id > 0 ? id : undefined,
       agent_id: _get(this.$auth, "user.agent.id", ""),
       sort: "id desc",
       filters: JSON.stringify({

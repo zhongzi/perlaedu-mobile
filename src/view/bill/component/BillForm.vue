@@ -12,6 +12,11 @@
       <template v-else>
         <span> 免费 </span>
       </template>
+      <template v-if="originBalance - balance > 0">
+        <div class="deducted-remark">
+          余额抵扣: {{ (originBalance - balance) | round(2) }} 元
+        </div>
+      </template>
     </div>
     <div class="detail">
       <div class="title"><span class="line" /><span>购买须知</span></div>
@@ -20,9 +25,36 @@
         <li>支付后请务必扫码关注领取付款凭证！</li>
         <li>本钜惠活动最终解释权归发起机构所有！</li>
       </ol>
-      <label v-if="merchant">
-        您正在给 <span>{{ merchant }}</span> 充值</label
+      <div
+        class="target"
+        v-if="isRechargeAi && merchants && merchants.length > 0"
       >
+        <div class="title">
+          <span class="line" /><span>选择目标充值机构</span>
+        </div>
+        <ai-selection
+          class="selector"
+          :value="targetId"
+          :options="merchants"
+          :enableUnsetOption="true"
+          valueKey="id"
+          @input="selected"
+        >
+          <template v-slot:option="{ option }">
+            <div class="option">
+              {{ option.name }} (余额 {{ option.balance }} 元)
+            </div>
+          </template>
+        </ai-selection>
+        <ai-input-check
+          v-if="trigger"
+          :value="isEnabledBalance"
+          @input="(v) => $emit('update:isEnabledBalance', v)"
+          class="check"
+        >
+          是否使用余额支付
+        </ai-input-check>
+      </div>
       <ai-input
         class="remark"
         mode="border"
@@ -33,7 +65,7 @@
     </div>
     <div class="actions">
       <button @click="$emit('cancel')" class="cancel">取消</button>
-      <button @click="$emit('submit', remark)" class="buy">确认支付</button>
+      <button @click="$emit('submit')" class="buy">确认支付</button>
     </div>
   </hui-dialog>
 </template>
@@ -42,23 +74,60 @@
 import { Component, Vue, Watch, Prop } from "vue-property-decorator";
 
 import AiInput from "@/view/component/AiInput.vue";
+import AiInputCheck from "@/view/component/AiInputCheck.vue";
+import AiSelection from "@/view/component/AiSelection.vue";
 
 import isEmpty from "lodash/isEmpty";
 import _get from "lodash/get";
 import _set from "lodash/set";
+import find from "lodash/find";
 import pickBy from "lodash/pickBy";
 import cloneDeep from "lodash/cloneDeep";
 
 @Component({
   components: {
     AiInput,
+    AiInputCheck,
+    AiSelection,
   },
 })
 export default class Home extends Vue {
-  @Prop({ type: Number, default: 0 }) balance: number;
-  @Prop({ type: String, default: null }) merchant: string;
-  @Prop({ type: String, default: "" }) remark: string;
   @Prop({ type: Boolean, default: false }) value: boolean;
+  @Prop({ type: Object, default: () => ({}) }) project: any;
+  @Prop({ type: Boolean, default: false }) trigger: boolean;
+  @Prop({ type: Boolean, default: false }) isEnabledBalance: boolean;
+  @Prop({ type: Number, default: 0 }) balance: number;
+  @Prop({ type: Number, default: 0 }) originBalance: number;
+  @Prop({ type: Object, default: null }) target: any;
+  @Prop({ type: String, default: "" }) remark: string;
+
+  get merchants() {
+    return _get(this.$auth, "user.merchants", []);
+  }
+
+  get targetId() {
+    return this.target && this.target.id;
+  }
+
+  get isRechargeAi() {
+    return _get(this.project, "channel.code") === "RechargeAi";
+  }
+
+  @Watch("value")
+  onValueChanged() {
+    this.value && this.selected(this.target.id);
+    console.log(this.target.id);
+  }
+
+  selected(id) {
+    if (id === "") {
+      this.$emit("update:target", { id: 0 });
+    }
+
+    const m = find(this.merchants, { id: id });
+    if (isEmpty(m)) return;
+    this.$emit("update:target", m);
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -84,6 +153,12 @@ export default class Home extends Vue {
       color: rgba(255, 131, 36, 1);
       line-height: 46px;
       margin: 0 10px;
+    }
+
+    .deducted-remark {
+      font-size: 11px;
+      color: rgba(102, 102, 102, 1);
+      line-height: 18px;
     }
   }
   .detail {
@@ -116,6 +191,32 @@ export default class Home extends Vue {
           rgba(226, 99, 14, 1) 100%
         );
         border-radius: 2px;
+      }
+    }
+
+    .target {
+      margin: 10px auto;
+      padding: 0px 30px;
+
+      .check {
+        margin: 0px 10px;
+
+        & ::v-deep .ai-input-check__vec-fake {
+          background: red;
+        }
+      }
+
+      .title {
+        margin-left: 0px;
+        margin-bottom: 0px;
+      }
+
+      .selector {
+        padding: 0px;
+
+        & ::v-deep .ai-select__select {
+          padding-left: 10px;
+        }
       }
     }
 

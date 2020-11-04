@@ -2,27 +2,35 @@
   <div class="bill-actions">
     <hui-button class="btn-pay" @click.native="openForm = true">
       <i class="iconfont icon-pay" />
-      <span>立即支付 ({{ payBalance | round(2) }}元)</span>
+      <span>立即支付 ({{ innerPayBalance | round(2) }}元)</span>
     </hui-button>
-    <div id="pay-poster" v-show="false" />
+
     <bill-form
-      v-model="openForm"
-      :merchant="queryForm.name"
+      :value="openForm"
+      :project="project"
+      :balance="innerPayBalance"
+      :originBalance="payBalance"
+      :target="target"
       :remark.sync="order.remark"
-      :balance="payBalance"
-      @submit="onSubmit"
-      @cancel="openForm = false"
+      :isEnabledBalance.sync="isEnabledBalance"
+      :trigger="trigger"
+      @submit="updateOrder"
+      @cancel="onCancel"
+      @update:target="(v) => (target = v)"
     />
-    <hui-dialog v-model="open" class="qrcode">
+
+    <div id="pay-poster" v-show="false" />
+    <hui-dialog v-model="openPoster" class="qrcode">
       <div class="qrcode-container">
         <img :src="posterURL" />
       </div>
     </hui-dialog>
+
     <ai-float-action
       v-if="isManager"
       icon="qrcode"
       label="收款码"
-      @click="onOpen"
+      @click="openPoster = true"
       bottom="160px"
     />
     <ai-float-action
@@ -70,23 +78,34 @@ import filter from "lodash/filter";
 })
 export default class Home extends Mixins(SyncMixin, PayMixin) {
   @Prop({ type: Object, default: () => ({}) }) project: any;
+  @Prop({ type: Object, default: () => ({}) }) item: any;
   @Prop({ type: Object, default: () => ({}) }) order: any;
   @Prop({ type: Number, default: 0 }) payBalance: any;
   @Prop({ type: Boolean, default: false }) isManager: boolean;
   @Prop({ type: Boolean, default: true }) checked: boolean;
 
   openForm: boolean = false;
-  open: boolean = false;
+  openPoster: boolean = false;
 
   poster: any = null;
   posterURL: string = "";
 
-  get queryForm() {
-    return {
-      name: this.$route.query.name,
-      target_id: this.$route.query.target_id,
-      target_class: this.$route.query.target_class,
-    };
+  target: any = null;
+  isEnabledBalance: boolean = false;
+
+  get innerPayBalance() {
+    if (!this.trigger || !this.isEnabledBalance) return this.payBalance;
+
+    const balance = this.payBalance - _get(this.target, "balance", 0);
+    return balance < 0 ? 0 : balance;
+  }
+
+  get trigger() {
+    // 是否允许选择余额支付
+    return (
+      _get(this.project, "is_enabled_balance") &&
+      _get(this.item, "is_enabled_balance")
+    );
   }
 
   get posterJson() {
@@ -149,9 +168,10 @@ export default class Home extends Mixins(SyncMixin, PayMixin) {
   }
 
   created() {
-    this.posterBuild();
+    this.$bus.$on("save-order", this.createOrder);
 
-    this.$bus.$on("save-order", this.onSubmitBg);
+    this.resetTarget();
+    this.posterBuild();
   }
 
   @Watch("posterJson", { deep: true })
@@ -159,8 +179,23 @@ export default class Home extends Mixins(SyncMixin, PayMixin) {
     this.posterBuild();
   }
 
-  onOpen() {
-    this.open = true;
+  @Watch("$route", { deep: true })
+  onRouteChanged() {
+    this.resetTarget();
+  }
+
+  @Watch("order", { deep: true })
+  onOrderChanged() {
+    this.resetTarget();
+  }
+
+  resetTarget() {
+    this.target = {
+      id:
+        parseInt(this.$route.query.merchant_id as any) ||
+        _get(this.order, "target_id"),
+    };
+    this.isEnabledBalance = _get(this.order, "is_enabled_balance");
   }
 
   posterBuild() {
@@ -174,6 +209,7 @@ export default class Home extends Mixins(SyncMixin, PayMixin) {
       this.posterJson.template,
       this.posterJson.elements,
       this.posterJson.baseWidth,
+      null,
       (url) => {
         this.posterURL = url;
       }
@@ -181,8 +217,12 @@ export default class Home extends Mixins(SyncMixin, PayMixin) {
     this.poster.build();
   }
 
-  onSubmitBg() {
+  createOrder() {
     if (this.payBalance <= 0) return;
+
+    if (!this.trigger) {
+      this.isEnabledBalance = false;
+    }
 
     this.store = "billOrder";
     this.id = this.order.id;
@@ -190,7 +230,11 @@ export default class Home extends Mixins(SyncMixin, PayMixin) {
       query: {
         extras: "scene_qrcode_url",
       },
-      res: Object.assign({}, this.order, { form: this.queryForm }),
+      res: Object.assign({}, this.order, {
+        is_enabled_balance: this.isEnabledBalance,
+        target_id: _get(this.target, "id", 0),
+        target_class: "Merchant",
+      }),
       success: (resp) => {
         this.$nextTick(() => {
           this.$bus.$emit("reload-project");
@@ -199,9 +243,12 @@ export default class Home extends Mixins(SyncMixin, PayMixin) {
     });
   }
 
-  onSubmit() {
+  onCancel() {
+    this.resetTarget();
     this.openForm = false;
+  }
 
+  updateOrder() {
     if (isNull(last(this.order.items))) {
       this.$hui.toast.error("您尚未选择所需要的套餐");
       return;
@@ -221,14 +268,29 @@ export default class Home extends Mixins(SyncMixin, PayMixin) {
       return;
     }
 
+    if (!this.trigger) {
+      this.isEnabledBalance = false;
+    }
+
+    const target_id = _get(this.target, "id", 0);
+    if (this.isEnabledBalance && target_id === 0) {
+      this.$hui.toast.error("请选择机构进行余额支付");
+      return;
+    }
+
     this.store = "billOrder";
     this.id = this.order.id;
     this.saveEntity({
       query: {
         extras: "scene_qrcode_url",
       },
-      res: Object.assign({}, this.order, { form: this.queryForm }),
+      res: Object.assign({}, this.order, {
+        is_enabled_balance: this.isEnabledBalance,
+        target_id: target_id,
+        target_class: "Merchant",
+      }),
       success: (resp) => {
+        this.openForm = false;
         this.$nextTick(() => {
           this.gotoFlashTradePage("bill", resp.data);
         });

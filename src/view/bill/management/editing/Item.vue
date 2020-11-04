@@ -50,6 +50,13 @@
       class="field"
     />
     <ai-input-check
+      v-if="!innerItem.is_welfare && isEnabledBalance"
+      v-model="innerItem.is_enabled_balance"
+      class="field"
+    >
+      是否可使用余额支付
+    </ai-input-check>
+    <ai-input-check
       v-model="innerItem.is_overlay"
       class="field"
       v-if="innerItem.is_welfare"
@@ -74,6 +81,7 @@ import AiInputCheck from "@/view/component/AiInputCheck.vue";
 import AiInputDate from "@/view/component/AiInputDate.vue";
 import AiFixedFooter from "@/view/component/AiFixedFooter.vue";
 
+import _get from "lodash/get";
 import isEqual from "lodash/isEqual";
 import cloneDeep from "lodash/cloneDeep";
 
@@ -91,6 +99,7 @@ export default class Home extends Mixins(SyncMixin) {
     title: "",
     is_welfare: false,
     is_overlay: true,
+    is_enabled_balance: false,
     price: null,
     value: null,
     start_at: new Date(),
@@ -99,13 +108,30 @@ export default class Home extends Mixins(SyncMixin) {
     duration: "",
     min_balance: "",
   };
+  project: any = null;
 
   get item() {
     return this.entity;
   }
 
+  get isEnabledBalance() {
+    return _get(this.project, "is_enabled_balance");
+  }
+
+  get projectId() {
+    return this.$route.params.projectId;
+  }
+
   created() {
     this.store = "billItem";
+
+    this.loadEntityExtra({
+      store: "billProject",
+      id: this.projectId,
+      success: (resp) => {
+        this.project = resp.data;
+      },
+    });
 
     this.id = this.$route.params.itemId;
     if (this.id !== "new") {
@@ -146,7 +172,7 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   submit() {
-    this.innerItem.project_id = this.$route.params.projectId;
+    this.innerItem.project_id = this.projectId;
     this.id = this.innerItem.id;
     this.innerItem.value = this.innerItem.is_welfare ? 0 : this.innerItem.value;
 

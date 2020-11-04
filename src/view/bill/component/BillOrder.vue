@@ -46,10 +46,24 @@
                 </div>
               </div>
               <div :class="b('right')">
-                <span>(付) {{ item.pay_balance }} 元</span>
-                <span>(总) {{ item.balance }} 元 </span>
-                <span>(惠) {{ item.balance - item.pay_balance }}元</span>
-                <span>(值) {{ item.value }} {{ valueUnit }}</span>
+                <span
+                  >(付)
+                  {{ (item.pay_balance + item.balance_deducted) | round(2) }}
+                  元</span
+                >
+                <span>(余) {{ item.balance_deducted | round(2) }} 元</span>
+                <span>(总) {{ item.balance | round(2) }} 元 </span>
+                <span
+                  >(惠)
+                  {{
+                    (item.balance - (item.pay_balance + item.balance_deducted))
+                      | round(2)
+                  }}元</span
+                >
+                <span
+                  >(值) {{ (item.value + item.balance_deducted) | round(2) }}
+                  {{ valueUnit }}</span
+                >
                 <div :class="b('right-actions')" v-if="!isSimpleMode">
                   <hui-button
                     class="action"
@@ -245,7 +259,7 @@ export default class Home extends Mixins(SyncMixin) {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    min-width: 90px;
+    min-width: 130px;
 
     font-size: 12px;
     color: rgba(165, 165, 165, 1);
