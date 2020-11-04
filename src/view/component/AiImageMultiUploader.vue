@@ -1,6 +1,6 @@
 <template>
   <div :class="b()">
-    <template v-if="!isInWeixin">
+    <template v-if="!isInWeixin || isInWin32">
       <vue-file-upload
         ref="uploader"
         @input="upload"
@@ -69,6 +69,10 @@ export default class Home extends Vue {
 
   get isInWeixin() {
     return this.$weixin && this.$weixin.isInWeixin();
+  }
+
+  get isInWin32() {
+    return navigator.platform === "Win32";
   }
 
   async wxLoadImages(localIds) {

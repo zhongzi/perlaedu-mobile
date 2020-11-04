@@ -13,5 +13,6 @@ declare module "vue/types/vue" {
     $bus: any;
     $db: any;
     $wework: any;
+    $client: any;
   }
 }
