@@ -86,6 +86,7 @@ export default class Home extends Mixins(SyncMixin) {
 
   @Watch("$route", { deep: true })
   onRouteChanged() {
+    this.share();
     this.loadMerchant();
   }
 
@@ -135,6 +136,7 @@ export default class Home extends Mixins(SyncMixin) {
 
   share() {
     if (isEmpty(this.merchant)) return;
+    if (this.$route.meta.disableDefaultShare) return;
 
     const name = `${this.$auth.user.nickname} 给你推荐 ${this.merchant.name}`;
     this.$bus.$emit("config:share", {

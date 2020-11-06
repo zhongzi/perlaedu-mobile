@@ -62,7 +62,7 @@ const merchantRoutes: any = [
         path: "articles/:articleId",
         name: "websiteMerchantArticle",
         component: Article,
-        meta: { title: "最新动态" },
+        meta: { title: "最新动态", disableDefaultShare: true },
       },
       {
         path: "teachers/:teacherId",

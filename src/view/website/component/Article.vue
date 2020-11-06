@@ -50,9 +50,9 @@ export default class Home extends Vue {
 
   .title {
     padding-left: 10px;
-    font-size: 14px;
+    font-size: 17px;
     font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
+    font-weight: 500;
     color: #4a4a4a;
     line-height: 20px;
   }

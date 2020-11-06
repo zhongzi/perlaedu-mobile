@@ -27,6 +27,8 @@ import SyncMixin from "@/mixin/SyncMixin";
 import AiCard from "@/view/component/AiCard.vue";
 import AiRichTextSectionsEditor from "@/view/component/AiRichTextSectionsEditor.vue";
 
+import isEmpty from "lodash/isEmpty";
+
 @Component({
   components: {
     AiCard,
@@ -67,11 +69,22 @@ export default class Home extends Mixins(SyncMixin) {
   @Watch("article", { deep: true })
   onArticleChanged() {
     this.$store.commit("updateTitle", `${this.article.title}`);
+    this.share();
   }
 
   openWebsite() {
     this.$router.push({
       name: this.isInUnion ? "websiteUnion" : "websiteMerchant",
+    });
+  }
+
+  share() {
+    if (isEmpty(this.article)) return;
+
+    this.$bus.$emit("config:share", {
+      title: this.article.title,
+      desc: this.$tools.getShareDesc(this.article.description),
+      imgUrl: this.article.cover,
     });
   }
 }
