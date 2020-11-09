@@ -13,7 +13,6 @@
       </div>
     </div>
     <div :class="b('content')" v-if="open">
-      <ai-line :class="b('content-line')" />
       <slot />
     </div>
   </div>

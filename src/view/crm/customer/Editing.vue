@@ -1,9 +1,9 @@
 <template>
   <div class="wrapper editing">
     <div class="title">客户信息</div>
-    <ai-input class="field" label="电话" v-model="innerCustomer.phone" />
-    <ai-line />
     <ai-input class="field" label="名称" v-model="innerCustomer.name" />
+    <ai-line />
+    <ai-input class="field" label="电话" v-model="innerCustomer.phone" />
     <ai-line />
     <ai-input class="field" label="地址" v-model="innerCustomer.address" />
     <ai-line />
