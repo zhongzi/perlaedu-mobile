@@ -124,7 +124,7 @@ export default class Home extends Mixins(SyncMixin) {
   checkWebsite() {
     if (isEmpty(this.merchant) || isEmpty(this.merchant.website)) {
       this.$router.push({
-        name: "newWebsiteGuide",
+        name: "Register",
       });
     }
     if (this.merchant.website.status !== "approved") {

@@ -17,15 +17,12 @@ import { Component, Vue } from "vue-property-decorator";
 
 import AiBottomNavigation from "@/view/component/AiBottomNavigation.vue";
 
-import GuideEntry from "./guide/component/Entry.vue";
-
 import isEqual from "lodash/isEqual";
 import find from "lodash/find";
 
 @Component({
   components: {
     AiBottomNavigation,
-    GuideEntry,
   },
 })
 export default class Home extends Vue {

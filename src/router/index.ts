@@ -8,6 +8,9 @@ const FlashTrade = () =>
 const Contact = () =>
   import(/* webpackChunkName: "main" */ "@/view/Contact.vue");
 
+const Register = () =>
+  import(/* webpackChunkName: "main" */ "@/view/Register.vue");
+
 const Subscription = () =>
   import(/* webpackChunkName: "main" */ "@/view/Subscription.vue");
 
@@ -58,6 +61,18 @@ export default new Router({
       meta: {
         requireOpenid: true,
         title: "联系我们",
+        style: {
+          backgroundColor: "#fff",
+        },
+      },
+    },
+    {
+      path: "/register",
+      name: "Register",
+      component: Register,
+      meta: {
+        title: "马上开通",
+        hideCopyright: true,
         style: {
           backgroundColor: "#fff",
         },

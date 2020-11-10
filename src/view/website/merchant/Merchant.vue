@@ -57,7 +57,11 @@
         <article-list :query="query" :merchant="merchant" />
       </div>
       <ai-copyright :manual="true" />
-      <guide-entry class="block" v-if="!isOwner" />
+      <ai-register-entry
+        class="block"
+        v-if="!isOwner"
+        subTitle="这样的门户网站， 开启裂变招生"
+      />
     </div>
   </div>
 </template>
@@ -68,6 +72,7 @@ import { Component, Vue, Watch, Mixins } from "vue-property-decorator";
 import SyncMixin from "@/mixin/SyncMixin";
 
 import AiCopyright from "@/view/component/AiCopyright.vue";
+import AiRegisterEntry from "@/view/component/AiRegisterEntry.vue";
 
 import Merchant from "../component/Merchant.vue";
 import UnionList from "../component/UnionList.vue";
@@ -78,7 +83,6 @@ import TeacherList from "../component/TeacherList.vue";
 import AlbumList from "../component/AlbumList.vue";
 import VideoList from "../component/VideoList.vue";
 import ArticleList from "../component/ArticleList.vue";
-import GuideEntry from "../guide/component/Entry.vue";
 
 import isEqual from "lodash/isEqual";
 import _get from "lodash/get";
@@ -89,6 +93,8 @@ import cloneDeep from "lodash/cloneDeep";
 
 @Component({
   components: {
+    AiCopyright,
+    AiRegisterEntry,
     Merchant,
     UnionList,
     CouponList,
@@ -98,18 +104,9 @@ import cloneDeep from "lodash/cloneDeep";
     AlbumList,
     VideoList,
     ArticleList,
-    AiCopyright,
-    GuideEntry,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
-  get showGuide() {
-    return !(
-      this.merchant.id === this.$auth.user.curr_merch_id &&
-      this.$auth.user.is_manager
-    );
-  }
-
   get merchant() {
     return this.entity;
     // const skin = {};

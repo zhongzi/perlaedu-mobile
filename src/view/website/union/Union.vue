@@ -29,7 +29,7 @@
           </ai-circle-menu>
         </div>
         <ai-copyright :manual="true" />
-        <guide-entry class="guide" />
+        <ai-register-entry class="guide" />
       </div>
     </template>
   </div>
@@ -42,8 +42,7 @@ import SyncMixin from "@/mixin/SyncMixin";
 
 import AiCircleMenu from "@/view/component/AiCircleMenu.vue";
 import AiCopyright from "@/view/component/AiCopyright.vue";
-
-import GuideEntry from "../guide/component/Entry.vue";
+import AiRegisterEntry from "@/view/component/AiRegisterEntry.vue";
 
 import sortBy from "lodash/sortBy";
 import sumBy from "lodash/sumBy";
@@ -54,7 +53,7 @@ import isEmpty from "lodash/isEmpty";
   components: {
     AiCircleMenu,
     AiCopyright,
-    GuideEntry,
+    AiRegisterEntry,
   },
 })
 export default class Home extends Mixins(SyncMixin) {

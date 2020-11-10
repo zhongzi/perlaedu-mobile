@@ -87,6 +87,7 @@ export default class Home extends Vue {
 @import "./asset/iconfont/iconfont.css";
 @import "./asset/css/style.css";
 @import "./asset/css/normalize.css";
+@import "~animate.css";
 
 :root {
   box-sizing: border-box;

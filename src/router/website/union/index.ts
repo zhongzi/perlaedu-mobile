@@ -30,7 +30,12 @@ const unionRoutes: any = [
         path: "",
         name: "websiteUnion",
         component: Union,
-        meta: { title: "线上综合体官网" },
+        meta: {
+          title: "线上综合体官网",
+          copyrightStyle: {
+            color: "#fff",
+          },
+        },
       },
       {
         path: "courses/:courseId",

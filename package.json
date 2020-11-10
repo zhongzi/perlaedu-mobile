@@ -25,6 +25,7 @@
     "@sentry/browser": "^5.15.5",
     "@sentry/integrations": "^5.15.5",
     "@zhongzi/hui": "0.0.2",
+    "animate.css": "^4.1.1",
     "axios": "^0.19.2",
     "better-scroll": "^2.0.4",
     "browser-image-compression": "^1.0.12",
