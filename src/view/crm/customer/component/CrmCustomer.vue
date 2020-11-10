@@ -98,7 +98,15 @@
                 <tr :key="merchant.id">
                   <td>{{ merchant.created_at | defaultDay }}</td>
                   <td>校长</td>
-                  <td>{{ merchant.name }}</td>
+                  <td>
+                    {{ merchant.name }}
+                    <template v-if="merchant.status === 'approved'">
+                      <i
+                        class="iconfont icon-checked"
+                        style="color: green; font-size: 9px;"
+                      />
+                    </template>
+                  </td>
                   <td>{{ merchant | safe("agent.realname") }}</td>
                 </tr>
               </template>
@@ -106,7 +114,15 @@
                 <tr :key="person.id">
                   <td>{{ person.created_at | date("MM-dd HH:mm") }}</td>
                   <td>{{ getRoleName(person.role) }}</td>
-                  <td>{{ person | safe("merchant.name") }}</td>
+                  <td>
+                    {{ person | safe("merchant.name") }}
+                    <template v-if="person.merchant.status === 'approved'">
+                      <i
+                        class="iconfont icon-checked"
+                        style="color: green; font-size: 9px;"
+                      />
+                    </template>
+                  </td>
                   <td>{{ person | safe("merchant.agent.realname") }}</td>
                 </tr>
               </template>
