@@ -64,17 +64,6 @@ export default class Home extends Mixins(SyncMixin) {
       );
     });
 
-    if (
-      this.$route.params.merchantId === "myself" &&
-      this.$auth.user.curr_merch_id
-    ) {
-      return this.$router.push({
-        name: "websiteMerchant",
-        params: {
-          merchantId: this.$auth.user.curr_merch_id,
-        },
-      });
-    }
     this.loadMerchant();
   }
 
@@ -91,6 +80,18 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   loadMerchant() {
+    if (
+      this.$route.params.merchantId === "myself" &&
+      this.$auth.user.curr_merch_id
+    ) {
+      return this.$router.push({
+        name: "websiteMerchant",
+        params: {
+          merchantId: this.$auth.user.curr_merch_id,
+        },
+      });
+    }
+
     this.id = this.$route.params.merchantId;
 
     this.loadEntity({
