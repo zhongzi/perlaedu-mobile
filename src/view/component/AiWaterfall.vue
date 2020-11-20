@@ -3,6 +3,8 @@
     <ai-infinite-scroll
       height="90vh"
       ref="scroll"
+      :list="list"
+      :listTotal="listTotal"
       :loading="loading"
       @pull-down="$emit('pull-down')"
       @pull-up="$emit('pull-up')"
@@ -93,6 +95,7 @@ import VueFlexWaterfall from "vue-flex-waterfall";
 })
 export default class Home extends Vue {
   @Prop({ type: Array, default: [] }) list: any;
+  @Prop({ type: Number, default: 0 }) listTotal: number;
   @Prop({ type: String, default: "cover" }) imgKey: string;
   @Prop({ type: Number, default: 2 }) col: number;
   @Prop({ type: Number, default: 0 }) gap: number;

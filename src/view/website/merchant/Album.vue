@@ -87,15 +87,6 @@ export default class Home extends Mixins(SyncMixin) {
       `${this.album.title}(${this.album.count_photo})`
     );
   }
-
-  openWebsite() {
-    this.$router.push({
-      name: "websiteMerchant",
-      params: {
-        merchantId: this.album.merchant_id,
-      },
-    });
-  }
 }
 </script>
 <style lang="scss" scoped>
