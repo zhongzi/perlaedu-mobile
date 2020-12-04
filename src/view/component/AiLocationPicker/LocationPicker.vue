@@ -3,7 +3,7 @@
     <ai-cell
       :class="b('cell')"
       :title="label"
-      :subtitle="value.address"
+      :subtitle="innerValue.address"
       @click.native="showPicker = true"
     >
       <template v-slot:right>
@@ -77,6 +77,7 @@ export default class Home extends Mixins(StopBodyScrollMixin) {
     if (isEqual(this.innerValue, this.value)) return;
 
     this.innerValue = cloneDeep(this.value);
+    this.resetAddress();
   }
 
   @Watch("showPicker")

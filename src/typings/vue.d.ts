@@ -14,5 +14,6 @@ declare module "vue/types/vue" {
     $db: any;
     $wework: any;
     $client: any;
+    $qqMap: any;
   }
 }

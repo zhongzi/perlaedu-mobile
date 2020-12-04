@@ -26,10 +26,10 @@ import trimStart from "lodash/trimStart";
 
 @Component
 export default class Home extends Vue {
-  @Prop({ type: String, default: "" }) value: string;
+  @Prop({ type: String, default: null }) value: string;
   @Prop({ type: String, default: "请输入您要查询的内容" }) placeholder: string;
 
-  innerValue: string = "";
+  innerValue: string = null;
 
   created() {
     this.resetInnerValue();

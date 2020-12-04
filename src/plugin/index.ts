@@ -7,6 +7,7 @@ import alipay from "./alipay";
 import poster from "./poster";
 import db from "./db";
 import wework from "./wework";
+import map from "./map";
 
 const retina = require("@jukejia/retina");
 
@@ -21,4 +22,5 @@ export default [
   poster,
   db,
   wework,
+  map,
 ];

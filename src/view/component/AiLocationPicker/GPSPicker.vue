@@ -1,6 +1,6 @@
 <template>
   <div :class="b()">
-    <div ref="map" :class="b('map')" />
+    <div ref="map" id="map" :class="b('map')" />
     <hui-button
       @click.native="setupGPSOnDefault"
       type="error"
@@ -15,8 +15,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 
-import QQMap from "./QQMap";
-
+import _get from "lodash/get";
 import isEqual from "lodash/isEqual";
 import isEmpty from "lodash/isEmpty";
 import cloneDeep from "lodash/cloneDeep";
@@ -32,41 +31,12 @@ export default class Home extends Vue {
 
   qq: any = null;
   map: any = null;
-  locationFetcher: any = null;
-  geocoder: any = null;
-  centerMarker: any = null;
+  multiMarker: any = null;
 
-  innergps: any = null;
+  centerGPS: any = null;
 
-  created() {
-    QQMap(this.$configs.qqMapKey).then((qq) => {
-      this.qq = qq;
-
-      this.map = new this.qq.maps.Map(this.$refs.map, {
-        zoom: 15,
-        mapTypeControl: false,
-      });
-      this.centerMarker = new this.qq.maps.Marker({
-        map: this.map,
-      });
-
-      this.geocoder = new this.qq.maps.Geocoder({
-        complete: (result) => {
-          this.setupGPS(
-            result.detail.location.getLat(),
-            result.detail.location.getLng()
-          );
-        },
-      });
-
-      this.qq.maps.event.addListener(
-        this.map,
-        "dragend",
-        this.setupGPSOnDragend
-      );
-
-      this.initGPS();
-    });
+  mounted() {
+    this.initMap();
   }
 
   @Watch("address")
@@ -74,9 +44,35 @@ export default class Home extends Vue {
     this.setupGPSOnAddress();
   }
 
-  initGPS() {
+  initMap() {
+    // this.$qqMap
+    //   .loadScripts()
+    //   .then((qq) => {
+    //     this.qq = qq;
+    //     this._initMap();
+    //   })
+    //   .catch((e) => {
+    //     console.log(e);
+    //   });
+
+    this.qq = window.TMap;
+    this._initMap();
+  }
+
+  _initMap() {
+    this.map = this.$qqMap.getMap(this.$refs.map);
+
+    this.multiMarker = new this.qq.MultiMarker({
+      map: this.map,
+    });
+
+    this.map.on("dragend", this.setupGPSOnDragend);
+    this.initCenterGPS();
+  }
+
+  initCenterGPS() {
     if (!isEmpty(this.value) && !isEqual(this.value, [0, 0])) {
-      this.setupGPS(this.value[0], this.value[1]);
+      this.setupCenterGPS(this.value[0], this.value[1]);
       return;
     }
 
@@ -88,9 +84,15 @@ export default class Home extends Vue {
   }
 
   setupGPSOnAddress() {
-    !isEmpty(this.address) &&
-      this.geocoder &&
-      this.geocoder.getLocation(this.address);
+    this.$qqMap.addr2gps({
+      address: this.address,
+      callback: (res) => {
+        this.setupCenterGPS(
+          _get(res, "result.location.lat"),
+          _get(res, "result.location.lng")
+        );
+      },
+    });
   }
 
   setupGPSOnDefault() {
@@ -98,62 +100,41 @@ export default class Home extends Vue {
       return;
     }
 
-    if (!this.locationFetcher) {
-      this.locationFetcher = new this.qq.maps.Geolocation(
-        this.$configs.qqMapKey,
-        this.$configs.qqMapName
-      );
-    }
-
-    this.$hui.loading.show("查询中...");
-    if (this.locationFetcher) {
-      this.locationFetcher.getLocation(
-        (position) => {
-          this.$hui.loading.hide();
-          this.setupGPS(position.lat, position.lng);
-          this.$emit("position", position);
-        },
-        (e) => {
-          console.log(e);
-          this.$hui.loading.hide();
-          this.$hui.toast.error("获取当前位置失败，请稍后重试");
-        },
-        {
-          timeout: 60000,
-        }
-      );
-    } else {
-      navigator.geolocation.getCurrentPosition((pos) => {
-        this.$hui.loading.hide();
-        this.setupGPS(pos.coords.latitude, pos.coords.longitude);
-      });
-    }
+    this.$qqMap.getCurLocation({
+      callback: (location) => {
+        this.setupCenterGPS(location.lat, location.lng);
+        this.$emit("position", location);
+      },
+    });
   }
 
   setupGPSOnDragend() {
     let center = this.map.getCenter();
-    this.setupGPS(center.getLat(), center.getLng());
+    this.setupCenterGPS(center.getLat(), center.getLng());
   }
 
-  setupGPS(lat, lng) {
-    this.innergps = [lat, lng];
+  setupCenterGPS(lat, lng) {
+    this.centerGPS = [lat, lng];
   }
 
-  @Watch("innergps")
-  onGPSChanged() {
-    this.updateMap();
+  @Watch("centerGPS")
+  onCenterGPSChanged() {
+    this.updateCenterMarker();
   }
 
-  updateMap() {
-    if (!this.map || !this.innergps) {
-      return;
-    }
+  updateCenterMarker() {
+    if (!this.map || !this.centerGPS) return;
 
-    let innergps = new this.qq.maps.LatLng(this.innergps[0], this.innergps[1]);
-    this.map.setCenter(innergps);
-    this.centerMarker.setPosition(innergps);
+    const centerGPS = new this.qq.LatLng(this.centerGPS[0], this.centerGPS[1]);
+    this.map.setCenter(centerGPS);
+    this.multiMarker.setGeometries([
+      {
+        id: "center",
+        position: centerGPS,
+      },
+    ]);
 
-    this.$emit("input", this.innergps);
+    this.$emit("input", this.centerGPS);
   }
 }
 </script>
@@ -168,6 +149,7 @@ export default class Home extends Vue {
     position: absolute;
     top: 10px;
     right: 10px;
+    z-index: 1001;
   }
 }
 </style>

@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "14465148",
+      "name": "location",
+      "font_class": "-location-c",
+      "unicode": "e68f",
+      "unicode_decimal": 59023
+    },
+    {
       "icon_id": "13670965",
       "name": "漏斗",
       "font_class": "-funnel",
@@ -603,7 +610,7 @@
     {
       "icon_id": "15324312",
       "name": "我的",
-      "font_class": "wode",
+      "font_class": "-user",
       "unicode": "e711",
       "unicode_decimal": 59153
     },
@@ -690,13 +697,6 @@
       "font_class": "-setting",
       "unicode": "e621",
       "unicode_decimal": 58913
-    },
-    {
-      "icon_id": "11563389",
-      "name": "个人",
-      "font_class": "-user",
-      "unicode": "e658",
-      "unicode_decimal": 58968
     },
     {
       "icon_id": "2007636",
@@ -960,7 +960,7 @@
     {
       "icon_id": "13314447",
       "name": "老师",
-      "font_class": "laoshi",
+      "font_class": "-laoshi",
       "unicode": "e6dd",
       "unicode_decimal": 59101
     },

@@ -1,6 +1,6 @@
 declare interface Window {
   init: any;
-  qq: any;
+  TMap: any;
   $cookies: any;
   AliyunUpload: any;
 }
