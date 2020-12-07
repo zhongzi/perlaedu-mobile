@@ -1,8 +1,11 @@
 <template>
   <div class="wrapper zone-add-entry">
-    <ai-card :class="[editing ? 'editing' : '']" @click.native="add">
+    <ai-card
+      :class="[isEditing ? 'editing' : '']"
+      @click.native="isEditing = !isEditing"
+    >
       <template v-slot:body>
-        {{ editing ? "编辑" : "浏览" }} <br />
+        {{ isEditing ? "编辑" : "浏览" }} <br />
         模式
       </template>
     </ai-card>
@@ -12,14 +15,20 @@
       <div class="title">负责人</div>
       <ai-selection-stored
         class="agents"
-        v-model="follower"
+        v-model="follower.openid"
         resource="oauth"
         labelKey="nickname"
         valueKey="openid"
         :query="query"
         :enableUnsetOption="true"
+        @selected="onSelected"
       />
-      <ai-submit-actions @cancel="showDialog = false" @submit="submit" />
+      <ai-submit-actions
+        deleteLabel="删除"
+        @cancel="showDialog = false"
+        @submit="submit"
+        @deleted="onDelete"
+      />
     </ai-dialog>
   </div>
 </template>
@@ -36,8 +45,10 @@ import AiImageUploader from "@/view/component/AiImageUploader.vue";
 import AiSubmitActions from "@/view/component/AiSubmitActions.vue";
 import AiSelectionStored from "@/view/component/AiSelectionStored.vue";
 
+import pick from "lodash/pick";
 import _get from "lodash/get";
 import merge from "lodash/merge";
+import isEmpty from "lodash/isEmpty";
 
 @Component({
   components: {
@@ -51,12 +62,12 @@ import merge from "lodash/merge";
 })
 export default class Home extends Mixins(SyncMixin) {
   showDialog: boolean = false;
-  editing: boolean = false;
+  isEditing: boolean = false;
 
   zone: any = null;
   cover: string = "";
   title: string = "";
-  follower: string = "";
+  follower: any = {};
 
   get query() {
     return {
@@ -73,20 +84,39 @@ export default class Home extends Mixins(SyncMixin) {
     });
   }
 
-  @Watch("editing")
+  @Watch("isEditing")
   onEditingChanged() {
-    this.$bus.$emit("map:mode:editing", this.editing);
+    this.$bus.$emit("map:mode:editing", this.isEditing);
   }
 
   @Watch("zone")
   onZoneChanged() {
     this.cover = _get(this.zone, "cover", "");
     this.title = _get(this.zone, "title", "");
-    this.follower = _get(this.zone, "follower", "");
+    this.follower = _get(this.zone, "follower", {});
   }
 
-  add() {
-    this.editing = !this.editing;
+  onSelected(user) {
+    this.follower = pick(user, ["id", "openid", "nickname", "avatar"]);
+  }
+
+  onDelete() {
+    this.id = _get(this.zone, "_id");
+    if (isEmpty(this.id)) {
+      this.$router.go(-1);
+      return;
+    }
+    this.deleteEntity({
+      res: {
+        id: this.id,
+      },
+      success: () => {
+        this.$bus.$emit("map:zone:refresh");
+        this.$nextTick(() => {
+          this.$router.go(-1);
+        });
+      },
+    });
   }
 
   submit() {

@@ -45,9 +45,11 @@ class QQMap {
 
     if (window.TMap) {
       this.map = new window.TMap.Map(id, {
-        zoom: 15,
+        zoom: 17,
+        minZoom: 14,
+        maxZoom: 20,
         mapTypeControl: false,
-        showControl: false,
+        showControl: true,
         doubleClickZoom: false,
       });
     }

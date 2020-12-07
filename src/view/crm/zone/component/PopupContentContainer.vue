@@ -30,7 +30,7 @@ import isEmpty from "lodash/isEmpty";
 })
 export default class Home extends Vue {
   resetCurrentLocation() {
-    this.$bus.$emit("map:location:current");
+    this.$bus.$emit("map:location:current:fetching");
   }
 
   addNewMerchant() {
@@ -60,7 +60,7 @@ export default class Home extends Vue {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 10px 10px 0px 10px;
+    margin: 10px 10px 20px;
 
     i {
       background: #fff;

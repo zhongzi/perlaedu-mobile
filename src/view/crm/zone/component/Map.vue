@@ -13,22 +13,30 @@ import merge from "lodash/merge";
 import cloneDeep from "lodash/cloneDeep";
 import map from "lodash/map";
 import _get from "lodash/get";
+import debounce from "lodash/debounce";
 
 @Component
 export default class Home extends Vue {
   qq: any = null;
   map: any = null;
-  center: any = null;
   multiMarker: any = null;
   multiPolygon: any = null;
   infoWindow: any = null;
 
-  markers: any = [];
+  currentMarker: any = null;
+
   zones: any = [];
 
   isEditing: boolean = false;
   editor: any = null;
-  editingZone = null;
+  editingZone: any = null;
+
+  markersInView: any = null;
+  markersInSelectedZone: any = [];
+  centerMarker: any = null;
+  selectedMarker: any = null;
+
+  debBoundsChanged: any = null;
 
   get zonesOnMap() {
     if (this.isEditing) {
@@ -45,27 +53,48 @@ export default class Home extends Vue {
   }
 
   created() {
-    this.$bus.$on("map:location:current", () => {
-      this.setupCurrentGPS();
+    this.$bus.$on("map:location:current:fetching", () => {
+      this.fetchCurrentPosition();
     });
 
     this.$bus.$on("map:mode:editing", (v) => {
       this.isEditing = v;
-      this.isEditing && this.resetEditingZoneOnEditor();
     });
 
     this.$bus.$on("map:zone:selected", (v) => {
       this.editingZone = v;
-      this.setupCenterBySelectedZone();
+    });
+
+    this.$bus.$on("map:marker:selected", (v) => {
+      this.selectedMarker = v;
     });
 
     this.$bus.$on("mongoMerchantZone", (v) => {
       this.zones = cloneDeep(v);
     });
 
-    this.$bus.$on("mongoMerchant", (v) => {
-      this.markers = cloneDeep(v);
+    this.$bus.$on("map:markers:inSelectedZone", (v) => {
+      this.markersInSelectedZone = cloneDeep(v);
     });
+
+    this.$bus.$on("map:markers:inView", (v) => {
+      this.markersInView = cloneDeep(v);
+    });
+
+    this.debBoundsChanged = debounce(() => {
+      const bound = this.map.getBounds();
+      this.$bus.$emit("map:bounds:changed", bound);
+    }, 800);
+  }
+
+  @Watch("currentMarker")
+  onCurPositionChanged() {
+    this.showCurrentMarker();
+  }
+
+  @Watch("centerMarker")
+  onCenterMarkerChanged() {
+    this.showCenterMarker();
   }
 
   @Watch("zonesOnMap")
@@ -73,25 +102,49 @@ export default class Home extends Vue {
     this.resetZonesOnMap();
   }
 
-  @Watch("markers")
-  onMarkersChanged() {
+  @Watch("markersInView")
+  onMarkersInViewChanged() {
+    this.resetMarkersOnMap();
+  }
+
+  @Watch("markersInSelectedZone")
+  onMarkersInSelectedZoneChanged() {
     this.resetMarkersOnMap();
   }
 
   @Watch("isEditing")
   onEditingChanged() {
-    this.isEditing ? this.initEditor() : this.destroyEditor();
+    if (this.isEditing) {
+      this.initEditor();
+      this.resetEditingZoneOnEditor();
+    } else {
+      this.destroyEditor();
+    }
   }
 
   @Watch("editingZone")
   onEditingZoneChanged() {
     this.resetEditingZoneOnEditor();
+    this.showSelectedZone();
   }
 
-  @Watch("center")
-  onCenterChanged() {
-    this.setupCenterGPS();
-    this.$bus.$emit("map:center", this.center);
+  @Watch("selectedMarker")
+  onSelectedMarkerChanged() {
+    let geometry = null;
+    if (this.selectedMarker) {
+      const position = new this.qq.LatLng(
+        this.selectedMarker.loc[1],
+        this.selectedMarker.loc[0]
+      );
+      const infoWindow = this.buildInfoWindowContent(this.selectedMarker);
+
+      this.centerMarker = {
+        position: position,
+        properties: {
+          infoWindow: infoWindow,
+        },
+      };
+    }
   }
 
   initMap() {
@@ -112,11 +165,27 @@ export default class Home extends Vue {
     this.map = this.$qqMap.getMap(this.$refs.map);
     this.map.on("click", this.onMapClicked);
     this.map.on("dblclick", this.onMapDBClicked);
+    this.map.on("bounds_changed", this.debBoundsChanged);
+    this.debBoundsChanged();
 
     this.multiMarker = new this.qq.MultiMarker({
       map: this.map,
       styles: {
         defaultMarker: new this.qq.MarkerStyle({
+          width: 15,
+          height: 15,
+          anchor: { x: 16, y: 32 },
+          src:
+            "https://mapapi.qq.com/web/lbs/javascriptGL/demo/img/markerDefault.png",
+        }),
+        curPositionMarker: new this.qq.MarkerStyle({
+          width: 25,
+          height: 35,
+          anchor: { x: 16, y: 32 },
+          src:
+            "https://files.perlaedu.com/mobile/default/map-marker-current-position.png",
+        }),
+        inZoneMarker: new this.qq.MarkerStyle({
           width: 25,
           height: 35,
           anchor: { x: 16, y: 32 },
@@ -141,22 +210,19 @@ export default class Home extends Vue {
     this.resetZonesOnMap();
     this.resetMarkersOnMap();
 
-    this.setupCurrentGPS();
+    this.fetchCurrentPosition();
   }
 
   initEditor() {
+    if (!this.isEditing) return;
+
     if (!this.editor) {
       this.editor = new this.qq.tools.GeometryEditor({
         map: this.map,
         snappable: true,
       });
 
-      this.editor.on("draw_complete", this.onDrawFinished);
-      this.editor.on("adjust_complete", this.onEvent);
-      this.editor.on("split_complete", this.onEvent);
-      this.editor.on("union_complete", this.onEvent);
-      this.editor.on("delete_complete", this.onEvent);
-      this.editor.on("select", this.onSelected);
+      this.editor.on("draw_complete", this.onEditorDrawFinished);
     }
 
     this.cleanEditorOverlayList();
@@ -190,11 +256,7 @@ export default class Home extends Vue {
   destroyEditor() {
     if (!this.editor) return;
 
-    const overlayList = this.editor.getOverlayList();
-    overlayList.forEach((el) => {
-      el.overlay.setMap(null);
-      el.overlay.destroy();
-    });
+    this.cleanEditorOverlayList();
     this.editor.setMap(null);
     this.editor.destroy();
     this.editor = null;
@@ -221,29 +283,30 @@ export default class Home extends Vue {
     if (!this.isEditing) return;
 
     this.initEditor();
-    if (!this.editingZone) return;
 
-    this.editor.addOverlay({
-      id: this.editingZone.id,
-      name: this.editingZone.title,
-      overlay: new this.qq.MultiPolygon({
-        map: this.map,
-        styles: {
-          highlight: new this.qq.PolygonStyle({
-            color: "rgba(255, 255, 0, 0.6)",
-          }),
-        },
-        geometries: [
-          {
-            paths: this.coordinates2Paths(
-              this.editingZone.location.coordinates
-            ),
+    if (this.editingZone) {
+      this.editor.addOverlay({
+        id: this.editingZone.id,
+        name: this.editingZone.title,
+        overlay: new this.qq.MultiPolygon({
+          map: this.map,
+          styles: {
+            highlight: new this.qq.PolygonStyle({
+              color: "rgba(255, 255, 0, 0.6)",
+            }),
           },
-        ],
-      }),
-      selectedStyleId: "highlight",
-    });
-    this.startAjustify();
+          geometries: [
+            {
+              paths: this.coordinates2Paths(
+                this.editingZone.location.coordinates
+              ),
+            },
+          ],
+        }),
+        selectedStyleId: "highlight",
+      });
+      this.startAjustify();
+    }
   }
 
   cleanZonesOnMap() {
@@ -259,11 +322,6 @@ export default class Home extends Vue {
       paths: this.coordinates2Paths(zone.location.coordinates),
     }));
     this.multiPolygon.add(geometries);
-  }
-
-  cleanMarkersOnMap() {
-    const geometries = this.multiMarker.getGeometries();
-    this.multiMarker.remove(map(geometries, "id"));
   }
 
   buildInfoWindowContent(merchant) {
@@ -287,26 +345,56 @@ export default class Home extends Vue {
       `;
   }
 
+  cleanMarkersOnMap() {
+    const geometries = this.multiMarker.getGeometries();
+    this.multiMarker.remove(map(geometries, "id"));
+    this.infoWindow.close();
+  }
+
   resetMarkersOnMap() {
-    if (!this.map || !this.markers || isEmpty(this.markers.list)) return;
+    if (!this.map) return;
 
     this.cleanMarkersOnMap();
-    const markers = map(this.markers.list, (marker) => ({
-      id: marker.id,
-      styleId: "defaultMarker",
-      position: new this.qq.LatLng(marker.loc[1], marker.loc[0]),
-      properties: {
-        infoWindow: this.buildInfoWindowContent(marker),
-      },
-    }));
-    this.multiMarker.updateGeometries(markers);
-    this.setupCenterGPS();
+    // 可视区域
+    if (this.markersInView) {
+      const markers = map(this.markersInView.list, (marker) => ({
+        id: marker.id,
+        styleId: "defaultMarker",
+        position: new this.qq.LatLng(marker.loc[1], marker.loc[0]),
+        properties: {
+          infoWindow: this.buildInfoWindowContent(marker),
+        },
+      }));
+      this.multiMarker.updateGeometries(markers);
+    }
+
+    // 选中区域
+    if (this.markersInSelectedZone) {
+      const markers = map(this.markersInSelectedZone.list, (marker) => ({
+        id: marker.id,
+        styleId: "inZoneMarker",
+        position: new this.qq.LatLng(marker.loc[1], marker.loc[0]),
+        properties: {
+          infoWindow: this.buildInfoWindowContent(marker),
+        },
+      }));
+      this.multiMarker.updateGeometries(markers);
+    }
+
+    this.showCurrentMarker(false);
+    this.showCenterMarker(false);
   }
 
   onMarkerClicked(evt) {
+    this.showInfoWindow(evt.geometry);
+  }
+
+  showInfoWindow(geometry) {
+    if (geometry === "defaultMarker") return;
+
     this.infoWindow.open();
-    this.infoWindow.setPosition(evt.geometry.position);
-    this.infoWindow.setContent(evt.geometry.properties.infoWindow);
+    this.infoWindow.setPosition(geometry.position);
+    this.infoWindow.setContent(geometry.properties.infoWindow);
   }
 
   onMapClicked() {
@@ -331,46 +419,83 @@ export default class Home extends Vue {
     }
   }
 
-  onDrawFinished(geometry) {
+  onEditorDrawFinished(geometry) {
     this.startAjustify();
   }
 
-  onSelected() {}
-
-  onEvent(evt) {}
-
-  setupCurrentGPS() {
+  fetchCurrentPosition() {
     this.$hui.loading.show("查询中...");
     this.$qqMap.getCurLocation({
       callback: (location) => {
         this.$hui.loading.hide();
-        this.center = new this.qq.LatLng(location.lat, location.lng);
+        this.selectedMarker = null;
+        this.currentMarker = {
+          position: new this.qq.LatLng(location.lat, location.lng),
+          properties: {
+            infoWindow: "您当前所在的位置",
+          },
+        };
+        this.$bus.$emit("map:location:current:fetched", location);
       },
     });
   }
 
-  setupCenterBySelectedZone() {
+  showSelectedZone() {
     if (!this.editingZone) return;
 
-    this.center = this.qq.geometry.computeCentroid(
+    const center = this.qq.geometry.computeCentroid(
       this.coordinates2Paths(this.editingZone.location.coordinates)[0]
     );
+    const title = this.editingZone.title;
+    const follower = _get(this.editingZone, "follower.nickname", "-");
+    const created_at = _get(this.editingZone, "_created_at", "-");
+
+    this.centerMarker = {
+      position: center,
+      properties: {
+        infoWindow: `<div><h3>${title}</h3><p style="font-size: 13px;">${created_at}</p><p style="font-size:13px;">${follower}</p></div>`,
+      },
+    };
   }
 
-  setupCenterGPS() {
-    if (isEmpty(this.center)) return;
+  showCurrentMarker(resetMap = true) {
+    const id = "currentMarker";
+    if (!this.currentMarker) {
+      this.multiMarker.remove([id]);
+      return;
+    }
 
-    this.map.setCenter(this.center);
-    this.multiMarker.updateGeometries([
+    const geometry = merge(
       {
-        id: "center",
-        styleId: "centerMarker",
-        position: this.center,
-        properties: {
-          infoWindow: "您当前所在的位置",
-        },
+        id: id,
+        styleId: "curPositionMarker",
       },
-    ]);
+      this.currentMarker
+    );
+
+    resetMap && this.map.setCenter(geometry.position);
+    this.multiMarker.updateGeometries([geometry]);
+    this.showInfoWindow(geometry);
+  }
+
+  showCenterMarker(resetMap = true) {
+    const id = "center";
+    if (!this.centerMarker) {
+      this.multiMarker.remove([id]);
+      return;
+    }
+
+    const geometry = merge(
+      {
+        id: id,
+        styleId: "centerMarker",
+      },
+      this.centerMarker
+    );
+
+    resetMap && this.map.setCenter(geometry.position);
+    this.multiMarker.updateGeometries([geometry]);
+    this.showInfoWindow(geometry);
   }
 }
 </script>

@@ -1,6 +1,10 @@
 <template>
   <div class="wrapper search-bar">
-    <ai-search @input="onInput" placeholder="查询">
+    <div class="location" v-if="city">
+      <i class="iconfont icon-location" />
+      <span> {{ city }}</span>
+    </div>
+    <ai-search @input="debKeywordChanged" placeholder="查询当前城市机构">
       <template v-slot:left>
         <span />
       </template>
@@ -12,9 +16,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 
 import AiSearch from "@/view/component/AiSearch.vue";
+
+import debounce from "lodash/debounce";
 
 @Component({
   components: {
@@ -22,6 +28,21 @@ import AiSearch from "@/view/component/AiSearch.vue";
   },
 })
 export default class Home extends Vue {
+  city: any = null;
+  debKeywordChanged: any = null;
+
+  created() {
+    this.$bus.$on("map:location:current:fetched", (location) => {
+      this.city = location.city;
+    });
+
+    this.debKeywordChanged = debounce(this.onInput, 800);
+  }
+  @Watch("city")
+  onCityChanged() {
+    this.$bus.$emit("map:city:changed", this.city);
+  }
+
   onInput(v) {
     this.$bus.$emit("map:search:changed", v);
   }
@@ -42,13 +63,32 @@ export default class Home extends Vue {
   align-items: center;
   justify-content: center;
 
+  .location {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    padding: 5px;
+
+    i {
+      font-size: 20px;
+      color: #e61e15;
+    }
+    span {
+      font-size: 12px;
+      font-weight: 900;
+      color: #9b9b9b;
+    }
+  }
+
   & ::v-deep .ai-search {
     background: #fff;
-    width: 90%;
+    width: 80%;
     border-radius: 4px;
 
     i {
-      color: #000;
+      color: #e61e15;
     }
 
     .ai-search__input {

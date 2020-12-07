@@ -1,7 +1,7 @@
 <template>
   <ai-card class="wrapper zone">
     <template v-slot:body>
-      <img :src="zone | safe('cover')" />
+      {{ zone.title }}
     </template>
   </ai-card>
 </template>
@@ -25,6 +25,9 @@ export default class Home extends Vue {
   width: 50px;
   height: 50px;
   box-shadow: 0px 4px 6px 0px rgba(226, 226, 226, 0.27);
+  text-align: center;
+  font-size: 10px;
+  padding: 1px;
 
   img {
     width: 100%;

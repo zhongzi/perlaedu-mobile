@@ -244,6 +244,7 @@ export default class SyncMixin extends Vue {
     }
     const action = `${this.store}/delete`;
     store.dispatch(action, {
+      id: this.id,
       syncTag: this.tag,
       res: kwargs.res,
       query: kwargs.query,

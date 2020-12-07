@@ -15,6 +15,14 @@
     >
       {{ submitLabel }}
     </hui-button>
+    <hui-button
+      v-if="deleteLabel.length > 0"
+      :class="b('delete')"
+      @click.native="$emit('deleted')"
+      type="error"
+    >
+      {{ deleteLabel }}
+    </hui-button>
   </div>
 </template>
 
@@ -27,6 +35,7 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 export default class Home extends Vue {
   @Prop({ type: String, default: "取消" }) cancelLabel: string;
   @Prop({ type: String, default: "确认" }) submitLabel: string;
+  @Prop({ type: String, default: "" }) deleteLabel: string;
 }
 </script>
 
