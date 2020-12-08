@@ -6,7 +6,7 @@
     </div>
     <div class="body">
       <zone-list />
-      <merchant-list />
+      <merchant-list class="merchant-list" />
     </div>
   </div>
 </template>
@@ -51,7 +51,6 @@ export default class Home extends Vue {
   right: 0px;
   z-index: 9999;
   width: 100%;
-  height: 50vh;
 
   display: flex;
   flex-direction: column;
@@ -75,6 +74,10 @@ export default class Home extends Vue {
     flex: 1;
     background: #f2f2f2;
     border-radius: 20px 20px 0px 0px;
+
+    .merchant-list {
+      max-height: 40vh;
+    }
   }
 }
 </style>

@@ -132,9 +132,7 @@ export default class Home extends Mixins(SyncMixin) {
     if (this.id) {
       res.id = this.id;
       res.query = {};
-      res.update = {
-        $set: zone,
-      };
+      res.update = zone;
     } else {
       res.docs = zone;
     }

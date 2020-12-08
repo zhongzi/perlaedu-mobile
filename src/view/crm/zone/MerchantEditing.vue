@@ -133,9 +133,7 @@ export default class Home extends Mixins(SyncMixin) {
       : {
           id: this.id,
           query: {},
-          update: {
-            $set: this.reverseGPS(cloneDeep(this.innerMerchant)),
-          },
+          update: this.reverseGPS(cloneDeep(this.innerMerchant)),
         };
 
     this.saveEntity({

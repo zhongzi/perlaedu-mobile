@@ -7,6 +7,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 
+import isEqual from "lodash/isEqual";
 import isEmpty from "lodash/isEmpty";
 import filter from "lodash/filter";
 import merge from "lodash/merge";
@@ -174,21 +175,18 @@ export default class Home extends Vue {
         defaultMarker: new this.qq.MarkerStyle({
           width: 15,
           height: 15,
-          anchor: { x: 16, y: 32 },
           src:
             "https://mapapi.qq.com/web/lbs/javascriptGL/demo/img/markerDefault.png",
         }),
         curPositionMarker: new this.qq.MarkerStyle({
           width: 25,
           height: 35,
-          anchor: { x: 16, y: 32 },
           src:
             "https://files.perlaedu.com/mobile/default/map-marker-current-position.png",
         }),
         inZoneMarker: new this.qq.MarkerStyle({
           width: 25,
           height: 35,
-          anchor: { x: 16, y: 32 },
           src:
             "https://mapapi.qq.com/web/lbs/javascriptGL/demo/img/markerDefault.png",
         }),
@@ -274,9 +272,12 @@ export default class Home extends Vue {
 
   coordinates2Paths(coordinates) {
     // mongo与腾讯地图之间的坐标保存是相反的
-    return map(coordinates, (ring) =>
-      map(ring, (pos) => new this.qq.LatLng(pos[1], pos[0]))
-    );
+    // type: "Polygon"
+    return map(coordinates, (ring) => {
+      return map(ring, (pos) => {
+        return new this.qq.LatLng(pos[1], pos[0]);
+      });
+    });
   }
 
   resetEditingZoneOnEditor() {
@@ -345,16 +346,22 @@ export default class Home extends Vue {
       `;
   }
 
-  cleanMarkersOnMap() {
+  cleanMarkersOnMap(styleIds = null) {
     const geometries = this.multiMarker.getGeometries();
-    this.multiMarker.remove(map(geometries, "id"));
+    this.multiMarker.remove(
+      map(
+        filter(geometries, (geometry) => {
+          return isEmpty(styleIds) || styleIds.includes(geometry.styleId);
+        }),
+        "id"
+      )
+    );
     this.infoWindow.close();
   }
 
   resetMarkersOnMap() {
     if (!this.map) return;
 
-    this.cleanMarkersOnMap();
     // 可视区域
     if (this.markersInView) {
       const markers = map(this.markersInView.list, (marker) => ({
@@ -369,6 +376,7 @@ export default class Home extends Vue {
     }
 
     // 选中区域
+    this.cleanMarkersOnMap(["inZoneMarker"]);
     if (this.markersInSelectedZone) {
       const markers = map(this.markersInSelectedZone.list, (marker) => ({
         id: marker.id,
@@ -381,7 +389,7 @@ export default class Home extends Vue {
       this.multiMarker.updateGeometries(markers);
     }
 
-    this.showCurrentMarker(false);
+    // this.showCurrentMarker(false);
     this.showCenterMarker(false);
   }
 
@@ -404,13 +412,18 @@ export default class Home extends Vue {
 
   onMapDBClicked() {
     const geometry = this.editor && this.editor.getSelectedList()[0];
+
     if (geometry) {
+      // 修正mongo/Polygon所需数组最后坐标
+      let crds = map(geometry.paths, (path) => [path.lng, path.lat]);
+      !isEqual(crds[0], crds[crds.length - 1]) && crds.push(crds[0]);
+
       this.$bus.$emit(
         "map:zone:saving",
         merge(cloneDeep(this.editingZone || {}), {
           location: {
-            type: "MultiPolygon",
-            coordinates: [map(geometry.paths, (path) => [path.lng, path.lat])],
+            type: "Polygon",
+            coordinates: [crds],
           },
         })
       );
@@ -453,7 +466,7 @@ export default class Home extends Vue {
     this.centerMarker = {
       position: center,
       properties: {
-        infoWindow: `<div><h3>${title}</h3><p style="font-size: 13px;">${created_at}</p><p style="font-size:13px;">${follower}</p></div>`,
+        infoWindow: `<div><h3>${title}</h3><p style="font-size: 12px;">${created_at}</p><p style="font-size:12px;">${follower}</p></div>`,
       },
     };
   }

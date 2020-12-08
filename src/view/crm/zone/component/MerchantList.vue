@@ -4,6 +4,7 @@
       v-if="showList"
       class="list"
       resource="mongoMerchant"
+      scrollHeight="100%"
       :query="query"
       :limit="100"
       :refresh.sync="refresh"
@@ -64,7 +65,10 @@ export default class Home extends Mixins(SyncMixin) {
     if (this.curZone) {
       q.loc = {
         $geoWithin: {
-          $polygon: this.curZone.location.coordinates[0],
+          $geometry: {
+            type: "MultiPolygon",
+            coordinates: [this.curZone.location.coordinates],
+          },
         },
       };
     }
@@ -105,21 +109,33 @@ export default class Home extends Mixins(SyncMixin) {
   merchantsLoadInBounds(bound) {
     const sw = bound.getSouthWest();
     const ne = bound.getNorthEast();
+    let query = {
+      loc: {
+        $geoWithin: {
+          $geometry: {
+            type: "MultiPolygon",
+            coordinates: [
+              [
+                [
+                  [ne.lng, ne.lat],
+                  [ne.lng, sw.lat],
+                  [sw.lng, sw.lat],
+                  [sw.lng, ne.lat],
+                  [ne.lng, ne.lat],
+                ],
+              ],
+            ],
+          },
+        },
+      },
+    };
+    if (!isEmpty(this.city)) {
+      query["ad_info.city"] = this.city;
+    }
     this.loadList({
       reset: true,
       query: {
-        query: JSON.stringify({
-          loc: {
-            $geoWithin: {
-              $polygon: [
-                [ne.lng, ne.lat],
-                [ne.lng, sw.lat],
-                [sw.lng, sw.lat],
-                [sw.lng, ne.lat],
-              ],
-            },
-          },
-        }),
+        query: JSON.stringify(query),
         limit: 1000,
       },
       success: (resp) => {
