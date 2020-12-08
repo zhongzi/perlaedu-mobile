@@ -1,6 +1,7 @@
 import Vue from "vue";
 
 import _get from "lodash/get";
+import merge from "lodash/merge";
 import cloneDeep from "lodash/cloneDeep";
 import debounce from "lodash/debounce";
 
@@ -12,7 +13,7 @@ class QQMap {
   keyName: string = null;
   debouncedRequest: any = null;
 
-  map: any = null;
+  cached: any = {};
 
   constructor(key = null, keyName = null) {
     this.key = key || configs.qqMapKey;
@@ -40,26 +41,41 @@ class QQMap {
     });
   }
 
-  getMap(id) {
-    this.destroyMap();
-
-    if (window.TMap) {
-      this.map = new window.TMap.Map(id, {
-        zoom: 17,
-        minZoom: 14,
-        maxZoom: 20,
-        mapTypeControl: false,
-        showControl: true,
-        doubleClickZoom: false,
-      });
-    }
-    return this.map;
+  setCache(id, obj) {
+    this.cached[id] = obj;
   }
 
-  destroyMap() {
-    if (this.map) {
-      this.map.destroy();
-      this.map = null;
+  getCache(id) {
+    return this.cached[id];
+  }
+
+  getMap(id, options = {}) {
+    let map = this.getCache(id);
+    if (!map && window.TMap) {
+      map = new window.TMap.Map(
+        id,
+        merge(
+          {
+            zoom: 17,
+            minZoom: 14,
+            maxZoom: 20,
+            mapTypeControl: false,
+            showControl: true,
+            doubleClickZoom: true,
+          },
+          options
+        )
+      );
+      this.setCache(id, map);
+    }
+    return map;
+  }
+
+  destroyMap(id) {
+    const map = this.getCache(id);
+    if (map) {
+      map.destroy();
+      this.setCache(id, null);
     }
   }
 

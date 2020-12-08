@@ -192,12 +192,14 @@ export default class SyncMixin extends Vue {
       return;
     }
 
-    const action = `${this.store}/list`;
+    const resource = kwargs.store || this.store;
+    const tag = kwargs.tag || this.tag;
+    const action = `${resource}/list`;
     store.dispatch(action, {
-      tag: this.tag,
+      tag: tag,
       reset: kwargs.reset,
       query: kwargs.query,
-      headers: kwargs.headers,
+      header: kwargs.headers,
       configs: kwargs.configs,
       success: kwargs.success,
       failure: kwargs.failure || this.defaultFailureHandler,
@@ -208,13 +210,15 @@ export default class SyncMixin extends Vue {
     if (this.entityLoading) {
       return;
     }
-    const action = `${this.store}/get`;
+    const resource = kwargs.store || this.store;
+    const id = kwargs.id || this.id;
+    const action = `${resource}/get`;
     store.dispatch(action, {
-      id: this.id,
-      query: kwargs.query,
+      id: id,
+      lazy: kwargs.lazy,
       restore: kwargs.restore,
-      requireColumns: kwargs.requireColumns,
-      headers: kwargs.headers,
+      query: kwargs.query,
+      header: kwargs.headers,
       configs: kwargs.configs,
       success: kwargs.success,
       failure: kwargs.failure || this.defaultFailureHandler,
@@ -225,13 +229,16 @@ export default class SyncMixin extends Vue {
     if (this.entitySaveLoading) {
       return;
     }
-    const action = `${this.store}/save`;
+    const resource = kwargs.store || this.store;
+    const tag = kwargs.tag || this.tag;
+    const id = kwargs.id || this.id;
+    const action = `${resource}/save`;
     store.dispatch(action, {
-      syncTag: this.tag,
-      id: this.id,
+      syncTag: tag,
+      id: id,
       res: kwargs.res,
       query: kwargs.query,
-      headers: kwargs.headers,
+      header: kwargs.headers,
       configs: kwargs.configs,
       success: kwargs.success,
       failure: kwargs.failure || this.defaultFailureHandler,
@@ -242,13 +249,16 @@ export default class SyncMixin extends Vue {
     if (this.entityDeleteLoading) {
       return;
     }
-    const action = `${this.store}/delete`;
+    const resource = kwargs.store || this.store;
+    const tag = kwargs.tag || this.tag;
+    const id = kwargs.id || this.id;
+    const action = `${resource}/delete`;
     store.dispatch(action, {
-      id: this.id,
-      syncTag: this.tag,
+      syncTag: tag,
+      id: id,
       res: kwargs.res,
       query: kwargs.query,
-      headers: kwargs.headers,
+      header: kwargs.headers,
       configs: kwargs.configs,
       success: kwargs.success,
       failure: kwargs.failure || this.defaultFailureHandler,

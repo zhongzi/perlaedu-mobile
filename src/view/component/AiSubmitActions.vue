@@ -1,14 +1,14 @@
 <template>
   <div :class="b()">
     <hui-button
-      v-if="cancelLabel"
+      v-if="cancelLabel && cancelLabel.length > 0"
       :class="b('cancel')"
       @click.native="$emit('cancel')"
     >
       {{ cancelLabel }}
     </hui-button>
     <hui-button
-      v-if="submitLabel"
+      v-if="submitLabel && submitLabel.length > 0"
       :class="b('submit')"
       @click.native="$emit('submit')"
       type="primary"
@@ -16,7 +16,7 @@
       {{ submitLabel }}
     </hui-button>
     <hui-button
-      v-if="deleteLabel.length > 0"
+      v-if="deleteLabel && deleteLabel.length > 0"
       :class="b('delete')"
       @click.native="$emit('deleted')"
       type="error"

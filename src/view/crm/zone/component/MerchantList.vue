@@ -4,7 +4,6 @@
       v-if="showList"
       class="list"
       resource="mongoMerchant"
-      scrollHeight="100%"
       :query="query"
       :limit="100"
       :refresh.sync="refresh"

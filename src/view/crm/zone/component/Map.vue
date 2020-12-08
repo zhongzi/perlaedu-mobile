@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper map">
-    <div ref="map" id="map" class="container" />
+    <div ref="map" id="crm-zone-map" class="container" />
   </div>
 </template>
 
@@ -60,6 +60,10 @@ export default class Home extends Vue {
 
     this.$bus.$on("map:mode:editing", (v) => {
       this.isEditing = v;
+    });
+
+    this.$bus.$on("map:zone:editing:show", () => {
+      this.showEditingDialog();
     });
 
     this.$bus.$on("map:zone:selected", (v) => {
@@ -163,7 +167,7 @@ export default class Home extends Vue {
   }
 
   _initMap() {
-    this.map = this.$qqMap.getMap(this.$refs.map);
+    this.map = this.$qqMap.getMap("crm-zone-map");
     this.map.on("click", this.onMapClicked);
     this.map.on("dblclick", this.onMapDBClicked);
     this.map.on("bounds_changed", this.debBoundsChanged);
@@ -327,7 +331,7 @@ export default class Home extends Vue {
 
   buildInfoWindowContent(merchant) {
     const url = this.$tools.resolveURL(this.$router, {
-      name: "crmMerchantEditing",
+      name: "crmMerchant",
       params: {
         merchantId: merchant.id,
       },
@@ -405,31 +409,34 @@ export default class Home extends Vue {
     this.infoWindow.setContent(geometry.properties.infoWindow);
   }
 
+  showEditingDialog() {
+    const geometry = this.editor && this.editor.getSelectedList()[0];
+    if (!geometry) {
+      this.$hui.toast.error("请选择待编辑区域");
+      return;
+    }
+
+    // 修正mongo/Polygon所需数组最后坐标
+    let crds = map(geometry.paths, (path) => [path.lng, path.lat]);
+    !isEqual(crds[0], crds[crds.length - 1]) && crds.push(crds[0]);
+    this.$bus.$emit(
+      "map:zone:saving",
+      merge(cloneDeep(this.editingZone || {}), {
+        location: {
+          type: "Polygon",
+          coordinates: [crds],
+        },
+      })
+    );
+  }
+
   onMapClicked() {
     this.infoWindow.close();
     this.editor && this.editor.select([]);
   }
 
   onMapDBClicked() {
-    const geometry = this.editor && this.editor.getSelectedList()[0];
-
-    if (geometry) {
-      // 修正mongo/Polygon所需数组最后坐标
-      let crds = map(geometry.paths, (path) => [path.lng, path.lat]);
-      !isEqual(crds[0], crds[crds.length - 1]) && crds.push(crds[0]);
-
-      this.$bus.$emit(
-        "map:zone:saving",
-        merge(cloneDeep(this.editingZone || {}), {
-          location: {
-            type: "Polygon",
-            coordinates: [crds],
-          },
-        })
-      );
-    } else {
-      this.$bus.$emit("map:dbclicked");
-    }
+    this.$bus.$emit("map:dbclicked");
   }
 
   onEditorDrawFinished(geometry) {
@@ -488,7 +495,6 @@ export default class Home extends Vue {
 
     resetMap && this.map.setCenter(geometry.position);
     this.multiMarker.updateGeometries([geometry]);
-    this.showInfoWindow(geometry);
   }
 
   showCenterMarker(resetMap = true) {

@@ -1,6 +1,6 @@
 <template>
   <div :class="b()">
-    <div ref="map" id="map" :class="b('map')" />
+    <div ref="map" id="ai-gps-picker-map" :class="b('map')" />
     <hui-button
       @click.native="setupGPSOnDefault"
       type="error"
@@ -60,7 +60,7 @@ export default class Home extends Vue {
   }
 
   _initMap() {
-    this.map = this.$qqMap.getMap(this.$refs.map);
+    this.map = this.$qqMap.getMap("ai-gps-picker-map");
 
     this.multiMarker = new this.qq.MultiMarker({
       map: this.map,

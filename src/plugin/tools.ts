@@ -16,6 +16,9 @@ const urljoin = require("url-join");
 const isProduction = process.env.NODE_ENV === "production";
 
 const tools = {
+  call(phone) {
+    window.location.href = `tel:${phone}`;
+  },
   getShareDesc: (description) => {
     let desc = null;
     try {

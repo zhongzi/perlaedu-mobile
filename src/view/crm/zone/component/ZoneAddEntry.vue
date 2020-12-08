@@ -5,8 +5,8 @@
       @click.native="isEditing = !isEditing"
     >
       <template v-slot:body>
-        {{ isEditing ? "编辑" : "浏览" }} <br />
-        模式
+        {{ isEditing ? "退出" : "进入" }} <br />
+        编辑
       </template>
     </ai-card>
     <ai-dialog v-model="showDialog" class="dialog">
@@ -154,7 +154,7 @@ export default class Home extends Mixins(SyncMixin) {
   height: 50px;
 
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 900;
   text-align: center;
 
   .editing {

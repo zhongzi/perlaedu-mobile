@@ -2,6 +2,10 @@
   <div class="wrapper content">
     <div class="header">
       <i class="iconfont icon-location-c" @click.stop="resetCurrentLocation" />
+      <div v-if="isEditing" class="editing" @click.stop="showEditingDialog">
+        <i class="iconfont icon-editing" />
+        <span>编辑区域</span>
+      </div>
       <i class="iconfont icon-plus" @click.stop="addNewMerchant" />
     </div>
     <div class="body">
@@ -29,6 +33,18 @@ import isEmpty from "lodash/isEmpty";
   },
 })
 export default class Home extends Vue {
+  isEditing: boolean = false;
+
+  created() {
+    this.$bus.$on("map:mode:editing", (v) => {
+      this.isEditing = v;
+    });
+  }
+
+  showEditingDialog() {
+    this.$bus.$emit("map:zone:editing:show");
+  }
+
   resetCurrentLocation() {
     this.$bus.$emit("map:location:current:fetching");
   }
@@ -59,7 +75,7 @@ export default class Home extends Vue {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 10px 10px 20px;
+    margin: 10px;
 
     i {
       background: #fff;
@@ -68,6 +84,17 @@ export default class Home extends Vue {
     i:first-child {
       font-weight: 700;
       font-size: 18px;
+    }
+
+    .editing {
+      background: #fff;
+      padding: 5px 8px 8px 5px;
+      color: #ff4500;
+      border-radius: 10px;
+
+      i {
+        font-size: 20px;
+      }
     }
   }
   .body {

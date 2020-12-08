@@ -37,5 +37,6 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 .ai-line {
   background: rgba(237, 237, 237, 1);
+  margin: 5px;
 }
 </style>
