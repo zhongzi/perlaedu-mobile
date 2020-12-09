@@ -54,7 +54,7 @@ export default class Home extends Vue {
   top: 0px;
   left: 0px;
   right: 0px;
-  z-index: 199;
+  z-index: 1001;
 
   width: 100%;
   height: 10vh;

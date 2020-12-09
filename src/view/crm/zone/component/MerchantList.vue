@@ -105,7 +105,7 @@ export default class Home extends Mixins(SyncMixin) {
     this.$bus.$emit("map:markers:inSelectedZone", v);
   }
 
-  merchantsLoadInBounds(bound) {
+  merchantsLoadInBounds({ bound, center }) {
     const sw = bound.getSouthWest();
     const ne = bound.getNorthEast();
     let query = {
@@ -135,6 +135,10 @@ export default class Home extends Mixins(SyncMixin) {
       reset: true,
       query: {
         query: JSON.stringify(query),
+        job: JSON.stringify({
+          point: [center.getLng(), center.getLat()],
+          city: this.city,
+        }),
         limit: 1000,
       },
       success: (resp) => {

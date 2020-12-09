@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper editing">
     <ai-image-uploader
       class="cover"
       v-model="innerMerchant.cover"
@@ -7,22 +7,39 @@
       :prefix="merchant.id"
     />
     <div class="fields">
-      <ai-input class="field" label="机构名称" v-model="innerMerchant.title" />
+      <ai-input class="field" label="名称" v-model="innerMerchant.title" />
       <ai-line />
       <ai-location-picker
         class="field"
-        label="机构地址"
+        label="地址"
         :value="location"
         @input="updateLocation"
       />
       <ai-line />
       <ai-input class="field" label="联系电话" v-model="innerMerchant.tel" />
+      <ai-input
+        class="field"
+        label="标签(逗号间隔)"
+        v-model="innerMerchant.tags_info"
+      />
       <ai-input-textarea
         v-model="innerMerchant.remark"
         placeholder="备注说明"
       />
+      <ai-input
+        class="field"
+        label="关联客户ID"
+        v-model.number="innerMerchant.related_merch_id"
+      />
+      <ai-input
+        class="field"
+        label="关联线索ID"
+        v-model.number="innerMerchant.related_clue_id"
+      />
     </div>
-    <ai-submit-actions @cancel="goBack" @submit="submit" />
+    <ai-fixed-footer>
+      <ai-submit-actions @cancel="goBack" @submit="submit" />
+    </ai-fixed-footer>
   </div>
 </template>
 
@@ -37,6 +54,7 @@ import AiLocationPicker from "@/view/component/AiLocationPicker";
 import AiLine from "@/view/component/AiLine.vue";
 import AiInputTextarea from "@/view/component/AiInputTextarea.vue";
 import AiSubmitActions from "@/view/component/AiSubmitActions.vue";
+import AiFixedFooter from "@/view/component/AiFixedFooter.vue";
 
 import isEqual from "lodash/isEqual";
 import isEmpty from "lodash/isEmpty";
@@ -53,6 +71,7 @@ import cloneDeep from "lodash/cloneDeep";
     AiLocationPicker,
     AiInputTextarea,
     AiSubmitActions,
+    AiFixedFooter,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
@@ -68,7 +87,10 @@ export default class Home extends Mixins(SyncMixin) {
       district: "",
     },
     tel: "",
+    tags_info: "",
     remark: "",
+    related_merch_id: "",
+    related_clue_id: "",
   };
 
   get merchant() {
@@ -163,7 +185,9 @@ export default class Home extends Mixins(SyncMixin) {
 }
 </script>
 <style lang="scss" scoped>
-.wrapper {
+.editing {
+  padding-bottom: 50px;
+
   .fields {
     position: relative;
     top: -15px;

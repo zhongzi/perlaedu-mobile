@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "6798111",
+      "name": "线索记录",
+      "font_class": "-clue",
+      "unicode": "e67d",
+      "unicode_decimal": 59005
+    },
+    {
       "icon_id": "14465148",
       "name": "location",
       "font_class": "-location-c",

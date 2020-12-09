@@ -114,4 +114,8 @@ a {
   background: #f5f5f5;
   min-height: 100vh;
 }
+
+.h-toast {
+  z-index: 9999 !important;
+}
 </style>

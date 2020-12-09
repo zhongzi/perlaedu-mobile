@@ -60,7 +60,9 @@ export default class Home extends Vue {
   }
 
   _initMap() {
-    this.map = this.$qqMap.getMap("ai-gps-picker-map");
+    const res = this.$qqMap.getMap("ai-gps-picker-map", {}, true);
+    this.map = res.map;
+    if (!res.isNew) return;
 
     this.multiMarker = new this.qq.MultiMarker({
       map: this.map,

@@ -88,8 +88,11 @@ export default class Home extends Vue {
 
     this.debBoundsChanged = debounce(() => {
       const bound = this.map.getBounds();
-      this.$bus.$emit("map:bounds:changed", bound);
+      const center = this.map.getCenter();
+      this.$bus.$emit("map:bounds:changed", { bound, center });
     }, 800);
+
+    this.fetchCurrentPosition();
   }
 
   @Watch("currentMarker")
@@ -167,7 +170,10 @@ export default class Home extends Vue {
   }
 
   _initMap() {
-    this.map = this.$qqMap.getMap("crm-zone-map");
+    const res = this.$qqMap.getMap("crm-zone-map");
+    this.map = res.map;
+    if (!res.isNew) return;
+
     this.map.on("click", this.onMapClicked);
     this.map.on("dblclick", this.onMapDBClicked);
     this.map.on("bounds_changed", this.debBoundsChanged);
@@ -211,8 +217,6 @@ export default class Home extends Vue {
 
     this.resetZonesOnMap();
     this.resetMarkersOnMap();
-
-    this.fetchCurrentPosition();
   }
 
   initEditor() {
@@ -404,6 +408,7 @@ export default class Home extends Vue {
   showInfoWindow(geometry) {
     if (geometry === "defaultMarker") return;
 
+    this.infoWindow.close();
     this.infoWindow.open();
     this.infoWindow.setPosition(geometry.position);
     this.infoWindow.setContent(geometry.properties.infoWindow);
@@ -431,11 +436,13 @@ export default class Home extends Vue {
   }
 
   onMapClicked() {
+    console.log("onMapClicked");
     this.infoWindow.close();
     this.editor && this.editor.select([]);
   }
 
   onMapDBClicked() {
+    console.log("onMapDBClicked");
     this.$bus.$emit("map:dbclicked");
   }
 

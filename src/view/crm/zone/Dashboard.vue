@@ -39,6 +39,8 @@ export default class Home extends Vue {
   created() {
     this.$bus.$on("map:dbclicked", () => {
       this.show = !this.show;
+      console.log(this.show);
+      this.$forceUpdate();
     });
   }
 }

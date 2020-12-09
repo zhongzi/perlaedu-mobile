@@ -49,9 +49,14 @@ class QQMap {
     return this.cached[id];
   }
 
-  getMap(id, options = {}) {
+  getMap(id, options = {}, reset = false) {
+    if (reset) {
+      this.destroyMap(id);
+    }
+
+    let isNew = false;
     let map = this.getCache(id);
-    if (!map && window.TMap) {
+    if (!map) {
       map = new window.TMap.Map(
         id,
         merge(
@@ -67,8 +72,10 @@ class QQMap {
         )
       );
       this.setCache(id, map);
+      isNew = true;
     }
-    return map;
+
+    return { map, isNew };
   }
 
   destroyMap(id) {
@@ -94,6 +101,10 @@ class QQMap {
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  getLocationURL({ title, address, coord }) {
+    return `https://apis.map.qq.com/tools/poimarker?type=0&marker=coord:${coord[0]},${coord[1]};title:${title};addr:${address}&key=${this.key}&referer=${this.keyName}`;
   }
 
   search({ keyword, boundary, callback }) {
