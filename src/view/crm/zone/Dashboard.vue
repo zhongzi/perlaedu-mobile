@@ -1,21 +1,14 @@
 <template>
   <div class="wrapper dashboard">
-    <popup-search-bar
-      :class="[
-        'search',
-        'animate__animated',
-        'animate__faster',
-        show ? 'animate__slideInDown' : 'animate__slideOutUp',
-      ]"
-    />
     <map-v class="map" />
     <popup-content-container
       :class="[
-        'conatiner',
-        'animate__animated',
-        'animate__faster',
-        show ? 'animate__slideInUp' : 'animate__slideOutDown',
+        'container',
+        { expanded: expanded },
+        { 'no-expanded': !expanded },
       ]"
+      v-touch:swipe.top="onSwipeToTop"
+      v-touch:swipe.bottom="onSwipeToBottom"
     />
   </div>
 </template>
@@ -24,25 +17,41 @@
 import { Component, Vue } from "vue-property-decorator";
 
 import MapV from "./component/Map.vue";
-import PopupSearchBar from "./component/PopupSearchBar.vue";
 import PopupContentContainer from "./component/PopupContentContainer.vue";
 
 @Component({
   components: {
     MapV,
-    PopupSearchBar,
     PopupContentContainer,
   },
 })
 export default class Home extends Vue {
-  show: boolean = false;
+  expanded: boolean = false;
+
   created() {
-    this.$bus.$on("map:dbclicked", () => {
-      this.show = !this.show;
-      console.log(this.show);
-      this.$forceUpdate();
-    });
+    this.$bus.$on("map:search:changed", this.onSwipeToTop);
+  }
+
+  onSwipeToTop() {
+    this.expanded = true;
+  }
+  onSwipeToBottom() {
+    this.expanded = false;
   }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.dashboard {
+  .container {
+    overflow: hidden;
+  }
+  .expanded {
+    height: 50vh;
+    transition: height 0.5s ease-in-out;
+  }
+  .no-expanded {
+    height: 135px;
+    transition: height 0.5s ease-in-out;
+  }
+}
+</style>

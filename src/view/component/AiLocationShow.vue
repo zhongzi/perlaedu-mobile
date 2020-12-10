@@ -1,7 +1,7 @@
 <template>
   <div :class="b()">
     <ai-popup :value="openInNoWeixin" @input="updateValue" :class="b('popup')">
-      <div class="back" @click="updateValue(false)">
+      <div class="back" @click.stop="updateValue(false)">
         <i class="iconfont icon-direction-left" />
         <span> 返回 </span>
       </div>

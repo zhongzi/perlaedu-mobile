@@ -22,6 +22,7 @@ import directives from "./directive";
 import { tools } from "./plugin/tools";
 import "./api/login";
 import { loadDictionary } from "./plugin/configs";
+import Vue2TouchEvents from "vue2-touch-events";
 
 import isEmpty from "lodash/isEmpty";
 import isObject from "lodash/isObject";
@@ -31,6 +32,7 @@ import _get from "lodash/get";
 Vue.use(Hui);
 Vue.use(VueBemCn);
 Vue.use(VueCookies);
+Vue.use(Vue2TouchEvents, { disableClick: true });
 
 const configs = require("./configs.json");
 const isProduction = process.env.NODE_ENV === "production";

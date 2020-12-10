@@ -7,12 +7,8 @@
       :refresh.sync="refresh"
       scrollType="slider"
       :sliderOptions="{ slidesPerView: 5, spaceBetween: 20 }"
-      :enableSlideBefore="isAdmin"
       class="list"
     >
-      <template v-slot:slide-before>
-        <zone-add-entry />
-      </template>
       <template v-slot:item="{ item }">
         <zone
           :zone="item"
@@ -30,7 +26,6 @@ import { Component, Vue, Watch, Prop, Mixins } from "vue-property-decorator";
 import AiSection from "@/view/component/AiSection.vue";
 import AiListStored from "@/view/component/AiListStored.vue";
 
-import ZoneAddEntry from "./ZoneAddEntry.vue";
 import Zone from "./Zone.vue";
 
 import merge from "lodash/merge";
@@ -41,7 +36,6 @@ import _get from "lodash/get";
     AiSection,
     AiListStored,
     Zone,
-    ZoneAddEntry,
   },
 })
 export default class Home extends Vue {
@@ -57,7 +51,7 @@ export default class Home extends Vue {
       ? {}
       : {
           query: JSON.stringify({
-            follower: this.$auth.openid,
+            "follower.openid": this.$auth.openid,
           }),
         };
   }
@@ -84,7 +78,8 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .zone-list {
-  margin: 10px 20px;
+  margin: 0px 20px;
+
   .selected {
     border: 1px solid #f00;
   }

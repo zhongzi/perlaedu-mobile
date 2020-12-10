@@ -28,6 +28,7 @@ export default class Home extends Vue {
   text-align: center;
   font-size: 10px;
   padding: 1px;
+  background: #f2f2f2;
 
   img {
     width: 100%;

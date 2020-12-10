@@ -69,6 +69,13 @@
       "unicode_decimal": 59198
     },
     {
+      "icon_id": "18747864",
+      "name": "下拉",
+      "font_class": "-shangla",
+      "unicode": "ea77",
+      "unicode_decimal": 60023
+    },
+    {
       "icon_id": "5101483",
       "name": "切换",
       "font_class": "-switch",

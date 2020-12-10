@@ -161,7 +161,7 @@ export default class Home extends Mixins(SyncMixin) {
 </script>
 <style lang="scss" scoped>
 .merchant-list {
-  margin: 10px 20px;
+  margin: 0px 20px;
 
   .selected {
     border: 1px solid #f00;

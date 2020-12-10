@@ -153,7 +153,7 @@ export default class Home extends Mixins(SyncMixin) {
   width: 50px;
   height: 50px;
 
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 900;
   text-align: center;
 

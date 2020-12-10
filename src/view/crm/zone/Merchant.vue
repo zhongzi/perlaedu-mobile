@@ -214,6 +214,7 @@ export default class Home extends Mixins(SyncMixin) {
       },
     };
     this.loadList({
+      reset: true,
       store: "mongoMerchantZone",
       query: {
         query: JSON.stringify(query),
