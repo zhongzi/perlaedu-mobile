@@ -41,7 +41,7 @@ export default class Home extends Mixins(SyncMixin) {
     this.saveEntity({
       store: "crmClue",
       res: {
-        channel_id: this.$configs.crmChannelCodeDT,
+        code: this.$configs.crmChannelCodeDT,
         name: this.merchant.title,
         phone: this.merchant.tel,
         remark: this.remark,

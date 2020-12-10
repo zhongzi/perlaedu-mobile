@@ -75,23 +75,7 @@ import cloneDeep from "lodash/cloneDeep";
   },
 })
 export default class Home extends Mixins(SyncMixin) {
-  innerMerchant: any = {
-    id: "",
-    cover: "",
-    title: "",
-    loc: [0, 0],
-    address: "",
-    ad_info: {
-      province: "",
-      city: "",
-      district: "",
-    },
-    tel: "",
-    tags_info: "",
-    remark: "",
-    related_merch_id: "",
-    related_clue_id: "",
-  };
+  innerMerchant: any = null;
 
   get merchant() {
     return this.entity;
@@ -116,7 +100,9 @@ export default class Home extends Mixins(SyncMixin) {
 
   @Watch("$route", { deep: true })
   onRouteChanged() {
-    this.load();
+    if (this.$route.name === "crmMerchantEditing") {
+      this.load();
+    }
   }
 
   @Watch("merchant", { deep: true })
@@ -131,6 +117,24 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   load() {
+    this.innerMerchant = {
+      id: "",
+      cover: "",
+      title: "",
+      loc: [0, 0],
+      address: "",
+      ad_info: {
+        province: "",
+        city: "",
+        district: "",
+      },
+      tel: "",
+      tags_info: "",
+      remark: "",
+      related_merch_id: "",
+      related_clue_id: "",
+    };
+
     this.id = this.$route.params.merchantId;
     if (this.id === "new") {
       this.id = null;

@@ -56,6 +56,7 @@ export default class Home extends Vue {
     background: rgba(239, 239, 239, 1);
     border-radius: 25px;
     border: none;
+    flex: 1;
 
     font-size: 14px;
     font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
@@ -72,6 +73,8 @@ export default class Home extends Vue {
     border-radius: 25px;
     border: none;
 
+    flex: 2;
+
     font-size: 14px;
     font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
     font-weight: bold;
@@ -85,6 +88,8 @@ export default class Home extends Vue {
     height: 48px;
     border-radius: 25px;
     border: none;
+
+    flex: 1;
 
     font-size: 14px;
     font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;

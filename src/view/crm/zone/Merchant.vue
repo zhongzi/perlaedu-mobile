@@ -19,18 +19,11 @@
             </div>
             <div class="item">
               <span> 地址: </span>
-              <span @click="show = true"> {{ address }}(点击查看地图) </span>
+              <span @click="show = true"> {{ address }} </span>
             </div>
             <div class="item">
               <span> 电话: </span>
-              <div class="phone">
-                <span> {{ phone }} </span>
-                <i
-                  v-if="phone.length > 0"
-                  class="iconfont icon-phone"
-                  @click="$tools.call(merchant.tel)"
-                />
-              </div>
+              <span @click="call"> {{ phone }} </span>
             </div>
             <div class="item">
               <span> 类别: </span>
@@ -66,6 +59,9 @@
               <div class="navs">
                 <div class="nav" @click="show = true">
                   <i class="iconfont icon-location-empty" />
+                </div>
+                <div class="nav" v-if="phone.length > 0" @click="call">
+                  <i class="iconfont icon-phone" />
                 </div>
                 <div class="nav" v-if="showHome" @click="goWebsite">
                   <i class="iconfont icon-home" />
@@ -189,7 +185,9 @@ export default class Home extends Mixins(SyncMixin) {
 
   @Watch("$route", { deep: true })
   onRouteChanged() {
-    this.load();
+    if (this.$route.name === "crmMerchant") {
+      this.load();
+    }
   }
 
   @Watch("merchant", { deep: true })
@@ -258,6 +256,12 @@ export default class Home extends Mixins(SyncMixin) {
         customerId: this.merchant.related_clue_id,
       },
     });
+  }
+
+  call() {
+    if (!isEmpty(this.merchant.tel)) {
+      this.$tools.call(this.merchant.tel);
+    }
   }
 
   beRelatedClue() {
@@ -336,7 +340,7 @@ export default class Home extends Mixins(SyncMixin) {
             margin: 5px 10px;
 
             i {
-              font-size: 48px;
+              font-size: 40px;
               color: #67c23a;
             }
 

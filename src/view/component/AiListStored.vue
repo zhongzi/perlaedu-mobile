@@ -8,6 +8,7 @@
         :loading="listLoading"
         :list="list"
         :listTotal="listTotal"
+        :emptyText="enableEmpty && emptyText"
         @pull-down="loadData(true)"
         @pull-up="loadData"
       >
@@ -26,11 +27,6 @@
         </template>
         <template v-slot:item-after>
           <slot name="item-after" />
-        </template>
-        <template v-slot:empty v-if="enableEmpty">
-          <slot name="empty">
-            <span>暂无数据</span>
-          </slot>
         </template>
         <template v-slot:footer>
           <slot name="footer" />
@@ -156,6 +152,7 @@ export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Boolean, default: true }) enablePullUp: boolean;
   @Prop({ type: Boolean, default: false }) enableGotoTop: boolean;
   @Prop({ type: Boolean, default: true }) enableEmpty: boolean;
+  @Prop({ type: String, default: "暂无数据" }) emptyText: boolean;
   @Prop({ type: Boolean, default: false }) hideIfNoData: boolean;
   @Prop({ type: Boolean, default: false }) enableMoreData: boolean;
   @Prop({ type: Object, default: () => ({}) }) sliderOptions: object;

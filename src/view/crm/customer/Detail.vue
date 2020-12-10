@@ -48,7 +48,7 @@ export default class Home extends Mixins(SyncMixin) {
     { label: "客户详情", value: "detail" },
     { label: "工作清单", value: "jobs" },
     { label: "跟踪记录", value: "action" },
-    { label: "过往事件", value: "customer" },
+    { label: "过往事件", value: "clue" },
   ];
   curTabIdx: number = 0;
 

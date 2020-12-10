@@ -184,13 +184,13 @@ export default class Home extends Vue {
       styles: {
         defaultMarker: new this.qq.MarkerStyle({
           width: 15,
-          height: 15,
+          height: 18,
           src:
             "https://mapapi.qq.com/web/lbs/javascriptGL/demo/img/markerDefault.png",
         }),
         curPositionMarker: new this.qq.MarkerStyle({
           width: 25,
-          height: 35,
+          height: 30,
           src:
             "https://files.perlaedu.com/mobile/default/map-marker-current-position.png",
         }),
