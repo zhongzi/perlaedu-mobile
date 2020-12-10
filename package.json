@@ -12,7 +12,7 @@
     "publish": "NEED_PUBLISH=true vue-cli-service build",
     "publish:html": "scp ./dist/index.html cooppos:/home/zhongzi/perlaedu/www/mobile/",
     "publish:production": "NEED_PUBLISH=true TARGET=production vue-cli-service build",
-    "publish:production:html": "scp ./dist/index.html perlaedu:/home/perlaai/perlaedu-mobile"
+    "publish:production:html": "scp ./dist/index.html perlaai@ai.perlaedu.com:/home/perlaai/perlaedu-mobile"
   },
   "dependencies": {
     "@better-scroll/infinity": "^2.0.4",

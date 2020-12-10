@@ -39,7 +39,10 @@
           <div class="actions">
             <action-add-action :customer="customer" />
             <hui-button type="info" @click.native.stop="edit">
-              编辑详情
+              编辑
+            </hui-button>
+            <hui-button @click.native.stop="viewHistory">
+              历史
             </hui-button>
           </div>
         </div>
@@ -306,6 +309,16 @@ export default class Home extends Vue {
       name: "crmCustomerEditing",
       params: {
         customerId: this.customer.id,
+      },
+    });
+  }
+
+  viewHistory() {
+    let openid = _get(this.customer, "user.openid") || this.customer.phone;
+    this.$router.push({
+      name: "userHistory",
+      query: {
+        openid: openid,
       },
     });
   }

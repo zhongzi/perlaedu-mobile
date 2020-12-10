@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper add-action">
     <hui-button type="info" @click.native.stop="open">
-      新跟进记录
+      跟进
     </hui-button>
   </div>
 </template>

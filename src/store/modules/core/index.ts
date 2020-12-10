@@ -1,4 +1,5 @@
 import oauth from "./oauth";
+import oauthHistory from "./oauth_history";
 import person from "./person";
 import merchant from "./merchant";
 import agent from "./agent";
@@ -20,6 +21,7 @@ import merchantStatistics from "./merchant_statistics";
 
 export default {
   oauth,
+  oauthHistory,
   person,
   merchant,
   merchantStatistics,
