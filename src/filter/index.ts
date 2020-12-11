@@ -8,6 +8,7 @@ import qrcode from "./qrcode";
 import qrcodeWhite from "./qrcode_white";
 import alioss from "./alioss";
 import prettyBytes from "./pretty_bytes";
+import dates from "./date";
 
 import format from "date-fns/format";
 import parseISO from "date-fns/parseISO";
@@ -165,6 +166,7 @@ const filters: { [k: string]: any } = {
   distanceFromDatetime,
   prettyBytes,
   emptyReplace,
+  ...dates,
 };
 
 export default filters;

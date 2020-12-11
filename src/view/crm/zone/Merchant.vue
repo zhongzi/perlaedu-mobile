@@ -1,5 +1,8 @@
 <template>
   <div class="wrapper merchant">
+    <div class="status" v-if="merchant.notExisted">
+      <img :src="statusImg" />
+    </div>
     <ai-card class="body">
       <template v-slot:body>
         <img :src="cover" class="cover" />
@@ -106,6 +109,7 @@ import AiLine from "@/view/component/AiLine.vue";
 import AiSubmitActions from "@/view/component/AiSubmitActions.vue";
 import AiFixedFooter from "@/view/component/AiFixedFooter.vue";
 import AiLocationShow from "@/view/component/AiLocationShow.vue";
+import AiInputSwitch from "@/view/component/AiInputSwitch.vue";
 
 import ClueRemark from "./component/ClueRemark.vue";
 
@@ -126,6 +130,7 @@ import startsWith from "lodash/startsWith";
     AiSubmitActions,
     AiFixedFooter,
     AiLocationShow,
+    AiInputSwitch,
     ClueRemark,
   },
 })
@@ -133,6 +138,10 @@ export default class Home extends Mixins(SyncMixin) {
   showClueRemark: boolean = false;
   show: boolean = false;
   zones: any = [];
+
+  get statusImg() {
+    return require("@/asset/image/s-expired" + this.$densityStr + ".png");
+  }
 
   get cover() {
     return (
@@ -282,7 +291,14 @@ export default class Home extends Mixins(SyncMixin) {
 </script>
 <style lang="scss" scoped>
 .merchant {
+  position: relative;
   padding: 10px 10px 50px 10px;
+
+  .status {
+    position: absolute;
+    top: 50vh;
+    right: 10px;
+  }
 
   .body {
     padding: 10px;

@@ -7,6 +7,11 @@
       :prefix="merchant.id"
     />
     <div class="fields">
+      <ai-input-switch
+        :value="!innerMerchant.notExisted"
+        @input="(v) => (innerMerchant.notExisted = !v)"
+        label="存在"
+      />
       <ai-input class="field" label="名称" v-model="innerMerchant.title" />
       <ai-line />
       <ai-location-picker
@@ -49,9 +54,10 @@ import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 import SyncMixin from "@/mixin/SyncMixin";
 
 import AiImageUploader from "@/view/component/AiImageUploader.vue";
-import AiInput from "@/view/component/AiInput.vue";
 import AiLocationPicker from "@/view/component/AiLocationPicker";
 import AiLine from "@/view/component/AiLine.vue";
+import AiInput from "@/view/component/AiInput.vue";
+import AiInputSwitch from "@/view/component/AiInputSwitch.vue";
 import AiInputTextarea from "@/view/component/AiInputTextarea.vue";
 import AiSubmitActions from "@/view/component/AiSubmitActions.vue";
 import AiFixedFooter from "@/view/component/AiFixedFooter.vue";
@@ -67,6 +73,7 @@ import cloneDeep from "lodash/cloneDeep";
   components: {
     AiImageUploader,
     AiInput,
+    AiInputSwitch,
     AiLine,
     AiLocationPicker,
     AiInputTextarea,
@@ -119,6 +126,7 @@ export default class Home extends Mixins(SyncMixin) {
   load() {
     this.innerMerchant = {
       id: "",
+      notExisted: false,
       cover: "",
       title: "",
       loc: [0, 0],

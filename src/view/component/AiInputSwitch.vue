@@ -8,6 +8,7 @@
     <toggle-button
       :value="value"
       :sync="true"
+      :disabled="disabled"
       @input="(v) => $emit('input', v)"
     />
   </div>
@@ -27,6 +28,7 @@ import { ToggleButton } from "vue-js-toggle-button";
 export default class Home extends Vue {
   @Prop({ type: String, default: null }) label: string;
   @Prop({ type: Boolean, default: false }) value: boolean;
+  @Prop({ type: Boolean, default: false }) disabled: boolean;
   @Prop({ type: Boolean, default: true }) showBottomLine: boolean;
 }
 </script>

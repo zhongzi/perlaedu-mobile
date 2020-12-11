@@ -1,5 +1,8 @@
 <template>
   <ai-section class="wrapper merchant-list">
+    <div class="indicator">
+      <span> {{ total }} </span>
+    </div>
     <ai-list-stored
       v-if="showList"
       class="list"
@@ -43,6 +46,7 @@ import merge from "lodash/merge";
 export default class Home extends Mixins(SyncMixin) {
   refresh: boolean = false;
 
+  total: number = 0;
   city: string = null;
   keyword: string = null;
   curZone: any = null;
@@ -139,9 +143,10 @@ export default class Home extends Mixins(SyncMixin) {
           point: [center.getLng(), center.getLat()],
           city: this.city,
         }),
-        limit: 1000,
+        limit: 3000,
       },
       success: (resp) => {
+        this.total = resp.data.total;
         this.$bus.$emit("map:markers:inView", {
           list: resp.data.data,
           total: resp.data.total,
@@ -171,6 +176,17 @@ export default class Home extends Mixins(SyncMixin) {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+  }
+  .indicator {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+
+    background: rgba(230, 30, 23, 0.5);
+    padding: 5px 10px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 700;
   }
 }
 </style>

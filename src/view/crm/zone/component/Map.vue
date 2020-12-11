@@ -16,6 +16,8 @@ import map from "lodash/map";
 import _get from "lodash/get";
 import debounce from "lodash/debounce";
 
+import markerStyles from "./map_styles";
+
 @Component
 export default class Home extends Vue {
   qq: any = null;
@@ -181,26 +183,7 @@ export default class Home extends Vue {
 
     this.multiMarker = new this.qq.MultiMarker({
       map: this.map,
-      styles: {
-        defaultMarker: new this.qq.MarkerStyle({
-          width: 15,
-          height: 18,
-          src:
-            "https://mapapi.qq.com/web/lbs/javascriptGL/demo/img/markerDefault.png",
-        }),
-        curPositionMarker: new this.qq.MarkerStyle({
-          width: 25,
-          height: 30,
-          src:
-            "https://files.perlaedu.com/mobile/default/map-marker-current-position.png",
-        }),
-        inZoneMarker: new this.qq.MarkerStyle({
-          width: 25,
-          height: 35,
-          src:
-            "https://mapapi.qq.com/web/lbs/javascriptGL/demo/img/markerDefault.png",
-        }),
-      },
+      styles: markerStyles.styles,
     });
     this.multiMarker.on("click", this.onMarkerClicked);
 
@@ -374,7 +357,7 @@ export default class Home extends Vue {
     if (this.markersInView) {
       const markers = map(this.markersInView.list, (marker) => ({
         id: marker.id,
-        styleId: "defaultMarker",
+        styleId: markerStyles.getStyleIdByMerchant(marker),
         position: new this.qq.LatLng(marker.loc[1], marker.loc[0]),
         properties: {
           infoWindow: this.buildInfoWindowContent(marker),
