@@ -7,7 +7,7 @@
       </div>
       <div class="buy" @click="openBuyLink" v-if="showBuyLink">
         <i class="iconfont icon-cart" />
-        <span>购课</span>
+        <span>购买 </span>
       </div>
     </div>
     <div class="content">
@@ -16,7 +16,7 @@
       <ai-section class="resource description">
         <template v-slot:header>
           <i class="iconfont icon-course course-icon" />
-          <span> 课程详情 </span>
+          <span> 详情 </span>
         </template>
         <ai-rich-text-sections-editor
           :is-editing="false"

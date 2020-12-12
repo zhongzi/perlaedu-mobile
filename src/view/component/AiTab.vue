@@ -1,5 +1,5 @@
 <template>
-  <hui-tab-rounded v-model="curTabIdx" :tabs="tabs" :label="label" />
+  <hui-tab v-model="curTabIdx" :tabs="tabs" :label="label" />
 </template>
 
 <script lang="ts">
@@ -12,6 +12,7 @@ export default class Home extends Vue {
   @Prop({ type: Number, default: 0 }) value: number;
   @Prop({ type: Array, default: () => [] }) tabs: any;
   @Prop({ type: String, default: "label" }) label: string;
+  @Prop({ type: Boolean, default: false }) stickable: string;
 
   curTabIdx: number = 0;
 
@@ -28,9 +29,10 @@ export default class Home extends Vue {
   onInnerCurTabIdxChanged() {
     this.$emit("input", this.curTabIdx);
 
-    this.$router.replace({
-      query: { tab: this.curTabIdx as any },
-    });
+    this.stickable &&
+      this.$router.replace({
+        query: { tab: this.curTabIdx as any },
+      });
   }
 }
 </script>

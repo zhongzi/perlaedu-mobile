@@ -19,13 +19,17 @@
       <ai-line />
       <div class="custome-icon">
         <div class="label">自定义科目icon（可选）</div>
-        <ai-image-uploader
+        <img
+          v-if="innerCourse.subject_icon"
           class="icon"
-          triggerName="icon"
-          v-model="innerCourse.subject_icon"
-          type="merchant"
-          :resizeOption="({ width: 200, height: 200 })"
+          :src="innerCourse.subject_icon"
+          @click="openIconPicker = true"
+        />
+        <i v-else class="iconfont icon-upload" @click="openIconPicker = true" />
+        <icon-picker
+          :open.sync="openIconPicker"
           :prefix="merchantId + '/courses/' + innerCourse.id || ''"
+          @selected="(v) => (innerCourse.subject_icon = v)"
         />
       </div>
       <ai-line />
@@ -72,6 +76,8 @@ import AiLine from "@/view/component/AiLine.vue";
 import AiSection from "@/view/component/AiSection.vue";
 import AiFixedFooter from "@/view/component/AiFixedFooter.vue";
 
+import IconPicker from "./component/IconPicker.vue";
+
 import isEqual from "lodash/isEqual";
 import isEmpty from "lodash/isEmpty";
 import _get from "lodash/get";
@@ -89,10 +95,13 @@ import cloneDeep from "lodash/cloneDeep";
     AiLine,
     AiSection,
     AiFixedFooter,
+    IconPicker,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
+  openIconPicker: boolean = false;
   innerCourse: any = {};
+
   get query() {
     return {};
   }

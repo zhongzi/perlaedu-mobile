@@ -18,6 +18,8 @@ import websiteVideo from "./website_video";
 import websiteStyle from "./website_style";
 import setting from "./setting";
 import merchantStatistics from "./merchant_statistics";
+import icon from "./icon";
+import iconGroup from "./icon_group";
 
 export default {
   oauth,
@@ -40,4 +42,6 @@ export default {
   websiteVideo,
   websiteStyle,
   setting,
+  icon,
+  iconGroup,
 };

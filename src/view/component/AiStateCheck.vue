@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[b({ checked: innerChecked }), b({ disabled: disabled })]"
-    @click.stop="trigger"
+    @click="trigger"
   >
     <slot />
     <i class="iconfont icon-checked" :class="b('icon')" v-if="innerChecked" />
