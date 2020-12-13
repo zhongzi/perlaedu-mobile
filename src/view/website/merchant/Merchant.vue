@@ -110,9 +110,12 @@
         </template>
       </template>
       <template v-else>
+<<<<<<< HEAD
         <div class="section campaigns">
           <campaign-list :query="query" :merchant="merchant" />
         </div>
+=======
+>>>>>>> Add 增加门户板块自定义与显隐排序支持
         <div class="section courses">
           <course-list :query="query" :merchant="merchant" />
         </div>

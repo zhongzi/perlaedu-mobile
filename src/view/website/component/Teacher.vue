@@ -56,7 +56,6 @@ export default class Home extends Vue {
 .wrapper {
   background: rgba(255, 255, 255, 0.7);
   box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
-  margin-bottom: 15px;
 
   .cover {
     border-radius: 4px;
