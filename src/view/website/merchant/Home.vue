@@ -107,7 +107,7 @@ export default class Home extends Mixins(SyncMixin) {
             "website",
             "coupon",
           ],
-          Website: ["skin", "share"],
+          Website: ["skin", "share", "settings"],
         }),
       },
       success: () => {

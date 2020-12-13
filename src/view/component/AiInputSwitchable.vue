@@ -15,10 +15,12 @@
       />
     </div>
     <div v-else :class="b('label')" @click="isEditing = !isEditing">
-      {{ value }}
       <div :class="b('label-tip')">
         <i class="iconfont icon-edit-line" />
         {{ tip }}
+      </div>
+      <div>
+        {{ value }}
       </div>
     </div>
   </div>
@@ -56,8 +58,6 @@ export default class Home extends Mixins(PatchMixin) {
 .ai-input {
   width: 100%;
   text-align: center;
-  position: relative;
-  padding-top: 20px;
   overflow-wrap: anywhere;
 
   &__input {
@@ -80,12 +80,11 @@ export default class Home extends Mixins(PatchMixin) {
     }
   }
   &__label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     &-tip {
-      position: absolute;
-      top: 5px;
-      right: 0px;
-      width: 100%;
-
       display: flex;
       align-items: center;
       justify-content: center;

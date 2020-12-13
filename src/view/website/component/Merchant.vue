@@ -28,6 +28,7 @@
       </div>
     </div>
     <ai-location
+      v-if="show"
       :show.sync="show"
       :gps="merchant.location | safe('gps', [])"
       :address="merchant.location | safe('address')"

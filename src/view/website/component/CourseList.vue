@@ -13,7 +13,7 @@
           :src="skin.title.image"
           :style="skin.title.style"
         />
-        <div v-else>热门课程</div>
+        <div v-else>{{ title || "热门课程" }}</div>
       </template>
       <template v-slot:item="{ item }">
         <course
@@ -47,6 +47,7 @@ import _get from "lodash/get";
 export default class Home extends Vue {
   @Prop({ type: Object, default: null }) query: any;
   @Prop({ type: Object, default: null }) merchant: any;
+  @Prop({ type: String, default: null }) title: string;
 
   get skin() {
     return _get(this.merchant, "website.skin.course", {});
@@ -64,7 +65,6 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .course {
-  margin-bottom: 20px;
   padding: 0px 20px;
 
   & ::v-deep .ai-list-stored__list {

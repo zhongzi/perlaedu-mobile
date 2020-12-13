@@ -16,7 +16,7 @@
           :prefix="prefix"
         />
       </div>
-      <div class="icon-groups">
+      <div class="icon-groups" v-sticky="'iconPicker'">
         <template v-for="group in groups">
           <icon-group
             :key="group.id"

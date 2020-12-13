@@ -13,7 +13,7 @@
           :src="skin.title.image"
           :style="skin.title.style"
         />
-        <div v-else>最新动态</div>
+        <div v-else>{{ title || "最新动态" }}</div>
       </template>
       <template v-slot:item="{ item, index }">
         <div v-if="index === 0" class="image" @click="openArticle(item)">
@@ -50,6 +50,7 @@ import _get from "lodash/get";
 export default class Home extends Vue {
   @Prop({ type: Object, default: null }) query: any;
   @Prop({ type: Object, default: null }) merchant: any;
+  @Prop({ type: String, default: null }) title: string;
 
   get skin() {
     return _get(this.merchant, "website.skin.article", {});
@@ -75,11 +76,7 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .article {
-  padding: 0px 20px 20px;
-
-  .list {
-    padding-bottom: 20px;
-  }
+  padding: 0px 20px;
 
   & ::v-deep .ai-list-stored__list {
     border-radius: 8px;

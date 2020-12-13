@@ -29,6 +29,7 @@ const state = {
   expose: "",
   expose2: "",
   routes: [],
+  sticky: {},
 };
 
 const getters = {
@@ -58,6 +59,9 @@ const mutations = {
   },
   updateUser(state, user) {
     state.user = user;
+  },
+  updateSticky(state, { key, position }) {
+    state.sticky[key] = position;
   },
   beforeRouteEnter(state, { to, from }) {
     state.routerEntering = true;

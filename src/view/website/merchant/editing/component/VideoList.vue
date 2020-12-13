@@ -1,5 +1,5 @@
 <template>
-  <ai-section class="wrapper editing-videos" title="精彩视频">
+  <ai-section class="wrapper editing-videos" :title="title || '精彩视频'">
     <ai-list-stored
       resource="websiteVideo"
       :query="innerQuery"
@@ -62,6 +62,7 @@ import merge from "lodash/merge";
 export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Object, default: null }) query: any;
   @Prop({ type: Object, default: null }) merchant: any;
+  @Prop({ type: String, default: null }) title: string;
 
   refresh: boolean = false;
 

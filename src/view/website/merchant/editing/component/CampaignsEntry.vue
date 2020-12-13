@@ -1,6 +1,6 @@
 <template>
   <ai-cell
-    title="最新活动"
+    :title="title || '最新活动'"
     subtitle="自动显示活动招生里正在进行中的活动"
     @click.native="gotoCampaignManager"
     class="wrapper editing-campaigns-entry"
@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 
 import AiCell from "@/view/component/AiCell.vue";
 
@@ -27,6 +27,8 @@ import AiCell from "@/view/component/AiCell.vue";
   },
 })
 export default class Home extends Vue {
+  @Prop({ type: String, default: null }) title: string;
+
   gotoCampaignManager() {
     window.location.href = this.$configs.campaignServiceURL;
     return;
@@ -36,6 +38,8 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 .editing-campaigns-entry {
   padding-bottom: 10px;
+  margin: 0px 20px;
+
   .title {
     font-size: 14px;
     font-weight: bold;

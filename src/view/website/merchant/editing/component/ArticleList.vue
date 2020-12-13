@@ -1,5 +1,5 @@
 <template>
-  <ai-section class="wrapper editing-articles" title="学校动态">
+  <ai-section class="wrapper editing-articles" :title="title || '学校动态'">
     <article-add-entry :merchant="merchant" class="plus" />
     <ai-list-stored
       resource="article"
@@ -67,6 +67,7 @@ import merge from "lodash/merge";
 export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Object, default: null }) query: any;
   @Prop({ type: Object, default: null }) merchant: any;
+  @Prop({ type: String, default: null }) title: string;
 
   refresh: boolean = false;
 

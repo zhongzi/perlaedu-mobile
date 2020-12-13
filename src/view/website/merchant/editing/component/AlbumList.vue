@@ -1,5 +1,5 @@
 <template>
-  <ai-section class="wrapper editing-teachers" title="学校相册">
+  <ai-section class="wrapper editing-teachers" :title="title || '学校相册'">
     <ai-list-stored
       resource="album"
       :query="innerQuery"
@@ -62,6 +62,7 @@ import merge from "lodash/merge";
 export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Object, default: null }) query: any;
   @Prop({ type: Object, default: null }) merchant: any;
+  @Prop({ type: String, default: null }) title: string;
 
   refresh: boolean = false;
 
@@ -112,7 +113,7 @@ export default class Home extends Mixins(SyncMixin) {
   }
   .sequence {
     position: relative;
-    top: -5px;
+    top: 5px;
   }
 }
 </style>

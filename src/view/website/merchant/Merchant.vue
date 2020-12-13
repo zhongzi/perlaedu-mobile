@@ -38,24 +38,98 @@
           <coupon-list :query="query" :merchant="merchant" />
         </div>
       </div>
-      <div class="section campaigns">
-        <campaign-list :query="query" :merchant="merchant" />
-      </div>
-      <div class="section courses">
-        <course-list :query="query" :merchant="merchant" />
-      </div>
-      <div class="section teachers">
-        <teacher-list :query="query" :merchant="merchant" />
-      </div>
-      <div class="section albums">
-        <album-list :query="query" :merchant="merchant" />
-      </div>
-      <div class="section videos">
-        <video-list :query="query" :merchant="merchant" />
-      </div>
-      <div class="section articles">
-        <article-list :query="query" :merchant="merchant" />
-      </div>
+      <template v-if="sections">
+        <template v-for="section in sections">
+          <div
+            class="section campaigns"
+            v-if="section.sid === 'campaign' && section.enabled"
+            :key="section.sid"
+          >
+            <campaign-list
+              :query="query"
+              :merchant="merchant"
+              :title="section.title"
+            />
+          </div>
+
+          <div
+            class="section courses"
+            v-if="section.sid === 'course' && section.enabled"
+            :key="section.sid"
+          >
+            <course-list
+              :query="query"
+              :merchant="merchant"
+              :title="section.title"
+            />
+          </div>
+          <div
+            class="section teachers"
+            v-if="section.sid === 'teacher' && section.enabled"
+            :key="section.sid"
+          >
+            <teacher-list
+              :query="query"
+              :merchant="merchant"
+              :title="section.title"
+            />
+          </div>
+          <div
+            class="section albums"
+            v-if="section.sid === 'album' && section.enabled"
+            :key="section.sid"
+          >
+            <album-list
+              :query="query"
+              :merchant="merchant"
+              :title="section.title"
+            />
+          </div>
+          <div
+            class="section videos"
+            v-if="section.sid === 'video' && section.enabled"
+            :key="section.sid"
+          >
+            <video-list
+              :query="query"
+              :merchant="merchant"
+              :title="section.title"
+            />
+          </div>
+          <div
+            class="section articles"
+            v-if="section.sid === 'article' && section.enabled"
+            :key="section.sid"
+          >
+            <article-list
+              :query="query"
+              :merchant="merchant"
+              :title="section.title"
+            />
+          </div>
+        </template>
+      </template>
+      <template v-else>
+        <div class="section campaigns">
+          <campaign-list :query="query" :merchant="merchant" />
+        </div>
+        <div class="section courses">
+          <course-list :query="query" :merchant="merchant" />
+        </div>
+        <div class="section teachers">
+          <teacher-list :query="query" :merchant="merchant" />
+        </div>
+        <div class="section albums">
+          <album-list :query="query" :merchant="merchant" />
+        </div>
+        <div class="section videos">
+          <video-list :query="query" :merchant="merchant" />
+        </div>
+        <div class="section articles">
+          <article-list :query="query" :merchant="merchant" />
+        </div>
+      </template>
+
       <ai-copyright :manual="true" />
       <ai-register-entry
         class="block"
@@ -111,6 +185,10 @@ export default class Home extends Mixins(SyncMixin) {
     return this.entity;
     // const skin = {};
     // return merge(cloneDeep(this.entity), { website: { skin: skin } });
+  }
+
+  get sections() {
+    return _get(this.entity, "website.settings.sections");
   }
 
   get isEnabledPoster() {
@@ -201,6 +279,10 @@ export default class Home extends Mixins(SyncMixin) {
 
     .block {
       margin: 0px 20px;
+    }
+
+    .section {
+      margin-bottom: 10px;
     }
   }
 

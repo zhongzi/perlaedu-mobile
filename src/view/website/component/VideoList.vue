@@ -13,7 +13,7 @@
           :src="skin.title.image"
           :style="skin.title.style"
         />
-        <div v-else>精彩视频</div>
+        <div v-else>{{ title || "精彩视频" }}</div>
       </template>
       <template v-slot:item="{ item }">
         <a-video :video="item" :key="item.id" />
@@ -42,6 +42,7 @@ import _get from "lodash/get";
 export default class Home extends Vue {
   @Prop({ type: Object, default: null }) query: any;
   @Prop({ type: Object, default: null }) merchant: any;
+  @Prop({ type: String, default: null }) title: string;
 
   get skin() {
     return _get(this.merchant, "website.skin.video", {});

@@ -52,6 +52,7 @@ export default class Home extends Vue {
           address: this.address,
         });
       });
+      this.$emit("input", false);
       return;
     }
 

@@ -41,7 +41,7 @@ export default class Home extends Vue {
   .campaign {
     height: 172px;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
     background: rgba(255, 255, 255, 0.8);
 

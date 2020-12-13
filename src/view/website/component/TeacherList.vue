@@ -18,7 +18,7 @@
           :src="skin.title.image"
           :style="skin.title.style"
         />
-        <div v-else>金牌师资</div>
+        <div v-else>{{ title || "金牌师资" }}</div>
       </template>
       <template v-slot:item="{ item }">
         <teacher :websiteTeacher="item" class="item" />
@@ -47,6 +47,7 @@ import _get from "lodash/get";
 export default class Home extends Vue {
   @Prop({ type: Object, default: null }) query: any;
   @Prop({ type: Object, default: null }) merchant: any;
+  @Prop({ type: String, default: null }) title: string;
 
   get skin() {
     return _get(this.merchant, "website.skin.teacher", {});

@@ -55,7 +55,6 @@ export default class Home extends Vue {
 
   box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
   border-radius: 8px;
-  margin-bottom: 15px;
 
   .album {
     background: rgba(255, 255, 255, 0.8);
