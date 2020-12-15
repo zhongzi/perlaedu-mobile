@@ -1,6 +1,10 @@
 <template>
   <div :class="b()">
-    <ai-panel :open.sync="open" :enableHeaderClickable="false">
+    <ai-panel
+      :open.sync="open"
+      :enableHeaderClickable="false"
+      :showIcon="false"
+    >
       <template v-slot:header>
         <bill-card :class="[b('item'), { [b('item-opened')]: open }]">
           <template v-slot:left-title>
@@ -30,7 +34,9 @@
         </bill-card>
       </template>
       <template>
-        {{ innerItem.description }}
+        <div class="description">
+          {{ innerItem.description }}
+        </div>
       </template>
     </ai-panel>
   </div>
@@ -134,6 +140,7 @@ export default class Home extends Mixins(SyncMixin) {
 
     i {
       font-size: 32px;
+      line-height: 1;
     }
 
     span {
@@ -143,6 +150,10 @@ export default class Home extends Mixins(SyncMixin) {
       line-height: 20px;
       text-shadow: 0px 2px 4px rgba(255, 132, 6, 1);
     }
+  }
+
+  .description {
+    padding: 0px 10px;
   }
 }
 </style>

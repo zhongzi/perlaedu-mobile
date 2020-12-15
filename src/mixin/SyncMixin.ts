@@ -84,6 +84,22 @@ export default class SyncMixin extends Vue {
     return store.getters[key](this.tag);
   }
 
+  get listSums() {
+    if (isEmpty(this.store)) {
+      return false;
+    }
+    const key = `${this.store}/getListSumsByTag`;
+    return store.getters[key](this.tag);
+  }
+
+  get listCounts() {
+    if (isEmpty(this.store)) {
+      return false;
+    }
+    const key = `${this.store}/getListCountsByTag`;
+    return store.getters[key](this.tag);
+  }
+
   get entity() {
     if (isEmpty(this.store)) {
       return {};

@@ -1,6 +1,5 @@
 import isEmpty from "lodash/isEmpty";
 import isObject from "lodash/isObject";
-import store from "../store";
 
 const configs = require("../configs.json");
 
@@ -24,16 +23,12 @@ const auth: any = {
     if (user) {
       this.user = user;
       this.openid = user.openid;
-
-      store.commit("updateUser", user);
     }
   },
   logout() {
     this.user = {};
     this.token = "";
     this.openid = "";
-
-    store.commit("updateUser", null);
   },
   hasLoggedUser() {
     return this.user && this.user.id;

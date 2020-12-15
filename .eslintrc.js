@@ -22,4 +22,5 @@ module.exports = {
       },
     },
   ],
+  ignorePatterns: ["src/view/layout/ui/*"],
 };

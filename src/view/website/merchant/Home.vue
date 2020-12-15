@@ -102,7 +102,7 @@ export default class Home extends Mixins(SyncMixin) {
             "count_persons",
             "me",
             "location",
-            "scene_qrcode_url",
+            "qrcode",
             "union_merchant",
             "website",
             "coupon",

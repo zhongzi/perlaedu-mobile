@@ -25,7 +25,16 @@
             </template>
             <template v-slot:left-remark>
               <div :class="b('remark')">
-                <p>{{ countDown }}</p>
+                <p>
+                  <template v-if="!isValid">
+                    不可用，{{
+                      isPast ? "已过期" : !isMatched ? "未达到抵扣要求" : ""
+                    }}
+                  </template>
+                  <template v-else>
+                    {{ countDown }}
+                  </template>
+                </p>
                 <p>
                   <span v-if="item.min_balance > 0"
                     >满{{ item.min_balance }}元可用
@@ -88,7 +97,7 @@ export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: [Number, String], default: null }) itemId: number | String;
   @Prop({ type: Object, default: null }) item: any;
   @Prop({ type: Object, default: null }) payItem: any;
-  @Prop({ type: Object, default: null }) order: any;
+  @Prop({ type: Object, default: null }) orderItem: any;
   @Prop({ type: String, default: "" }) outerTag: string;
   @Prop({ type: Boolean, default: true }) swiperEnable: boolean;
   @Prop({ type: Object, default: () => ({}) }) swiperOptions: any;
@@ -125,9 +134,9 @@ export default class Home extends Mixins(SyncMixin) {
 
   get isPast() {
     return (
-      (this.order &&
-        this.order.end_at &&
-        this.$options.filters.isPast(this.order.end_at)) ||
+      (this.orderItem &&
+        this.orderItem.end_at &&
+        this.$options.filters.isPast(this.orderItem.end_at)) ||
       this.isPasting
     );
   }
@@ -142,7 +151,6 @@ export default class Home extends Mixins(SyncMixin) {
     }
 
     this.startCountDownInterval();
-    this.resetCountDown();
     this.onSwitchStatus();
   }
 
@@ -150,10 +158,9 @@ export default class Home extends Mixins(SyncMixin) {
     this.stopCountDownInterval();
   }
 
-  @Watch("order", { deep: true })
+  @Watch("orderItem", { deep: true })
   onOrderChanged() {
     this.startCountDownInterval();
-    this.resetCountDown();
   }
 
   @Watch("isValid")
@@ -166,8 +173,8 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   startCountDownInterval() {
-    if (!this.order) return;
-    if (!this.order.end_at) return;
+    if (!this.orderItem) return;
+    if (!this.orderItem.end_at) return;
     if (this.isPast) return;
     if (this.inter) return;
 
@@ -183,16 +190,16 @@ export default class Home extends Mixins(SyncMixin) {
 
   resetCountDown() {
     const getCountDown = () => {
-      if (!this.order) return "";
-      if (!this.order.end_at) return "有效";
-      if (this.$options.filters.isPast(this.order.end_at)) {
+      if (!this.orderItem) return "";
+      if (!this.orderItem.end_at) return "有效";
+      if (this.$options.filters.isPast(this.orderItem.end_at)) {
         this.isPasting = true;
         return "已失效";
       }
 
       return (
         "还有 " +
-        this.$options.filters.distanceFromDatetime(this.order.end_at) +
+        this.$options.filters.distanceFromDatetime(this.orderItem.end_at) +
         " 结束"
       );
     };

@@ -45,8 +45,14 @@ export default class Home extends Mixins(PatchMixin) {
   border-radius: 5px;
 }
 
+.ai-input__border-bottom {
+  border-bottom: 1px solid #ededed;
+}
+
 .ai-input {
-  padding: 10px;
+  padding: 10px 0px;
+  display: flex;
+  flex-direction: column;
 
   &__label {
     font-size: 14px;
@@ -58,8 +64,7 @@ export default class Home extends Mixins(PatchMixin) {
   }
 
   &__input {
-    width: 100%;
-    min-width: 100%;
+    flex: 1;
     font-size: 14px;
     line-height: 1.5;
     color: #4a4a4a;

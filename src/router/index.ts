@@ -20,6 +20,9 @@ const NotFound = () =>
 const Locking = () =>
   import(/* webpackChunkName: "main" */ "@/view/Locking.vue");
 
+const PhoneVerifying = () =>
+  import(/* webpackChunkName: "main" */ "@/view/PhoneVerifying.vue");
+
 import billRoutes from "./bill";
 import websiteRoutes from "./website";
 import userRoutes from "./user";
@@ -29,6 +32,7 @@ import merchantRoutes from "./merchant";
 import termsOfServiceRoutes from "./terms_of_service";
 
 patchVueRouter(Router);
+console.log(Router);
 Vue.use(Router);
 
 export default new Router({
@@ -39,7 +43,6 @@ export default new Router({
         name: "student",
       },
       meta: {
-        requireOpenid: true,
         requireAuth: true,
       },
     },
@@ -97,6 +100,15 @@ export default new Router({
       component: Locking,
       meta: {
         title: "操作失败",
+      },
+    },
+    {
+      path: "/phone-verifying",
+      name: "PhoneVerifying",
+      component: PhoneVerifying,
+      meta: {
+        title: "手机号码绑定",
+        requireAuth: true,
       },
     },
     {

@@ -1,7 +1,8 @@
-import { mongoMerchant } from "./mongo";
-import { mongoMerchantZone } from "./mongo";
+import { mongoMerchant, mongoMerchantZone } from "./mongo";
+import sms from "./sms";
 
 export default {
   mongoMerchant,
   mongoMerchantZone,
+  sms,
 };

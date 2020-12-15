@@ -1,6 +1,15 @@
 module.exports = {
   plugins: {
     autoprefixer: {},
+    "postcss-rem-to-pixel": {
+      rootValue: 10,
+      unitPrecision: 5,
+      propList: ["*"],
+      selectorBlackList: [],
+      replace: true,
+      mediaQuery: false,
+      minRemValue: 0,
+    },
     "postcss-px-to-viewport": {
       unitToConvert: "px",
       viewportWidth: 375,

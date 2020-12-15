@@ -1,21 +1,16 @@
 <template>
   <div :class="b()">
     <i class="iconfont icon-direction-left" @click="prev" />
-    <ai-slider
-      class="list"
-      :list="list"
-      :options="sliderOptions"
-      :enableSlideAfter="false"
-    >
-      <template v-slot:item="{ item }">
-        <div
-          :class="['item', { 'item-actived': curItem === item }]"
-          @click="onClick(item)"
-        >
-          {{ item.name }}
-        </div>
-      </template>
-    </ai-slider>
+    <span class="list">
+      <span
+        v-for="(item, index) in list"
+        :key="index"
+        :class="['item', { 'item-actived': curItem === item }]"
+        @click="onClick(item)"
+      >
+        {{ item.name }}
+      </span>
+    </span>
     <i class="iconfont icon-direction" @click="next" />
   </div>
 </template>
@@ -83,7 +78,7 @@ export default class Home extends Vue {
   }
 
   created() {
-    this.curItem = this.list[1];
+    this.curItem = this.list[0];
     this.updateValue();
   }
 
@@ -133,13 +128,12 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .ai-datetime-unit-picker {
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   .list {
-    width: calc(100% - 60px - 10px);
+    display: inline-block;
   }
 
   .item {

@@ -3,4 +3,6 @@ declare interface Window {
   TMap: any;
   $cookies: any;
   AliyunUpload: any;
+  nc: any;
+  NoCaptcha: any;
 }

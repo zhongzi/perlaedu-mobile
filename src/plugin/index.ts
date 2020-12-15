@@ -8,6 +8,8 @@ import poster from "./poster";
 import db from "./db";
 import wework from "./wework";
 import map from "./map";
+import captcha from "./captcha";
+import loadScript from "./loadScript";
 
 const retina = require("@jukejia/retina");
 
@@ -23,4 +25,6 @@ export default [
   db,
   wework,
   map,
+  captcha,
+  loadScript,
 ];

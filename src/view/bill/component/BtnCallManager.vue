@@ -1,5 +1,9 @@
 <template>
-  <bill-button icon="phone" :label="managerName" @click.native="call" />
+  <bill-button
+    icon="phone"
+    :label="staff | safe('realname') | mask(1, '老师')"
+    @click.native="call"
+  />
 </template>
 
 <script lang="ts">
@@ -17,33 +21,25 @@ export default class Home extends Mixins(SyncMixin) {
   merchantId: number = null;
   openid: string = null;
 
-  get managerName() {
-    return this.$options.filters.mask(
-      this.$options.filters.safe(this.manager, "realname"),
-      1,
-      "老师"
-    );
-  }
-
-  get manager() {
+  get staff() {
     return this.entity;
   }
 
   created() {
-    this.loadManager();
+    this.loadStaff();
   }
 
   @Watch("route", { deep: true })
   onRouteChanged() {
-    this.loadManager();
+    this.loadStaff();
   }
 
-  loadManager() {
+  loadStaff() {
     this.merchantId = parseInt(this.$route.params.merchantId as string);
     this.openid = this.$route.params.openid;
 
     this.store = "person";
-    this.id = "manager";
+    this.id = "staff";
     this.loadEntity({
       query: {
         merchant_id: this.merchantId,
@@ -54,7 +50,7 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   call() {
-    window.location.href = `tel:${this.manager.phone}`;
+    window.location.href = `tel:${this.staff.phone}`;
   }
 }
 </script>

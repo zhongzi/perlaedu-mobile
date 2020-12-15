@@ -37,9 +37,9 @@
             />
           </template>
           <div
+            v-if="isManager"
             class="payment-btn-add"
             @click="gotoConfigurePage()"
-            v-if="isManager"
           >
             <img :src="addBtnImage" />
           </div>
@@ -53,7 +53,7 @@
               :key="item.id"
               :item="item"
               :payItem="selectedPayItem"
-              :order="getOrderItem(item)"
+              :orderItem="getOrderItem(item)"
               :swiperEnable="false"
               :checked="checkInWelfareIds(item)"
               @switch-status="onSwitchStatus"
@@ -61,9 +61,9 @@
             />
           </template>
           <div
+            v-if="isManager"
             class="welfare-btn-add"
             @click="gotoConfigurePage('welfare')"
-            v-if="isManager"
           >
             <img :src="addBtnImage" />
           </div>
@@ -86,7 +86,6 @@
       />
     </div>
     <bill-pick-dialog
-      :isManager="isManager"
       :items="welfareItems"
       :pickedItems="pickedItems"
       @picked="(val) => (selectedWelfareItemIds = val)"
@@ -305,7 +304,6 @@ export default class Home extends Mixins(SyncMixin) {
     this.id = this.projectId;
     this.loadEntity({
       query: {
-        merchant_id: this.merchantId,
         extras: JSON.stringify({
           BillProject: ["merchant", "paying_order", "items", "channel"],
           BillOrder: ["items"],

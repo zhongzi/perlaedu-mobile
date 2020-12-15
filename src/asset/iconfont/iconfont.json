@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "5634192",
+      "name": "link",
+      "font_class": "-link",
+      "unicode": "f037",
+      "unicode_decimal": 61495
+    },
+    {
       "icon_id": "6798111",
       "name": "线索记录",
       "font_class": "-clue",
@@ -1065,7 +1072,7 @@
     {
       "icon_id": "13314521",
       "name": "手机号",
-      "font_class": "shoujihao",
+      "font_class": "-shouji",
       "unicode": "e6ea",
       "unicode_decimal": 59114
     },

@@ -43,9 +43,10 @@ function distanceFromDatetime(
 }
 
 function distanceFromSeconds(seconds, simplify = false, jsonable = false): any {
-  seconds = Number(seconds);
-  const d = Math.floor(seconds / (3600 * 24));
-  const h = Math.floor((seconds % (3600 * 24)) / 3600);
+  const isBefore = seconds >= 0;
+  seconds = Number(Math.abs(seconds));
+  const d = Math.floor(seconds / 86400);
+  const h = Math.floor((seconds % 86400) / 3600);
   const m = Math.floor((seconds % 3600) / 60);
   const s = Math.floor(seconds % 60);
 
@@ -53,14 +54,18 @@ function distanceFromSeconds(seconds, simplify = false, jsonable = false): any {
   if (d > 0) {
     dDisplay = d + "天";
     if (simplify) {
-      return ["今天", "昨天", "前天"][d] || dDisplay + "前";
+      if (isBefore) {
+        return ["今天", "昨天", "前天"][d] || dDisplay + "前";
+      } else {
+        return ["今天", "明天", "后天"][d] || dDisplay + "后";
+      }
     }
   }
   let hDisplay = "";
   if (h > 0) {
     hDisplay = h + "小时";
     if (simplify) {
-      return hDisplay + "前";
+      return hDisplay + isBefore ? "前" : "后";
     }
   }
 
@@ -68,15 +73,15 @@ function distanceFromSeconds(seconds, simplify = false, jsonable = false): any {
   if (m > 0) {
     mDisplay = m + "分";
     if (simplify) {
-      return mDisplay + "钟前";
+      return mDisplay + isBefore ? "钟前" : "钟后";
     }
   }
 
   let sDisplay = "";
   if (s > 0) {
-    sDisplay = m + "秒";
+    sDisplay = s + "秒";
     if (simplify) {
-      return sDisplay + "前";
+      return sDisplay + isBefore ? "前" : "后";
     }
   }
   if (jsonable) {

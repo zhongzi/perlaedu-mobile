@@ -1,11 +1,11 @@
 <template>
-  <hui-dialog class="dlg-welfare-draw" v-model="showDialog">
+  <hui-dialog class="dlg-welfare-draw" v-model="showDialog" :hideOnBlur="false">
     <template v-for="item in unpickedItems">
       <bill-card-welfare-pickable
+        v-if="!isSelected(item)"
         :item="item"
         :key="item.id"
-        v-if="!checkedInSet(item)"
-        @picked="pullInSet(item)"
+        @picked="selected(item)"
         class="dlg-welfare-draw__item"
       />
     </template>
@@ -38,15 +38,15 @@ export default class Home extends Mixins(SyncMixin, StopBodyScrollMixin) {
   @Prop({ type: Array, default: [] }) pickedItems: any;
   @Prop({ type: Boolean, default: false }) isManager: boolean;
 
-  welfareItems: any = [];
   showDialog: boolean = false;
+  selectedItems: any = [];
   isSaved: boolean = false;
 
   get unpickedItems() {
     return sortBy(
       differenceWith(
         this.items,
-        this.welfareItems,
+        this.selectedItems,
         (src: any, dst: any) => src.id === dst.id
       ),
       ["price"]
@@ -54,7 +54,7 @@ export default class Home extends Mixins(SyncMixin, StopBodyScrollMixin) {
   }
 
   created() {
-    this.welfareItems = cloneDeep(this.pickedItems || []);
+    this.resetSelectedItems();
     this.onOpen();
     this.SBSAuto = false;
   }
@@ -66,12 +66,16 @@ export default class Home extends Mixins(SyncMixin, StopBodyScrollMixin) {
 
   @Watch("pickedItems", { deep: true })
   onPickedItemsChanged() {
-    this.welfareItems = cloneDeep(this.pickedItems || []);
+    this.resetSelectedItems();
   }
 
   @Watch("unpickedItems", { deep: true })
   onUnpickedItemsChanged() {
     this.onOpen();
+  }
+
+  resetSelectedItems() {
+    this.selectedItems = cloneDeep(this.pickedItems || []);
   }
 
   onOpen() {
@@ -83,23 +87,17 @@ export default class Home extends Mixins(SyncMixin, StopBodyScrollMixin) {
       this.showDialog = true;
       return;
     } else {
-      if (this.showDialog) {
-        this.$nextTick(() => {
-          this.$bus.$emit("save-order");
-        });
-      }
-
       this.showDialog = false;
-      this.$emit("picked", map(this.welfareItems, "id"));
+      this.$emit("picked", map(this.selectedItems, "id"));
     }
   }
 
-  checkedInSet(item) {
-    return indexOf(this.welfareItems, item) >= 0;
+  isSelected(item) {
+    return indexOf(this.selectedItems, item) >= 0;
   }
 
-  pullInSet(item) {
-    this.welfareItems = concat(this.welfareItems, item);
+  selected(item) {
+    this.selectedItems = concat(this.selectedItems, item);
     return;
   }
 }

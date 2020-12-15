@@ -84,10 +84,13 @@ export default class Home extends Vue {
 </script>
 
 <style lang="scss">
+@import "~animate.css";
+@import "./asset/css/reset.scss";
+@import "./asset/css/layout/reset.scss";
+@import "./asset/css/normalize.css";
 @import "./asset/iconfont/iconfont.css";
 @import "./asset/css/style.css";
-@import "./asset/css/normalize.css";
-@import "~animate.css";
+@import "./asset/css/layout/ui.scss";
 
 :root {
   box-sizing: border-box;

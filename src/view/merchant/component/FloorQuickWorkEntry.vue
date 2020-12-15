@@ -77,11 +77,21 @@ export default class Home extends Vue {
         title: "定时任务提醒",
         url: this.$frontURLResolver.getAlarms(this.merchant),
       },
+      {
+        title: "手机号码绑定记录",
+        route: {
+          name: "merchantAuthorizations",
+        },
+      },
     ];
   }
 
   openWork(item) {
-    window.location.href = item.url;
+    if (item.url) {
+      window.location.href = item.url;
+    } else {
+      this.$router.push(item.route);
+    }
     return;
   }
 }

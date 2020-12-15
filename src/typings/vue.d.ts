@@ -15,5 +15,7 @@ declare module "vue/types/vue" {
     $wework: any;
     $client: any;
     $qqMap: any;
+    $captcha: any;
+    $loadScript: any;
   }
 }

@@ -14,7 +14,7 @@ const isProduction = process.env.NODE_ENV === "production";
 const configs = cloneDeep(require("../configs.json"));
 
 // 加载预设配置项
-const keys = ["guaranteeBillURL", "guaranteeBillWithdrawURL"];
+const keys = ["master_merchant_id"];
 
 const loadDictionary = (callback) => {
   settingApi

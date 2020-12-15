@@ -19,14 +19,14 @@
             </slot>
           </div>
         </template>
-        <template v-slot:item-before>
-          <slot name="item-before" />
-        </template>
-        <template v-slot:item="{ item, index }">
-          <slot name="item" :item="item" :index="index" :tag="tag" />
-        </template>
-        <template v-slot:item-after>
-          <slot name="item-after" />
+        <template v-slot:list>
+          <slot :list="list" name="list">
+            <slot name="item-before" />
+            <template v-for="(item, index) in list">
+              <slot name="item" :list="list" :item="item" :index="index" />
+            </template>
+            <slot name="item-after" />
+          </slot>
         </template>
         <template v-slot:footer>
           <slot name="footer" />
@@ -190,16 +190,22 @@ export default class Home extends Mixins(SyncMixin) {
             list: this.list,
             tag: this.tag,
             total: this.listTotal,
+            sums: this.listSums,
+            counts: this.listCounts,
           })
         : this.$bus.$emit(`${this.store}`, {
             list: this.list,
             tag: this.tag,
             total: this.listTotal,
+            sums: this.listSums,
+            counts: this.listCounts,
           });
       this.$emit("emit-list", {
         list: this.list,
         tag: this.tag,
         total: this.listTotal,
+        sums: this.listSums,
+        counts: this.listCounts,
       });
     });
   }
@@ -212,6 +218,12 @@ export default class Home extends Mixins(SyncMixin) {
       this.query
     );
     this.tag = this.outerTag || this.encodeTag(query);
+
+    // 暂定只有首次加载时候才执行count/sums操作
+    if (!reset) {
+      delete query.sums;
+      delete query.counts;
+    }
 
     this.$emit("update:refresh", false);
     this.loadList({

@@ -5,6 +5,9 @@ import findIndex from "lodash/findIndex";
 import debounce from "lodash/debounce";
 import isArray from "lodash/isArray";
 import values from "lodash/values";
+import cloneDeep from "lodash/cloneDeep";
+
+const configs = cloneDeep(require("../configs.json"));
 
 class PosterBuilder {
   id: any = null;
@@ -91,11 +94,22 @@ class PosterBuilder {
     return this.stage.getStage().toDataURL();
   }
 
+  proxyURL(origin_url) {
+    console.log(origin_url);
+    try {
+      const url = new URL(origin_url);
+      return `${configs.proxy}/${url.host}${url.pathname}${url.search}${url.hash}`;
+    } catch (error) {
+      console.log(error);
+    }
+    return origin_url;
+  }
+
   downloadURL() {
     if (!this.isRendedAll()) return;
 
     const link = document.createElement("a");
-    link.download = name;
+    link.download = this.name;
     link.href = this.getURL();
     document.body.appendChild(link);
     link.click();
@@ -170,7 +184,7 @@ class PosterBuilder {
   renderCircle(element, index, callback) {
     const image = new Image();
     const self = this;
-    image.setAttribute("crossOrigin", "Anonymous");
+    image.setAttribute("crossOrigin", "anonymous");
     image.onload = function () {
       const originRadius = Math.min(image.width, image.height) / 2;
       const scale =
@@ -197,13 +211,13 @@ class PosterBuilder {
       if (index) self.renderStatus[index] = true;
       callback && callback();
     };
-    image.src = element.value;
+    image.src = this.proxyURL(element.value);
   }
 
   renderImage(element, index, callback) {
     const image = new Image();
     const self = this;
-    image.setAttribute("crossOrigin", "Anonymous");
+    image.setAttribute("crossOrigin", "anonymous");
     image.onload = function () {
       const zIndex = element.options.z;
       delete element.options.z;
@@ -218,7 +232,7 @@ class PosterBuilder {
       if (index) self.renderStatus[index] = true;
       callback && callback(image);
     };
-    image.src = element.value;
+    image.src = this.proxyURL(element.value);
   }
 
   isRendedAll() {

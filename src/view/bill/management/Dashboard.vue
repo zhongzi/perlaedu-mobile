@@ -2,9 +2,11 @@
   <div class="wrapper-dashboard">
     <div class="header">
       <ai-search v-model="keyword" placeholder="凭证/微信昵称/项目" />
+      <!--
       <hui-button type="primary" @click.native="open = true">
         <i class="iconfont icon-download" />
       </hui-button>
+-->
       <hui-button
         type="primary"
         @click.native="
@@ -13,14 +15,15 @@
           })
         "
       >
-        <i class="iconfont icon-plus" />
+        <i class="iconfont icon-money" />
       </hui-button>
     </div>
     <hui-tab-rounded v-model="curTabIdx" :tabs="tabs" label="label" />
     <div class="container">
-      <ai-list-stored resource="billOrder" :query="query" :height="500">
+      <ai-list-stored resource="billOrder" :query="query" scrollHeight="73vh">
         <template v-slot:item="{ item, tag }">
           <bill-order
+            :swiperEnable="false"
             :key="item.id"
             :item="item"
             :outerTag="tag"
@@ -80,10 +83,13 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   get query() {
+    const merchantId =
+      this.$route.query._merchant_id_ || this.$auth.user.curr_merch_id;
     return {
       keyword: this.keyword,
       status: this.tabs[this.curTabIdx].value,
-      merchant_id: this.$auth.user.curr_merch_id,
+      merchant_id: merchantId,
+      seller_openid: this.$auth.user.openid,
       sort: `${this.curTab.dateKey} desc`,
       extras: JSON.stringify({
         BillOrder: [

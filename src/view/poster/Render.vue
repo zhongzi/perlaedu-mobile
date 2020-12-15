@@ -53,7 +53,7 @@ export default class Home extends Mixins(SyncMixin) {
     this.rebuildPosterData();
   }
 
-  loadPoster() {
+  loadPosterTemplate() {
     this.templateId = this.$route.query.templateId;
     this.templateId &&
       this.loadEntityExtra({
@@ -71,7 +71,7 @@ export default class Home extends Mixins(SyncMixin) {
       });
   }
 
-  loadPosterTemplate() {
+  loadPoster() {
     this.posterId = this.$route.query.posterId;
     this.posterId &&
       this.loadEntityExtra({

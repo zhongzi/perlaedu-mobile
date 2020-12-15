@@ -4,7 +4,7 @@
       :class="b('header')"
       @click="enableHeaderClickable && $emit('update:open', !open)"
     >
-      <div>
+      <div :class="b('header-left')">
         <slot name="header"> </slot>
       </div>
       <div v-if="showIcon">
@@ -43,6 +43,10 @@ export default class Home extends Vue {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
+
+    &-left {
+      flex: 1;
+    }
 
     i {
       color: #9b9b9b;

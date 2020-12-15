@@ -1,7 +1,7 @@
 <template>
   <ai-selection
     :value="value ? value + '' : ''"
-    :options="list"
+    :options="(presetOptions || []).concat(list)"
     :label="label"
     :labelKey="labelKey"
     :valueKey="valueKey"
@@ -9,6 +9,7 @@
     :enableUnsetOption="enableUnsetOption"
     :mode="mode"
     :autoDefault="autoDefault"
+    :presetOptions="presetOptions"
     @selected="(o) => $emit('selected', o)"
     @input="(val) => $emit('input', val)"
   >
@@ -41,6 +42,7 @@ export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Boolean, default: false }) enableUnsetOption: boolean;
   @Prop({ type: Boolean, default: true }) autoDefault: boolean;
   @Prop({ type: String, default: "" }) mode: string;
+  @Prop({ type: Array, default: null }) presetOptions: any;
 
   created() {
     this.store = this.resource;
