@@ -65,20 +65,11 @@
                   {{ valueUnit }}</span
                 >
                 <div :class="b('right-actions')" v-if="!isSimpleMode">
-                  <hui-button
+                  <bill-order-cost-button
                     class="action"
+                    :order="item"
                     v-if="item.status === 'paid'"
-                    @click.native.stop="
-                      $router.push({
-                        name: 'billCostRechargeAi',
-                        params: {
-                          orderId: item.id,
-                        },
-                      })
-                    "
-                  >
-                    核销
-                  </hui-button>
+                  />
                   <hui-button
                     class="action"
                     v-if="item.status === 'used'"
@@ -112,11 +103,11 @@
         </ai-panel>
       </ai-cell-swiper>
     </ai-state-check>
-    <hui-dialog v-model="openCost" v-if="openCost">
+    <ai-dialog v-model="openCost">
       <div class="content">
         <bill-order-cost :order="item" />
       </div>
-    </hui-dialog>
+    </ai-dialog>
   </div>
 </template>
 
@@ -129,10 +120,12 @@ import { BillStatus } from "@/enum/bill_status";
 import AiPanel from "@/view/component/AiPanel.vue";
 import AiCellSwiper from "@/view/component/AiCellSwiper.vue";
 import AiStateCheck from "@/view/component/AiStateCheck.vue";
+import AiDialog from "@/view/component/AiDialog.vue";
 
 import BillCard from "./BillCard.vue";
 import BillOrderCost from "./BillOrderCost.vue";
 import BillOrderItems from "./BillOrderItems.vue";
+import BillOrderCostButton from "./BillOrderCostButton.vue";
 
 import find from "lodash/find";
 import filter from "lodash/filter";
@@ -142,11 +135,13 @@ import _get from "lodash/get";
   name: "bill-order",
   components: {
     AiPanel,
+    AiDialog,
     AiCellSwiper,
     AiStateCheck,
     BillCard,
     BillOrderCost,
     BillOrderItems,
+    BillOrderCostButton,
   },
 })
 export default class Home extends Mixins(SyncMixin) {

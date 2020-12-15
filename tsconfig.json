@@ -17,6 +17,7 @@
       "chai"
     ],
     "typeRoots" : [
+      "./node_modules/@types",
       "./src/typings"
     ],
     "paths": {

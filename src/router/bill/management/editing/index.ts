@@ -34,7 +34,7 @@ const editingRoutes: any = [
         path: "projects",
         name: "billEditingProjects",
         component: Projects,
-        meta: { title: "编辑 - 收款项目列表" },
+        meta: { title: "收款项目" },
       },
       {
         path: ":projectId/items",

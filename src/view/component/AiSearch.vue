@@ -23,6 +23,7 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import isEqual from "lodash/isEqual";
 import isEmpty from "lodash/isEmpty";
 import trimStart from "lodash/trimStart";
+import debounce from "lodash/debounce";
 
 @Component
 export default class Home extends Vue {
@@ -30,9 +31,11 @@ export default class Home extends Vue {
   @Prop({ type: String, default: "请输入您要查询的内容" }) placeholder: string;
 
   innerValue: string = null;
+  debEmit: any = null;
 
   created() {
     this.resetInnerValue();
+    this.debEmit = debounce(this.emitInput, 800);
   }
 
   @Watch("value")
@@ -42,6 +45,10 @@ export default class Home extends Vue {
 
   @Watch("innerValue")
   onInnerValueChanged() {
+    this.debEmit();
+  }
+
+  emitInput() {
     this.$emit("input", this.innerValue);
   }
 

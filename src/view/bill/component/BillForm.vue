@@ -1,5 +1,5 @@
 <template>
-  <hui-dialog
+  <ai-dialog
     :value="value"
     @input="(v) => $emit('input', v)"
     class="wrapper-form-campaign"
@@ -19,42 +19,80 @@
       </template>
     </div>
     <div class="detail">
-      <div class="title"><span class="line" /><span>购买须知</span></div>
-      <ol class="content">
-        <li>限时优惠！到期截止！请尽快完成支付！</li>
-        <li>支付后请务必扫码关注领取付款凭证！</li>
-        <li>本钜惠活动最终解释权归发起机构所有！</li>
-      </ol>
-      <div
-        class="target"
-        v-if="isRechargeAi && merchants && merchants.length > 0"
-      >
-        <div class="title">
-          <span class="line" /><span>选择目标充值机构</span>
-        </div>
-        <ai-selection
-          class="selector"
-          :value="targetId"
-          :options="merchants"
-          :enableUnsetOption="true"
-          valueKey="id"
-          @input="selected"
-        >
-          <template v-slot:option="{ option }">
-            <div class="option">
-              {{ option.name }} (余额 {{ option.balance }} 元)
+      <template v-if="!isRechargeAi">
+        <div class="title"><span class="line" /><span>购买须知</span></div>
+        <ol class="content">
+          <li>限时优惠！到期截止！请尽快完成支付！</li>
+          <li>支付后请务必扫码关注领取付款凭证！</li>
+          <li>本钜惠活动最终解释权归发起机构所有！</li>
+        </ol>
+      </template>
+
+      <template v-else>
+        <div class="recharge-ai">
+          <template v-if="isOriginTarget">
+            <div class="origin-target">
+              正在为<span> {{ originTarget.name }} </span>付款
             </div>
           </template>
-        </ai-selection>
-        <ai-input-check
-          v-if="trigger"
-          :value="isEnabledBalance"
-          @input="(v) => $emit('update:isEnabledBalance', v)"
-          class="check"
-        >
-          是否使用余额支付
-        </ai-input-check>
-      </div>
+          <template v-else>
+            <div class="choice register" @click="method = 'new'">
+              <ai-input-radio
+                value="new"
+                :checked="method === 'new'"
+                title="付款并完成新学校注册"
+                subtitle="付完款后将进入注册学校流程"
+                @change="onMethodChange"
+              />
+            </div>
+            <div
+              class="choice selected"
+              v-if="merchants && merchants.length > 0"
+              @click="method = 'select'"
+            >
+              <ai-input-radio
+                value="select"
+                :checked="method === 'select'"
+                title="为已注册学校付款"
+                @change="onMethodChange"
+              />
+              <ai-selection
+                class="selector"
+                :value="innerTarget && innerTarget.id"
+                :options="merchants"
+                valueKey="id"
+                @selected="onSelected"
+                @click.native="method = 'select'"
+              >
+                <template v-slot:option="{ option }">
+                  <div class="option">
+                    {{ option.name }}
+                    <span v-if="option.id > 0"
+                      >(余额 {{ option.balance }} 元)
+                    </span>
+                  </div>
+                </template>
+              </ai-selection>
+              <ai-input-check
+                v-if="trigger"
+                :value="isEnabledBalance"
+                @input="(v) => $emit('update:isEnabledBalance', v)"
+                class="check"
+              >
+                是否使用余额支付
+              </ai-input-check>
+            </div>
+            <div class="choice none" @click="method = 'none'">
+              <ai-input-radio
+                value="none"
+                :checked="method === 'none'"
+                title="只完成付款"
+                @change="onMethodChange"
+              />
+            </div>
+          </template>
+        </div>
+      </template>
       <ai-input
         class="remark"
         mode="border"
@@ -65,17 +103,24 @@
     </div>
     <div class="actions">
       <button @click="$emit('cancel')" class="cancel">取消</button>
-      <button @click="$emit('submit')" class="buy">确认支付</button>
+      <button @click="buy" class="buy">确认支付</button>
     </div>
-  </hui-dialog>
+  </ai-dialog>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch, Prop } from "vue-property-decorator";
+import { Component, Vue, Watch, Prop, Mixins } from "vue-property-decorator";
 
+import SyncMixin from "@/mixin/SyncMixin";
+
+import AiDialog from "@/view/component/AiDialog.vue";
 import AiInput from "@/view/component/AiInput.vue";
 import AiInputCheck from "@/view/component/AiInputCheck.vue";
+import AiInputRadio from "@/view/component/AiInputRadio.vue";
 import AiSelection from "@/view/component/AiSelection.vue";
+import AiButtonRoundSmall from "@/view/component/AiButtonRoundSmall.vue";
+
+import BillButton from "./BillButton.vue";
 
 import isEmpty from "lodash/isEmpty";
 import _get from "lodash/get";
@@ -86,12 +131,16 @@ import cloneDeep from "lodash/cloneDeep";
 
 @Component({
   components: {
+    AiDialog,
     AiInput,
     AiInputCheck,
+    AiInputRadio,
     AiSelection,
+    AiButtonRoundSmall,
+    BillButton,
   },
 })
-export default class Home extends Vue {
+export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Boolean, default: false }) value: boolean;
   @Prop({ type: Object, default: () => ({}) }) project: any;
   @Prop({ type: Boolean, default: false }) trigger: boolean;
@@ -101,32 +150,114 @@ export default class Home extends Vue {
   @Prop({ type: Object, default: null }) target: any;
   @Prop({ type: String, default: "" }) remark: string;
 
-  get merchants() {
-    return _get(this.$auth, "user.merchants", []);
-  }
+  method: string = "new";
+  originTarget: any = null;
+  isFromSelected: boolean = false;
+  innerTarget: any = null;
+  merchants: any = null;
 
-  get targetId() {
-    return this.target && this.target.id;
+  get isOriginTarget() {
+    return this.originTarget && this.originTarget.id;
   }
 
   get isRechargeAi() {
     return _get(this.project, "channel.code") === "RechargeAi";
   }
 
-  @Watch("value")
-  onValueChanged() {
-    this.value && this.selected(this.target.id);
-    console.log(this.target.id);
+  created() {
+    this.loadRelatedMerchants();
+    this.resetOriginTarget();
   }
 
-  selected(id) {
-    if (id === "") {
-      this.$emit("update:target", { id: 0 });
+  @Watch("target")
+  onTargetChanged() {
+    this.resetOriginTarget();
+  }
+
+  resetOriginTarget() {
+    if (this.isFromSelected) return;
+
+    this.originTarget =
+      this.target && find(this.merchants, { id: this.target.id });
+    this.innerTarget = this.originTarget || {};
+  }
+
+  onMethodChange(v) {
+    this.method = v;
+
+    if (this.method === "select") {
+      this.isFromSelected = true;
+      this.onSelected(this.innerTarget);
+    } else {
+      this.onSelected(this.originTarget);
+    }
+  }
+
+  loadRelatedMerchants() {
+    this.loadList({
+      reset: true,
+      store: "merchant",
+      query: {
+        user_id: this.$auth.user.id,
+        extras: "logo_url",
+        sort: "id desc",
+      },
+      success: (resp) => {
+        this.merchants = cloneDeep(resp.data.data);
+        this.resetOriginTarget();
+      },
+    });
+  }
+
+  onSelected(target) {
+    if (!target) return;
+    this.innerTarget = target;
+
+    if (this.isFromSelected) {
+      this.$emit("update:target", cloneDeep(this.innerTarget));
+    }
+  }
+
+  buy() {
+    let next: any = this.$route.query.next;
+    if (!this.isRechargeAi || next) {
+      this.$emit("submit", next);
+      return;
     }
 
-    const m = find(this.merchants, { id: id });
-    if (isEmpty(m)) return;
-    this.$emit("update:target", m);
+    if (this.method === "new") {
+      next = this.$router.buildNext({
+        name: "merchantAdd",
+        query: {
+          onlyNew: "true",
+        },
+      });
+    }
+
+    if (this.method === "select") {
+      if (!this.innerTarget || this.innerTarget.id <= 0) {
+        this.$hui.toast.error("请选择充值的目标学校");
+        return;
+      }
+
+      next = this.$router.buildNext({
+        name: "merchantProfile",
+        query: {
+          merchantId: this.innerTarget.id,
+        },
+      });
+    }
+
+    if (this.isOriginTarget) {
+      next = this.$router.buildNext({
+        name: "merchantProfile",
+        query: {
+          merchantId: this.innerTarget.id,
+        },
+      });
+    }
+
+    this.$emit("submit", next);
   }
 }
 </script>
@@ -194,28 +325,45 @@ export default class Home extends Vue {
       }
     }
 
-    .target {
+    .recharge-ai {
       margin: 10px auto;
       padding: 0px 30px;
 
-      .check {
-        margin: 0px 10px;
+      .origin-target {
+        text-align: center;
+        font-size: 13px;
+        line-height: 1;
 
-        & ::v-deep .ai-input-check__vec-fake {
-          background: red;
+        span {
+          font-size: 24px;
+          font-weight: 800;
         }
       }
 
-      .title {
-        margin-left: 0px;
-        margin-bottom: 0px;
+      .choice {
+        margin: 15px 0px;
       }
 
-      .selector {
-        padding: 0px;
+      .selected {
+        .check {
+          margin: 0px 10px;
 
-        & ::v-deep .ai-select__select {
-          padding-left: 10px;
+          & ::v-deep .ai-input-check__vec-fake {
+            background: red;
+          }
+        }
+
+        .title {
+          margin-left: 0px;
+          margin-bottom: 0px;
+        }
+
+        .selector {
+          padding: 0px;
+
+          & ::v-deep .ai-select__select {
+            padding-left: 10px;
+          }
         }
       }
     }

@@ -6,7 +6,7 @@ import { tools } from "../plugin/tools";
 const userAPI = resourceV1("/users");
 const openidAPI = resourceV1("/openids");
 
-auth.fetchLoggedUser = function (next = null, to = null) {
+auth.fetchLoggedUser = function (next = null, to = null, callback = null) {
   userAPI
     .get({
       id: "self",
@@ -23,6 +23,8 @@ auth.fetchLoggedUser = function (next = null, to = null) {
         data.user.is_manager = data.is_manager;
         data.user.agent = data.agent;
         this.login({ user: data.user });
+
+        callback && callback();
         return next && next(to);
       }
       location.href = data.next;

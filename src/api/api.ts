@@ -1,4 +1,6 @@
 import auth from "@/service/auth";
+import router from "@/router";
+import _get from "lodash/get";
 
 const Fly = require("flyio/dist/npm/fly");
 const configs = require("../configs.json");
@@ -53,6 +55,18 @@ api.interceptors.request.use(function (config) {
   if (auth.token) {
     config.headers.Authorization = "Bearer " + auth.token;
   }
+
+  // 自动添加query中的_merchant_id_信息
+
+  const _merchant_id_ = parseInt(
+    router.currentRoute.query._merchant_id_ as any
+  );
+  if (_merchant_id_) {
+    config.body = config.body || {};
+    config.body["_merchant_id_"] = _merchant_id_;
+  }
+
+  console.log(config);
   return config;
 });
 

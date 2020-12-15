@@ -6,7 +6,12 @@
     <div :class="b('input')">
       <slot name="left"> </slot>
       <select :class="b('select')" v-model="innerValue" @blur="fixIOSScroll">
-        <option v-if="defaultName" value="" :class="b('select-option')">
+        <option
+          v-if="defaultName"
+          value=""
+          :class="b('select-option')"
+          :selected="'' === innerValue"
+        >
           {{ defaultName }}
         </option>
         <template v-for="(option, index) in options">
@@ -14,6 +19,9 @@
             :value="option | safe(valueKey, option)"
             :key="index"
             :class="b('select-option')"
+            :selected="
+              $options.filters.safe(option, valueKey, option) === innerValue
+            "
           >
             <slot
               name="option"
@@ -58,7 +66,7 @@ export default class Home extends Mixins(PatchMixin) {
   @Prop({ type: Boolean, default: false }) enableAllOption: boolean;
   @Prop({ type: Boolean, default: false }) enableUnsetOption: boolean;
 
-  innerValue: any = 4;
+  innerValue: any = null;
 
   get defaultName() {
     if (this.enableUnsetOption) return "暂不设置";
@@ -67,19 +75,17 @@ export default class Home extends Mixins(PatchMixin) {
   }
 
   created() {
-    this.resetValue();
-    this.emitValue();
+    this.resetDefaultValue();
   }
 
   @Watch("options", { deep: true })
   onOptionsChanged() {
-    this.emitDefaultValue();
+    this.resetDefaultValue();
   }
 
   @Watch("value", { deep: true })
   onValueChanged() {
-    if (isEqual(this.value, this.innerValue)) return;
-    this.resetValue();
+    this.resetDefaultValue();
   }
 
   @Watch("innerValue", { deep: true })
@@ -87,22 +93,18 @@ export default class Home extends Mixins(PatchMixin) {
     this.emitValue();
   }
 
-  emitDefaultValue() {
+  resetDefaultValue() {
+    this.innerValue = "" + this.value;
+
     if (!this.autoDefault) return;
-    if (!isEmpty(this.value) || this.value !== 0) return;
     if (isEmpty(this.options)) return;
+    if (!isEmpty(this.innerValue)) return;
 
     if (this.enableAllOption || this.enableUnsetOption) {
       this.innerValue = "";
     } else {
       this.innerValue = _get(this.options[0], this.valueKey, this.options[0]);
     }
-  }
-
-  resetValue() {
-    console.log(this.value);
-    this.innerValue = cloneDeep(this.value);
-    this.emitDefaultValue();
   }
 
   emitValue() {
@@ -126,11 +128,15 @@ export default class Home extends Mixins(PatchMixin) {
   border-radius: 4px;
 }
 
+.ai-select__border-bottom {
+  border-bottom: 1px solid #ededed;
+}
+
 .ai-select {
   width: 100%;
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 10px 0px;
 
   &__label {
     font-size: 14px;
@@ -152,14 +158,12 @@ export default class Home extends Mixins(PatchMixin) {
 
   &__select {
     width: 100%;
-    min-height: 40px;
-
     font-size: 14px;
     color: rgba(165, 165, 165, 1);
-    border: none;
     outline: none;
     background: #fff;
     border-radius: 8px;
+    border: none;
 
     -webkit-appearance: none;
 

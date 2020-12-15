@@ -37,7 +37,7 @@
     />
     <hui-dialog v-model="showDialog">
       <div class="dialog">
-        <img :src="merchant.scene_qrcode_url" />
+        <img :src="merchant.qrcode" />
         <div>【微信扫码关注】</div>
         <div>本机构将不定时派发现金红包优惠券</div>
       </div>

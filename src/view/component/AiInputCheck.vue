@@ -102,9 +102,10 @@ export default class Home extends Mixins(PatchMixin) {
       right: 0;
       border-radius: 4px;
       border: 2px solid #fff;
-      background: rgba(255, 255, 255, 0);
+      background: #9b9b9b;
 
       &--checked {
+        background: #fa8e45;
         &:before {
           content: "";
           position: absolute;

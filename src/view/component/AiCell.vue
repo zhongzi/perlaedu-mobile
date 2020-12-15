@@ -23,9 +23,11 @@
                 </div>
               </slot>
             </div>
-            <div :class="b('left-info-footer')">
-              <slot name="footer">
-                {{ remark }}
+            <div :class="b('left-info-remark')">
+              <slot name="remark">
+                <slot name="footer">
+                  {{ remark }}
+                </slot>
               </slot>
             </div>
           </slot>
@@ -102,7 +104,7 @@ export default class Home extends Vue {
           line-height: 18px;
         }
       }
-      &-footer {
+      &-remark {
         font-size: 13px;
         font-weight: 400;
         color: rgba(155, 155, 155, 1);

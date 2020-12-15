@@ -168,6 +168,7 @@ router.afterEach((to: any, from: any) => {
 });
 
 const replaceExpose = (location) => {
+  // 新增自动继承query中的_merchant_id_信息
   if (isEmpty(location)) return;
 
   const curQuery = (router.currentRoute
@@ -179,19 +180,24 @@ const replaceExpose = (location) => {
     location.query = Object.assign({}, query || {}, {
       expose: query.expose || curQuery.expose || "",
       expose2: query.expose2 || curQuery.expose2 || "",
+      _merchant_id_: query._merchant_id_ || curQuery._merchant_id_,
     });
   }
 
   if (isString(location)) {
     const hasQuery = location.indexOf("?");
-    location += hasQuery >= 0 ? "&" : "?";
+    location += hasQuery >= 0 ? "" : "?";
     if (location.indexOf("expose") < 0) {
       location += "&expose=" + curQuery.expose || "";
     }
     if (location.indexOf("expose2") < 0) {
       location += "&expose2=" + curQuery.expose2 || "";
     }
+    if (location.indexOf("_merchant_id_") < 0) {
+      location += "&_merchant_id_=" + curQuery._merchant_id_ || "";
+    }
   }
+
   return location;
 };
 const originalReplace = router.replace;

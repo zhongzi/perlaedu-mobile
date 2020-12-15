@@ -6,7 +6,7 @@
     </hui-button>
 
     <bill-form
-      :value="openForm"
+      v-model="openForm"
       :project="project"
       :balance="innerPayBalance"
       :originBalance="payBalance"
@@ -192,7 +192,7 @@ export default class Home extends Mixins(SyncMixin, PayMixin) {
   resetTarget() {
     this.target = {
       id:
-        parseInt(this.$route.query.merchant_id as any) ||
+        parseInt(this.$route.query.merchantId as any) ||
         _get(this.order, "target_id"),
     };
     this.isEnabledBalance = _get(this.order, "is_enabled_balance");
@@ -248,7 +248,7 @@ export default class Home extends Mixins(SyncMixin, PayMixin) {
     this.openForm = false;
   }
 
-  updateOrder() {
+  updateOrder(next) {
     if (isNull(last(this.order.items))) {
       this.$hui.toast.error("您尚未选择所需要的套餐");
       return;
@@ -292,7 +292,17 @@ export default class Home extends Mixins(SyncMixin, PayMixin) {
       success: (resp) => {
         this.openForm = false;
         this.$nextTick(() => {
-          this.gotoFlashTradePage("bill", resp.data);
+          this.gotoFlashTradePage(
+            "bill",
+            resp.data,
+            next &&
+              this.$router.updateNext({
+                next: next,
+                query: {
+                  billOrderId: resp.data.id,
+                },
+              })
+          );
         });
       },
     });

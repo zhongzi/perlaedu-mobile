@@ -1,6 +1,7 @@
-const WebpackAliyunOss = require("webpack-aliyun-oss");
 const uuidv4 = require("uuid/v4");
 const urljoin = require("url-join");
+
+const WebpackAliyunOss = require("webpack-aliyun-oss");
 
 const isProduction = process.env.NODE_ENV === "production";
 const isTesting = process.env.TESTING === "true";
@@ -79,6 +80,11 @@ module.exports = {
         headers: {
           Connection: "keep-alive",
         },
+      },
+      "/proxy": {
+        target: "https://coopposer.perlaedu.com",
+        secure: false,
+        changeOrigin: true,
       },
     },
   },

@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <div class="remark">
+    <div class="remark" v-if="isEdiable">
       <i class="iconfont icon-info" />
       <span> 左滑可进行编辑或者删除操作</span>
     </div>
@@ -22,7 +22,7 @@
         </template>
       </ai-list-stored>
     </div>
-    <ai-fixed-footer>
+    <ai-fixed-footer v-if="isEdiable">
       <ai-button-plus
         v-if="isEdiable"
         @click.native="newProjectDialogOpen"
@@ -58,7 +58,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Mixins } from "vue-property-decorator";
+import { Component, Vue, Mixins, Watch } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
 
@@ -69,6 +69,8 @@ import AiSelectionStored from "@/view/component/AiSelectionStored.vue";
 import AiListStored from "@/view/component/AiListStored.vue";
 import AiCellSwiper from "@/view/component/AiCellSwiper.vue";
 import AiFixedFooter from "@/view/component/AiFixedFooter.vue";
+
+import { PersonRole } from "@/enum/person_role";
 
 import _get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
@@ -89,17 +91,27 @@ import filter from "lodash/filter";
 })
 export default class Home extends Mixins(SyncMixin) {
   open: boolean = false;
+  person: any = null;
+
   form: any = {
     channel_id: null,
     title: null,
   };
 
-  get swiperOptions() {
-    return this.isEdiable && {};
+  get relatedMerchantId() {
+    return _get(
+      this.$route,
+      "query._merchant_id_",
+      this.$auth.user.curr_merch_id
+    );
   }
 
   get isEdiable() {
-    return _get(this.$auth, "user.is_manager");
+    return (
+      (_get(this.person, "role", 0) &
+        (PersonRole.master.value | PersonRole.assistant.value)) >
+      0
+    );
   }
 
   get query() {
@@ -109,7 +121,23 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   created() {
-    this.store = "billProject";
+    this.loadPerson();
+  }
+
+  @Watch("relatedMerchantId")
+  onRelatedMerchantIdChanged() {
+    this.loadPerson();
+  }
+
+  loadPerson() {
+    this.loadEntity({
+      store: "person",
+      id: "staff",
+      merchant_id: this.relatedMerchantId,
+      success: (resp) => {
+        this.person = resp.data;
+      },
+    });
   }
 
   newProjectDialogOpen() {
@@ -126,8 +154,9 @@ export default class Home extends Mixins(SyncMixin) {
       return;
     }
 
-    this.id = this.form.id;
     this.saveEntity({
+      store: "billProject",
+      id: this.form.id,
       query: {
         extras: "channel",
       },

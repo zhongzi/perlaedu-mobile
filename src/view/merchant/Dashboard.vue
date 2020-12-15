@@ -48,13 +48,13 @@ export default class Home extends Mixins(SyncMixin) {
   get merchant() {
     return isEmpty(this.entity)
       ? {
-          id: this.$store.state.user.curr_merch_id,
+          id: this.$auth.user.curr_merch_id,
         }
       : this.entity;
   }
 
   get user() {
-    return this.$store.state.user;
+    return this.$auth.user;
   }
 
   created() {

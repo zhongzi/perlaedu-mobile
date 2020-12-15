@@ -101,7 +101,6 @@ export default class Home extends Vue {
 
   get query() {
     return {
-      merchant_id: this.merchantId,
       project_id: this.projectId,
       is_welfare: this.isWelfare,
       sort: "price asc",

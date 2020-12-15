@@ -3,6 +3,7 @@ import oauthHistory from "./oauth_history";
 import person from "./person";
 import merchant from "./merchant";
 import agent from "./agent";
+import agentRankLog from "./agent_rank_log";
 import album from "./album";
 import albumPhoto from "./album_photo";
 import article from "./article";
@@ -20,6 +21,9 @@ import setting from "./setting";
 import merchantStatistics from "./merchant_statistics";
 import icon from "./icon";
 import iconGroup from "./icon_group";
+import authorization from "./authorization";
+import payOrderStatistics from "./pay_order_statistics";
+import sceneTemp from "./scene_temp";
 
 export default {
   oauth,
@@ -28,6 +32,7 @@ export default {
   merchant,
   merchantStatistics,
   agent,
+  agentRankLog,
   album,
   albumPhoto,
   article,
@@ -44,4 +49,7 @@ export default {
   setting,
   icon,
   iconGroup,
+  authorization,
+  payOrderStatistics,
+  sceneTemp,
 };

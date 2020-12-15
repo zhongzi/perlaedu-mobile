@@ -4,6 +4,7 @@ const History = () =>
   import(/* webpackChunkName: "user" */ "@/view/user/History.vue");
 
 import studentRoutes from "./student";
+import agentRoutes from "./agent";
 
 const userRoutes: any = [
   {
@@ -22,7 +23,7 @@ const userRoutes: any = [
           title: "浏览历史",
         },
       },
-    ].concat(studentRoutes),
+    ].concat(studentRoutes, agentRoutes),
   },
 ];
 

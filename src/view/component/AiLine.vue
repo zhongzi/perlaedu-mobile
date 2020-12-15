@@ -11,13 +11,14 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 export default class Home extends Vue {
   @Prop({ type: String, default: "horizontal" }) mode: string;
   @Prop({ type: Number, default: 1 }) size: number;
+  @Prop({ type: String, default: "100%" }) height: number;
 
   get style() {
     if (this.mode === "vertical") {
       return {
         display: "inline-block",
         width: this.size + "px",
-        height: "100%",
+        height: this.height,
       };
     }
     if (this.mode === "horizontal-inline") {

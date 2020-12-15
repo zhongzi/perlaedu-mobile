@@ -73,7 +73,7 @@ export default class Home extends Vue {
     border-radius: 25px;
     border: none;
 
-    flex: 2;
+    flex: 1;
 
     font-size: 14px;
     font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
