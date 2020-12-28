@@ -2,7 +2,9 @@
   <div class="wrapper">
     <ai-cell v-if="article" :showBottomLine="false" @click.native="onClick">
       <template v-slot:title>
-        <div class="title">{{ article.title }}</div>
+        <div class="title">
+          {{ article.title }}
+        </div>
       </template>
       <template v-slot:right>
         <div class="cover">
@@ -49,12 +51,12 @@ export default class Home extends Vue {
   padding: 8px 10px;
 
   .title {
-    padding-left: 10px;
-    font-size: 17px;
+    padding-right: 10px;
+    font-size: 14px;
     font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 500;
     color: #4a4a4a;
-    line-height: 20px;
+    line-height: 1.2;
+    text-align: justify;
   }
 
   .cover {

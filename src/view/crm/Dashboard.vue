@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper crm">
     <div class="menu" @click="$router.push({ name: 'crmZoneList' })">
-      客户区域
+      机构地图
     </div>
 
     <div class="menu" @click="$router.push({ name: 'crmCustomerList' })">

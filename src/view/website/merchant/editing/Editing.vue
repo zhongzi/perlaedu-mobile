@@ -169,10 +169,6 @@ export default class Home extends Mixins(SyncMixin) {
         margin: 10px auto;
       }
     }
-
-    .resource {
-      margin-bottom: 20px;
-    }
   }
 }
 </style>

@@ -47,8 +47,8 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .wrapper {
-  margin-bottom: 15px;
   color: rgba(74, 74, 74, 1);
+  margin-bottom: 15px;
 
   .course {
     display: flex;

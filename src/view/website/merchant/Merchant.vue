@@ -282,7 +282,6 @@ export default class Home extends Mixins(SyncMixin) {
     }
 
     .section {
-      margin-bottom: 10px;
     }
   }
 
