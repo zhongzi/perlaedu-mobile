@@ -1,14 +1,14 @@
 const Home = () =>
   import(
-    /* webpackChunkName: "bill-cost" */ "@/view/bill/management/cost/Home.vue"
+    /* webpackChunkName: "bill-management-cost" */ "@/view/bill/management/cost/Home.vue"
   );
 const List = () =>
   import(
-    /* webpackChunkName: "bill-cost" */ "@/view/bill/management/cost/List.vue"
+    /* webpackChunkName: "bill-management-cost" */ "@/view/bill/management/cost/List.vue"
   );
 const RechargeAi = () =>
   import(
-    /* webpackChunkName: "bill-cost" */ "@/view/bill/management/cost/RechargeAi.vue"
+    /* webpackChunkName: "bill-management-cost" */ "@/view/bill/management/cost/RechargeAi.vue"
   );
 
 const costRoutes: any = [

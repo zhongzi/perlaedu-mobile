@@ -1,35 +1,35 @@
 const Home = () =>
   import(
-    /* webpackChunkName: "website-editing" */ "@/view/website/merchant/editing/Home.vue"
+    /* webpackChunkName: "website-merchant-editing" */ "@/view/website/merchant/editing/Home.vue"
   );
 const Editing = () =>
   import(
-    /* webpackChunkName: "website-editing" */ "@/view/website/merchant/editing/Editing.vue"
+    /* webpackChunkName: "website-merchant-editing" */ "@/view/website/merchant/editing/Editing.vue"
   );
 
 const Course = () =>
   import(
-    /* webpackChunkName: "website-editing" */ "@/view/website/merchant/editing/Course.vue"
+    /* webpackChunkName: "website-merchant-editing" */ "@/view/website/merchant/editing/Course.vue"
   );
 
 const Album = () =>
   import(
-    /* webpackChunkName: "website-editing" */ "@/view/website/merchant/editing/Album.vue"
+    /* webpackChunkName: "website-merchant-editing" */ "@/view/website/merchant/editing/Album.vue"
   );
 
 const Article = () =>
   import(
-    /* webpackChunkName: "website-editing" */ "@/view/website/merchant/editing/Article.vue"
+    /* webpackChunkName: "website-merchant-editing" */ "@/view/website/merchant/editing/Article.vue"
   );
 
 const Video = () =>
   import(
-    /* webpackChunkName: "website-editing" */ "@/view/website/merchant/editing/Video.vue"
+    /* webpackChunkName: "website-merchant-editing" */ "@/view/website/merchant/editing/Video.vue"
   );
 
 const Teacher = () =>
   import(
-    /* webpackChunkName: "website-editing" */ "@/view/website/merchant/editing/Teacher.vue"
+    /* webpackChunkName: "website-merchant-editing" */ "@/view/website/merchant/editing/Teacher.vue"
   );
 
 const editingRoutes: any = [

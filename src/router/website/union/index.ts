@@ -1,17 +1,21 @@
 const Home = () =>
-  import(/* webpackChunkName: "website" */ "@/view/website/union/Home.vue");
+  import(
+    /* webpackChunkName: "website-union" */ "@/view/website/union/Home.vue"
+  );
 
 const Union = () =>
-  import(/* webpackChunkName: "website" */ "@/view/website/union/Union.vue");
+  import(
+    /* webpackChunkName: "website-union" */ "@/view/website/union/Union.vue"
+  );
 
 const Course = () =>
   import(
-    /* webpackChunkName: "website" */ "@/view/website/merchant/Course.vue"
+    /* webpackChunkName: "website-union" */ "@/view/website/merchant/Course.vue"
   );
 
 const Article = () =>
   import(
-    /* webpackChunkName: "website" */ "@/view/website/merchant/Article.vue"
+    /* webpackChunkName: "website-union" */ "@/view/website/merchant/Article.vue"
   );
 
 const unionRoutes: any = [

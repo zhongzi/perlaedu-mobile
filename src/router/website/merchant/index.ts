@@ -1,32 +1,36 @@
 const Home = () =>
-  import(/* webpackChunkName: "website" */ "@/view/website/merchant/Home.vue");
+  import(
+    /* webpackChunkName: "website-merchant" */ "@/view/website/merchant/Home.vue"
+  );
 
 const Merchant = () =>
   import(
-    /* webpackChunkName: "website" */ "@/view/website/merchant/Merchant.vue"
+    /* webpackChunkName: "website-merchant" */ "@/view/website/merchant/Merchant.vue"
   );
 
 const Course = () =>
   import(
-    /* webpackChunkName: "website" */ "@/view/website/merchant/Course.vue"
+    /* webpackChunkName: "website-merchant" */ "@/view/website/merchant/Course.vue"
   );
 
 const Article = () =>
   import(
-    /* webpackChunkName: "website" */ "@/view/website/merchant/Article.vue"
+    /* webpackChunkName: "website-merchant" */ "@/view/website/merchant/Article.vue"
   );
 
 const Album = () =>
-  import(/* webpackChunkName: "website" */ "@/view/website/merchant/Album.vue");
+  import(
+    /* webpackChunkName: "website-merchant" */ "@/view/website/merchant/Album.vue"
+  );
 
 const Teacher = () =>
   import(
-    /* webpackChunkName: "website" */ "@/view/website/merchant/Teacher.vue"
+    /* webpackChunkName: "website-merchant" */ "@/view/website/merchant/Teacher.vue"
   );
 
 const Pending = () =>
   import(
-    /* webpackChunkName: "website" */ "@/view/website/merchant/Pending.vue"
+    /* webpackChunkName: "website-merchant" */ "@/view/website/merchant/Pending.vue"
   );
 
 import editingRoutes from "./editing";

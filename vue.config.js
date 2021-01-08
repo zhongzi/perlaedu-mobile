@@ -3,24 +3,23 @@ const urljoin = require("url-join");
 
 const WebpackAliyunOss = require("webpack-aliyun-oss");
 
-const isProduction = process.env.NODE_ENV === "production";
-const isTesting = process.env.TESTING === "true";
-const isNeedPublish = process.env.NEED_PUBLISH === "true";
-const target = process.env.TARGET;
+const configs = {
+  isProduction: process.env.NODE_ENV || "production",
+  isTesting: process.env.TESTING || false,
+  isNeedPublish: process.env.NEED_PUBLISH || false,
+  target: process.env.TARGET,
+};
 
-let configs = {};
-if (isProduction && isNeedPublish) {
+if (configs.isProduction && configs.isNeedPublish) {
   configs.baseURL = "https://files.perlaedu.com";
-
   configs.ossPath =
-    target === "production"
+    configs.target === "production"
       ? urljoin("mobile/spa", uuidv4())
       : urljoin("mobile/spa-test", uuidv4());
   configs.ossEndpoint = "oss-cn-shenzhen";
   configs.ossBucket = process.env.OSS_BUCKET;
   configs.ossKey = process.env.OSS_ACCESSKEYID;
   configs.ossSecret = process.env.OSS_ACCESSKEYSECRET;
-
   configs.publicPath = urljoin(configs.baseURL, configs.ossPath);
 }
 
@@ -89,13 +88,9 @@ module.exports = {
     },
   },
   configureWebpack: (config) => {
-    config.output.filename =
-      isTesting || !isProduction
-        ? "[name].[hash].js"
-        : "[name].[contenthash].js";
+    config.output.filename = "[name].[contenthash].js";
 
-    isProduction &&
-      isNeedPublish &&
+    configs.isNeedPublish &&
       config.plugins.push(
         new WebpackAliyunOss({
           from: ["./dist/**"],

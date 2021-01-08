@@ -1,8 +1,10 @@
 const Home = () =>
-  import(/* webpackChunkName: "user" */ "@/view/user/agent/Home.vue");
+  import(/* webpackChunkName: "user-agent" */ "@/view/user/agent/Home.vue");
 
 const Dashboard = () =>
-  import(/* webpackChunkName: "user" */ "@/view/user/agent/Dashboard.vue");
+  import(
+    /* webpackChunkName: "user-agent" */ "@/view/user/agent/Dashboard.vue"
+  );
 
 const agentRoutes: any = [
   {

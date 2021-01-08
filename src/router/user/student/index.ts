@@ -1,8 +1,8 @@
 const Home = () =>
-  import(/* webpackChunkName: "user" */ "@/view/user/student/Home.vue");
+  import(/* webpackChunkName: "user-student" */ "@/view/user/student/Home.vue");
 
 const Me = () =>
-  import(/* webpackChunkName: "user" */ "@/view/user/student/Me.vue");
+  import(/* webpackChunkName: "user-student" */ "@/view/user/student/Me.vue");
 
 const studentRoutes: any = [
   {

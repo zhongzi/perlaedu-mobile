@@ -1,18 +1,18 @@
 const Home = () =>
   import(
-    /* webpackChunkName: "bill-editing" */ "@/view/bill/management/editing/Home.vue"
+    /* webpackChunkName: "bill-management-editing" */ "@/view/bill/management/editing/Home.vue"
   );
 const Projects = () =>
   import(
-    /* webpackChunkName: "bill-editing" */ "@/view/bill/management/editing/Projects.vue"
+    /* webpackChunkName: "bill-management-editing" */ "@/view/bill/management/editing/Projects.vue"
   );
 const Items = () =>
   import(
-    /* webpackChunkName: "bill-editing" */ "@/view/bill/management/editing/Items.vue"
+    /* webpackChunkName: "bill-management-editing" */ "@/view/bill/management/editing/Items.vue"
   );
 const Item = () =>
   import(
-    /* webpackChunkName: "bill-editing" */ "@/view/bill/management/editing/Item.vue"
+    /* webpackChunkName: "bill-management-editing" */ "@/view/bill/management/editing/Item.vue"
   );
 
 const editingRoutes: any = [
