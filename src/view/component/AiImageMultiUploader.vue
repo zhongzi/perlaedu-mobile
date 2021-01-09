@@ -5,7 +5,7 @@
         ref="uploader"
         @input="upload"
         :multiple="true"
-        accept="image/png,image/gif,image/jpeg,image/webp"
+        accept="image/png,image/gif,image/jpeg,image/webp,image/jpg"
       >
         <hui-button :class="b('button')">
           <i class="iconfont icon-upload" />

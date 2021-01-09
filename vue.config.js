@@ -4,7 +4,7 @@ const urljoin = require("url-join");
 const WebpackAliyunOss = require("webpack-aliyun-oss");
 
 const configs = {
-  isProduction: process.env.NODE_ENV || "production",
+  isProduction: process.env.NODE_ENV === "production",
   isTesting: process.env.TESTING || false,
   isNeedPublish: process.env.NEED_PUBLISH || false,
   target: process.env.TARGET,
@@ -88,7 +88,9 @@ module.exports = {
     },
   },
   configureWebpack: (config) => {
-    config.output.filename = "[name].[contenthash].js";
+    config.output.filename = !configs.isProduction
+      ? "[name].[hash].js"
+      : "[name].[contenthash].js";
 
     configs.isNeedPublish &&
       config.plugins.push(

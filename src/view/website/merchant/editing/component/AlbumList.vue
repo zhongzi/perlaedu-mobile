@@ -76,8 +76,11 @@ export default class Home extends Mixins(SyncMixin) {
     );
   }
 
-  onDelete(album, tag) {
+  created() {
     this.store = "album";
+  }
+
+  onDelete(album, tag) {
     this.id = album.id;
     this.tag = tag;
     this.deleteEntity({

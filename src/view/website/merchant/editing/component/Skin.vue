@@ -5,7 +5,7 @@
         点击更换首页背景图
       </template>
       <template v-slot:subtitle>
-        （可选。不可回撤, 定制用户请慎重）
+        （定制首页用户请慎重，更换之后不可回撤）
       </template>
       <template v-slot:right>
         <div class="image-bg" :style="getMergedStyle(bgImage)" />

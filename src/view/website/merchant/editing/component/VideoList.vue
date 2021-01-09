@@ -76,8 +76,11 @@ export default class Home extends Mixins(SyncMixin) {
     );
   }
 
-  onDelete(video, tag) {
+  created() {
     this.store = "websiteVideo";
+  }
+
+  onDelete(video, tag) {
     this.id = video.id;
     this.tag = tag;
     this.deleteEntity({

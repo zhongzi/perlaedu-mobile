@@ -2,6 +2,14 @@
   <ai-dialog :value="show" @input="(v) => $emit('update:show', v)">
     <div class="wrapper editing-skin-image-bg">
       <div class="images">
+        <ai-state-check
+          @update:checked="(v) => onCheckedChanged(null, v)"
+          :checked="isDefault"
+        >
+          <div style="" class="image">
+            默认
+          </div>
+        </ai-state-check>
         <template v-for="style in styles">
           <ai-state-check
             @update:checked="(v) => onCheckedChanged(style, v)"
@@ -16,9 +24,6 @@
       <ai-cell class="custome-image">
         <template v-slot:title>
           自定义背景图
-        </template>
-        <template v-slot:subtitle>
-          备注: 宽度 > 750px
         </template>
         <template v-slot:right>
           <ai-image-uploader
@@ -49,6 +54,7 @@ import AiImageUploader from "@/view/component/AiImageUploader.vue";
 import AiSubmitActions from "@/view/component/AiSubmitActions.vue";
 
 import _get from "lodash/get";
+import isEmpty from "lodash/isEmpty";
 import merge from "lodash/merge";
 
 @Component({
@@ -71,13 +77,23 @@ export default class Home extends Mixins(SyncMixin) {
     return this.list;
   }
 
+  get isDefault() {
+    return isEmpty(this.url);
+  }
+
   created() {
     this.store = "websiteStyle";
     this.loadList();
   }
 
+  @Watch("merchant", { deep: true })
+  onMerchantChanged() {
+    this.url = _get(this.merchant, "website.skin.resources.bgImage");
+    console.log(this.merchant);
+  }
+
   onCheckedChanged(style, flag) {
-    this.url = flag ? style.url : null;
+    this.url = style && flag ? style.url : null;
   }
 
   getMergedStyle(url) {
@@ -108,6 +124,7 @@ export default class Home extends Mixins(SyncMixin) {
     .image {
       width: 60px;
       height: 60px;
+      border: 2px solid #c9cbce;
     }
   }
   .custome-image {

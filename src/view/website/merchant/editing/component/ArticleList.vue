@@ -80,6 +80,10 @@ export default class Home extends Mixins(SyncMixin) {
     );
   }
 
+  created() {
+    this.store = "article";
+  }
+
   gotoEditingArticle(article) {
     this.$router.push({
       name: "websiteEditingArticle",
@@ -91,7 +95,6 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   onDelete(article, tag) {
-    this.store = "article";
     this.id = article.id;
     this.tag = tag;
     this.deleteEntity({
