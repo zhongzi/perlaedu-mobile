@@ -56,6 +56,11 @@
         <template v-slot:item="{ item, index }">
           <slot name="item" :item="item" :index="index" :tag="tag" />
         </template>
+        <template v-slot:empty>
+          <slot name="empty">
+            暂无数据
+          </slot>
+        </template>
         <template v-slot:footer>
           <slot name="footer"> </slot>
         </template>

@@ -38,16 +38,16 @@ import MerchantsByFollow from "./MerchantsByFollow.vue";
 export default class Home extends Vue {
   navs: any = [
     {
-      title: "浏览过的机构",
-      value: "viewed",
+      title: "我就学的机构",
+      value: "learning",
     },
     {
       title: "关注中的机构",
       value: "following",
     },
     {
-      title: "我就学的机构",
-      value: "learning",
+      title: "浏览过的机构",
+      value: "viewed",
     },
   ];
   curNav: any = this.navs[0];

@@ -15,12 +15,19 @@
       <swiper-slide :class="b('swiper-item')" v-if="enableSlideBefore">
         <slot name="slide-before" />
       </swiper-slide>
-      <swiper-slide
-        :class="b('swiper-item')"
-        v-for="(item, index) in list"
-        :key="item.id || index"
-      >
-        <slot name="item" :item="item" :index="index" />
+      <template v-if="list && list.length > 0">
+        <swiper-slide
+          :class="b('swiper-item')"
+          v-for="(item, index) in list"
+          :key="item.id || index"
+        >
+          <slot name="item" :item="item" :index="index" />
+        </swiper-slide>
+      </template>
+      <swiper-slide v-else :class="b('swiper-item')">
+        <slot name="empty">
+          暂无数据
+        </slot>
       </swiper-slide>
       <swiper-slide :class="b('swiper-item')" v-if="enableSlideAfter">
         <slot name="slide-after" />

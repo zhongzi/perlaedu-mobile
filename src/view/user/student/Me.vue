@@ -8,14 +8,24 @@
         <span class="name">{{ user.nickname }}</span>
       </template>
       <template v-slot:right>
-        <div class="icons" v-if="false">
-          <i class="iconfont icon-message" />
-          <i class="iconfont icon-plan" />
+        <div class="icons">
+          <div class="icon" @click="gotoMessageBox">
+            <i class="iconfont icon-message" />
+            <span>消息</span>
+          </div>
+          <div class="icon" @click="gotoCouponBag">
+            <i class="iconfont icon-coupon coupon" />
+            <span>券包</span>
+          </div>
         </div>
       </template>
     </ai-cell>
+    <course-list />
+    <quick-entry />
+    <!--
     <wallet class="section s-wallet" />
     <share class="section s-share" />
+-->
     <merchants class="section s-merchant" />
   </div>
 </template>
@@ -28,6 +38,8 @@ import AiCell from "@/view/component/AiCell.vue";
 import Wallet from "./component/Wallet.vue";
 import Share from "./component/Share.vue";
 import Merchants from "./component/Merchants.vue";
+import CourseList from "./component/CourseList.vue";
+import QuickEntry from "./component/QuickEntry.vue";
 
 @Component({
   components: {
@@ -35,18 +47,34 @@ import Merchants from "./component/Merchants.vue";
     Wallet,
     Share,
     Merchants,
+    CourseList,
+    QuickEntry,
   },
 })
 export default class Home extends Vue {
   get user() {
     return this.$auth.user;
   }
+
+  gotoMessageBox() {
+    window.location.href = this.$frontURLResolver.getMessages(null, {});
+  }
+
+  gotoCouponBag() {
+    this.$router.push({
+      name: "billProfileCoupons",
+    });
+  }
 }
 </script>
 <style lang="scss" scoped>
 .student {
   .header {
-    padding: 30px 30px 10px;
+    padding: 30px 30px;
+    margin-bottom: 10px;
+
+    background: #fff;
+    box-shadow: 0px 3px 14px 0px rgba(0, 0, 0, 0.05);
 
     .avatar {
       width: 45px;
@@ -64,9 +92,30 @@ export default class Home extends Vue {
     .icons {
       display: flex;
       align-items: center;
-      i {
-        font-size: 24px;
-        margin-left: 10px;
+
+      .icon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        margin: 0px 10px;
+
+        i {
+          font-size: 24px;
+          line-height: 1;
+        }
+
+        span {
+          font-size: 12px;
+          color: #928e8e;
+
+          line-height: 1;
+        }
+
+        .coupon {
+          font-size: 28px;
+        }
       }
     }
   }

@@ -25,6 +25,7 @@ import iconGroup from "./icon_group";
 import authorization from "./authorization";
 import payOrderStatistics from "./pay_order_statistics";
 import sceneTemp from "./scene_temp";
+import tag from "./tag";
 
 export default {
   oauth,
@@ -54,4 +55,5 @@ export default {
   authorization,
   payOrderStatistics,
   sceneTemp,
+  tag,
 };

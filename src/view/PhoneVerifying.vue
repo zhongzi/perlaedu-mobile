@@ -159,7 +159,7 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   get isVerifiedPhone() {
-    return !isEmpty(this.verifiedPhone) && !this.resetPhone;
+    return _get(this.$auth, "user.phone_verified") && !this.resetPhone;
   }
 
   get cancelLabel() {

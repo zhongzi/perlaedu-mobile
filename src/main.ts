@@ -160,6 +160,23 @@ router.beforeEach((to: any, from: any, next: any) => {
     }
   }
 
+  // 手机号码要求
+  if (to.meta.requirePhone !== false) {
+    if (
+      to.matched.some((record: any) => {
+        return record.meta.requirePhone === true;
+      })
+    ) {
+      if (!_get(auth, "user.phone_verified")) {
+        router.pushWithNext({
+          name: "PhoneVerifying",
+        });
+        next(false);
+        return;
+      }
+    }
+  }
+
   confirmNext(next, from, to);
 });
 

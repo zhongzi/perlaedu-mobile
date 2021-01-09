@@ -77,12 +77,23 @@ const frontURLResolver = {
     const uri = `/group_oprs?merchant_id=${merchant.id}`;
     return frontURLResolver.makeURL(uri);
   },
-  getMessages: (merchant, query = { original: true, group_only: true }) => {
-    const uri = `/messages?merchant_id=${merchant.id}`;
+  getMessages: (
+    merchant: any = null,
+    query: any = { original: true, group_only: true }
+  ) => {
+    const uri = "/messages";
+    query = query || {};
+    if (merchant) {
+      query.merchant_id = merchant.id;
+    }
     return frontURLResolver.makeURL(uri, query);
   },
-  getRequests: (merchant, query = { type_: 1 }) => {
-    const uri = `/_requests?merchant_id=${merchant.id}`;
+  getRequests: (merchant = null, query: any = { type_: 1 }) => {
+    const uri = "/_requests";
+    query = query || {};
+    if (merchant) {
+      query.merchant_id = merchant.id;
+    }
     return frontURLResolver.makeURL(uri, query);
   },
   getLeaveTag: (merchant, query = null) => {
@@ -160,6 +171,21 @@ const frontURLResolver = {
   // 课时明细
   listTagTrans: (merchant, query = null) => {
     const uri = `/merchants/${merchant.id}/tag_trans`;
+    return frontURLResolver.makeURL(uri, query);
+  },
+  // 作业打卡
+  homeworks: (merchant = null, query = null) => {
+    const uri = `/homeworks`;
+    return frontURLResolver.makeURL(uri, query);
+  },
+  // 课前请假
+  askForLeave: (merchant = null, query = null) => {
+    const uri = `/_requests/new/edit`;
+    return frontURLResolver.makeURL(uri, query);
+  },
+  // 预约上课
+  booking: (merchant = null, query = { type_: 1 }) => {
+    const uri = `/bookings`;
     return frontURLResolver.makeURL(uri, query);
   },
 };

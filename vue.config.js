@@ -25,6 +25,7 @@ if (configs.isProduction && configs.isNeedPublish) {
 
 module.exports = {
   publicPath: configs.publicPath || "/mobile/",
+  productionSourceMap: !configs.isProduction,
   pages: {
     index: {
       entry: "src/main.ts",

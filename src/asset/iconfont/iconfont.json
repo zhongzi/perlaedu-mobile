@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "8817471",
+      "name": "卡券",
+      "font_class": "-coupon",
+      "unicode": "e623",
+      "unicode_decimal": 58915
+    },
+    {
       "icon_id": "5634192",
       "name": "link",
       "font_class": "-link",

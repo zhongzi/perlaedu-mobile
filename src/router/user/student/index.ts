@@ -14,6 +14,7 @@ const studentRoutes: any = [
     meta: {
       requireOpenid: true,
       requireAuth: true,
+      requirePhone: true,
     },
     children: [
       {
