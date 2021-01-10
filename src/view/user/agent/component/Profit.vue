@@ -28,7 +28,7 @@
         <span class="label">每月收益</span>
       </ai-line-header>
       <ai-list-stored
-        resource="agentRankLog"
+        resource="agentRankLogStatistics"
         :query="query"
         @emit-list="onListChanged"
       >
@@ -70,8 +70,13 @@ export default class Home extends Vue {
   }
 
   get query() {
+    const startAt = new Date(this.$auth.user.agent.created_at);
+    const endAt = new Date();
     return {
-      sort: "created_at desc",
+      scope: `>=${startAt.toISOString()}&<${endAt.toISOString()}`,
+      scope_type: "month",
+      sort: "key",
+      extras: "sum_by_commission_first,sum_by_commission_renew",
       sums: "commission_first,commission_renew",
     };
   }

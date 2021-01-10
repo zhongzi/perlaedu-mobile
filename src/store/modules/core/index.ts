@@ -4,6 +4,7 @@ import person from "./person";
 import merchant from "./merchant";
 import agent from "./agent";
 import agentRankLog from "./agent_rank_log";
+import agentRankLogStatistics from "./agent_rank_log_statistics";
 import album from "./album";
 import albumPhoto from "./album_photo";
 import article from "./article";
@@ -33,6 +34,7 @@ export default {
   merchantStatistics,
   agent,
   agentRankLog,
+  agentRankLogStatistics,
   album,
   albumPhoto,
   article,

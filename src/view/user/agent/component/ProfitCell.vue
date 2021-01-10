@@ -1,7 +1,7 @@
 <template>
   <ai-cell
     class="cell"
-    :title="profit.created_at | date('yyyy年MM月')"
+    :title="profit.key | date('yyyy年MM月')"
     :subtitle="profitDetail"
   >
     <template v-slot:right>
@@ -27,11 +27,13 @@ export default class Home extends Vue {
   @Prop({ type: Object, default: null }) profit;
 
   get profitTotal() {
-    return this.profit.commission_first + this.profit.commission_renew;
+    return (
+      this.profit.sum_by_commission_first + this.profit.sum_by_commission_renew
+    );
   }
 
   get profitDetail() {
-    return `首冲收益 ${this.profit.commission_first}元 + 续费收益 ${this.profit.commission_renew}元`;
+    return `首冲收益 ${this.profit.sum_by_commission_first}元 + 续费收益 ${this.profit.sum_by_commission_renew}元`;
   }
 }
 </script>

@@ -9,7 +9,7 @@ export default class PayMixin extends Vue {
     failure: any = null,
     cancel: any = null
   ) {
-    const defaultNext = this.$tools.resolveURL(this.$router, {
+    let defaultNext = this.$tools.resolveURL(this.$router, {
       name: "Subscription",
       query: {
         qrcode: order.scene_qrcode_url,
@@ -20,12 +20,18 @@ export default class PayMixin extends Vue {
       this.$router.pushRawNext({ next: next || defaultNext });
       return;
     }
+
+    defaultNext = next || defaultNext;
+    if (typeof defaultNext === "object" && defaultNext !== null) {
+      defaultNext = this.$tools.resolveURL(this.$router, defaultNext);
+    }
+
     this.$router.push({
       name: "FlashTrade",
       query: {
         type: type,
         related_id: order.id,
-        next: next || defaultNext,
+        next: defaultNext,
         failure: failure || location.href,
         cancel: cancel || location.href,
       },
