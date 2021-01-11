@@ -47,8 +47,8 @@ export default class Home extends Mixins(SyncMixin) {
       },
       success: () => {
         this.$nextTick(() => {
-          this.$emit("changed", merchantId);
           this.$auth.fetchLoggedUser();
+          this.$bus.$emit("merchant:switched", merchantId);
         });
       },
     });

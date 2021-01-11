@@ -50,6 +50,7 @@ import AiListStored from "@/view/component/AiListStored.vue";
 import ProfitCell from "./ProfitCell.vue";
 
 import _get from "lodash/get";
+import parseISO from "date-fns/parseISO";
 
 @Component({
   components: {
@@ -70,7 +71,7 @@ export default class Home extends Vue {
   }
 
   get query() {
-    const startAt = new Date(this.$auth.user.agent.created_at);
+    const startAt = parseISO(_get(this.$auth, "user.agent.created_at"));
     const endAt = new Date();
     return {
       scope: `>=${startAt.toISOString()}&<${endAt.toISOString()}`,

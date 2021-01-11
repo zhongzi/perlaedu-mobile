@@ -46,29 +46,20 @@ import isEmpty from "lodash/isEmpty";
 })
 export default class Home extends Mixins(SyncMixin) {
   get merchant() {
-    return isEmpty(this.entity)
-      ? {
-          id: this.$auth.user.curr_merch_id,
-        }
-      : this.entity;
-  }
-
-  get user() {
-    return this.$auth.user;
+    return this.entity;
   }
 
   created() {
     this.store = "merchant";
     this.load();
+
+    this.$bus.$on("merchant:switched", (merchantId) => {
+      this.load(merchantId);
+    });
   }
 
-  @Watch("user", { deep: true })
-  onSwichedMerchang() {
-    this.load();
-  }
-
-  load() {
-    this.id = this.$auth.user.curr_merch_id;
+  load(merchantId = null) {
+    this.id = merchantId || this.$auth.user.curr_merch_id;
     if (!this.id || this.id < 1) return;
     this.loadEntity({
       requireColumns: ["statistics"],
