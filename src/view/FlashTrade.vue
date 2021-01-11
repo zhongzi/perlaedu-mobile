@@ -20,6 +20,8 @@ import { Component, Vue, Mixins } from "vue-property-decorator";
 import SyncMixin from "@/mixin/SyncMixin";
 import auth from "@/service/auth";
 
+import isEmpty from "lodash/isEmpty";
+
 @Component
 export default class Home extends Mixins(SyncMixin) {
   res: any = {
@@ -59,6 +61,14 @@ export default class Home extends Mixins(SyncMixin) {
     this.store = "payOrder";
     this.res.type_ = this.$route.query.type;
     this.res.related_id = this.$route.query.related_id;
+
+    if (!isEmpty(this.successURL)) {
+      this.res.callback_info = {
+        action: {
+          url: this.successURL,
+        },
+      };
+    }
 
     this.saveEntity({
       res: this.res,

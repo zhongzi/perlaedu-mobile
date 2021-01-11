@@ -21,7 +21,7 @@
 <script lang="ts">
 import { Component, Vue, Mixins } from "vue-property-decorator";
 
-import SyncMixin from "@/mixins/SyncMixin";
+import SyncMixin from "@/mixin/SyncMixin";
 
 import AiButtonRoundSmall from "@/view/component/AiButtonRoundSmall.vue";
 
@@ -38,16 +38,16 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   get owner() {
-    return _get(this.order, "callbackInfo.owner");
+    return _get(this.order, "callback_info.owner");
   }
   get title() {
-    return _get(this.order, "callbackInfo.info.title");
+    return _get(this.order, "callback_info.info.title");
   }
   get remark() {
-    return _get(this.order, "callbackInfo.info.remark");
+    return _get(this.order, "callback_info.info.remark");
   }
   get action() {
-    return _get(this.order, "callbackInfo.action");
+    return _get(this.order, "callback_info.action");
   }
 
   created() {
