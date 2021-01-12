@@ -5,7 +5,7 @@
       labelKey="name"
       :value="$auth.user.curr_merch_id"
       :query="query"
-      @input="updateCurrMerchId"
+      @selected="updateCurrMerchId"
     >
       <template v-slot:left>
         <i class="iconfont icon-switch" />
@@ -37,18 +37,20 @@ export default class Home extends Mixins(SyncMixin) {
     this.store = "oauth";
   }
 
-  updateCurrMerchId(merchantId) {
+  updateCurrMerchId(merchant) {
+    if (!merchant) return;
+
     this.id = this.$auth.user.id;
 
     this.saveEntity({
       res: {
         id: this.id,
-        curr_merch_id: merchantId,
+        curr_merch_id: merchant.id,
       },
       success: () => {
         this.$nextTick(() => {
           this.$auth.fetchLoggedUser();
-          this.$bus.$emit("merchant:switched", merchantId);
+          this.$bus.$emit("merchant:switched", merchant);
         });
       },
     });

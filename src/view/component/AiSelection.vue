@@ -81,11 +81,13 @@ export default class Home extends Mixins(PatchMixin) {
   @Watch("options", { deep: true })
   onOptionsChanged() {
     this.resetDefaultValue();
+    this.emitValue();
   }
 
   @Watch("value", { deep: true })
   onValueChanged() {
     this.resetDefaultValue();
+    this.emitValue();
   }
 
   @Watch("innerValue", { deep: true })
@@ -107,9 +109,20 @@ export default class Home extends Mixins(PatchMixin) {
     }
   }
 
-  emitValue() {
-    this.$emit("input", this.innerValue);
+  getFilteredInnerValue() {
+    if (
+      !isEmpty(this.options) &&
+      typeof this.options[0][this.valueKey] === "number"
+    ) {
+      return parseInt(this.innerValue);
+    }
+    return this.innerValue;
+  }
 
+  emitValue() {
+    const filteredValue = this.getFilteredInnerValue();
+
+    this.innerValue = "" + this.innerValue;
     const option = isEmpty(this.valueKey)
       ? this.innerValue
       : isEmpty(this.innerValue)
@@ -117,7 +130,9 @@ export default class Home extends Mixins(PatchMixin) {
           [this.labelKey]: this.defaultName,
           [this.valueKey]: this.innerValue,
         }
-      : find(this.options, { [this.valueKey]: this.innerValue });
+      : find(this.options, { [this.valueKey]: filteredValue });
+
+    this.$emit("input", filteredValue);
     this.$emit("selected", option);
   }
 }

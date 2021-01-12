@@ -223,7 +223,7 @@ export default class SyncMixin extends Vue {
   }
 
   loadEntity(kwargs: any = {}) {
-    if (this.entityLoading) {
+    if (!kwargs.multiable && this.entityLoading) {
       return;
     }
     const resource = kwargs.store || this.store;

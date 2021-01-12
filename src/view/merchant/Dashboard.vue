@@ -32,6 +32,8 @@ import FloorQuickWorkEntry from "./component/FloorQuickWorkEntry.vue";
 import FloorMore from "./component/FloorMore.vue";
 
 import isEmpty from "lodash/isEmpty";
+import merge from "lodash/merge";
+import cloneDeep from "lodash/cloneDeep";
 
 @Component({
   components: {
@@ -45,40 +47,64 @@ import isEmpty from "lodash/isEmpty";
   },
 })
 export default class Home extends Mixins(SyncMixin) {
-  get merchant() {
-    return this.entity;
-  }
+  merchant: any = {};
 
   created() {
     this.store = "merchant";
-    this.load();
 
-    this.$bus.$on("merchant:switched", (merchantId) => {
-      this.load(merchantId);
+    this.$bus.$on("merchant:switched", (merchant) => {
+      this.merchant = merchant;
+      this.load(this.merchant.id);
     });
   }
 
-  load(merchantId = null) {
-    this.id = merchantId || this.$auth.user.curr_merch_id;
+  resetStatistics(merchant) {
+    this.merchant = cloneDeep(
+      merge(this.merchant, {
+        statistics: merge(this.merchant.statistics, merchant.statistics),
+      })
+    );
+  }
+
+  load(merchantId) {
+    this.id = merchantId;
     if (!this.id || this.id < 1) return;
+
+    // 分批加载
     this.loadEntity({
+      multiable: true,
+      requireColumns: ["statistics"],
+      query: {
+        extras: JSON.stringify({
+          Merchant: ["statistics"],
+          MerchantStatistic: ["person", "group"],
+          PersonStatistic: ["count_by"],
+          GroupStatistic: ["count_valid"],
+        }),
+      },
+      success: (resp) => {
+        this.resetStatistics(resp.data);
+      },
+    });
+
+    this.loadEntity({
+      multiable: true,
       requireColumns: ["statistics"],
       query: {
         extras: JSON.stringify({
           Merchant: ["statistics"],
           MerchantStatistic: [
-            "person",
-            "group",
             "tag",
             "tag_transaction",
             "tag_price_transaction",
           ],
-          PersonStatistic: ["count_by"],
-          GroupStatistic: ["count_valid"],
           TagStatistic: ["sum_by_merchant"],
           TagTransactionStatistic: ["sum_by_merchant"],
           TagPriceTransactionStatistic: ["sum_by_merchant"],
         }),
+      },
+      success: (resp) => {
+        this.resetStatistics(resp.data);
       },
     });
   }
