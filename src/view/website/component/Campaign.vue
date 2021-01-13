@@ -31,7 +31,11 @@ export default class Home extends Vue {
   @Prop({ type: Object, default: null }) merchant: any;
 
   gotoCampaign() {
-    window.location.href = this.campaign.url;
+    let url = this.$tools.updateURLQuery(this.campaign.url, {
+      origin: window.location.href,
+    });
+    // url = url.replace('http://127.0.0.1:5000/', "http://localhost:8081/");
+    window.location.href = url;
     return;
   }
 }

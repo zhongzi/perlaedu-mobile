@@ -63,6 +63,13 @@ const tools = {
     url.pathname = pathname;
     return url.href;
   },
+  updateURLQuery: (url, query) => {
+    const queryStr = new URLSearchParams(query).toString();
+    if (url.indexOf("?") >= 0) {
+      return url + "&" + queryStr;
+    }
+    return url + "?" + queryStr;
+  },
   makeQrcode: (url = null) => {
     return (
       configs.qrcodeURL +
