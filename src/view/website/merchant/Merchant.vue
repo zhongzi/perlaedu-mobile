@@ -258,6 +258,8 @@ export default class Home extends Mixins(SyncMixin) {
       flex-direction: column;
 
       i {
+        line-height: 30px;
+
         font-size: 28px;
         color: rgba(255, 255, 255, 0.91);
         padding: 7px;
