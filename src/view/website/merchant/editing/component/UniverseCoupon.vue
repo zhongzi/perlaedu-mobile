@@ -128,6 +128,7 @@ export default class Home extends Mixins(SyncMixin) {
 </script>
 <style lang="scss" scoped>
 .editing-universe-coupon {
+  margin: 10px 20px;
   .header {
     .title {
       font-size: 14px;

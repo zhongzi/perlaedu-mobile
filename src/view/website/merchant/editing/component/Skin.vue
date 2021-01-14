@@ -5,7 +5,7 @@
         点击更换首页背景图
       </template>
       <template v-slot:subtitle>
-        （定制首页用户请慎重，更换之后不可回撤）
+        定制首页用户请慎重，不可回撤
       </template>
       <template v-slot:right>
         <div class="image-bg" :style="getMergedStyle(bgImage)" />
@@ -105,7 +105,7 @@ export default class Home extends Mixins(SyncMixin) {
 </script>
 <style lang="scss" scoped>
 .editing-skin {
-  margin: 10px 25px;
+  margin: 10px 20px;
   .image-bg {
     width: 60px;
     height: 60px;

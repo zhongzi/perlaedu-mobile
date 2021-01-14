@@ -5,17 +5,22 @@
     @input="(v) => $emit('update:open', v)"
   >
     <div class="body">
-      <div class="section add">
-        <div class="title">自定义上传</div>
-        <ai-image-uploader
-          class="icon"
-          triggerName="icon"
-          v-model="selectedIcon"
-          type="merchant"
-          :resizeOption="({ width: 200, height: 200 })"
-          :prefix="prefix"
-        />
-      </div>
+      <ai-cell
+        class="section add"
+        title="自定义上传"
+        subtitle="可以直接上传自己icon，也可以在下面选择使用"
+      >
+        <template v-slot:right>
+          <ai-image-uploader
+            class="icon"
+            triggerName="icon"
+            v-model="selectedIcon"
+            type="merchant"
+            :resizeOption="({ width: 200, height: 200 })"
+            :prefix="prefix"
+          />
+        </template>
+      </ai-cell>
       <div class="icon-groups" v-sticky="'iconPicker'">
         <template v-for="group in groups">
           <icon-group
@@ -41,6 +46,8 @@ import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
 
+import AiLine from "@/view/component/AiLine.vue";
+import AiCell from "@/view/component/AiCell.vue";
 import AiPopup from "@/view/component/AiPopup.vue";
 import AiImageUploader from "@/view/component/AiImageUploader.vue";
 import AiTab from "@/view/component/AiTab.vue";
@@ -55,6 +62,8 @@ import cloneDeep from "lodash/cloneDeep";
 
 @Component({
   components: {
+    AiLine,
+    AiCell,
     AiPopup,
     AiImageUploader,
     AiTab,
@@ -100,6 +109,8 @@ export default class Home extends Mixins(SyncMixin) {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin: 10px auto;
+
       .icon {
         width: 40px;
         height: 40px;

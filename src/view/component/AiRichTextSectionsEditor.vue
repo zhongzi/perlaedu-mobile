@@ -293,7 +293,7 @@ export default class Home extends Vue {
     width: 100%;
 
     .border {
-      border: 1px dashed #000;
+      border: 1px dashed #d2cccc;
       padding: 10px 5px;
     }
 
@@ -305,7 +305,7 @@ export default class Home extends Vue {
       input,
       textarea {
         width: 100%;
-        border: 1px dashed #fff;
+        border: 1px dashed #d2cccc;
         background: transparent;
         // color: #fff;
       }
@@ -319,7 +319,7 @@ export default class Home extends Vue {
       }
 
       img {
-        border: 1px dashed #fff;
+        border: 1px dashed #d2cccc;
       }
 
       .ql-editor {
@@ -336,7 +336,7 @@ export default class Home extends Vue {
       text-align: center;
       line-height: 40px;
       opacity: 0.6;
-      border: 1px dashed #000;
+      border: 1px dashed #d2cccc;
     }
   }
 

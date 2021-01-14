@@ -85,7 +85,7 @@ export default class Home extends Mixins(UploaderMixin) {
   }
 
   & ::v-deep .quill-editor {
-    border: 1px dashed #000;
+    border: 1px dashed #d2cccc;
   }
 
   & ::v-deep .ql-editor {

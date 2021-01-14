@@ -54,6 +54,8 @@ import merge from "lodash/merge";
 import debounce from "lodash/debounce";
 import cloneDeep from "lodash/cloneDeep";
 
+const defaultPhone = "18800000000";
+
 @Component({
   components: {
     AiImageUploader,
@@ -97,6 +99,9 @@ export default class Home extends Mixins(SyncMixin) {
     if (isEqual(this.teacher, this.innerTeacher)) return;
 
     this.innerTeacher = cloneDeep(merge(this.innerTeacher, this.teacher));
+    if (this.isDefaultPhone(this.innerTeacher)) {
+      this.innerTeacher.phone = "";
+    }
   }
 
   load() {
@@ -110,24 +115,29 @@ export default class Home extends Mixins(SyncMixin) {
     }
   }
 
+  isDefaultPhone(person) {
+    return isEqual(_get(person, "phone"), defaultPhone);
+  }
+
   onSubmit() {
     if (!this.merchantId) return;
 
-    if (
-      isEmpty(this.innerTeacher.phone) ||
-      !this.$tools.regxs.telephone(this.innerTeacher.phone)
-    ) {
-      this.$hui.toast.error("请输入正确的手机号码");
-      return;
-    }
-
-    let person = cloneDeep(
+    const person = cloneDeep(
       merge(this.innerTeacher, {
         merchant_id: this.merchantId,
       })
     );
 
-    this.id = this.innerTeacher.id;
+    if (isEmpty(person.phone)) {
+      person.phone = defaultPhone;
+    }
+
+    if (!this.$tools.regxs.telephone(person.phone)) {
+      this.$hui.toast.error("请输入正确的手机号码");
+      return;
+    }
+
+    this.id = person.id;
     if (!this.id) {
       person.role = PersonRole.teacher.value;
     }

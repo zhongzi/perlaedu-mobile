@@ -40,14 +40,6 @@ export default class Home extends Vue {
   padding-bottom: 10px;
   margin: 0px 20px;
 
-  .title {
-    font-size: 14px;
-    font-weight: bold;
-    color: rgba(84, 84, 84, 1);
-    line-height: 19px;
-    letter-spacing: 1px;
-  }
-
   i {
     color: rgba(212, 212, 212, 1);
   }

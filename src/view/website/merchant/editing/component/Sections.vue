@@ -181,7 +181,7 @@ export default class Home extends Mixins(SyncMixin) {
 </script>
 <style lang="scss" scoped>
 .sections-manager {
-  margin: 10px 25px;
+  margin: 10px 20px;
 }
 
 .body {

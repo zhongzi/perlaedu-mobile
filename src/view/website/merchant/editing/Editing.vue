@@ -1,21 +1,7 @@
 <template>
   <div class="wrapper editing">
     <merchant :merchant="merchant" />
-    <skin :merchant="merchant" />
-    <sections :merchant="merchant" />
     <div class="resources">
-      <div class="section">
-        <union-merchant-list class="resource" :query="query" />
-        <universe-coupon class="resource coupon" :merchant="merchant" />
-        <ai-line />
-      </div>
-
-      <campaigns-entry
-        class="resource campaign"
-        v-if="!sectionCampaign || sectionCampaign.enabled"
-        :key="sectionCampaign && sectionCampaign.sid"
-        :title="sectionCampaign && sectionCampaign.title"
-      />
       <course-list
         class="resource slide"
         :query="query"
@@ -49,13 +35,14 @@
         :title="sectionVideo && sectionVideo.title"
       />
       <article-list
-        class="resource section"
+        class="resource article"
         :query="query"
         :merchant="merchant"
         v-if="!sectionArticle || sectionArticle.enabled"
         :key="sectionArticle && sectionArticle.sid"
         :title="sectionArticle && sectionArticle.title"
       />
+      <settings class="resource settings" :merchant="merchant" />
     </div>
   </div>
 </template>
@@ -67,16 +54,12 @@ import SyncMixin from "@/mixin/SyncMixin";
 import AiLine from "@/view/component/AiLine.vue";
 
 import Merchant from "./component/Merchant.vue";
-import UnionMerchantList from "./component/UnionMerchantList.vue";
-import UniverseCoupon from "./component/UniverseCoupon.vue";
-import CampaignsEntry from "./component/CampaignsEntry.vue";
 import CourseList from "./component/CourseList.vue";
 import TeacherList from "./component/TeacherList.vue";
 import VideoList from "./component/VideoList.vue";
 import AlbumList from "./component/AlbumList.vue";
 import ArticleList from "./component/ArticleList.vue";
-import Skin from "./component/Skin.vue";
-import Sections from "./component/Sections.vue";
+import Settings from "./component/Settings.vue";
 
 import _get from "lodash/get";
 import filter from "lodash/filter";
@@ -85,16 +68,12 @@ import filter from "lodash/filter";
   components: {
     AiLine,
     Merchant,
-    UnionMerchantList,
-    UniverseCoupon,
-    CampaignsEntry,
     CourseList,
     TeacherList,
     VideoList,
     AlbumList,
     ArticleList,
-    Skin,
-    Sections,
+    Settings,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
@@ -104,10 +83,6 @@ export default class Home extends Mixins(SyncMixin) {
 
   get sections() {
     return _get(this.entity, "website.settings.sections");
-  }
-
-  get sectionCampaign() {
-    return filter(this.sections, { sid: "campaign" })[0];
   }
 
   get sectionCourse() {
@@ -158,16 +133,11 @@ export default class Home extends Mixins(SyncMixin) {
   .resources {
     overflow: hidden;
 
-    .section {
+    .article {
       padding: 0px 20px;
-
-      .coupon {
-        padding: 0px 7px;
-      }
-
-      .campaign {
-        margin: 10px auto;
-      }
+    }
+    .settings {
+      margin: 20px;
     }
   }
 }

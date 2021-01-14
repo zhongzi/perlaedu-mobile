@@ -33,7 +33,7 @@
       :gps="merchant.location | safe('gps', [])"
       :address="merchant.location | safe('address')"
       :title="merchant.name"
-      :telephone="merchant.phone"
+      :phone="merchant.phone"
     />
     <hui-dialog v-model="showDialog">
       <div class="dialog">

@@ -1,18 +1,15 @@
 <template>
   <div :class="b()">
-    <div
-      :class="b('header')"
-      @click="enableHeaderClickable && $emit('update:open', !open)"
-    >
+    <div :class="b('header')" @click="trigger">
       <div :class="b('header-left')">
         <slot name="header"> </slot>
       </div>
       <div v-if="showIcon">
-        <i v-if="open" class="iconfont icon-direction-up" />
+        <i v-if="innerOpen" class="iconfont icon-direction-up" />
         <i v-else class="iconfont icon-direction-down" />
       </div>
     </div>
-    <div :class="b('content')" v-if="open">
+    <div :class="b('content')" v-if="innerOpen">
       <slot />
     </div>
   </div>
@@ -33,6 +30,19 @@ export default class Home extends Vue {
   @Prop({ type: Boolean, default: false }) open: boolean;
   @Prop({ type: Boolean, default: true }) showIcon: boolean;
   @Prop({ type: Boolean, default: true }) enableHeaderClickable: boolean;
+
+  innerOpen: boolean = false;
+
+  created() {
+    this.innerOpen = this.open;
+  }
+
+  trigger() {
+    if (this.enableHeaderClickable) {
+      this.innerOpen = !this.innerOpen;
+      this.$emit("update:open", this.innerOpen);
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

@@ -17,8 +17,10 @@
         v-model="innerCourse.subject_id"
       />
       <ai-line />
+      <ai-input class="field" label="课程名称" v-model="innerCourse.title" />
+      <ai-line />
       <div class="custome-icon">
-        <div class="label">自定义科目icon（可选）</div>
+        <div class="label">课程图标</div>
         <img
           v-if="innerCourse.subject_icon"
           class="icon"
@@ -33,8 +35,7 @@
         />
       </div>
       <ai-line />
-      <ai-input class="field" label="课程名称" v-model="innerCourse.title" />
-      <ai-line />
+      <!--
       <ai-selection-stored
         resource="billProject"
         label="购买链接"
@@ -44,6 +45,7 @@
       >
       </ai-selection-stored>
       <ai-line />
+-->
       <ai-section class="field description">
         <template v-slot:header>
           <span> 详情 </span>
@@ -121,7 +123,7 @@ export default class Home extends Mixins(SyncMixin) {
   created() {
     this.innerCourse = {
       id: "",
-      cover: require("@/asset/image/default/cover-course.png"),
+      cover: "",
       title: "",
       description: "",
       bill_id: "",
@@ -190,7 +192,7 @@ export default class Home extends Mixins(SyncMixin) {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 7px;
+    padding: 7px 0px;
 
     .label {
       font-size: 3.73333vw;

@@ -37,7 +37,7 @@ export default class Home extends Vue {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
+  padding: 10px 0px;
 
   &__label {
     font-size: 14px;

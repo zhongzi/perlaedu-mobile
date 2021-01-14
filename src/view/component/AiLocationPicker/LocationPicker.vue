@@ -125,8 +125,6 @@ export default class Home extends Mixins(StopBodyScrollMixin) {
 </script>
 <style lang="scss" scoped>
 .ai-location-picker {
-  padding: 5px 10px;
-
   &__popup {
     height: 100vh;
     overflow: scroll;
@@ -141,6 +139,17 @@ export default class Home extends Mixins(StopBodyScrollMixin) {
   &__address {
     box-sizing: border-box;
     padding: 0px 10px;
+  }
+
+  &__cell {
+    & ::v-deep .ai-cell__left-info-header-title {
+      font-size: 3.73333vw;
+      font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
+      font-weight: bold;
+      color: #545454;
+      line-height: 5.06667vw;
+      letter-spacing: 1px;
+    }
   }
 }
 </style>

@@ -1,16 +1,21 @@
 <template>
-  <hui-dialog :value="show" @input="(v) => $emit('update:show', v)">
+  <hui-dialog v-model="innerShow">
     <div :class="b()">
-      <gps-picker :class="b('map')" :value="gps" :address="address" />
+      <gps-picker
+        :class="b('map')"
+        :value="gps"
+        :address="address"
+        v-if="innerShow"
+      />
       <div :class="b('info')">
         <div :class="b('info-title')" v-if="title">{{ title }}</div>
         <div :class="b('info-address')" v-if="address">
           <i class="iconfont icon-location" />
           {{ address }}
         </div>
-        <div :class="b('info-telephone')" v-if="telephone">
+        <div :class="b('info-phone')" v-if="phone" @click="$tools.call(phone)">
           <i class="iconfont icon-call" />
-          {{ telephone }}
+          {{ phone }}
         </div>
       </div>
     </div>
@@ -34,36 +39,49 @@ export default class Home extends Vue {
   @Prop({ type: Array, default: () => [0, 0] }) gps: any;
   @Prop({ type: String, default: null }) address: string;
   @Prop({ type: String, default: null }) title: string;
-  @Prop({ type: String, default: null }) telephone: string;
+  @Prop({ type: String, default: null }) phone: string;
   @Prop({ type: Boolean, default: false }) show: boolean;
+
+  innerShow: boolean = false;
+
+  created() {
+    this.openMap();
+  }
 
   @Watch("show")
   onShowChanged() {
-    if (this.show) this.openMap();
+    this.openMap();
+  }
+
+  @Watch("innerShow")
+  onInnerShowChanged() {
+    this.$emit("update:show", this.innerShow);
   }
 
   openMap() {
     if (this.$weixin.isInWeixin()) {
-      this.$weixin.config(() => {
-        this.$weixin.jsapi.openLocation({
-          latitude: parseFloat(this.gps[0]),
-          longitude: parseFloat(this.gps[1]),
-          name: this.title,
-          address: this.address,
+      this.show &&
+        this.$weixin.config(() => {
+          this.$weixin.jsapi.openLocation({
+            latitude: parseFloat(this.gps[0]),
+            longitude: parseFloat(this.gps[1]),
+            name: this.title,
+            address: this.address,
+          });
         });
-      });
       this.$emit("update:show", false);
-      return;
+    } else {
+      this.innerShow = this.show;
     }
   }
 }
 </script>
 <style lang="scss" scoped>
 .ai-location {
-  height: 80vh;
   &__map {
-    height: 80%;
+    height: 300px;
     border-radius: 8px;
+    overflow: hidden;
   }
   &__info {
     padding: 20px;
@@ -77,7 +95,7 @@ export default class Home extends Vue {
     }
 
     &-address,
-    &-telephone {
+    &-phone {
       display: flex;
       align-items: baseline;
       font-size: 13px;
