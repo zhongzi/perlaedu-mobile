@@ -115,7 +115,7 @@
               </template>
               <template v-for="person in customer.persons">
                 <tr :key="person.id">
-                  <td>{{ person.created_at | date("MM-dd HH:mm") }}</td>
+                  <td>{{ person.created_at | defaultDay }}</td>
                   <td>{{ getRoleName(person.role) }}</td>
                   <td>
                     {{ person | safe("merchant.name") }}
