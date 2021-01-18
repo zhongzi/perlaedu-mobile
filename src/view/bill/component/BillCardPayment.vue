@@ -36,11 +36,9 @@
               </span>
             </template>
             <template v-slot:right-title>
-              {{ innerItem.price }} <span style="font-size: 12px;">元</span>
+              {{ innerItem.price }} <span style="font-size: 12px">元</span>
             </template>
-            <template v-slot:right-remark>
-              实际支付
-            </template>
+            <template v-slot:right-remark> 实际支付 </template>
           </bill-card>
         </template>
         <template>

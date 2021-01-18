@@ -76,14 +76,17 @@ class PosterBuilder {
     this.id && this.initKonva();
   }
   _initKonva() {
-    if (!this.stage) {
-      this.stage = new Konva.Stage({ container: this.id });
+    if (this.layer) {
+      this.layer.clear();
+      this.layer.clearCache();
     }
-    this.stage.clear();
-    if (!this.layer) {
-      this.layer = new Konva.Layer();
+    if (this.stage) {
+      this.stage.clear();
+      this.stage.clearCache();
+      this.stage.destroy();
     }
-    this.layer.clear();
+    this.stage = new Konva.Stage({ container: this.id });
+    this.layer = new Konva.Layer();
     this.stage.add(this.layer);
     this.stage.width(this.baseWidth);
     this.stage.height(this.baseHeight);
@@ -117,6 +120,7 @@ class PosterBuilder {
   }
 
   _build() {
+    console.log(this.template, this.elements);
     this.buildTemplate((image) => {
       if (image) {
         if (this.baseWidth) {

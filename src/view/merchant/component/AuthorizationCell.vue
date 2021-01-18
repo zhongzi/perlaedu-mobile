@@ -32,6 +32,7 @@
     <picker-person
       :open.sync="open"
       :query="query"
+      :isMultiple="false"
       @selected="selectedRelatedPerson"
     />
     <ai-dialog v-model="showRelatedPerson" :hideOnBlur="false">

@@ -6,9 +6,7 @@
     class="wrapper editing-campaigns-entry"
   >
     <template v-slot:title>
-      <span class="title">
-        最新活动
-      </span>
+      <span class="title"> 最新活动 </span>
     </template>
     <template v-slot:right>
       <i class="iconfont icon-direction" />

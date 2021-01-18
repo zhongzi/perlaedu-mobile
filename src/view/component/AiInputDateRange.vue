@@ -1,8 +1,6 @@
 <template>
   <div :class="b()">
-    <div :class="b('title')">
-      选择日期范围
-    </div>
+    <div :class="b('title')">选择日期范围</div>
     <div :class="b('quick')">
       <template v-if="enableQuick">
         <template v-for="type in types">

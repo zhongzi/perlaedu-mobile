@@ -9,6 +9,7 @@
       :class="b('swiper')"
       ref="mySwiper"
       :options="swiperOptions"
+      @ready="onReady"
       @reachEnd="onReachEnd"
       @slideChange="onSlideChanged"
     >
@@ -25,9 +26,7 @@
         </swiper-slide>
       </template>
       <swiper-slide v-else :class="b('swiper-item')">
-        <slot name="empty">
-          暂无数据
-        </slot>
+        <slot name="empty"> 暂无数据 </slot>
       </swiper-slide>
       <swiper-slide :class="b('swiper-item')" v-if="enableSlideAfter">
         <slot name="slide-after" />
@@ -59,6 +58,7 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import "swiper/swiper-bundle.css";
 import { Swiper, SwiperSlide } from "vue-awesome-swiper";
 
+import _get from "lodash/get";
 import merge from "lodash/merge";
 
 @Component({
@@ -77,6 +77,7 @@ export default class Home extends Vue {
   @Prop({ type: Boolean, default: true }) enableSlideAfter: boolean;
   @Prop({ type: Object, default: () => ({}) }) options: object;
   @Prop({ type: Number, default: 0 }) slideToNum: number;
+  @Prop({ type: Number, default: 3 }) distance: number;
 
   get swiperOptions() {
     return merge(
@@ -101,8 +102,32 @@ export default class Home extends Vue {
     (this.$refs.mySwiper as any).$swiper.slideTo(this.slideToNum, 1000, false);
   }
 
+  created() {
+    this.$bus.$on("swiper:autolay", (running) => {
+      if (running) {
+        this.swiper.autoplay.start();
+      } else {
+        this.swiper.autoplay.stop();
+      }
+    });
+  }
+
+  onReady() {
+    if (!_get(this.swiperOptions, "autoplay.playAtStart", true)) {
+      this.swiper.autoplay.stop();
+    }
+  }
+
   onSlideChanged() {
     this.$emit("update:slideToNum", this.swiper.realIndex);
+    console.log(
+      this.swiper.realIndex,
+      this.distance,
+      this.swiper.slides.length
+    );
+    if (this.swiper.realIndex + this.distance >= this.swiper.slides.length) {
+      this.onReachEnd();
+    }
   }
 
   onReachEnd() {

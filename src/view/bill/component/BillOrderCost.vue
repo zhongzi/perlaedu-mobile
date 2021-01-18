@@ -2,9 +2,7 @@
   <div :class="b()">
     <ai-list-stored resource="billOrderCost" :query="query" scrollType="none">
       <template v-slot:header>
-        <span :class="b('title')">
-          核销记录:
-        </span>
+        <span :class="b('title')"> 核销记录: </span>
       </template>
       <template v-slot:item="{ item }">
         <div :class="b('item')">

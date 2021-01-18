@@ -43,6 +43,10 @@ export default class Home extends Mixins(PatchMixin) {
 .ai-input__border {
   border: solid 1px;
   border-radius: 5px;
+
+  .ai-input__input {
+    padding-left: 10px;
+  }
 }
 
 .ai-input__border-bottom {

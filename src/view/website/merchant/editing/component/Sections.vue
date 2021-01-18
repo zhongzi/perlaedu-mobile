@@ -1,21 +1,15 @@
 <template>
   <div class="wrapper sections-manager" @click="open = true">
     <ai-cell>
-      <template v-slot:title>
-        点击官网板块管理
-      </template>
-      <template v-slot:subtitle>
-        （可改名，可关闭，可排序）
-      </template>
+      <template v-slot:title> 点击官网板块管理 </template>
+      <template v-slot:subtitle> （可改名，可关闭，可排序） </template>
       <template v-slot:right>
         <i class="iconfont icon-bianji" />
       </template>
     </ai-cell>
     <ai-popup v-model="open">
       <div class="body">
-        <div class="header">
-          板块管理
-        </div>
+        <div class="header">板块管理</div>
         <div class="sections">
           <template v-for="section in sections">
             <ai-cell class="section" :key="section.sid">

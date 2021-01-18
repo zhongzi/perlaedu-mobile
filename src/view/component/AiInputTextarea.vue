@@ -1,5 +1,10 @@
 <template>
   <div :class="b()">
+    <div :class="b('label')" v-if="label">
+      <slot>
+        {{ label }}
+      </slot>
+    </div>
     <textarea
       ref="input"
       v-focus
@@ -24,6 +29,7 @@ import PatchMixin from "@/mixin/PatchMixin";
   name: "ai-input-textarea",
 })
 export default class Home extends Mixins(PatchMixin) {
+  @Prop({ type: String, default: null }) label: string;
   @Prop({ type: [String, Number], default: "" }) value: string | number;
   @Prop({ type: String, default: "text" }) type: string;
   @Prop({ type: String, default: "请输入内容" }) placeholder: string;
@@ -43,10 +49,21 @@ export default class Home extends Mixins(PatchMixin) {
 </script>
 <style lang="scss" scoped>
 .ai-input-textarea {
+  display: flex;
+  flex-direction: column;
+
   width: 100%;
   position: relative;
-  padding: 10px;
   overflow-wrap: anywhere;
+
+  &__label {
+    font-size: 14px;
+    font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
+    font-weight: bold;
+    color: rgba(84, 84, 84, 1);
+    line-height: 19px;
+    letter-spacing: 1px;
+  }
 
   &__input {
     width: 100%;

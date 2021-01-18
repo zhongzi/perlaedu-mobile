@@ -30,7 +30,7 @@
           />
         </template>
         <template v-slot:empty>
-          <div style="text-align: center; padding: 20px 0px;">暂无数据</div>
+          <div style="text-align: center; padding: 20px 0px">暂无数据</div>
         </template>
       </ai-list-stored>
       <ai-fixed-footer>

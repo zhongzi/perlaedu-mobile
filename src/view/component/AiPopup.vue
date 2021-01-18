@@ -32,6 +32,7 @@ export default class Home extends Mixins(StopBodyScrollMixin) {
 
   @Watch("value")
   onShowChanged() {
+    this.$bus.$emit("ai:popup", this.value);
     this.stopBodyScroll(this.value);
     if (this.value && this.appendToBody) {
       document.body.appendChild((this.$refs.popup as any).$el);

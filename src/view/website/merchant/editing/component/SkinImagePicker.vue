@@ -6,9 +6,7 @@
           @update:checked="(v) => onCheckedChanged(null, v)"
           :checked="isDefault"
         >
-          <div style="" class="image">
-            默认
-          </div>
+          <div style="" class="image">默认</div>
         </ai-state-check>
         <template v-for="style in styles">
           <ai-state-check
@@ -22,9 +20,7 @@
       </div>
       <ai-line />
       <ai-cell class="custome-image">
-        <template v-slot:title>
-          自定义背景图
-        </template>
+        <template v-slot:title> 自定义背景图 </template>
         <template v-slot:right>
           <ai-image-uploader
             class="icon"

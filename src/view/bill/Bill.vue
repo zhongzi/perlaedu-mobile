@@ -45,9 +45,7 @@
           </div>
         </div>
         <div class="welfare" v-if="welfareItems.length > 0 || isManager">
-          <div class="welfare-title">
-            限时福利
-          </div>
+          <div class="welfare-title">限时福利</div>
           <template v-for="item in welfareItems">
             <bill-card-welfare
               :key="item.id"

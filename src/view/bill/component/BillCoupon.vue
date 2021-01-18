@@ -67,9 +67,7 @@
           <template v-if="coupon.end_at">
             有效期至 {{ coupon.end_at | defaultDay }}
           </template>
-          <template v-else>
-            有效
-          </template>
+          <template v-else> 有效 </template>
         </template>
       </div>
     </div>

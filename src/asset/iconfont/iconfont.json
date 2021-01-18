@@ -6,6 +6,41 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "18239816",
+      "name": "点赞",
+      "font_class": "-dianzan",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "17710927",
+      "name": "电脑",
+      "font_class": "-pc",
+      "unicode": "e812",
+      "unicode_decimal": 59410
+    },
+    {
+      "icon_id": "17675164",
+      "name": "copy",
+      "font_class": "-editing-move",
+      "unicode": "e62b",
+      "unicode_decimal": 58923
+    },
+    {
+      "icon_id": "18125970",
+      "name": "Copy alt 1",
+      "font_class": "-editing-copy",
+      "unicode": "e86a",
+      "unicode_decimal": 59498
+    },
+    {
+      "icon_id": "1813038",
+      "name": "gallery-画廊",
+      "font_class": "-gallery",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
       "icon_id": "8817471",
       "name": "卡券",
       "font_class": "-coupon",
@@ -1044,7 +1079,7 @@
     {
       "icon_id": "13314516",
       "name": "删除",
-      "font_class": "shanchu",
+      "font_class": "-shanchu",
       "unicode": "e6e5",
       "unicode_decimal": 59109
     },

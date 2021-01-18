@@ -56,7 +56,7 @@
               </div>
             </template>
             <template v-slot:right>
-              <img style="width: 100px;" :src="coinImage" />
+              <img style="width: 100px" :src="coinImage" />
             </template>
           </bill-card>
         </template>

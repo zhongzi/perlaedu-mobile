@@ -41,9 +41,7 @@
             <hui-button type="info" @click.native.stop="edit">
               编辑
             </hui-button>
-            <hui-button @click.native.stop="viewHistory">
-              历史
-            </hui-button>
+            <hui-button @click.native.stop="viewHistory"> 历史 </hui-button>
           </div>
         </div>
         <div class="body">
@@ -106,7 +104,7 @@
                     <template v-if="merchant.status === 'approved'">
                       <i
                         class="iconfont icon-checked"
-                        style="color: green; font-size: 9px;"
+                        style="color: green; font-size: 9px"
                       />
                     </template>
                   </td>
@@ -122,7 +120,7 @@
                     <template v-if="person.merchant.status === 'approved'">
                       <i
                         class="iconfont icon-checked"
-                        style="color: green; font-size: 9px;"
+                        style="color: green; font-size: 9px"
                       />
                     </template>
                   </td>

@@ -2,6 +2,7 @@ import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import store from "@/store";
 import isEmpty from "lodash/isEmpty";
+import merge from "lodash/merge";
 
 const querystring = require("querystring");
 
@@ -204,15 +205,16 @@ export default class SyncMixin extends Vue {
   }
 
   loadList(kwargs: any = {}) {
+    this.tag = kwargs.tag || this.encodeTag(kwargs.query);
+
     if (this.listLoading) {
       return;
     }
 
     const resource = kwargs.store || this.store;
-    const tag = kwargs.tag || this.tag;
     const action = `${resource}/list`;
     store.dispatch(action, {
-      tag: tag,
+      tag: this.tag,
       reset: kwargs.reset,
       query: kwargs.query,
       header: kwargs.headers,
@@ -242,15 +244,16 @@ export default class SyncMixin extends Vue {
   }
 
   saveEntity(kwargs: any = {}) {
+    this.tag = kwargs.tag || this.encodeTag(kwargs.query);
+
     if (this.entitySaveLoading) {
       return;
     }
     const resource = kwargs.store || this.store;
-    const tag = kwargs.tag || this.tag;
     const id = kwargs.id || this.id;
     const action = `${resource}/save`;
     store.dispatch(action, {
-      syncTag: tag,
+      syncTag: this.tag,
       id: id,
       res: kwargs.res,
       query: kwargs.query,
@@ -262,17 +265,23 @@ export default class SyncMixin extends Vue {
   }
 
   deleteEntity(kwargs: any = {}) {
+    this.tag = kwargs.tag || this.encodeTag(kwargs.query);
+
     if (this.entityDeleteLoading) {
       return;
     }
     const resource = kwargs.store || this.store;
-    const tag = kwargs.tag || this.tag;
     const id = kwargs.id || this.id;
     const action = `${resource}/delete`;
+
+    const mergedRes = merge({ id: id }, kwargs.res || {});
+    const mergedId = parseInt(mergedRes.id);
+    if (!mergedId && mergedRes.id !== undefined) {
+      delete mergedRes.id;
+    }
     store.dispatch(action, {
-      syncTag: tag,
-      id: id,
-      res: kwargs.res,
+      syncTag: this.tag,
+      res: mergedRes,
       query: kwargs.query,
       header: kwargs.headers,
       configs: kwargs.configs,
