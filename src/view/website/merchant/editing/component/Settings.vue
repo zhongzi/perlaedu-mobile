@@ -1,9 +1,7 @@
 <template>
   <div class="wrapper settings">
     <ai-panel>
-      <template v-slot:header>
-        门户高级设置
-      </template>
+      <template v-slot:header> 门户高级设置 </template>
       <div>
         <campaigns-entry
           class="resource campaign"

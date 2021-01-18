@@ -1,5 +1,5 @@
 <template>
-  <div class="user-item">
+  <div class="user-item" style="border-top: none">
     <div class="detail">
       <div class="avatar">
         <img :src="person | safe('avatar_url')" />
@@ -21,12 +21,6 @@
         </div>
       </div>
     </div>
-    <check-box
-      size="big"
-      :checked="innerChecked"
-      :uncheckable="uncheckable"
-      @update:checked="onInnerCheckedChanged"
-    />
   </div>
 </template>
 <script lang="ts">
@@ -41,7 +35,7 @@ import CheckBox from "./CheckBox.vue";
 })
 export default class Home extends Vue {
   @Prop({ type: Object, default: null }) person: any;
-  @Prop({ type: Boolean, default: false }) isMutil: boolean;
+  @Prop({ type: Boolean, default: false }) isMutiple: boolean;
   @Prop({ type: Boolean, default: false }) checked: boolean;
   @Prop({ type: Boolean, default: false }) uncheckable: boolean;
 
@@ -49,7 +43,7 @@ export default class Home extends Vue {
   innerChecked: boolean = false;
 
   created() {
-    !this.isMutil &&
+    !this.isMutiple &&
       this.$bus.$on("picker:person:changed", (person, isChecked) => {
         this.curStudent = isChecked ? person : null;
         if (this.curStudent !== this.person) {
@@ -61,7 +55,7 @@ export default class Home extends Vue {
   }
 
   onInnerCheckedChanged(isChecked) {
-    if (!this.isMutil && this.innerChecked) return;
+    if (!this.isMutiple && this.innerChecked) return;
 
     this.innerChecked = isChecked;
     this.$bus.$emit("picker:person:changed", this.person, isChecked);

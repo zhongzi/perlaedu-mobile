@@ -18,7 +18,7 @@
           />
         </template>
         <template v-slot:empty>
-          <div style="text-align: center;">暂无收费项目</div>
+          <div style="text-align: center">暂无收费项目</div>
         </template>
       </ai-list-stored>
     </div>

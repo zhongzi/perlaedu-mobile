@@ -1,7 +1,5 @@
 <template>
-  <div class="wrapper not-found">
-    404
-  </div>
+  <div class="wrapper not-found">404</div>
 </template>
 
 <script lang="ts">

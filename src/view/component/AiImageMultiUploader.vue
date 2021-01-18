@@ -5,16 +5,21 @@
         ref="uploader"
         @input="upload"
         :multiple="true"
+        :max="count"
         accept="image/png,image/gif,image/jpeg,image/webp,image/jpg"
       >
         <hui-button :class="b('button')">
-          <i class="iconfont icon-upload" />
+          <slot>
+            <i class="iconfont icon-upload" />
+          </slot>
         </hui-button>
       </vue-file-upload>
     </template>
     <template v-else>
       <hui-button :class="b('button')" @click.native="wxChooseImages">
-        <i class="iconfont icon-upload" />
+        <slot>
+          <i class="iconfont icon-upload" />
+        </slot>
       </hui-button>
     </template>
     <hui-dialog v-model="showDialog" :appendToBody="true">
@@ -27,7 +32,8 @@
               :file="file.file"
               :type="type"
               :prefix="prefix"
-              @input="uploaded"
+              :enabledCompression="enabledCompression"
+              @input:file="uploaded"
             />
           </template>
         </div>
@@ -48,6 +54,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import VueFileUpload from "vue-upload-component";
 import AiImageUploaderCell from "./AiImageUploaderCell.vue";
 
+import isEmpty from "lodash/isEmpty";
 import forEach from "lodash/forEach";
 import cloneDeep from "lodash/cloneDeep";
 
@@ -62,10 +69,12 @@ export default class Home extends Vue {
   @Prop({ type: String, default: "other" }) type: string;
   @Prop({ type: Number, default: 9 }) count: number;
   @Prop({ type: [String, Number], default: "" }) prefix: string | number;
+  @Prop({ type: Boolean, default: true }) enabledCompression: boolean;
 
   showDialog: boolean = false;
   files: any = [];
   urls: any = [];
+  uploadedFiles: any = [];
 
   get isInWeixin() {
     return this.$weixin && this.$weixin.isInWeixin();
@@ -111,7 +120,6 @@ export default class Home extends Vue {
     vm.$weixin.config(() => {
       vm.$weixin.jsapi.chooseImage({
         count: vm.count,
-        sizeType: ["compressed"],
         sourceType: ["album"],
         success: (res) => {
           vm.wxLoadImages(res.localIds);
@@ -125,14 +133,24 @@ export default class Home extends Vue {
     this.showDialog = true;
   }
 
-  uploaded(url) {
+  uploaded(url, file) {
     this.urls.push(url);
+    this.uploadedFiles.push(file);
   }
 
   confirm() {
+    if (
+      isEmpty(this.uploadedFiles) ||
+      this.uploadedFiles.length !== this.files.length
+    )
+      return;
+
     this.$emit("input", cloneDeep(this.urls));
+    this.$emit("input:file", cloneDeep(this.uploadedFiles));
     this.files = [];
     this.urls = [];
+    this.uploadedFiles = [];
+
     const uploader = this.$refs.uploader as any;
     uploader && uploader.clear();
     this.showDialog = false;
@@ -143,11 +161,13 @@ export default class Home extends Vue {
 .ai-image-multi-uploader {
   & ::v-deep .file-uploads {
     width: 100%;
+    height: 100%;
   }
 
   &__button {
-    height: 80px;
+    min-height: 80px;
     width: 100%;
+    height: 100%;
     border: none;
     i {
       font-size: 40px;

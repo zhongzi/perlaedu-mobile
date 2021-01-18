@@ -1,16 +1,12 @@
 <template>
   <div class="wrapper pending">
-    <div class="title">
-      当前机构门户尚未开通
-    </div>
+    <div class="title">当前机构门户尚未开通</div>
     <div class="container">
       <div class="merchant">
         <img :src="merchant.cover_url | alioss({ width: 80, height: 60 })" />
         <span class="name"> {{ merchant.name }} </span>
       </div>
-      <div class="director">
-        =>
-      </div>
+      <div class="director">=></div>
       <div class="agent">
         <img :src="agentAvatar | alioss({ width: 80, height: 80 })" />
         <span class="name"> {{ agentName }} </span>

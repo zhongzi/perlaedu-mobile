@@ -1,12 +1,18 @@
 <template>
   <div class="layout-ui">
-    <div class="search">
-      <div class="ico">
-        <span class="iconfont iconsousuo"></span>
+    <section class="container" style="min-height: auto">
+      <div class="xsxz">
+        <div class="layout-ui">
+          <div class="search">
+            <div class="ico">
+              <span class="iconfont iconsousuo"></span>
+            </div>
+            <input class="search-input" type="text" v-model="keyword" />
+            <div class="trigger">搜索</div>
+          </div>
+        </div>
       </div>
-      <input class="search-input" type="text" v-model="keyword" />
-      <div class="trigger">搜索</div>
-    </div>
+    </section>
   </div>
 </template>
 

@@ -66,7 +66,6 @@ api.interceptors.request.use(function (config) {
     config.body["_merchant_id_"] = _merchant_id_;
   }
 
-  console.log(config);
   return config;
 });
 

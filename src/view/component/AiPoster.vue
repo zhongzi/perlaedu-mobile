@@ -77,6 +77,7 @@ export default class Home extends Vue {
       baseHeight,
       this.buildFinished
     );
+    this.posterBuilder.baseColor = this.poster.baseColor;
     this.posterBuilder.initKonva();
     this.$hui.loading.show("正在制作中...");
     this.posterBuilder.build();

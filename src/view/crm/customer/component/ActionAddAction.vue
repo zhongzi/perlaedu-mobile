@@ -1,8 +1,6 @@
 <template>
   <div class="wrapper add-action">
-    <hui-button type="info" @click.native.stop="open">
-      跟进
-    </hui-button>
+    <hui-button type="info" @click.native.stop="open"> 跟进 </hui-button>
   </div>
 </template>
 

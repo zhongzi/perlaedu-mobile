@@ -7,7 +7,9 @@
     </div>
     <div :class="b('body')">
       <slot name="body">
-        {{ content }}
+        <slot>
+          {{ content }}
+        </slot>
       </slot>
     </div>
     <div :class="b('footer')">

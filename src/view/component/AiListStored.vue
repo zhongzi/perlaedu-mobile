@@ -57,9 +57,7 @@
           <slot name="item" :item="item" :index="index" :tag="tag" />
         </template>
         <template v-slot:empty>
-          <slot name="empty">
-            暂无数据
-          </slot>
+          <slot name="empty"> 暂无数据 </slot>
         </template>
         <template v-slot:footer>
           <slot name="footer"> </slot>
@@ -106,9 +104,11 @@
           </slot>
         </div>
         <div :class="b('list')">
-          <template v-for="(item, index) in list">
-            <slot name="item" :item="item" :index="index" :tag="tag" />
-          </template>
+          <slot name="list" :list="list">
+            <template v-for="(item, index) in list">
+              <slot name="item" :item="item" :index="index" :tag="tag" />
+            </template>
+          </slot>
         </div>
         <div :class="b('footer')">
           <slot name="footer" :list="list" />
@@ -150,7 +150,7 @@ export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Object, default: () => ({}) }) query: object;
   @Prop({ type: Number, default: 10 }) limit: number;
   @Prop({ type: Boolean, default: false }) refresh: boolean;
-  @Prop({ type: String, default: "scroll" }) scrollType: boolean;
+  @Prop({ type: String, default: "scroll" }) scrollType: string;
   @Prop({ type: String, default: "90vh" }) scrollHeight: string;
   @Prop({ type: Boolean, default: true }) autoPullDown: boolean;
   @Prop({ type: Boolean, default: true }) enablePullDown: boolean;

@@ -10,9 +10,7 @@
               <span class="number">
                 {{ statistics | safe("sum_amount", 0) }}
               </span>
-              <span class="unit">
-                元
-              </span>
+              <span class="unit"> 元 </span>
             </div>
           </div>
           <div class="right">

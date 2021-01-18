@@ -1,11 +1,13 @@
 <template>
-  <hui-tab v-model="curTabIdx" :tabs="tabs" :label="label" />
+  <hui-tab v-model="curTabIdx" :tabs="innerTabs" :label="label" />
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 
 import merge from "lodash/merge";
+import filter from "lodash/filter";
+import _get from "lodash/get";
 
 @Component
 export default class Home extends Vue {
@@ -15,6 +17,12 @@ export default class Home extends Vue {
   @Prop({ type: Boolean, default: false }) stickable: string;
 
   curTabIdx: number = 0;
+
+  get innerTabs() {
+    return filter(this.tabs, (tab) => {
+      return _get(tab, "enabled", true);
+    });
+  }
 
   created() {
     this.curTabIdx = this.value;

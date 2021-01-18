@@ -18,6 +18,7 @@ export default class Home extends Mixins(UploaderMixin) {
   @Prop({ default: null }) file: any;
   @Prop({ type: String, default: "other" }) type: string;
   @Prop({ type: [String, Number], default: "" }) prefix: string | number;
+  @Prop({ type: Boolean, default: true }) enabledCompression: boolean;
 
   url: string = null;
   image: any = null;
@@ -28,6 +29,7 @@ export default class Home extends Mixins(UploaderMixin) {
   }
 
   created() {
+    this.requiredCompression = this.enabledCompression;
     this.uploadHandler();
   }
 
@@ -47,19 +49,35 @@ export default class Home extends Mixins(UploaderMixin) {
     render.readAsDataURL(this.file);
   }
 
+  getImageSize(file) {
+    return new Promise((resolve, reject) => {
+      var _URL = window.URL || window.webkitURL;
+      var img = new Image();
+
+      img.onload = () => resolve({ height: img.height, width: img.width });
+      img.onerror = reject;
+
+      img.src = _URL.createObjectURL(file);
+    });
+  }
+
   uploadHandler() {
     if (!this.file) return;
 
     this.previewImage();
-    this.uploadFile(
-      this.file,
-      this.type,
-      this.prefix + "",
-      (url) => {
-        this.$emit("input", url);
-      },
-      this.uploadProgress.bind(this)
-    );
+    this.getImageSize(this.file).then((options) => {
+      this.uploadFile(
+        this.file,
+        this.type,
+        this.prefix + "",
+        (url, file) => {
+          this.$emit("input", url);
+          this.$emit("input:file", url, file);
+        },
+        this.uploadProgress.bind(this),
+        options
+      );
+    });
   }
 
   uploadProgress(percentage) {

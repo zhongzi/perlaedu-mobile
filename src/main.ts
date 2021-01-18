@@ -1,3 +1,4 @@
+import "./init";
 import "./class-component-hooks";
 
 import Vue from "vue";
@@ -24,6 +25,8 @@ import "./api/login";
 import { loadDictionary } from "./plugin/configs";
 import Vue2TouchEvents from "vue2-touch-events";
 
+import Swiper, { Pagination, Autoplay } from "swiper";
+
 import isEmpty from "lodash/isEmpty";
 import isObject from "lodash/isObject";
 import isString from "lodash/isString";
@@ -33,6 +36,7 @@ Vue.use(Hui);
 Vue.use(VueBemCn);
 Vue.use(VueCookies);
 Vue.use(Vue2TouchEvents, { disableClick: true });
+Swiper.use([Pagination, Autoplay]);
 
 const configs = require("./configs.json");
 const isProduction = process.env.NODE_ENV === "production";

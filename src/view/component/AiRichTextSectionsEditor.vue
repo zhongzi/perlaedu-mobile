@@ -59,7 +59,7 @@
                 <div @click="uploadVideo(c)" class="video-uploader">
                   <i
                     class="iconfont icon-video"
-                    style="font-size: 72px; color: #fff;"
+                    style="font-size: 72px; color: #fff"
                   />
                 </div>
               </template>
@@ -87,7 +87,7 @@
               <i class="iconfont icon-photo-add" />
             </div>
             <div class="btn" @click.stop="onAddContent(item, 'video')">
-              <i class="iconfont icon-video" style="font-size: 34px;" />
+              <i class="iconfont icon-video" style="font-size: 34px" />
             </div>
             <div class="btn" @click.stop="onDelDetail(i)">
               <i class="iconfont icon-trash" />

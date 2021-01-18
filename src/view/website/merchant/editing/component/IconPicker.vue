@@ -16,7 +16,7 @@
             triggerName="icon"
             v-model="selectedIcon"
             type="merchant"
-            :resizeOption="({ width: 200, height: 200 })"
+            :resizeOption="{ width: 200, height: 200 }"
             :prefix="prefix"
           />
         </template>

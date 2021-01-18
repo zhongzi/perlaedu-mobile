@@ -1,8 +1,6 @@
 <template>
   <div class="wrapper bill-order-cost-btn">
-    <ai-button-round @click.native.stop="open = true">
-      核销
-    </ai-button-round>
+    <ai-button-round @click.native.stop="open = true"> 核销 </ai-button-round>
     <ai-dialog v-model="open">
       <div class="dialog">
         <div class="methods">

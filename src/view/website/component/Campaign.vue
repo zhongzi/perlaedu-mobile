@@ -55,6 +55,7 @@ export default class Home extends Vue {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      font-size: 14px;
     }
     .header {
       height: 132px;

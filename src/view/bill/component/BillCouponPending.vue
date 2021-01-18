@@ -42,9 +42,7 @@
                 {{ source | safe("source.user.nickname") }}
               </span>
             </template>
-            <template v-slot:right>
-              已领取
-            </template>
+            <template v-slot:right> 已领取 </template>
           </ai-cell>
         </template>
       </div>

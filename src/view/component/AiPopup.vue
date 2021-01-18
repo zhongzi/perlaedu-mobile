@@ -1,6 +1,6 @@
 <template>
   <hui-popup
-    :class="b()"
+    :class="[b(), { [b('full')]: full }]"
     :value="value"
     @input="(v) => $emit('input', v)"
     :position="position"
@@ -23,6 +23,7 @@ export default class Home extends Mixins(StopBodyScrollMixin) {
   @Prop({ type: Boolean, default: false }) value: boolean;
   @Prop({ type: String, default: "right" }) position: string;
   @Prop({ type: Boolean, default: true }) appendToBody: any;
+  @Prop({ type: Boolean, default: true }) full: boolean;
 
   showContent: boolean = false;
 
@@ -32,6 +33,7 @@ export default class Home extends Mixins(StopBodyScrollMixin) {
 
   @Watch("value")
   onShowChanged() {
+    this.$bus.$emit("ai:popup", this.value);
     this.stopBodyScroll(this.value);
     if (this.value && this.appendToBody) {
       document.body.appendChild((this.$refs.popup as any).$el);
@@ -46,7 +48,7 @@ export default class Home extends Mixins(StopBodyScrollMixin) {
 }
 </script>
 <style lang="scss" scoped>
-.ai-popup {
+.ai-popup__full {
   & ::v-deep .h-popup__content {
     height: 100vh;
   }

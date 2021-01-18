@@ -1,11 +1,13 @@
 import Vue from "vue";
 import Konva from "konva";
 
-import findIndex from "lodash/findIndex";
+import _get from "lodash/get";
+import find from "lodash/find";
 import debounce from "lodash/debounce";
 import isArray from "lodash/isArray";
 import values from "lodash/values";
 import cloneDeep from "lodash/cloneDeep";
+import forEach from "lodash/forEach";
 
 const configs = cloneDeep(require("../configs.json"));
 
@@ -14,11 +16,11 @@ class PosterBuilder {
   name: any = null;
   baseWidth: any = null;
   baseHeight: any = null;
+  baseColor: any = null;
   scale: any = null;
   template: any = null;
   elements: any = null;
   callback: any = null;
-  renderStatus: any = null;
   stage: any = null;
   layer: any = null;
 
@@ -63,7 +65,6 @@ class PosterBuilder {
     this.baseWidth = baseWidth;
     this.baseHeight = baseHeight;
     this.callback = callback;
-    this.renderStatus = new Array(this.elements.length);
 
     this.initKonva = debounce(() => {
       this._initKonva();
@@ -76,38 +77,36 @@ class PosterBuilder {
     this.id && this.initKonva();
   }
   _initKonva() {
-    if (!this.stage) {
-      this.stage = new Konva.Stage({ container: this.id });
+    if (this.layer) {
+      this.layer.clear();
+      this.layer.clearCache();
     }
-    this.stage.clear();
-    if (!this.layer) {
-      this.layer = new Konva.Layer();
+    if (this.stage) {
+      this.stage.clear();
+      this.stage.clearCache();
     }
-    this.layer.clear();
+    this.stage = new Konva.Stage({ container: this.id });
+    this.layer = new Konva.Layer();
     this.stage.add(this.layer);
     this.stage.width(this.baseWidth);
     this.stage.height(this.baseHeight);
   }
 
   getURL() {
-    if (!this.isRendedAll()) return;
     return this.stage.getStage().toDataURL();
   }
 
-  proxyURL(origin_url) {
-    console.log(origin_url);
+  proxyURL(originURL) {
     try {
-      const url = new URL(origin_url);
+      const url = new URL(originURL);
       return `${configs.proxy}/${url.host}${url.pathname}${url.search}${url.hash}`;
     } catch (error) {
       console.log(error);
     }
-    return origin_url;
+    return originURL;
   }
 
   downloadURL() {
-    if (!this.isRendedAll()) return;
-
     const link = document.createElement("a");
     link.download = this.name;
     link.href = this.getURL();
@@ -129,29 +128,26 @@ class PosterBuilder {
     });
   }
 
-  // TODO
   scaleElement(element) {
-    if (element.width()) {
-      element.width(this.scale * element.width());
-    }
-    if (element.height()) {
-      element.height(this.scale * element.height());
-    }
-    if (element.x()) {
-      element.x(this.scale * element.x());
-    }
-    if (element.y()) {
-      element.y(this.scale * element.y());
-    }
-    if (element.fontSize) {
-      element.fontSize(this.scale * element.fontSize());
-    }
+    element.scale({ x: this.scale, y: this.scale });
   }
 
   buildTemplate(callback) {
-    this.template
-      ? this.renderImage(this.template, null, callback)
-      : callback && callback();
+    if (!this.layer) return;
+
+    if (this.template) {
+      this.renderImage(this.template, null, callback);
+    } else {
+      const template = new Konva.Rect({
+        width: this.baseWidth,
+        height: this.baseHeight,
+        x: 0,
+        y: 0,
+        fill: this.baseColor,
+      });
+      this.layer.add(template);
+      callback && callback();
+    }
   }
 
   buildElements() {
@@ -177,7 +173,8 @@ class PosterBuilder {
 
     this.scaleElement(text);
     this.layer.add(text);
-    if (index >= 0) this.renderStatus[index] = true;
+    element._item = text;
+
     callback && callback();
   }
 
@@ -199,16 +196,13 @@ class PosterBuilder {
       };
       element.options.fillPatternRepeat = "no-repeat";
 
-      const zIndex = element.options.z;
-      delete element.options.z;
-
       const circle = new Konva.Circle(
         Object.assign({}, { fillPatternImage: image }, element.options)
       );
       self.scaleElement(circle);
       self.layer.add(circle);
-      if (zIndex !== undefined) circle.zIndex(zIndex);
-      if (index) self.renderStatus[index] = true;
+      element._item = circle;
+
       callback && callback();
     };
     image.src = this.proxyURL(element.value);
@@ -219,28 +213,33 @@ class PosterBuilder {
     const self = this;
     image.setAttribute("crossOrigin", "anonymous");
     image.onload = function () {
-      const zIndex = element.options.z;
-      delete element.options.z;
-
       const img = new Konva.Image(
         Object.assign({}, { image: image }, element.options)
       );
 
       self.scaleElement(img);
       self.layer.add(img);
-      if (zIndex !== undefined) img.zIndex(zIndex);
-      if (index) self.renderStatus[index] = true;
+      element._item = img;
+
       callback && callback(image);
     };
     image.src = this.proxyURL(element.value);
   }
 
   isRendedAll() {
-    return findIndex(this.renderStatus, (o) => o === undefined) <= 0;
+    return !find(this.elements, (element) => !element._item);
   }
 
   checkAndCallback() {
     if (this.isRendedAll()) {
+      forEach(this.elements, (element) => {
+        const zIndex = _get(element, "options.z");
+        const item = _get(element, "_item");
+        if (zIndex && item && item.zIndex) {
+          console.log(zIndex);
+          item.zIndex(zIndex);
+        }
+      });
       this.callback && this.callback(this.getURL());
     }
   }

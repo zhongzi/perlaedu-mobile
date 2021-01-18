@@ -82,7 +82,7 @@ module.exports = {
         },
       },
       "/proxy": {
-        target: "https://coopposer.perlaedu.com",
+        target: "https://ai.perlaedu.com",
         secure: false,
         changeOrigin: true,
       },

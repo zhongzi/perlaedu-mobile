@@ -10,7 +10,7 @@
           <template v-slot:left-title>
             <div :class="b('item-title')">
               {{ innerItem.title }}
-              <img style="width: 40px;" :src="coinImage" />
+              <img style="width: 40px" :src="coinImage" />
             </div>
           </template>
           <template v-slot:left-remark>

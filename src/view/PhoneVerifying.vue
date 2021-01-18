@@ -42,9 +42,7 @@
             </template>
             <template v-else-if="isVerifiedPhone">
               <div class="linked-info">
-                <div class="title">
-                  您已经完成手机号码绑定
-                </div>
+                <div class="title">您已经完成手机号码绑定</div>
                 <div class="container items">
                   <div class="item">
                     <i class="iconfont icon-wechat wechat" />

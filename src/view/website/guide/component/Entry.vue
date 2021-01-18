@@ -7,9 +7,7 @@
       <div class="title">您也可以<span>免费开通</span></div>
     </template>
     <template v-slot:subtitle>
-      <div class="sub-title">
-        这样的门户网站， 开启裂变招生
-      </div>
+      <div class="sub-title">这样的门户网站， 开启裂变招生</div>
     </template>
     <template v-slot:right>
       <hui-button type="primary" @click.native="openGuide">马上创建</hui-button>

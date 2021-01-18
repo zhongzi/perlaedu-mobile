@@ -3,6 +3,7 @@ import core from "./core";
 import campaign from "./campaign";
 import common from "./common";
 import crm from "./crm";
+import media from "./media";
 import poster from "./poster";
 
 export default {
@@ -12,4 +13,5 @@ export default {
   ...crm,
   ...poster,
   ...common,
+  ...media,
 };

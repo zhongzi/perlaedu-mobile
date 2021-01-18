@@ -2,11 +2,13 @@
   <div :class="b()">
     <slot>
       <div :class="b('result')" :id="innerTriggerName">
-        <img
-          v-if="value && enablePreview"
-          :src="value | alioss(resizeOption)"
-          :class="b('result-image')"
-        />
+        <slot name="preview">
+          <img
+            v-if="value && enablePreview"
+            :src="value | alioss(resizeOption)"
+            :class="b('result-image')"
+          />
+        </slot>
         <div :class="b('result-icon')">
           <i class="iconfont icon-upload" />
         </div>
@@ -81,8 +83,9 @@ export default class Home extends Mixins(UploaderMixin) {
   onChanged(file, reader) {
     if (this.enableGif && isEqual(file.type, "image/gif")) {
       this.$hui.loading.show("上传中...");
-      this.uploadFile(file, this.type, this.prefix + "", (url) => {
+      this.uploadFile(file, this.type, this.prefix + "", (url, file) => {
         this.$emit("input", url);
+        this.$emit("input:file", url, file);
         setTimeout(() => {
           this.$hui.loading.hide();
           (this.$refs.cropper as any).destroy();
@@ -104,12 +107,19 @@ export default class Home extends Mixins(UploaderMixin) {
           this.type,
           this.prefix + "",
           "." + this.mimetype.split("/")[1],
-          (url) => {
+          (url, id, md5) => {
             this.$emit("input", url);
+            this.$emit("input:file", url, id, md5);
+
             setTimeout(() => {
               this.$hui.loading.hide();
               this.showCropper = false;
             }, 1000);
+          },
+          null,
+          {
+            width: canvas.width,
+            height: canvas.height,
           }
         );
       },

@@ -7,7 +7,7 @@
     </div>
     <hui-popup-date-picker
       :show.sync="open"
-      :value="value"
+      :value="innerValue"
       :minYear="iYear"
       :maxYear="aYear"
       :enableFuture="true"
@@ -22,25 +22,35 @@
 import { Component, Vue, Prop, Mixins } from "vue-property-decorator";
 
 import PatchMixin from "@/mixin/PatchMixin";
+import isDate from "lodash/isDate";
 
 @Component({
   name: "ai-input-date",
 })
 export default class Home extends Mixins(PatchMixin) {
-  @Prop({ type: Date, default: null }) value: any;
-  @Prop({ type: String, default: "text" }) label: string;
+  @Prop({ type: [Date, String], default: null }) value: any;
+  @Prop({ type: String, default: "" }) label: string;
   @Prop({ type: Number, default: null }) minYear: number;
   @Prop({ type: Number, default: null }) maxYear: number;
+
+  open: boolean = false;
 
   get aYear() {
     return this.maxYear || new Date().getFullYear() + 5;
   }
 
+  get innerValue() {
+    return (
+      (isDate(this.value)
+        ? this.value
+        : this.value && this.$options.filters.parseDate(this.value)) ||
+      new Date()
+    );
+  }
+
   get iYear() {
     return this.minYear || new Date().getFullYear() - 5;
   }
-
-  open: boolean = false;
 }
 </script>
 <style lang="scss" scoped>

@@ -1,39 +1,20 @@
 <template>
-  <div class="picker-person">
+  <div class="wrapper picker-person">
     <ai-popup :value="open" @input="(v) => $emit('update:open', v)">
-      <div class="layout-ui">
-        <section class="container">
-          <div class="xsxz">
-            <search v-model="keyword" />
-            <ai-list-stored resource="person" :query="innerQuery">
-              <template v-slot:list="{ list }">
-                <div class="list" style="width: 100%;">
-                  <div class="item" v-for="item in list" :key="item.id">
-                    <div class="tag" v-if="showInitial(item)">
-                      {{ item.initial }}
-                    </div>
-                    <div class="cont">
-                      <picker-person-cell
-                        :person="item"
-                        :isMutil="isMutil"
-                        :checked="checkSelected(item)"
-                        :uncheckable="checkUnselectable(item)"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </ai-list-stored>
+      <search v-model="keyword" />
+      <check-list-stored
+        resource="person"
+        :query="innerQuery"
+        :isMultiple="isMultiple"
+        @cancel="onCancel"
+        @submit="onSubmit"
+      >
+        <template v-slot:item="{ item }">
+          <div class="cont">
+            <picker-person-cell :person="item" />
           </div>
-        </section>
-      </div>
-      <ai-fixed-footer>
-        <ai-submit-actions
-          @cancel="onCancel"
-          @submit="onSubmit"
-          :submitLabel="submitLabel"
-        />
-      </ai-fixed-footer>
+        </template>
+      </check-list-stored>
     </ai-popup>
   </div>
 </template>
@@ -41,13 +22,13 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 
-import AiListStored from "@/view/component/AiListStored.vue";
 import AiFixedFooter from "@/view/component/AiFixedFooter.vue";
 import AiSubmitActions from "@/view/component/AiSubmitActions.vue";
 import AiPopup from "@/view/component/AiPopup.vue";
 
 import Search from "./Search.vue";
 import PickerPersonCell from "./PickerPersonCell.vue";
+import CheckListStored from "./CheckListStored.vue";
 
 import isEmpty from "lodash/isEmpty";
 import trim from "lodash/trim";
@@ -60,7 +41,7 @@ import concat from "lodash/concat";
     AiPopup,
     AiFixedFooter,
     AiSubmitActions,
-    AiListStored,
+    CheckListStored,
     Search,
     PickerPersonCell,
   },
@@ -68,33 +49,15 @@ import concat from "lodash/concat";
 export default class Home extends Vue {
   @Prop({ type: Boolean, default: false }) open: boolean;
   @Prop({ type: Object, default: null }) query: any;
-  @Prop({ type: Boolean, default: false }) isMutil: boolean;
+  @Prop({ type: Boolean, default: true }) isMultiple: boolean;
   @Prop({ type: Array, default: null }) selectedList: any;
-  @Prop({ type: Array, default: null }) unselectableList: any;
-  @Prop({ type: Boolean, default: true }) unselectableStatus: boolean;
 
   curInitial: string = null;
   keyword: string = "";
-  selected: any = null;
 
   innerQuery: any = null;
 
-  get submitLabel() {
-    if (!this.isMutil) return "确认";
-    return `已选(${!isEmpty(this.selected) ? this.selected.length : 0})`;
-  }
-
   created() {
-    this.$bus.$on("picker:person:changed", (person, isChecked) => {
-      if (this.isMutil) {
-        this.selected = this.selected || [];
-        this.selected = isChecked
-          ? concat(this.selected, person)
-          : pull(this.selected, person);
-      } else {
-        this.selected = isChecked ? person : null;
-      }
-    });
     this.resetInnerQuery();
   }
 
@@ -127,28 +90,16 @@ export default class Home extends Vue {
     return false;
   }
 
-  checkSelected(item) {
-    if (this.checkUnselectable(item)) {
-      return this.unselectableStatus;
-    }
-    return this.selectedList && this.selectedList.indexOf(item.id) >= 0;
-  }
-
-  checkUnselectable(item) {
-    return this.unselectableList && this.unselectableList.indexOf(item.id) >= 0;
-  }
-
   onCancel() {
-    this.selected = null;
     this.$emit("update:open", false);
   }
 
-  onSubmit() {
-    if (isEmpty(this.selected)) {
+  onSubmit(selected) {
+    if (isEmpty(selected)) {
       this.$hui.toast.error("未选中任何对象");
       return;
     }
-    this.$emit("selected", cloneDeep(this.selected));
+    this.$emit("selected", cloneDeep(selected));
   }
 }
 </script>

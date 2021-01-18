@@ -1,0 +1,82 @@
+<template>
+  <ai-list-stored
+    resource="person"
+    :scrollType="scrollType"
+    :query="query"
+    :sliderOptions="{ slidesPerView: 4.5, spaceBetween: 15 }"
+  >
+    <template v-slot:header v-if="isSliderMode">
+      <div class="header">
+        <div class="title">老师相册</div>
+        <div class="more" @click="gotoSearch">
+          <span>查看全部</span>
+          <i class="iconfont icon-direction" />
+        </div>
+      </div>
+    </template>
+    <template v-slot:item="{ item }">
+      <album-cell-teacher
+        :teacher="item"
+        :key="item.id"
+        :merchantId="merchantId"
+        :mode="scrollType"
+      />
+    </template>
+  </ai-list-stored>
+</template>
+
+<script lang="ts">
+import { Component, Vue, Prop } from "vue-property-decorator";
+
+import AiListStored from "@/view/component/AiListStored.vue";
+
+import AlbumCellTeacher from "./AlbumCellTeacher.vue";
+
+import isEmpty from "lodash/isEmpty";
+
+@Component({
+  components: {
+    AiListStored,
+    AlbumCellTeacher,
+  },
+})
+export default class Home extends Vue {
+  @Prop({ type: [String, Number], default: null }) merchantId: string | number;
+  @Prop({ type: String, default: "slider" }) scrollType: string;
+  @Prop({ type: String, default: null }) keyword: string;
+
+  get isSliderMode() {
+    return this.scrollType === "slider";
+  }
+
+  get query() {
+    const query: any = {
+      only_teacher: true,
+      merchant_id: this.merchantId,
+    };
+    if (!isEmpty(this.keyword)) {
+      query.filters = JSON.stringify({
+        realname: [this.keyword],
+      });
+    }
+    return query;
+  }
+
+  gotoSearch() {
+    this.$router.push({
+      name: "mediaAlbumsSearch",
+      query: {
+        type: "teacher",
+      },
+    });
+  }
+}
+</script>
+<style lang="scss" scoped>
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 10px;
+}
+</style>

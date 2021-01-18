@@ -1,6 +1,6 @@
 <template>
   <div :class="[b(), { [b('border-bottom')]: showBottomLine }]">
-    <div :class="b('left')">
+    <div :class="b('left')" @click="$emit('click:left')">
       <slot name="left">
         <slot name="cover">
           <div :class="b('left-cover')" v-if="cover">
@@ -34,7 +34,7 @@
         </div>
       </slot>
     </div>
-    <div :class="b('right')">
+    <div :class="b('right')" @click="$emit('click:right')">
       <slot name="right" />
     </div>
   </div>

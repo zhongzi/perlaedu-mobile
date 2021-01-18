@@ -1,12 +1,8 @@
 <template>
   <div class="wrapper editing-skin" @click="showPicker = true">
     <ai-cell>
-      <template v-slot:title>
-        点击更换首页背景图
-      </template>
-      <template v-slot:subtitle>
-        定制首页用户请慎重，不可回撤
-      </template>
+      <template v-slot:title> 点击更换首页背景图 </template>
+      <template v-slot:subtitle> 定制首页用户请慎重，不可回撤 </template>
       <template v-slot:right>
         <div class="image-bg" :style="getMergedStyle(bgImage)" />
       </template>

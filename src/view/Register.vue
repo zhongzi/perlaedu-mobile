@@ -49,9 +49,7 @@
           </div>
           <div class="influence">超<span> 2000 </span>家教培机构共同选择</div>
         </div>
-        <div class="remark">
-          金牌客服全程跟踪指导
-        </div>
+        <div class="remark">金牌客服全程跟踪指导</div>
         <template v-if="!isSubmited">
           <ai-input
             placeholder="学校名称"

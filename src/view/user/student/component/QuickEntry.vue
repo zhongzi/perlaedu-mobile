@@ -1,8 +1,6 @@
 <template>
   <div class="wrapper quick-entry">
-    <div class="title">
-      常用功能
-    </div>
+    <div class="title">常用功能</div>
     <div class="main">
       <template v-for="(data, index) in cellDatas">
         <div :key="index" class="cell" @click="openWork(data)">

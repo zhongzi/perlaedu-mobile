@@ -73,6 +73,7 @@ export default class Home extends Vue {
   @Prop({ type: String, default: "100vh" }) height: string;
   @Prop({ type: String, default: null }) emptyText: string;
   @Prop({ type: Number, default: 10 }) limit: number;
+  @Prop({ type: Boolean, default: true }) autoLoad: boolean;
   @Prop({ type: Boolean, default: true }) enablePullUp: boolean;
   @Prop({ type: Boolean, default: true }) enablePullDown: boolean;
   @Prop({ type: Number, default: 50 }) pullDownHeight: number;
@@ -92,6 +93,7 @@ export default class Home extends Vue {
   isRebounding: boolean = false;
   isPullingUp: boolean = false;
   isLoading: boolean = false;
+  needInitData: boolean = false;
 
   get isEmpty() {
     return this.list.length <= 0;
@@ -153,6 +155,18 @@ export default class Home extends Vue {
     });
   }
 
+  jScrollReset() {
+    const stop = 40;
+    this.scrollPos = stop;
+    if (!this.scroll) {
+      this.needInitData = true;
+      return;
+    }
+    this.scroll.pulling = true;
+    this.scroll.trigger("pullingDown");
+    this.scroll.scrollTo(this.scroll.x, stop, this.scroll.options.bounceTime);
+  }
+
   refresh() {
     this.$nextTick(() => {
       if (this.scroll) {
@@ -183,6 +197,10 @@ export default class Home extends Vue {
     }
     if (this.enablePullUp) {
       this._initPullUp();
+    }
+
+    if (this.autoLoad || this.needInitData) {
+      this.jScrollReset();
     }
   }
 
@@ -276,6 +294,7 @@ export default class Home extends Vue {
   &__empty {
     padding: 60px 0;
     text-align: center;
+    font-size: 16px;
     width: 100%;
   }
 

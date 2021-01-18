@@ -3,9 +3,7 @@
     <div class="decorator" />
     <div class="container">
       <div class="payment" v-if="!isWelfare">
-        <div class="payment-title">
-          指定可选套餐
-        </div>
+        <div class="payment-title">指定可选套餐</div>
         <ai-list-stored
           resource="billItem"
           scrollType="none"
@@ -28,9 +26,7 @@
         </ai-list-stored>
       </div>
       <div class="welfare" v-else>
-        <div class="welfare-title">
-          指定可选套餐
-        </div>
+        <div class="welfare-title">指定可选套餐</div>
         <ai-list-stored
           resource="billItem"
           scrollType="none"
