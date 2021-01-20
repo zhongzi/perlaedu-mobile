@@ -187,7 +187,7 @@ export default class Home extends Mixins(SyncMixin) {
     this.$router.push({
       name: "bill",
       params: {
-        merchantId: this.$auth.user.curr_merch_id,
+        merchantId: project.merchant_id,
         projectId: project.id,
         openid: this.$auth.openid,
         items: "new",
