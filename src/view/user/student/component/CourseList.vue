@@ -44,7 +44,10 @@ export default class Home extends Vue {
   get innerQuery() {
     return merge(
       {
-        "person_id.Person.openid": this.$auth.user.openid,
+        filters: JSON.stringify({
+          "person_id.Person.openid": ["=" + this.$auth.user.openid],
+          "person_id.Person.second_openid": ["=" + this.$auth.user.openid],
+        }),
         extras: JSON.stringify({
           Tag: ["person"],
           Person: ["merchant"],
