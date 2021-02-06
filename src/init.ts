@@ -9,3 +9,9 @@ setRem();
 window.onresize = function () {
   setRem();
 };
+window.onerror = function (msg, url, line) {
+  console.log(
+    "Caught[via window.onerror]: '" + msg + "' from " + url + ":" + line
+  );
+  return true;
+};

@@ -44,7 +44,7 @@ export default class Home extends Vue {
   @Prop({ type: Object, default: null }) photo: any;
   @Prop({ type: Object, default: null }) frame: any;
   @Prop({ type: Object, default: null }) link: any;
-  @Prop({ type: Boolean, default: true }) showMerged: boolean;
+  @Prop({ type: Boolean, default: false }) showMerged: boolean;
   @Prop({ type: Boolean, default: false }) showInfo: boolean;
   @Prop({ type: Boolean, default: true }) enabledClickToDetail: boolean;
   @Prop({ type: Boolean, default: true }) enabledPhotoFrame: boolean;
@@ -130,7 +130,7 @@ export default class Home extends Vue {
   build() {
     if (!this.showMerged || !this.computedPosition || !this.innerFrame) return;
 
-    const posterData = getPosterData(this.photo, this.innerFrame);
+    const posterData = getPosterData(this.photo, this.innerFrame, null, 1000);
 
     if (!this.posterBuilder) {
       this.posterBuilder = new this.$PosterBuilder();

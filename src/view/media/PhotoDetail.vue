@@ -5,7 +5,11 @@
     </span>
     <template v-if="media">
       <div class="photo">
-        <photo :photo="media" :enabledClickToDetail="false" />
+        <photo
+          :photo="media"
+          :enabledClickToDetail="false"
+          :showMerged="true"
+        />
       </div>
       <div class="container">
         <div class="section">
@@ -135,7 +139,6 @@ import cloneDeep from "lodash/cloneDeep";
   },
 })
 export default class Home extends Mixins(SyncMixin) {
-  avatar: string = null;
   aname: string = null;
   merchantName: string = null;
 
@@ -300,20 +303,16 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   resetAuthor() {
-    this.avatar = this.media.url;
-    this.aname = this.media.title;
+    this.aname = _get(this.media, "title");
     this.merchantName =
       _get(this.link, "merchant.name") || _get(this.media, "merchant.name");
 
     if (!isEmpty(this.link)) {
       if (this.link.target_class === "Person") {
-        this.avatar = _get(this.link, "target.avatar_url");
         this.aname = _get(this.link, "target.realname");
       } else if (this.link.target_class === "Group") {
-        this.avatar = _get(this.link, "cover");
         this.aname = _get(this.link, "target.name");
       } else {
-        this.avatar = _get(this.link, "target.cover");
         this.aname = _get(this.link, "target.title");
       }
     }
@@ -368,6 +367,8 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   configPoster() {
+    if (isEmpty(this.media)) return;
+
     this.$bus.$emit(
       "config:poster",
       getPosterData(
@@ -375,7 +376,6 @@ export default class Home extends Mixins(SyncMixin) {
         null,
         {
           title: this.media.title,
-          avatar: this.avatar,
           name: this.aname,
           merchant: this.merchantName,
           publishedAt: this.media.published_at,

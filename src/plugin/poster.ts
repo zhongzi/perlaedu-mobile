@@ -66,22 +66,20 @@ class PosterBuilder {
     this.baseHeight = baseHeight;
     this.callback = callback;
 
-    this.initKonva = debounce(() => {
-      this._initKonva();
-    }, 1000);
+    this.initKonva = debounce(() => {}, 1000);
 
     this.build = debounce(() => {
       this._build();
     }, 1000);
-
-    this.id && this.initKonva();
   }
   _initKonva() {
     if (this.layer) {
+      this.layer.destroyChildren();
       this.layer.clear();
       this.layer.clearCache();
     }
     if (this.stage) {
+      this.stage.destroyChildren();
       this.stage.clear();
       this.stage.clearCache();
     }
@@ -116,6 +114,7 @@ class PosterBuilder {
   }
 
   _build() {
+    this._initKonva();
     this.buildTemplate((image) => {
       if (image) {
         if (this.baseWidth) {
@@ -236,6 +235,7 @@ class PosterBuilder {
         const zIndex = _get(element, "options.z");
         const item = _get(element, "_item");
         if (zIndex && item && item.zIndex) {
+          console.log(this.elements);
           console.log(zIndex);
           item.zIndex(zIndex);
         }

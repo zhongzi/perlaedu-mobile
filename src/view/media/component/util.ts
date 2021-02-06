@@ -8,8 +8,7 @@ import concat from "lodash/concat";
 function calcValidSpace(
   framePosition: perlaedu.Position,
   photoSize: perlaedu.Size,
-  limitedWidth: number = 0,
-  limitedHeight: number = 0
+  limitedWidth: number = 0
 ) {
   let { width, height } = framePosition;
   let top = framePosition.top || 0;
@@ -17,10 +16,7 @@ function calcValidSpace(
   let bottom = framePosition.bottom || top;
   let right = framePosition.right || left;
 
-  const frameRatioWidth = (limitedWidth > 0 && limitedWidth / width) || 1;
-  const frameRatioHeight = (limitedHeight > 0 && limitedHeight / height) || 1;
-  const frameRatio = Math.min(frameRatioWidth, frameRatioHeight);
-
+  const frameRatio = (limitedWidth > 0 && limitedWidth / width) || 1;
   width = width * frameRatio;
   height = height * frameRatio;
   left = left * frameRatio;
@@ -61,22 +57,28 @@ function calcValidSpace(
   };
 }
 
-function getPhotoZoneInFrame(file, frame, limitedWidth = 0, limitedHeight = 0) {
+function getPhotoZoneInFrame(file, frame, limitedWidth = 0) {
   return calcValidSpace(
-    {
-      width: frame.width,
-      height: frame.height,
-      left: frame.left,
-      top: frame.top,
-      right: frame.right,
-      bottom: frame.bottom,
-    },
+    frame
+      ? {
+          width: frame.width,
+          height: frame.height,
+          left: frame.left,
+          top: frame.top,
+          right: frame.right,
+          bottom: frame.bottom,
+        }
+      : {
+          width: file.width,
+          height: file.height,
+          left: file.width * 0.1,
+          top: file.height * 0.1,
+        },
     {
       width: file.width,
       height: file.height,
     },
-    limitedWidth,
-    limitedHeight
+    limitedWidth
   );
 }
 
@@ -107,20 +109,10 @@ function checkEditable(user, merchantId = null, openid = null, id = null) {
   return false;
 }
 
-function getPosterData(
-  media,
-  frame = null,
-  options = null,
-  limitedWidth = 0,
-  limitedHeight = 0
-) {
-  frame = frame || media.frame || media.file;
-  const computedZone = getPhotoZoneInFrame(
-    media.file,
-    frame,
-    limitedWidth,
-    limitedHeight
-  );
+function getPosterData(media, frame = null, options = null, limitedWidth = 0) {
+  frame = frame || media.frame;
+
+  const computedZone = getPhotoZoneInFrame(media.file, frame, limitedWidth);
 
   const poster = {
     name: media.title,
@@ -131,7 +123,7 @@ function getPosterData(
     elements: [],
   };
 
-  if (frame !== media.file) {
+  if (frame) {
     poster.elements = concat(poster.elements, [
       {
         type: "image",
@@ -147,22 +139,25 @@ function getPosterData(
           z: 1,
         },
       },
-      {
-        type: "image",
-        value: alioss(media.file.url, {
-          width: computedZone.area.width,
-          height: computedZone.area.height,
-        }),
-        options: {
-          width: computedZone.area.width,
-          height: computedZone.area.height,
-          x: computedZone.area.left,
-          y: computedZone.area.top,
-          z: 2,
-        },
-      },
     ]);
   }
+
+  poster.elements = concat(poster.elements, [
+    {
+      type: "image",
+      value: alioss(media.file.url, {
+        width: computedZone.area.width,
+        height: computedZone.area.height,
+      }),
+      options: {
+        width: computedZone.area.width,
+        height: computedZone.area.height,
+        x: computedZone.area.left,
+        y: computedZone.area.top,
+        z: 2,
+      },
+    },
+  ]);
 
   if (!isEmpty(options)) {
     poster.baseColor = "white";
