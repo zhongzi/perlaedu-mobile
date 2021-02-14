@@ -57,7 +57,7 @@
           <slot name="item" :item="item" :index="index" :tag="tag" />
         </template>
         <template v-slot:empty>
-          <slot name="empty"> 暂无数据 </slot>
+          <slot name="empty" v-if="enableEmpty"> {{ emptyText }}</slot>
         </template>
         <template v-slot:footer>
           <slot name="footer"> </slot>
@@ -256,6 +256,10 @@ export default class Home extends Mixins(SyncMixin) {
     font-weight: 600;
     color: rgba(74, 74, 74, 1);
     line-height: 2.5;
+  }
+  &__list-load-more {
+    display: block;
+    margin: 0px auto;
   }
 }
 </style>

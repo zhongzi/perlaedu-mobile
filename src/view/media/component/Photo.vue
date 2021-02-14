@@ -6,7 +6,7 @@
     </div>
 
     <div class="cell" v-else>
-      <div class="merged" :style="mergedStyle">
+      <div :style="mergedStyle">
         <img :src="photo.url | alioss({ width: 200 })" />
       </div>
       <img
@@ -18,6 +18,7 @@
 
     <div class="info" v-if="showInfo">
       <span> {{ photo.title }} </span>
+      <span> (发表于 {{ photo.published_at | defaultDay }} ) </span>
       <!--
       <div class="stars">
          (
@@ -62,6 +63,8 @@ export default class Home extends Vue {
   get mergedStyle() {
     if (!this.computedPosition) {
       return {
+        width: "100%",
+        height: "100%",
         margin: "10%",
       };
     }
@@ -158,6 +161,9 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 .photo {
   .cell {
+    width: 100%;
+    height: 100%;
+
     position: relative;
     display: flex;
     align-items: center;
@@ -166,12 +172,13 @@ export default class Home extends Vue {
     img {
       display: block;
       width: 100%;
-      max-width: 100%;
-      max-height: 100%;
+      height: 100%;
+      object-fit: contain;
     }
   }
   .info {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: space-around;
     line-height: 3;
@@ -179,6 +186,11 @@ export default class Home extends Vue {
     span {
       font-size: 14px;
       font-weight: 800;
+      line-height: 1;
+    }
+    span:nth-child(2) {
+      color: #b5b5b5;
+      margin-top: 5px;
     }
 
     .stars {

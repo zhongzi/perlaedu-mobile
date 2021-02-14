@@ -41,6 +41,7 @@ export default class Home extends Vue {
   .logo {
     display: line-block;
     width: 28px;
+    height: 28px;
     border-radius: 50%;
   }
   span {

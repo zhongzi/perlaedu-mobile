@@ -1,12 +1,8 @@
 <template>
-  <div class="wrapper">
-    <ai-card @click.native="showDialog = true" class="add-album-entry">
-      <template v-slot:header>
-        <div class="cover">
-          <i class="iconfont icon-plus" />
-        </div>
-      </template>
-    </ai-card>
+  <div class="wrapper add-album-entry">
+    <div @click="showDialog = true" class="cover">
+      <i class="iconfont icon-plus" />
+    </div>
     <ai-dialog v-model="showDialog" :enableCloseIcon="false">
       <div class="form">
         <div class="title">新建相册</div>
@@ -71,17 +67,6 @@ export default class Home extends Mixins(SyncMixin) {
 </script>
 <style lang="scss" scoped>
 .add-album-entry {
-  height: 100%;
-
-  padding: 0px 5px;
-  background: rgba(255, 255, 255, 1);
-  box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
-  border-radius: 8px;
-  box-sizing: border-box;
-
-  & ::v-deep .ai-card__header {
-    height: 85%;
-  }
   .cover {
     width: 100%;
     height: 60px;
@@ -90,7 +75,6 @@ export default class Home extends Mixins(SyncMixin) {
     justify-content: center;
     background: rgba(216, 216, 216, 0.19);
     border-radius: 4px;
-    margin: 5px 0px;
 
     i {
       color: rgba(195, 195, 195, 1);

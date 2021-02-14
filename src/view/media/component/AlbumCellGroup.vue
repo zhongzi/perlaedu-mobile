@@ -3,10 +3,8 @@
     class="wrapper card"
     v-if="isSliderMode"
     @click.native="gotoAlbumDetail"
+    :cover="cover | alioss({ width: 100 })"
   >
-    <template v-slot:header>
-      <img :src="cover | alioss({ width: 100 })" />
-    </template>
     <template v-slot:footer>
       <div>{{ title }}</div>
     </template>
@@ -136,22 +134,32 @@ export default class Home extends Mixins(SyncMixin) {
 </script>
 <style lang="scss" scoped>
 .card {
+  margin-bottom: 10px;
+
+  & ::v-deep .ai-card__header {
+    height: 60px !important;
+    max-height: initial !important;
+    background: rgba(216, 216, 216, 0.19);
+    border-radius: 6px;
+    padding: 0px !important;
+    margin: 0px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
   & ::v-deep .ai-card__footer {
     div {
-      padding: 0px 5px;
+      background: #fff;
+      padding: 5px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-    }
-  }
-  & ::v-deep .ai-card__header {
-    padding: 3px;
-    height: 50px;
-    min-height: 50px;
-    max-height: 50px;
-
-    img {
-      max-height: 100%;
+      color: #000;
     }
   }
 }

@@ -37,31 +37,73 @@
     </div>
   </ai-dialog>
   <div v-else>
-    <picker-student
-      class="section"
-      :studentsExisted="studentsExisted"
-      @selected="onSelectedStudents"
-    />
-    <picker-teacher
-      class="section"
-      :teachersExisted="teachersExisted"
-      @selected="onSelectedTeachers"
-    />
-    <picker-group
-      class="section"
-      :groupsExisted="groupsExisted"
-      @selected="onSelectedGroups"
-    />
-    <picker-course
-      class="section"
-      :coursesExisted="coursesExisted"
-      @selected="onSelectedCourses"
-    />
-    <picker-album
-      class="section"
-      :albumsExisted="albumsExisted"
-      @selected="onSelectedAlbums"
-    />
+    <template v-if="type">
+      <picker-student
+        v-if="type === 'student'"
+        class="section"
+        :studentsExisted="studentsExisted"
+        @selected="onSelectedStudents"
+      />
+      <picker-teacher
+        v-if="type === 'teacher'"
+        class="section"
+        :teachersExisted="teachersExisted"
+        @selected="onSelectedTeachers"
+      />
+      <picker-group
+        v-if="type === 'group'"
+        class="section"
+        :groupsExisted="groupsExisted"
+        @selected="onSelectedGroups"
+      />
+      <picker-course
+        v-if="type === 'course'"
+        class="section"
+        :coursesExisted="coursesExisted"
+        @selected="onSelectedCourses"
+      />
+      <picker-album
+        v-if="type === 'album'"
+        class="section"
+        :albumsExisted="albumsExisted"
+        @selected="onSelectedAlbums"
+      />
+    </template>
+    <ai-button-round v-if="!showPickers" @click.native="showPickers = true">
+      添加{{ type && "更多" }}关联</ai-button-round
+    >
+    <template v-if="showPickers">
+      <picker-student
+        v-if="!type || type !== 'student'"
+        class="section"
+        :studentsExisted="studentsExisted"
+        @selected="onSelectedStudents"
+      />
+      <picker-teacher
+        v-if="!type || type !== 'teacher'"
+        class="section"
+        :teachersExisted="teachersExisted"
+        @selected="onSelectedTeachers"
+      />
+      <picker-group
+        v-if="!type || type !== 'group'"
+        class="section"
+        :groupsExisted="groupsExisted"
+        @selected="onSelectedGroups"
+      />
+      <picker-course
+        v-if="!type || type !== 'course'"
+        class="section"
+        :coursesExisted="coursesExisted"
+        @selected="onSelectedCourses"
+      />
+      <picker-album
+        v-if="!type || type !== 'album'"
+        class="section"
+        :albumsExisted="albumsExisted"
+        @selected="onSelectedAlbums"
+      />
+    </template>
   </div>
 </template>
 
@@ -71,6 +113,7 @@ import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 import SyncMixin from "@/mixin/SyncMixin";
 
 import AiDialog from "@/view/component/AiDialog.vue";
+import AiButtonRound from "@/view/component/AiButtonRound.vue";
 import AiSubmitActions from "@/view/component/AiSubmitActions.vue";
 
 import PickerStudent from "./PickerStudent.vue";
@@ -96,6 +139,7 @@ import differenceBy from "lodash/differenceBy";
 @Component({
   components: {
     AiDialog,
+    AiButtonRound,
     AiSubmitActions,
     PickerStudent,
     PickerTeacher,
@@ -132,6 +176,7 @@ export default class Home extends Mixins(SyncMixin) {
   albums: any = null;
   albumsToDeleted: any = null;
 
+  showPickers = false;
   isLoadedExists = false;
   curTitle = null;
   get isActivated() {
@@ -153,6 +198,10 @@ export default class Home extends Mixins(SyncMixin) {
       isEmpty(this.coursesExisted) &&
       isEmpty(this.albumsExisted)
     );
+  }
+
+  get type() {
+    return this.$route.query.type;
   }
 
   created() {

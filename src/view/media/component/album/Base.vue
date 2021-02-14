@@ -31,6 +31,13 @@
           <i class="iconfont icon-checked" />
           <span> 选择 </span>
         </div>
+        <div
+          :class="['action', { 'action-select-clicked': isInRecycleBin }]"
+          @click="openRecycleBin"
+        >
+          <i class="iconfont icon-huifu" />
+          <span> 回收站 </span>
+        </div>
       </div>
       <ai-list-stored
         class="photos"
@@ -40,15 +47,30 @@
         :refresh.sync="refresh"
         @emit-list="updateTotal"
       >
-        <template v-slot:item="{ item }">
-          <photo
-            :photo="item.media"
-            :link="item"
-            :key="item.id"
-            :class="['photo', { 'photo-selected': checkSelected(item) }]"
-            :enabledClickToDetail="enabledClickToDetail"
-            @click.native="addToSelectedLink(item)"
-          />
+        <template v-slot:list>
+          <div class="groups">
+            <div class="group" v-for="group in linksGroups" :key="group[0]">
+              <div class="label">
+                {{ group[0] }}
+              </div>
+              <div class="links">
+                <div class="link" v-for="link in group[1]" :key="link.id">
+                  <ai-state-check-mask
+                    :enableCheck="!enabledClickToDetail"
+                    :checked="checkSelected(link)"
+                    @update:checked="addToSelectedLink(link)"
+                  >
+                    <photo
+                      :photo="link.media"
+                      :link="link"
+                      :key="link.id"
+                      :enabledClickToDetail="enabledClickToDetail"
+                    />
+                  </ai-state-check-mask>
+                </div>
+              </div>
+            </div>
+          </div>
         </template>
       </ai-list-stored>
       <ai-fixed-footer>
@@ -62,15 +84,31 @@
             },
           ]"
         >
-          <action-set-cover :links="selectedLinks" />
-          <action-editing :links="selectedLinks" />
-          <action-remove :links="selectedLinks" @deleted="onDeleted" />
-          <action-copy :links="selectedLinks" v-if="showFooter" />
-          <action-move
-            v-if="showFooter"
-            :links="selectedLinks"
-            @moved="refresh = true"
-          />
+          <template v-if="!isInRecycleBin">
+            <action-set-cover :links="selectedLinks" />
+            <action-editing :links="selectedLinks" />
+            <action-remove :links="selectedLinks" @deleted="onDeleted" />
+            <action-copy :links="selectedLinks" v-if="showFooter" />
+            <action-move
+              v-if="showFooter"
+              :links="selectedLinks"
+              @moved="refresh = true"
+            />
+          </template>
+          <template v-else>
+            <action-recover-in-recycle-bin
+              :targetId="targetId"
+              :targetClass="targetClass"
+              :links="selectedLinks"
+              @finished="refresh = true"
+            />
+            <action-remove-in-recycle-bin
+              :targetId="targetId"
+              :targetClass="targetClass"
+              :links="selectedLinks"
+              @finished="refresh = true"
+            />
+          </template>
         </div>
       </ai-fixed-footer>
     </template>
@@ -84,6 +122,7 @@ import SyncMixin from "@/mixin/SyncMixin";
 
 import AiCell from "@/view/component/AiCell.vue";
 import AiListStored from "@/view/component/AiListStored.vue";
+import AiStateCheckMask from "@/view/component/AiStateCheckMask.vue";
 import AiFixedFooter from "@/view/component/AiFixedFooter.vue";
 
 import ActionSetCover from "./editing/ActionSetCover.vue";
@@ -91,32 +130,45 @@ import ActionEditing from "./editing/ActionEditing.vue";
 import ActionRemove from "./editing/ActionRemove.vue";
 import ActionCopy from "./editing/ActionCopy.vue";
 import ActionMove from "./editing/ActionMove.vue";
+import ActionRemoveInRecycleBin from "./editing/ActionRemoveInRecycleBin.vue";
+import ActionRecoverInRecycleBin from "./editing/ActionRecoverInRecycleBin.vue";
 
 import Photo from "../Photo.vue";
 
 import { checkEditable } from "../util";
+
+import isEmpty from "lodash/isEmpty";
 import _get from "lodash/get";
 import indexOf from "lodash/indexOf";
 import concat from "lodash/concat";
 import pull from "lodash/pull";
 import clone from "lodash/clone";
+import groupBy from "lodash/groupBy";
+import toPairs from "lodash/toPairs";
+import orderBy from "lodash/orderBy";
 
 @Component({
   components: {
     AiCell,
     AiListStored,
     AiFixedFooter,
+    AiStateCheckMask,
     ActionSetCover,
     ActionEditing,
     ActionRemove,
     ActionCopy,
     ActionMove,
+    ActionRemoveInRecycleBin,
+    ActionRecoverInRecycleBin,
     Photo,
   },
 })
 export default class Home extends Mixins(SyncMixin) {
   curAlbumComponent = null;
   curAlbumComponentProps: any = null;
+  curLinks: any = null;
+
+  isInRecycleBin = false;
 
   isDeletable = false;
   isEditable = false;
@@ -131,9 +183,28 @@ export default class Home extends Mixins(SyncMixin) {
   targetType: string = null;
   merchantId: number = null;
 
+  get linksGroups() {
+    if (isEmpty(this.curLinks)) return [];
+
+    const groups = orderBy(
+      toPairs(
+        groupBy(this.curLinks, (link) => {
+          return this.$options.filters.defaultDay(link.media.published_at);
+        })
+      ),
+      0,
+      "desc"
+    );
+    console.log(groups);
+    return groups;
+  }
+
   get showFooter() {
     return (
-      this.enabledSelect && this.selectedLinks && this.selectedLinks.length > 0
+      this.isInRecycleBin ||
+      (this.enabledSelect &&
+        this.selectedLinks &&
+        this.selectedLinks.length > 0)
     );
   }
 
@@ -141,6 +212,7 @@ export default class Home extends Mixins(SyncMixin) {
     return {
       target_class: this.targetClass,
       target_id: this.targetId,
+      is_deleted_tmp: this.isInRecycleBin,
       extras: JSON.stringify({
         MediaLink: ["media"],
         Media: ["frame", "file", "url"],
@@ -166,6 +238,7 @@ export default class Home extends Mixins(SyncMixin) {
   updateTotal(v) {
     this.curAlbumComponentProps = this.curAlbumComponentProps || {};
     this.curAlbumComponentProps.total = v.total;
+    this.curLinks = v.list;
     return;
   }
 
@@ -186,6 +259,7 @@ export default class Home extends Mixins(SyncMixin) {
         mediaId: "new",
       },
       query: {
+        type: this.targetType,
         albums: JSON.stringify([
           {
             id: this.targetId,
@@ -231,7 +305,20 @@ export default class Home extends Mixins(SyncMixin) {
     }
   }
 
+  openRecycleBin() {
+    if (this.enabledSelect) {
+      this.enabledSelect = false;
+      this.enabledClickToDetail = true;
+    }
+
+    this.selectedLinks = null;
+    this.isInRecycleBin = !this.isInRecycleBin;
+    this.enabledClickToDetail = !this.enabledClickToDetail;
+  }
+
   onClickSelected() {
+    if (this.isInRecycleBin) return;
+
     this.selectedLinks = null;
     this.enabledSelect = !this.enabledSelect;
     this.enabledClickToDetail = !this.enabledClickToDetail;
@@ -302,15 +389,28 @@ export default class Home extends Mixins(SyncMixin) {
     }
   }
   .photos {
-    .ai-infinite-scroll__list {
-      justify-content: space-between;
+    .groups {
+      .group {
+        .label {
+          font-size: 13px;
+          font-weight: 800;
+          border-left: 5px solid;
+          padding-left: 5px;
+        }
+        .links {
+          display: grid;
+          grid-template-columns: auto auto;
+        }
+      }
     }
-    .photo {
+    .photo-cell {
       width: 47%;
+      height: 200px;
       margin: 1%;
-    }
-    .photo-selected {
-      box-shadow: 0px 0px 10px red;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
   }
 }

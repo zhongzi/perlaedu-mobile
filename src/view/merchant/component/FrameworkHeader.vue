@@ -1,6 +1,9 @@
 <template>
   <div class="wrapper framework-header">
-    <switch-merchant class="switch" />
+    <div class="switch-container">
+      <switch-merchant class="switch" />
+      <slot name="switch" />
+    </div>
     <slot />
   </div>
 </template>
@@ -28,8 +31,15 @@ export default class Home extends Vue {}
   padding-bottom: 30px;
   background: linear-gradient(119deg, #ff9249 0%, #e2630e 100%);
 
-  .switch {
-    max-width: 60%;
+  .switch-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .switch {
+      max-width: 60%;
+    }
   }
 }
 </style>

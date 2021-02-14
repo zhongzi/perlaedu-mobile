@@ -66,8 +66,13 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 .picker-items {
   .title {
-    font-size: 14px;
-    font-weight: 700;
+    margin-top: 10px;
+    font-size: 1.4rem;
+    font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
+    font-weight: bold;
+    color: #545454;
+    letter-spacing: 0.1rem;
+    line-height: 2;
   }
 
   .item {

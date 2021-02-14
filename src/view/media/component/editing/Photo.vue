@@ -2,26 +2,18 @@
   <div class="wrapper photo-uploader">
     <div class="photo">
       <template v-if="!isCreation">
-        <ai-image-uploader
-          type="media"
-          :value="innerMedia.url"
-          :flag="false"
-          @input:file="uploaded"
-        >
-          <template v-slot:preview v-if="innerMedia.url">
-            <photo
-              :photo="innerMedia"
-              :enabledClickToDetail="false"
-              :showMerged="false"
-            />
-          </template>
-        </ai-image-uploader>
+        <photo
+          class="photo-cell"
+          :photo="innerMedia"
+          :enabledClickToDetail="false"
+          :showMerged="false"
+        />
       </template>
       <div v-else class="medias">
         <template v-for="media in medias">
-          <div class="cell media" :key="media.id">
+          <div class="media" :key="media.id">
             <photo
-              class="cell"
+              class="photo-cell"
               :photo="media"
               :frame="curFrame"
               :showMerged="false"
@@ -34,7 +26,7 @@
           </div>
         </template>
         <ai-image-multi-uploader
-          class="cell"
+          class="media"
           :enabledCompression="false"
           @input:file="uploadedMultiple"
         >
@@ -46,27 +38,23 @@
       class="frames"
       resource="mediaFrame"
       scrollType="slider"
-      :sliderOptions="{ slidesPerView: 4.5, spaceBetween: 10 }"
+      emptyText=""
+      :sliderOptions="{ slidesPerView: 5.5, spaceBetween: 5 }"
       :enableSlideBefore="true"
     >
       <template v-slot:slide-before>
-        <div
-          :class="['frame-none', { 'is-selected': !curFrame }]"
-          @click="saveFrame()"
-        >
-          无
-        </div>
+        <ai-state-check-mask :checked="!curFrame" @update:checked="saveFrame()">
+          <div class="frame-none">无</div>
+        </ai-state-check-mask>
       </template>
       <template v-slot:item="{ item }">
-        <img
-          :class="[
-            'frame',
-            { 'is-selected': curFrame && item.id === curFrame.id },
-          ]"
-          :src="item.url | alioss({ width: 100 })"
+        <ai-state-check-mask
           :key="item.id"
-          @click="saveFrame(item)"
-        />
+          :checked="curFrame && curFrame.id === item.id"
+          @update:checked="saveFrame(item)"
+        >
+          <img class="frame" :src="item.url | alioss({ width: 100 })" />
+        </ai-state-check-mask>
       </template>
     </ai-list-stored>
   </div>
@@ -80,6 +68,7 @@ import SyncMixin from "@/mixin/SyncMixin";
 import AiImageMultiUploader from "@/view/component/AiImageMultiUploader.vue";
 import AiImageUploader from "@/view/component/AiImageUploader.vue";
 import AiListStored from "@/view/component/AiListStored.vue";
+import AiStateCheckMask from "@/view/component/AiStateCheckMask.vue";
 
 import Photo from "../Photo.vue";
 
@@ -98,6 +87,7 @@ import forEach from "lodash/forEach";
     AiImageMultiUploader,
     AiImageUploader,
     AiListStored,
+    AiStateCheckMask,
     Photo,
   },
 })
@@ -226,18 +216,25 @@ export default class Home extends Mixins(SyncMixin) {
 </script>
 <style lang="scss" scoped>
 .photo-uploader {
+  .photo-cell {
+    width: 80vw;
+    height: 40vh;
+    margin: 0px auto;
+  }
   .medias {
     display: grid;
     padding: 10px;
     grid-template-columns: repeat(auto-fill, 33%);
 
-    .cell {
-      max-width: 100px;
+    .photo-cell {
+      width: 80px;
+      height: 80px;
       margin: 10px;
     }
 
     .media {
       position: relative;
+      margin: 10px;
 
       .trash {
         position: absolute;
@@ -263,21 +260,21 @@ export default class Home extends Mixins(SyncMixin) {
     .frame-none {
       width: 60px;
       height: 60px;
-      margin: 10px 0px;
-      margin-left: 10px;
 
       display: flex;
       align-items: center;
       justify-content: center;
       border: 3px solid #e0dddd;
       border-radius: 10px;
+
+      font-size: 16px;
+      color: #b5b5b5;
     }
 
     .frame {
       display: block;
       width: 60px;
       height: 60px;
-      margin: 10px 0px;
       border-radius: 10px;
     }
     .is-selected {

@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "6142036",
+      "name": "check mark 24 px",
+      "font_class": "-check-circle",
+      "unicode": "e747",
+      "unicode_decimal": 59207
+    },
+    {
+      "icon_id": "9298930",
+      "name": "恢复",
+      "font_class": "-huifu",
+      "unicode": "e6b1",
+      "unicode_decimal": 59057
+    },
+    {
       "icon_id": "11563399",
       "name": "学校推荐",
       "font_class": "-school",
@@ -946,7 +960,7 @@
     {
       "icon_id": "13314433",
       "name": "撤回",
-      "font_class": "chehui",
+      "font_class": "-chehui",
       "unicode": "e6d0",
       "unicode_decimal": 59088
     },

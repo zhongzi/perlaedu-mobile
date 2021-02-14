@@ -2,7 +2,7 @@
   <div :class="b()">
     <div :class="b('header')">
       <slot name="header">
-        <img :src="cover" />
+        <img :src="cover" v-if="cover" />
       </slot>
     </div>
     <div :class="b('body')">
@@ -52,7 +52,9 @@ export default class Home extends Vue {
     justify-content: center;
 
     img {
-      max-width: 100%;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
   }
   &__body {

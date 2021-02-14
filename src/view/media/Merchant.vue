@@ -1,15 +1,21 @@
 <template>
   <div class="wrapper media-merchant">
-    <ai-button-round @click.native="gotoEditing">
-      <i class="iconfont icon-upload" />
-      <span>上传作品</span>
-    </ai-button-round>
-    <capacity-limit />
-    <album-list class="section" :merchantId="merchantId" />
-    <album-list-student class="section" :merchantId="merchantId" />
-    <album-list-group class="section" :merchantId="merchantId" />
-    <album-list-teacher class="section" :merchantId="merchantId" />
-    <album-list-course class="section" :merchantId="merchantId" />
+    <framework>
+      <template v-slot:switch>
+        <ai-button-round @click.native="gotoEditing" class="upload">
+          <i class="iconfont icon-upload" />
+          <span>上传作品</span>
+        </ai-button-round>
+      </template>
+      <template v-slot:body>
+        <capacity-limit />
+        <album-list class="section" :merchantId="merchantId" />
+        <album-list-student class="section" :merchantId="merchantId" />
+        <album-list-group class="section" :merchantId="merchantId" />
+        <album-list-teacher class="section" :merchantId="merchantId" />
+        <album-list-course class="section" :merchantId="merchantId" />
+      </template>
+    </framework>
   </div>
 </template>
 
@@ -17,6 +23,7 @@
 import { Component, Vue } from "vue-property-decorator";
 
 import AiButtonRound from "@/view/component/AiButtonRound.vue";
+import AiButtonRoundSmall from "@/view/component/AiButtonRoundSmall.vue";
 import AiFixedFooter from "@/view/component/AiFixedFooter.vue";
 
 import AlbumList from "./component/AlbumList.vue";
@@ -26,17 +33,21 @@ import AlbumListTeacher from "./component/AlbumListTeacher.vue";
 import AlbumListCourse from "./component/AlbumListCourse.vue";
 import CapacityLimit from "./component/CapacityLimit.vue";
 
+import Framework from "@/view/merchant/component/Framework.vue";
+
 import _get from "lodash/get";
 
 @Component({
   components: {
     AiButtonRound,
+    AiButtonRoundSmall,
     AiFixedFooter,
     AlbumList,
     AlbumListCourse,
     AlbumListStudent,
     AlbumListGroup,
     AlbumListTeacher,
+    Framework,
     CapacityLimit,
   },
 })
@@ -80,13 +91,20 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .media-merchant {
-  padding: 20px 10px;
-
-  .uploader {
+  & ::v-deep .framework-body {
+    background: #fff;
   }
 
+  .upload {
+    width: 100px;
+    color: #e2630e;
+    border: none;
+    min-height: auto;
+    padding: 10px 0px;
+    margin-left: 10px;
+  }
   .section {
-    margin: 15px auto;
+    margin: 5px auto 15px;
 
     & ::v-deep .ai-card__footer {
       text-align: center;

@@ -1,9 +1,11 @@
 <template>
   <ai-list-stored
+    class="wrapper albums"
     resource="person"
     :scrollType="scrollType"
     :query="query"
-    :sliderOptions="{ slidesPerView: 4.5, spaceBetween: 15 }"
+    :hideIfNoData="true"
+    :sliderOptions="{ slidesPerView: 3.5, spaceBetween: 10 }"
   >
     <template v-slot:header v-if="isSliderMode">
       <div class="header">
@@ -78,5 +80,22 @@ export default class Home extends Vue {
   align-items: center;
   justify-content: space-between;
   padding: 0px 10px;
+
+  .title {
+    font-size: 18px;
+  }
+  .more {
+    color: #b5b5b5;
+    font-size: 14px;
+    font-weight: default;
+    span {
+      margin-right: 5px;
+    }
+  }
+}
+.albums {
+  & ::v-deep .ai-slider__swiper-item:nth-child(1) {
+    margin-left: 10px;
+  }
 }
 </style>

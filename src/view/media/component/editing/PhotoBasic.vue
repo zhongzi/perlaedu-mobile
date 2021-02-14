@@ -11,6 +11,7 @@
       label="创作时间"
       v-model="innerMedia.published_at"
     />
+    <!--
     <ai-cell title="设为私密" subtitle="仅作品所属人及管理员可见">
       <template v-slot:right>
         <ai-input-switch v-model="innerMedia.enabled_privacy" />
@@ -21,6 +22,7 @@
         <ai-input-switch v-model="innerMedia.enabled_reply" />
       </template>
     </ai-cell>
+-->
   </div>
 </template>
 

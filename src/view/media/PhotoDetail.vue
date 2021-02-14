@@ -1,8 +1,5 @@
 <template>
   <div class="wrapper photo-detail">
-    <span class="editing" v-if="isEdiable" @click="gotoEditing">
-      <i class="iconfont icon-editing" />
-    </span>
     <template v-if="media">
       <div class="photo">
         <photo
@@ -12,6 +9,9 @@
         />
       </div>
       <div class="container">
+        <ai-button-round @click.native="saveStarAction" class="action">
+          点赞( {{ countStar }} )
+        </ai-button-round>
         <div class="section">
           <div class="info">
             <div class="title">{{ media.title }}</div>
@@ -22,6 +22,9 @@
             <div class="published">
               创作于 {{ media.published_at | defaultDay }}
             </div>
+            <span v-if="isEdiable" @click="gotoEditing">
+              <i class="iconfont icon-editing" />
+            </span>
           </div>
         </div>
         <merchant-cell
@@ -29,36 +32,36 @@
           v-if="hasMerchant"
           :merchant="media.merchant"
         />
-        <ai-card class="section">
-          <div class="interaction">
-            <ai-button-round @click.native="saveStarAction" class="action">
-              点赞
-            </ai-button-round>
-            <div class="detail">
-              <ai-list-stored
-                resource="mediaInteraction"
-                scrollType=""
-                :refresh.sync="refreshStarList"
-                :query="starQuery"
-                :limit="50"
-                @emit-list="(v) => (countInteractions = v.total)"
-              >
-                <template v-slot:item="{ item }">
-                  <img :src="item | safe('user.avatar')" class="avatar" />
-                </template>
-              </ai-list-stored>
-            </div>
-            <div class="count">{{ countInteractions }} 人次点赞</div>
+        <ai-card class="section" v-show="countStar > 0">
+          <div class="stars">
+            <div class="label">{{ countStar }} 人次点赞</div>
+            <ai-list-stored
+              class="stars-list"
+              resource="mediaInteraction"
+              scrollType="slider"
+              :refresh.sync="refreshStarList"
+              :query="starQuery"
+              :sliderOptions="{ slidesPerView: 8, spaceBetween: 10 }"
+              @emit-list="(v) => (countStar = v.total)"
+            >
+              <template v-slot:item="{ item }">
+                <img :src="item | safe('user.avatar')" class="avatar" />
+              </template>
+            </ai-list-stored>
           </div>
         </ai-card>
-        <ai-card class="section">
+        <ai-card class="section" v-show="countReply > 0">
           <div class="replies">
             <div class="label">精彩留言</div>
             <ai-list-stored
               resource="mediaInteraction"
+              scrollType=""
               scrollHeight="40vh"
+              :hideIfNoData="true"
+              :enableMoreData="true"
               :refresh.sync="refreshReplyList"
               :query="replyQuery"
+              @emit-list="(v) => (countReply = v.total)"
             >
               <template v-slot:item="{ item }">
                 <ai-cell
@@ -79,24 +82,24 @@
                 </ai-cell>
               </template>
             </ai-list-stored>
-            <ai-fixed-footer>
-              <div class="footer">
-                <ai-input
-                  class="input"
-                  v-model="description"
-                  placeholder="说点什么..."
-                />
-                <ai-button-round class="submit" @click.native="saveReplyAction">
-                  发送</ai-button-round
-                >
-                <i
-                  class="iconfont icon-share"
-                  @click="$bus.$emit('show:share:popup')"
-                />
-              </div>
-            </ai-fixed-footer>
           </div>
         </ai-card>
+        <ai-fixed-footer>
+          <div class="footer">
+            <ai-input
+              class="input"
+              v-model="description"
+              placeholder="说点什么..."
+            />
+            <ai-button-round class="submit" @click.native="saveReplyAction">
+              发送</ai-button-round
+            >
+            <i
+              class="iconfont icon-share"
+              @click="$bus.$emit('show:share:popup')"
+            />
+          </div>
+        </ai-fixed-footer>
       </div>
     </template>
   </div>
@@ -142,7 +145,8 @@ export default class Home extends Mixins(SyncMixin) {
   aname: string = null;
   merchantName: string = null;
 
-  countInteractions = 0;
+  countStar = 0;
+  countReply = 0;
   refreshStarList = false;
   description = "";
   refreshReplyList = false;
@@ -450,32 +454,35 @@ export default class Home extends Mixins(SyncMixin) {
     margin: 5px 0px;
   }
 
-  .interaction {
+  .action {
+    display: block;
+    width: 30%;
+    margin: 0px auto;
+
+    background: linear-gradient(133deg, #ff7c30 0%, #ff6452 100%);
+    opacity: 0.83;
+
+    font-size: 16px;
+    font-family: PingFangSC-Semibold, PingFang SC;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 17px;
+
+    border: none;
+  }
+
+  .stars {
     display: flex;
     flex-direction: column;
     padding: 10px;
 
-    .action {
-      width: 30%;
-      margin: 0px auto;
-
-      background: linear-gradient(133deg, #ff7c30 0%, #ff6452 100%);
-      opacity: 0.83;
-
-      font-size: 16px;
-      font-family: PingFangSC-Semibold, PingFang SC;
-      font-weight: 600;
-      color: #ffffff;
-      line-height: 17px;
-
-      border: none;
-    }
-    .count {
-      text-align: right;
+    .label {
       font-size: 14px;
       font-weight: 700;
+      line-height: 3;
     }
-    .detail {
+
+    .stars-list {
       margin: 20px;
 
       .avatar {

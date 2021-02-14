@@ -5,10 +5,9 @@
       v-if="innerMedias.length > 0"
       class="animate__animated animate__fadeInUp"
     >
-      <ai-tab v-model="curTabIdx" :tabs="tabs" />
       <div class="settings">
-        <photo-basic v-show="curTab.value === 'basic'" :medias="innerMedias" />
-        <photo-link v-show="curTab.value === 'link'" :medias="innerMedias" />
+        <photo-basic :medias="innerMedias" />
+        <photo-link :medias="innerMedias" v-if="isNewMode" />
       </div>
     </div>
     <ai-fixed-footer>
@@ -75,6 +74,10 @@ export default class Home extends Mixins(SyncMixin) {
 
   get innerMedias() {
     return concat(this.medias || [], this.media || []);
+  }
+
+  get isNewMode() {
+    return this.$route.params.mediaId === "new";
   }
 
   created() {

@@ -85,9 +85,11 @@ export default class Home extends Vue {
 
   get query() {
     let query = cloneDeep(this.$route.query || {});
+
     if (isEmpty(query)) {
       query.merchant_id = _get(this.$auth, "user.curr_merch_id");
     }
+    query.is_deleted_tmp = false;
     query.extras = JSON.stringify({
       MediaLink: ["media"],
       Media: ["file", "url", "frame", "count_star"],
@@ -135,6 +137,8 @@ export default class Home extends Vue {
     }
 
     .item {
+      width: 80vw;
+      height: 80vh;
       display: flex;
       flex-direction: column;
       align-items: center;

@@ -1,6 +1,9 @@
 <template>
   <div class="wrapper framework">
     <framework-header>
+      <template v-slot:switch>
+        <slot name="switch" />
+      </template>
       <template v-slot>
         <slot name="header" />
       </template>
