@@ -124,7 +124,17 @@ export default class UploaderMixin extends Vue {
   }
 
   compression(file, callback) {
-    if (!this.requiredCompression) {
+    /*
+     * browser-image-compression 在window+微信客户端环境下工作不正常
+     * window+微信开发者工具，工作正常
+     * window+chrome/edge，工作正常
+     * 暂时如此规避
+     */
+    const isInPCWinWechat =
+      this.$client.device.isPC &&
+      this.$client.pc.isWin &&
+      this.$client.browser.isMicromessenger;
+    if (!this.requiredCompression || isInPCWinWechat) {
       callback && callback(file);
       return;
     }

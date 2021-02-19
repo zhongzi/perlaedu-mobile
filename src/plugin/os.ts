@@ -1,28 +1,39 @@
 import Vue from "vue";
 
-// TODO 补充
+const ua = navigator.userAgent.toLowerCase();
+
+const isWin = /(win32|windows)/i.test(ua);
+const isMac = /(mac68k|macppc|macintosh|macintel)/i.test(ua);
+const isLinux = /(linux)/i.test(ua);
+
+const isPC = isWin || isMac || isLinux;
+const isWebTV = /(webtv)/i.test(ua);
+const isMobile = !(isPC || isWebTV);
 
 const client: any = {
+  device: {
+    isMobile: isMobile,
+    isPC: isPC,
+    isWebTV: isWebTV,
+  },
   mobile: {
-    isAndroid: false,
-    isIPhone: false,
-    isIOS: false,
-    isSymbian: false,
+    isAndroid: /(android)/i.test(ua),
+    isIPhone: /(iphone)/i.test(ua),
+    isIPad: /(ipad)/i.test(ua),
+    isSymbian: /(symbian)/i.test(ua),
+  },
+  pc: {
+    isWin: isWin,
+    isMac: isMac,
+    isLinux: isLinux,
   },
   browser: {
-    isChrome: false,
-    isIE: false,
-    isEdge: false,
-    isSafari: false,
-    isFireFox: false,
-    isMicromessenger: false,
-  },
-  isInWeixin: false,
-  os: {
-    isWin32: false,
-    isMacIntel: false,
-    isFreeBSD: false,
-    isWebTV: false,
+    isChrome: /(chrome)/i.test(ua),
+    isIE: /(msie)/i.test(ua),
+    isEdge: /(edge)/i.test(ua),
+    isSafari: /(safari)/i.test(ua),
+    isFireFox: /(firefox)/i.test(ua),
+    isMicromessenger: /(micromessenger|wxwork)/i.test(ua),
   },
 };
 

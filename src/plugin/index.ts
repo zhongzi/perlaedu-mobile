@@ -10,6 +10,7 @@ import wework from "./wework";
 import map from "./map";
 import captcha from "./captcha";
 import loadScript from "./loadScript";
+import os from "./os";
 
 const retina = require("@jukejia/retina");
 
@@ -27,4 +28,5 @@ export default [
   map,
   captcha,
   loadScript,
+  os,
 ];
