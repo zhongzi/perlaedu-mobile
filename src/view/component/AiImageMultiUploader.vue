@@ -1,6 +1,6 @@
 <template>
   <div :class="b()">
-    <template v-if="!isInWeixin || isInWin32">
+    <template v-if="!isUsingWxChooseImages">
       <vue-file-upload
         ref="uploader"
         @input="upload"
@@ -76,12 +76,17 @@ export default class Home extends Vue {
   urls: any = [];
   uploadedFiles: any = [];
 
-  get isInWeixin() {
-    return this.$weixin && this.$weixin.isInWeixin();
-  }
-
-  get isInWin32() {
-    return navigator.platform === "Win32";
+  get isUsingWxChooseImages() {
+    /*
+     * - 微信图片选在在mac客户端下面无法多选
+     *   https://developers.weixin.qq.com/community/develop/doc/00062891dd8c50a064f9d3dfa51000
+     * - 安卓手机上面会对multiple属性支持不好，存在无法多选的问题, 只能选择微信图像选择接口
+     *   https://www.zhihu.com/question/24212111
+     */
+    const isInPCMacOrWin =
+      this.$client.device.isPC &&
+      (this.$client.pc.isMac || this.$client.pc.isWin);
+    return this.$weixin && this.$weixin.isInWeixin() && !isInPCMacOrWin;
   }
 
   async wxLoadImages(localIds) {
