@@ -22,7 +22,7 @@
         </slot>
       </hui-button>
     </template>
-    <hui-dialog v-model="showDialog" :appendToBody="true">
+    <hui-dialog v-model="showDialog" :appendToBody="true" :hideOnBlur="false">
       <div :class="b('dialog')">
         <div :class="b('dialog-list')">
           <template v-for="(file, index) in files">
@@ -184,7 +184,7 @@ export default class Home extends Vue {
     padding: 20px 10px;
 
     &-list {
-      max-height: 500px;
+      max-height: 60vh;
 
       position: relative;
       overflow-y: scroll;
