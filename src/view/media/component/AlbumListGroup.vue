@@ -81,11 +81,11 @@ export default class Home extends Vue {
   padding: 0px 10px;
 
   .title {
-    font-size: 18px;
+    font-size: 14px;
   }
   .more {
     color: #b5b5b5;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: default;
     span {
       margin-right: 5px;

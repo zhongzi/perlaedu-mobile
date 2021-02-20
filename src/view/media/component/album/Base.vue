@@ -233,6 +233,7 @@ export default class Home extends Mixins(SyncMixin) {
     this.targetType = this.$route.query.type as string;
     this.targetId = parseInt(this.$route.params.albumId);
     this.merchantId = parseInt(this.$route.query.merchantId as string);
+    (this as any).load();
   }
 
   updateTotal(v) {
