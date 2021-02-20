@@ -53,6 +53,7 @@ export default class Home extends Vue {
 
   get query() {
     const query: any = {
+      merchant_id: this.merchantId,
       require_course_in_teaching: true,
     };
     if (!isEmpty(this.keyword)) {

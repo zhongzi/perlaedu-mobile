@@ -56,12 +56,9 @@ export default class Home extends Vue {
 
   created() {
     this.resetMerchantId();
-    console.log(
-      (this as any)._uid,
-      "created",
-      this.merchantId,
-      this.$route.meta.keepAlive
-    );
+    this.$bus.$on("merchant:switched", (merchant) => {
+      this.resetMerchantId(merchant.id);
+    });
   }
 
   activated() {
@@ -74,9 +71,11 @@ export default class Home extends Vue {
     );
   }
 
-  resetMerchantId() {
+  resetMerchantId(merchantId = null) {
     this.merchantId =
-      this.$route.query._merchant_id_ || this.$auth.user.curr_merch_id;
+      merchantId ||
+      this.$route.query._merchant_id_ ||
+      this.$auth.user.curr_merch_id;
   }
 
   gotoEditing() {
