@@ -65,10 +65,7 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   get cover() {
-    return (
-      _get(this.album, "cover") ||
-      require("@/asset/image/media-album-empty.jpg")
-    );
+    return _get(this.album, "cover");
   }
 
   get links() {
