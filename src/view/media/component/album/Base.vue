@@ -42,7 +42,7 @@
       <ai-list-stored
         class="photos"
         resource="mediaLink"
-        scrollHeight="65vh"
+        scrollHeight="70vh"
         :query="query"
         :refresh.sync="refresh"
         @emit-list="updateTotal"
@@ -360,7 +360,7 @@ export default class Home extends Mixins(SyncMixin) {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px;
+    padding: 5px;
     margin: 10px auto;
 
     .action-select-clicked {
@@ -377,20 +377,23 @@ export default class Home extends Mixins(SyncMixin) {
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      padding: 3px;
 
-      padding: 5px;
       border-radius: 8px;
+      line-height: 1.2;
 
       i {
-        font-size: 20px;
+        font-size: 14px;
       }
       span {
-        font-size: 13px;
+        font-size: 12px;
       }
     }
   }
   .photos {
     .groups {
+      width: 100%;
+
       .group {
         .label {
           font-size: 13px;

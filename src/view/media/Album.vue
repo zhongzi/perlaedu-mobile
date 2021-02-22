@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 
 import Album from "./component/album/Album.vue";
 import AlbumCourse from "./component/album/Course.vue";
@@ -37,6 +37,11 @@ export default class Home extends Vue {
   activated() {
     this.resetType();
     console.log((this as any)._uid, "activated", this.type);
+  }
+
+  @Watch("$route", { deep: true })
+  onRouteChanged() {
+    return this.resetType();
   }
 
   resetType() {

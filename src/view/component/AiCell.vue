@@ -36,6 +36,7 @@
     </div>
     <div :class="b('right')" @click="$emit('click:right')">
       <slot name="right" />
+      <i class="iconfont icon-direction" v-if="showIcon" />
     </div>
   </div>
 </template>
@@ -51,6 +52,7 @@ export default class Home extends Vue {
   @Prop({ type: String, default: null }) title: string;
   @Prop({ type: String, default: null }) subtitle: string;
   @Prop({ type: String, default: null }) remark: string;
+  @Prop({ type: Boolean, default: false }) showIcon: boolean;
   @Prop({ type: Boolean, default: false }) showBottomLine: boolean;
 }
 </script>
@@ -116,6 +118,13 @@ export default class Home extends Vue {
   }
   &__border-bottom {
     border-bottom: 1px solid rgba(237, 237, 237, 1);
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #d4d4d4;
   }
 }
 </style>

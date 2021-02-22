@@ -79,7 +79,7 @@ export default class Home extends Vue {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0px 10px;
+  padding: 0px 20px;
 
   .title {
     font-size: 14px;
@@ -92,10 +92,13 @@ export default class Home extends Vue {
       margin-right: 5px;
     }
   }
+  i {
+    font-size: 12px;
+  }
 }
 .albums {
   & ::v-deep .ai-slider__swiper-item:nth-child(1) {
-    margin-left: 10px;
+    margin-left: 20px;
   }
 }
 </style>

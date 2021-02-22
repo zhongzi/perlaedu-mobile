@@ -49,6 +49,7 @@ export default class Home extends Vue {
       border-radius: 4px;
       width: 184px;
       height: 110px;
+      object-fit: cover;
     }
 
     .name {
@@ -57,11 +58,12 @@ export default class Home extends Vue {
       font-family: PingFangSC-Regular, PingFang SC;
       font-weight: 400;
       color: rgba(74, 74, 74, 1);
-      line-height: 2;
+      line-height: 1.5;
       text-shadow: 0px 14px 20px rgba(0, 0, 0, 0.2);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      margin-top: 5px;
     }
   }
 }

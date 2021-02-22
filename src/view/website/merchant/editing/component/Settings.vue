@@ -73,6 +73,7 @@ export default class Home extends Vue {
     align-items: center;
     justify-content: center;
     padding: 20px;
+    font-size: 16px;
   }
 }
 </style>

@@ -77,7 +77,7 @@ export default class Home extends Mixins(SyncMixin) {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
+  padding: 5px 5px 10px;
   margin: 0px 20px;
   border-radius: 8px;
 
@@ -92,7 +92,7 @@ export default class Home extends Mixins(SyncMixin) {
       align-items: center;
       justify-content: space-between;
 
-      font-size: 16px;
+      font-size: 13px;
       font-weight: 800;
     }
   }

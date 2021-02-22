@@ -288,6 +288,7 @@ export default class Home extends Vue {
 <style lang="scss">
 .ai-rich-text-sections-editor {
   margin-bottom: 70px;
+  font-size: 14px;
 
   &__container {
     width: 100%;

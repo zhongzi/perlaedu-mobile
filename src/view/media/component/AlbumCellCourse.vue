@@ -13,6 +13,7 @@
     v-else
     :cover="cover"
     :title="course"
+    :showIcon="showIcon"
     class="wrapper cell"
     @click.native="gotoAlbumDetail"
   >
@@ -51,6 +52,10 @@ export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: [String, Number], default: null }) merchantId: string | number;
   @Prop({ type: String, default: "slider" }) mode: string;
   @Prop({ type: Number, default: 0 }) total: number;
+
+  get showIcon() {
+    return this.$route.name === "mediaAlbumsSearch";
+  }
 
   get album() {
     return _get(this.list, "[0]");
@@ -163,7 +168,6 @@ export default class Home extends Mixins(SyncMixin) {
 .cell {
   width: 100%;
   background: #fff;
-  border-radius: 10px;
   padding: 5px;
   margin: 10px 0px;
 
