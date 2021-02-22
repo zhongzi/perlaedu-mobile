@@ -60,8 +60,9 @@
                 class="selector"
                 :value="innerTarget && innerTarget.id"
                 :options="merchants"
+                :disabled="method !== 'select'"
                 valueKey="id"
-                @selected="onSelected"
+                @selected="(v) => onSelected(v, true)"
                 @click.native="method = 'select'"
               >
                 <template v-slot:option="{ option }">
@@ -152,7 +153,6 @@ export default class Home extends Mixins(SyncMixin) {
 
   method: string = "new";
   originTarget: any = null;
-  isFromSelected: boolean = false;
   innerTarget: any = null;
   merchants: any = null;
 
@@ -175,8 +175,6 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   resetOriginTarget() {
-    if (this.isFromSelected) return;
-
     this.originTarget =
       this.target && find(this.merchants, { id: this.target.id });
     this.innerTarget = this.originTarget || {};
@@ -186,7 +184,6 @@ export default class Home extends Mixins(SyncMixin) {
     this.method = v;
 
     if (this.method === "select") {
-      this.isFromSelected = true;
       this.onSelected(this.innerTarget);
     } else {
       this.onSelected(this.originTarget);
@@ -209,13 +206,9 @@ export default class Home extends Mixins(SyncMixin) {
     });
   }
 
-  onSelected(target) {
-    if (!target) return;
+  onSelected(target, flag = false) {
+    if (flag && this.method !== "select") return;
     this.innerTarget = target;
-
-    if (this.isFromSelected) {
-      this.$emit("update:target", cloneDeep(this.innerTarget));
-    }
   }
 
   buy() {
@@ -257,6 +250,7 @@ export default class Home extends Mixins(SyncMixin) {
       });
     }
 
+    this.$emit("update:target", cloneDeep(this.innerTarget));
     this.$emit("submit", next);
   }
 }

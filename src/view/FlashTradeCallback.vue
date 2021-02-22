@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Mixins } from "vue-property-decorator";
+import { Component, Vue, Mixins, Watch } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
 
@@ -52,12 +52,43 @@ export default class Home extends Mixins(SyncMixin) {
 
   created() {
     this.store = "payOrder";
-    this.id = this.$route.query.out_trade_id;
-    this.loadEntity();
+    this.load();
+    this.initWXGoldPlan();
+  }
+
+  @Watch("$route", { deep: true })
+  onRouteChanged() {
+    this.load();
+  }
+
+  load() {
+    this.id = this.$route.query.out_trade_no;
+    this.loadEntity({
+      failure: () => {},
+    });
+  }
+
+  initWXGoldPlan() {
+    const url = "https://wx.gtimg.com/pay_h5/goldplan/js/jgoldplan-1.0.0.js";
+    this.$loadScript(url, () => {
+      const initData = {
+        action: "onIframeReady",
+        displayStyle: "SHOW_CUSTOM_PAGE",
+        height: 960,
+      };
+      parent.postMessage(
+        JSON.stringify(initData),
+        "https://payapp.weixin.qq.com"
+      );
+    });
   }
 
   onBtnClicked() {
-    window.parent.location.href = this.action.url;
+    const mchData = {
+      action: "jumpOut",
+      jumpOutUrl: this.action.url,
+    };
+    parent.postMessage(JSON.stringify(mchData), "https://payapp.weixin.qq.com");
   }
 }
 </script>

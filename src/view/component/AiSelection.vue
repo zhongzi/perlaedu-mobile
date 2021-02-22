@@ -5,7 +5,12 @@
     </div>
     <div :class="b('input')">
       <slot name="left"> </slot>
-      <select :class="b('select')" v-model="innerValue" @blur="fixIOSScroll">
+      <select
+        :class="b('select')"
+        v-model="innerValue"
+        @blur="fixIOSScroll"
+        :disabled="disabled"
+      >
         <option
           v-if="defaultName"
           value=""
@@ -59,6 +64,7 @@ export default class Home extends Mixins(PatchMixin) {
   @Prop({ type: [String, Number], default: "" }) value: string | number;
   @Prop({ type: Array, default: [] }) options: any;
   @Prop({ type: Boolean, default: true }) autoDefault: boolean;
+  @Prop({ type: Boolean, default: false }) disabled: boolean;
   @Prop({ type: String, default: "" }) mode: string;
   @Prop({ type: String, default: null }) label: string;
   @Prop({ type: String, default: "key" }) labelKey: string;
@@ -92,6 +98,11 @@ export default class Home extends Mixins(PatchMixin) {
 
   @Watch("innerValue", { deep: true })
   onInnerValueChanged() {
+    this.emitValue();
+  }
+
+  @Watch("disabled", { deep: true })
+  onDisabledChanged() {
     this.emitValue();
   }
 
