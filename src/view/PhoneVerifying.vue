@@ -440,6 +440,8 @@ export default class Home extends Mixins(SyncMixin) {
         this.verifiedPhone = this.phone;
         this.$auth.user.phone = this.phone;
         this.$auth.user.phone_verified = true;
+        this.resetPhone = false;
+        this.$hui.toast.info("操作成功");
 
         this.$nextTick(() => {
           this.gotoNext();
