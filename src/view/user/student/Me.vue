@@ -17,9 +17,14 @@
             <i class="iconfont icon-coupon coupon" />
             <span>券包</span>
           </div>
+          <div class="icon" @click="openAlbums">
+            <i class="iconfont icon-album coupon" />
+            <span>相册</span>
+          </div>
         </div>
       </template>
     </ai-cell>
+    <album-list v-model="showAlbums" />
     <course-list />
     <quick-entry />
     <!--
@@ -40,6 +45,7 @@ import Share from "./component/Share.vue";
 import Merchants from "./component/Merchants.vue";
 import CourseList from "./component/CourseList.vue";
 import QuickEntry from "./component/QuickEntry.vue";
+import AlbumList from "./component/AlbumList.vue";
 
 @Component({
   components: {
@@ -49,9 +55,11 @@ import QuickEntry from "./component/QuickEntry.vue";
     Merchants,
     CourseList,
     QuickEntry,
+    AlbumList,
   },
 })
 export default class Home extends Vue {
+  showAlbums = false;
   get user() {
     return this.$auth.user;
   }
@@ -64,6 +72,10 @@ export default class Home extends Vue {
     this.$router.push({
       name: "billProfileCoupons",
     });
+  }
+
+  openAlbums() {
+    this.showAlbums = true;
   }
 }
 </script>

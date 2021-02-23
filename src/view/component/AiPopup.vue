@@ -35,13 +35,15 @@ export default class Home extends Mixins(StopBodyScrollMixin) {
   onShowChanged() {
     this.$bus.$emit("ai:popup", this.value);
     this.stopBodyScroll(this.value);
-    if (this.value && this.appendToBody) {
-      document.body.appendChild((this.$refs.popup as any).$el);
+    if (this.value) {
+      this.appendToBody &&
+        document.body.appendChild((this.$refs.popup as any).$el);
       this.$nextTick(() => {
         this.showContent = true;
       });
     } else {
-      document.body.removeChild((this.$refs.popup as any).$el);
+      this.appendToBody &&
+        document.body.removeChild((this.$refs.popup as any).$el);
       this.showContent = false;
     }
   }

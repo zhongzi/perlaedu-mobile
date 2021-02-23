@@ -21,7 +21,7 @@ const studentRoutes: any = [
         path: "myself",
         name: "student",
         component: Me,
-        meta: { title: "个人中心" },
+        meta: { title: "个人中心", keepAlive: true },
       },
     ],
   },

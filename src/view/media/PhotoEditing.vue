@@ -111,6 +111,7 @@ export default class Home extends Mixins(SyncMixin) {
       if (xor(savedItems, ["basic", "links"]).length === 0) {
         this.$hui.toast.info("保存成功");
         this.$bus.$off("media:saved");
+        this.$bus.$emit("album:refresh");
         this.isInSaving = false;
         this.goBack();
         return;

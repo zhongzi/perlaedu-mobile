@@ -53,6 +53,7 @@ export default class Home extends Mixins(SyncMixin) {
 
   @Watch("students", { deep: true })
   onStudentsChanged() {
+    console.log("onStudentsChanged", this.students, this.studentsExisted);
     this.$emit(
       "selected",
       differenceBy(this.students, this.studentsExisted || [], "id"),

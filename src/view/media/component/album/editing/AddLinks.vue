@@ -261,20 +261,11 @@ export default class Home extends Mixins(SyncMixin) {
     }
   }
 
-  reset(withExisted = false) {
-    this.students = null;
+  reset(withExisted = false, withSelected = false) {
     this.studentsToDeleted = null;
-
-    this.teachers = null;
     this.teachersToDeleted = null;
-
-    this.groups = null;
     this.groupsToDeleted = null;
-
-    this.courses = null;
     this.coursesToDeleted = null;
-
-    this.albums = null;
     this.albumsToDeleted = null;
 
     if (withExisted) {
@@ -283,6 +274,14 @@ export default class Home extends Mixins(SyncMixin) {
       this.groupsExisted = null;
       this.coursesExisted = null;
       this.albumsExisted = null;
+    }
+
+    if (withSelected) {
+      this.students = null;
+      this.teachers = null;
+      this.groups = null;
+      this.courses = null;
+      this.albums = null;
     }
   }
 
@@ -484,6 +483,7 @@ export default class Home extends Mixins(SyncMixin) {
     this.teachersToDeleted = d;
   }
   onSelectedStudents(n, d) {
+    console.log(n, d);
     this.students = n;
     this.studentsToDeleted = d;
   }

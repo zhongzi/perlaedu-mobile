@@ -213,6 +213,7 @@ export default class Home extends Mixins(SyncMixin) {
       target_class: this.targetClass,
       target_id: this.targetId,
       is_deleted_tmp: this.isInRecycleBin,
+      sort: "published_at desc, id desc",
       extras: JSON.stringify({
         MediaLink: ["media"],
         Media: ["frame", "file", "url"],
@@ -223,6 +224,9 @@ export default class Home extends Mixins(SyncMixin) {
   created() {
     this.resetTarget();
     this.$bus.$on("album:cover:changed", (this as any).load);
+    this.$bus.$on("album:refresh", () => {
+      this.refresh = true;
+    });
   }
 
   activated() {
@@ -231,7 +235,7 @@ export default class Home extends Mixins(SyncMixin) {
 
   resetTarget() {
     this.targetType = this.$route.query.type as string;
-    this.targetId = parseInt(this.$route.params.albumId);
+    this.targetId = parseInt(this.$route.params.albumId) || 0;
     this.merchantId = parseInt(this.$route.query.merchantId as string);
     (this as any).load();
   }
