@@ -12,7 +12,7 @@
       :query="query"
     >
       <template v-slot:header>
-        <div class="title">学习风采</div>
+        <div class="title">相册</div>
       </template>
       <template v-slot:item="{ item }">
         <album-cell :person="item" :key="item.id" />
@@ -44,7 +44,7 @@ export default class Home extends Vue {
 
   get query() {
     return {
-      //      only_student: true,
+      only_student: true,
       filters: JSON.stringify({
         openid: [this.$auth.user.openid],
         openid_second: [this.$auth.user.openid],
@@ -65,7 +65,7 @@ export default class Home extends Vue {
 .album-list {
   & ::v-deep .h-popup__pannel {
     width: 70%;
-    background: #d5d5d5;
+    background: #f5f5f5;
   }
 
   .title {

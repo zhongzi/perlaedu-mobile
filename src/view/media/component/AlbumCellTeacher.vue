@@ -15,6 +15,7 @@
     :title="title"
     :showIcon="showIcon"
     class="wrapper cell"
+    :showBottomLine="!isDetailMode"
     @click.native="gotoAlbumDetail"
   >
     <template v-slot:right>
@@ -55,7 +56,7 @@ export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Number, default: 0 }) total: number;
 
   get links() {
-    return this.list;
+    return this.list.slice(0, 3);
   }
 
   get showIcon() {

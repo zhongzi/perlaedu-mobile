@@ -126,10 +126,12 @@ export default class Home extends Mixins(SyncMixin) {
       span {
         font-size: 12px;
         color: #928e8e;
+        line-height: 1.2;
       }
     }
     .person {
       font-size: 12px;
+      line-height: 1.2;
     }
   }
 }

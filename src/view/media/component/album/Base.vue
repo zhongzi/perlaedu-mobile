@@ -42,7 +42,7 @@
       <ai-list-stored
         class="photos"
         resource="mediaLink"
-        scrollHeight="70vh"
+        scrollHeight="100%"
         :query="query"
         :refresh.sync="refresh"
         @emit-list="updateTotal"
@@ -73,7 +73,7 @@
           </div>
         </template>
       </ai-list-stored>
-      <ai-fixed-footer>
+      <ai-fixed-footer v-show="showFooter">
         <div
           :class="[
             'select-actions',
@@ -395,6 +395,7 @@ export default class Home extends Mixins(SyncMixin) {
     }
   }
   .photos {
+    height: calc(100vh - 100px);
     .groups {
       width: 100%;
 

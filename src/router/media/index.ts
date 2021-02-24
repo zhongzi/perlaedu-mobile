@@ -27,13 +27,23 @@ const mediaRoutes: any = [
         path: "merchant",
         name: "mediaMerchant",
         component: Merchant,
-        meta: { title: "学校相册中心", keepAlive: true, requireAuth: true },
+        meta: {
+          title: "学校相册中心",
+          keepAlive: true,
+          requireAuth: true,
+          hideCopyright: true,
+        },
       },
       {
         path: "albums/:albumId",
         name: "mediaAlbum",
         component: Album,
-        meta: { title: "相册内容", keepAlive: true, requireAuth: true },
+        meta: {
+          title: "相册内容",
+          keepAlive: true,
+          requireAuth: true,
+          hideCopyright: true,
+        },
       },
       {
         path: "album-player",
@@ -48,7 +58,12 @@ const mediaRoutes: any = [
         path: "albums-search",
         name: "mediaAlbumsSearch",
         component: AlbumSearch,
-        meta: { title: "相册查询", keepAlive: true, requireAuth: true },
+        meta: {
+          title: "相册查询",
+          keepAlive: true,
+          requireAuth: true,
+          hideCopyright: true,
+        },
       },
       {
         path: "photo/:mediaId",
@@ -66,7 +81,11 @@ const mediaRoutes: any = [
         path: "photo/:mediaId/editing",
         name: "mediaPhotoEditing",
         component: PhotoEditing,
-        meta: { title: "编辑相片", requireAuth: true },
+        meta: {
+          title: "编辑相片",
+          requireAuth: true,
+          hideCopyright: true,
+        },
       },
     ],
   },

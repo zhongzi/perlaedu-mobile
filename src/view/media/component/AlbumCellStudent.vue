@@ -15,6 +15,7 @@
     :title="title"
     :showIcon="showIcon"
     class="wrapper cell"
+    :showBottomLine="!isDetailMode"
     @click.native="gotoAlbumDetail"
   >
     <template v-slot:right>
@@ -172,18 +173,16 @@ export default class Home extends Mixins(SyncMixin) {
   margin: 10px 0px;
 
   & ::v-deep .ai-cell__left-cover {
-    width: 60px;
-    max-width: 60px;
-
-    height: 50px;
-    min-height: 50px;
-    max-height: 50px;
+    width: 50px;
+    height: 40px;
 
     img {
       width: auto;
       max-width: 100%;
       max-height: 100%;
       margin: auto;
+      border-radius: 8px;
+      object-fit: cover;
     }
   }
 

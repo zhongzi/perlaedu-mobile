@@ -1,33 +1,36 @@
 <template>
   <div class="wrapper album-search">
-    <ai-input v-model="keyword" :placeholder="placeholder" mode="border">
-      <i class="iconfont icon-search" />
-    </ai-input>
+    <ly-search v-model="keyword" />
     <album-list
+      class="albums"
       v-if="isCustome"
       :merchantId="merchantId"
       scrollType="scroll"
       :keyword="keyword"
     />
     <album-list-student
+      class="albums"
       v-if="isStudent"
       :merchantId="merchantId"
       scrollType="scroll"
       :keyword="keyword"
     />
     <album-list-group
+      class="albums"
       v-if="isGroup"
       :merchantId="merchantId"
       scrollType="scroll"
       :keyword="keyword"
     />
     <album-list-teacher
+      class="albums"
       v-if="isTeacher"
       :merchantId="merchantId"
       scrollType="scroll"
       :keyword="keyword"
     />
     <album-list-course
+      class="albums"
       v-if="isCourse"
       :merchantId="merchantId"
       scrollType="scroll"
@@ -46,6 +49,7 @@ import AlbumListStudent from "./component/AlbumListStudent.vue";
 import AlbumListGroup from "./component/AlbumListGroup.vue";
 import AlbumListTeacher from "./component/AlbumListTeacher.vue";
 import AlbumListCourse from "./component/AlbumListCourse.vue";
+import LySearch from "@/view/layout/component/Search.vue";
 
 import _get from "lodash/get";
 
@@ -57,6 +61,7 @@ import _get from "lodash/get";
     AlbumListGroup,
     AlbumListTeacher,
     AlbumListCourse,
+    LySearch,
   },
 })
 export default class Home extends Vue {
@@ -133,6 +138,10 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .album-search {
-  padding: 20px;
+  background: #fff;
+  .albums {
+    margin: 0px 20px;
+    border-bottom: 2px solid #000;
+  }
 }
 </style>

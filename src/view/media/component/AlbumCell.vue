@@ -11,10 +11,11 @@
   </ai-card>
   <ai-cell
     v-else
+    class="wrapper cell"
     :cover="cover"
     :title="title"
     :showIcon="showIcon"
-    class="wrapper cell"
+    :showBottomLine="!isDetailMode"
     @click.native="gotoAlbumDetail"
   >
     <template v-slot:right>

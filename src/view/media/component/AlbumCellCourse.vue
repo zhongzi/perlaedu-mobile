@@ -15,6 +15,7 @@
     :title="course"
     :showIcon="showIcon"
     class="wrapper cell"
+    :showBottomLine="!isDetailMode"
     @click.native="gotoAlbumDetail"
   >
     <template v-slot:right>
@@ -168,22 +169,20 @@ export default class Home extends Mixins(SyncMixin) {
 .cell {
   width: 100%;
   background: #fff;
-  padding: 5px;
-  margin: 10px 0px;
+  padding: 5px 10px;
+  margin: 5px 0px;
 
   & ::v-deep .ai-cell__left-cover {
-    width: 60px;
-    max-width: 60px;
-
-    height: 50px;
-    min-height: 50px;
-    max-height: 50px;
+    width: 50px;
+    height: 40px;
 
     img {
       width: auto;
       max-width: 100%;
       max-height: 100%;
       margin: auto;
+      border-radius: 8px;
+      object-fit: cover;
     }
   }
 
@@ -191,6 +190,9 @@ export default class Home extends Mixins(SyncMixin) {
     display: inline-block;
     margin: 0px 5px;
     width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 4px;
   }
 
   .count {
