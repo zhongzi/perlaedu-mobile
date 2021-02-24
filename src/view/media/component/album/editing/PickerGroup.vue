@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper picker-group">
     <picker-items
-      title="班级相册"
+      title="加入到班级相册"
       :items="groups"
       labelKey="name"
       logoKey=""

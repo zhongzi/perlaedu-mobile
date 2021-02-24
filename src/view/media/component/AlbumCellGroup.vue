@@ -174,6 +174,7 @@ export default class Home extends Mixins(SyncMixin) {
 
   & ::v-deep .ai-cell__left-cover {
     width: 50px;
+    min-width: 50px;
     height: 40px;
 
     img {
@@ -194,6 +195,8 @@ export default class Home extends Mixins(SyncMixin) {
 
   .count {
     font-size: 16px;
+    min-width: 50px;
+    color: #000;
   }
 }
 </style>

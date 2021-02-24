@@ -125,6 +125,7 @@ export default class Home extends Vue {
 
 :root {
   box-sizing: border-box;
+  background: #f5f5f5;
 }
 
 *,
@@ -145,7 +146,6 @@ a {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  background: #f5f5f5;
   min-height: 100vh;
 }
 

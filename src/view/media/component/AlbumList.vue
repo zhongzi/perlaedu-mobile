@@ -11,7 +11,7 @@
   >
     <template v-slot:header v-if="isSliderMode">
       <div class="header">
-        <div class="title">自定义相册</div>
+        <div class="title">学校相册</div>
         <div class="more" @click="gotoSearch">
           <span>查看全部</span>
           <i class="iconfont icon-direction" />
@@ -76,6 +76,12 @@ export default class Home extends Vue {
       });
     }
     return query;
+  }
+
+  created() {
+    this.$bus.$on("albums:refresh", () => {
+      this.refresh = true;
+    });
   }
 
   gotoSearch() {

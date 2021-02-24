@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper picker-course">
     <picker-items
-      title="课程相册"
+      title="加入到课程相册"
       :items="courses"
       labelKey=""
       logoKey=""

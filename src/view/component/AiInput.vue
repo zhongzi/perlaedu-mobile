@@ -14,6 +14,7 @@
       :disabled="disabled"
       @blur="onBlur"
       @input="(e) => $emit('input', e.target.value)"
+      @keyup.enter="$emit('submit')"
     />
   </div>
 </template>

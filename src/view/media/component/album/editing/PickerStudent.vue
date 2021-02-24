@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper picker-student">
     <picker-items
-      title="学生相册"
+      title="加入到学生相册"
       :items="students"
       labelKey="realname"
       logoKey="avatar_url"

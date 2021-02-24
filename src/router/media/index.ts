@@ -28,7 +28,7 @@ const mediaRoutes: any = [
         name: "mediaMerchant",
         component: Merchant,
         meta: {
-          title: "学校相册中心",
+          title: "相册中心",
           keepAlive: true,
           requireAuth: true,
           hideCopyright: true,
@@ -39,7 +39,7 @@ const mediaRoutes: any = [
         name: "mediaAlbum",
         component: Album,
         meta: {
-          title: "相册内容",
+          title: "相册",
           keepAlive: true,
           requireAuth: true,
           hideCopyright: true,
@@ -59,7 +59,7 @@ const mediaRoutes: any = [
         name: "mediaAlbumsSearch",
         component: AlbumSearch,
         meta: {
-          title: "相册查询",
+          title: "搜索相册",
           keepAlive: true,
           requireAuth: true,
           hideCopyright: true,
@@ -70,7 +70,7 @@ const mediaRoutes: any = [
         name: "mediaPhoto",
         component: PhotoDetail,
         meta: {
-          title: "详情",
+          title: "作品详情",
           requireAuth: true,
           copyrightStyle: {
             marginBottom: "70px",
@@ -82,7 +82,7 @@ const mediaRoutes: any = [
         name: "mediaPhotoEditing",
         component: PhotoEditing,
         meta: {
-          title: "编辑相片",
+          title: "编辑作品",
           requireAuth: true,
           hideCopyright: true,
         },

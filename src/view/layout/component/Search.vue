@@ -7,7 +7,12 @@
             <div class="ico">
               <span class="iconfont iconsousuo"></span>
             </div>
-            <input class="search-input" type="text" v-model="keyword" />
+            <input
+              class="search-input"
+              type="text"
+              v-model="keyword"
+              :placeholder="placeholder"
+            />
             <div class="trigger">搜索</div>
           </div>
         </div>
@@ -24,6 +29,7 @@ import debounce from "lodash/debounce";
 @Component
 export default class Home extends Vue {
   @Prop({ type: String, default: "" }) value: string;
+  @Prop({ type: String, default: "" }) placeholder: string;
 
   keyword: string = null;
   debEmit: any = null;

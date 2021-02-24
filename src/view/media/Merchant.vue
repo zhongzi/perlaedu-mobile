@@ -90,10 +90,6 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .media-merchant {
-  & ::v-deep .framework-body {
-    background: #fff;
-  }
-
   .upload {
     width: 100px;
     color: #e2630e;

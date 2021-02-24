@@ -8,35 +8,33 @@
         v-bind="curAlbumComponentProps"
       ></component>
       <div class="actions" v-if="isEditable">
-        <div class="action" @click="gotoHome">
-          <i class="iconfont icon-home" />
-          <span> 首页 </span>
-        </div>
-        <div class="action" @click="gotoEditing">
-          <i class="iconfont icon-upload" />
-          <span> 上传 </span>
-        </div>
-        <div class="action" @click="gotoAlbumPlayer">
-          <i class="iconfont icon-gallery" />
-          <span> 画廊 </span>
-        </div>
-        <div v-if="isDeletable" class="action" @click="removeAlbum">
-          <i class="iconfont icon-shanchu" />
-          <span> 删除 </span>
-        </div>
-        <div
-          :class="['action', { 'action-select-clicked': enabledSelect }]"
-          @click="onClickSelected"
-        >
-          <i class="iconfont icon-checked" />
-          <span> 选择 </span>
-        </div>
+        <template v-if="!isInRecycleBin">
+          <div class="action" @click="gotoHome">
+            <i class="iconfont icon-home" />
+            <span> 首页 </span>
+          </div>
+          <div class="action" @click="gotoEditing">
+            <i class="iconfont icon-upload" />
+            <span> 上传 </span>
+          </div>
+          <div class="action" @click="gotoAlbumPlayer">
+            <i class="iconfont icon-gallery" />
+            <span> 画廊 </span>
+          </div>
+          <div
+            :class="['action', { 'action-select-clicked': enabledSelect }]"
+            @click="onClickSelected"
+          >
+            <i class="iconfont icon-checked" />
+            <span> 选择 </span>
+          </div>
+        </template>
         <div
           :class="['action', { 'action-select-clicked': isInRecycleBin }]"
           @click="openRecycleBin"
         >
           <i class="iconfont icon-huifu" />
-          <span> 回收站 </span>
+          <span> {{ isInRecycleBin ? "退出" : "" }}回收站 </span>
         </div>
       </div>
       <ai-list-stored
@@ -287,29 +285,6 @@ export default class Home extends Mixins(SyncMixin) {
     });
   }
 
-  removeAlbum() {
-    if (this.isDeletable) {
-      this.$hui.confirm.show({
-        title: "删除确认",
-        message: "确认从当前相册?",
-        confirmText: "确认",
-        cancelText: "取消",
-        onConfirm: () => {
-          this.deleteEntity({
-            store: "mediaAlbum",
-            id: this.targetId,
-            success: () => {
-              this.$nextTick(() => {
-                this.$router.go(-1);
-              });
-            },
-          });
-        },
-        onCancel: () => {},
-      });
-    }
-  }
-
   openRecycleBin() {
     if (this.enabledSelect) {
       this.enabledSelect = false;
@@ -382,6 +357,7 @@ export default class Home extends Mixins(SyncMixin) {
       align-items: center;
       justify-content: center;
       padding: 3px;
+      margin: 0px auto;
 
       border-radius: 8px;
       line-height: 1.2;
@@ -395,7 +371,7 @@ export default class Home extends Mixins(SyncMixin) {
     }
   }
   .photos {
-    height: calc(100vh - 100px);
+    height: calc(100vh - 150px);
     .groups {
       width: 100%;
 

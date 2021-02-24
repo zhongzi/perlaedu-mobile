@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper picker-albums">
     <picker-items
-      title="自定义相册"
+      title="加入到学校相册"
       :items="albums"
       labelKey="title"
       logoKey="cover"

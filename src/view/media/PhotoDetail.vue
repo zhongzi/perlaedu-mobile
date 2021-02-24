@@ -1,6 +1,11 @@
 <template>
   <div class="wrapper photo-detail">
     <template v-if="media">
+      <merchant-cell
+        class="section"
+        v-if="hasMerchant"
+        :merchant="media.merchant"
+      />
       <div class="photo">
         <photo
           :photo="media"
@@ -9,97 +14,86 @@
         />
       </div>
       <div class="container">
-        <ai-button-round @click.native="saveStarAction" class="action">
-          点赞( {{ countStar }} )
-        </ai-button-round>
         <div class="section">
           <div class="info">
             <div class="title">{{ media.title }}</div>
             <div class="description">{{ media.description }}</div>
           </div>
           <div class="author">
-            <div class="aname" v-if="aname" @click="gotoAlbum">{{ aname }}</div>
             <div class="published">
               创作于 {{ media.published_at | defaultDay }}
             </div>
-            <span v-if="isEdiable" @click="gotoEditing">
-              <i class="iconfont icon-editing" />
+            <span>
+              <i
+                v-if="isEdiable"
+                class="iconfont icon-editing"
+                @click="gotoEditing"
+              />
+              <i
+                class="iconfont icon-share"
+                @click="$bus.$emit('show:share:popup')"
+              />
             </span>
           </div>
         </div>
-        <merchant-cell
-          class="section"
-          v-if="hasMerchant"
-          :merchant="media.merchant"
-        />
-        <ai-card class="section" v-show="countStar > 0">
+        <div class="section">
           <div class="stars">
-            <div class="label">{{ countStar }} 人次点赞</div>
+            <ai-button-round @click.native="saveStarAction" class="action">
+              点赞 <i class="iconfont icon-dianzan" />
+            </ai-button-round>
             <ai-list-stored
               class="stars-list"
               resource="mediaInteraction"
-              scrollType="slider"
+              scrollType=""
+              :limit="24"
               :refresh.sync="refreshStarList"
               :query="starQuery"
-              :sliderOptions="{ slidesPerView: 8, spaceBetween: 10 }"
               @emit-list="(v) => (countStar = v.total)"
             >
+              <template v-slot:header>
+                <div class="label">{{ countStar }} 人点赞</div>
+              </template>
               <template v-slot:item="{ item }">
                 <img :src="item | safe('user.avatar')" class="avatar" />
               </template>
             </ai-list-stored>
           </div>
-        </ai-card>
-        <ai-card class="section" v-show="countReply > 0">
+        </div>
+        <div>
           <div class="replies">
+            <ai-input
+              class="input"
+              v-model="description"
+              placeholder="写下你的留言"
+              @submit="saveReplyAction"
+            />
             <div class="label">精彩留言</div>
             <ai-list-stored
               resource="mediaInteraction"
               scrollType=""
-              scrollHeight="40vh"
-              :hideIfNoData="true"
               :enableMoreData="true"
               :refresh.sync="refreshReplyList"
               :query="replyQuery"
               @emit-list="(v) => (countReply = v.total)"
             >
               <template v-slot:item="{ item }">
-                <ai-cell
-                  class="reply"
-                  :cover="item | safe('user.avatar')"
-                  :title="item | safe('user.nickname')"
-                  :subtitle="item.created_at | defaultDate"
-                >
-                  <template v-slot:right>
-                    <span class="created">
+                <div class="reply">
+                  <div class="reply-left">
+                    <img :src="item | safe('user.avatar')" />
+                  </div>
+                  <div class="reply-right">
+                    <div class="title">
+                      <span> {{ item | safe("user.nickname") }} </span>
+                    </div>
+                    <div class="subtitle">
                       {{ item | safe("description") }}
-                    </span>
-                    <!--
-                    <i class="iconfont icon-dianzan" />
-                    <span> {{ item | safe("count_star", 0) }} </span>
--->
-                  </template>
-                </ai-cell>
+                    </div>
+                  </div>
+                </div>
               </template>
             </ai-list-stored>
           </div>
-        </ai-card>
-        <ai-fixed-footer>
-          <div class="footer">
-            <ai-input
-              class="input"
-              v-model="description"
-              placeholder="说点什么..."
-            />
-            <ai-button-round class="submit" @click.native="saveReplyAction">
-              发送</ai-button-round
-            >
-            <i
-              class="iconfont icon-share"
-              @click="$bus.$emit('show:share:popup')"
-            />
-          </div>
-        </ai-fixed-footer>
+        </div>
       </div>
     </template>
   </div>
@@ -432,6 +426,14 @@ export default class Home extends Mixins(SyncMixin) {
     .published {
       color: #a9a6a6;
     }
+
+    span {
+      margin: 10px;
+      i {
+        font-size: 24px;
+        margin: 10px;
+      }
+    }
   }
 
   .info {
@@ -451,7 +453,7 @@ export default class Home extends Mixins(SyncMixin) {
     padding: 0px 20px;
   }
   .section {
-    margin: 5px 0px;
+    margin: 5px 10px;
   }
 
   .action {
@@ -479,60 +481,68 @@ export default class Home extends Mixins(SyncMixin) {
     .label {
       font-size: 14px;
       font-weight: 700;
-      line-height: 3;
+      line-height: 1;
+      text-align: center;
+      color: #9a9b9e;
     }
 
     .stars-list {
       margin: 20px;
 
+      & ::v-deep .ai-list-stored__list {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+      }
       .avatar {
-        width: 40px;
-        border-radius: 50%;
+        width: 25px;
+        border-radius: 4px;
+        margin-top: 5px;
       }
     }
   }
   .replies {
-    padding: 10px;
+    & ::v-deep .ai-list-stored__list-load-more {
+      background: initial;
+    }
 
+    .input {
+      background: #fff;
+      padding: 10px;
+    }
     .label {
       font-size: 14px;
       font-weight: 700;
       line-height: 3;
     }
     .reply {
+      display: flex;
+      margin-bottom: 10px;
       width: 100%;
-      & ::v-deep .ai-cell__left-cover {
-        width: 30px;
-        border-radius: 50%;
-        overflow: hidden;
-      }
 
-      .created {
-        font-size: 13px;
+      &-left {
+        width: 30px;
+        margin-right: 10px;
+
+        img {
+          width: 100%;
+          display: block;
+          border-radius: 4px;
+        }
+      }
+      &-right {
+        display: flex;
+        flex-direction: column;
+
+        .title {
+          font-size: 13px;
+          color: #797878;
+        }
+        .subtitle {
+          font-size: 14px;
+          line-height: 1.2;
+        }
       }
     }
-  }
-}
-.footer {
-  background: #fff;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  .submit {
-    width: 50px;
-    height: 40px;
-    min-height: 40px;
-  }
-  .input {
-    flex: 1;
-  }
-
-  i {
-    font-size: 32px;
-    color: #ff7c30;
-    margin: 0px 10px;
   }
 }
 </style>

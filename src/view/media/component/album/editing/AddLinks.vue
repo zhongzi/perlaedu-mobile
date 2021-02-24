@@ -1,7 +1,6 @@
 <template>
   <ai-dialog
     v-if="mode === 'dialog'"
-    class="wrapper add-links"
     :value="open"
     :hideOnBlur="false"
     @input="updateOpen"
@@ -36,7 +35,7 @@
       <ai-submit-actions @cancel="updateOpen(false)" @submit="save" />
     </div>
   </ai-dialog>
-  <div v-else>
+  <div v-else class="wrapper add-links">
     <template v-if="type">
       <picker-student
         v-if="type === 'student'"
@@ -70,7 +69,7 @@
       />
     </template>
     <ai-button-round v-if="!showPickers" @click.native="showPickers = true">
-      添加{{ type && "更多" }}关联</ai-button-round
+      加入到{{ type && "更多" }}相册</ai-button-round
     >
     <template v-if="showPickers">
       <picker-student
@@ -775,5 +774,9 @@ export default class Home extends Mixins(SyncMixin) {
 }
 .section {
   margin: 10px auto;
+}
+
+.add-links {
+  padding-bottom: 50px;
 }
 </style>

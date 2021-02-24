@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper album-search">
-    <ly-search v-model="keyword" />
+    <ly-search v-model="keyword" :placeholder="placeholder" />
     <album-list
       class="albums"
       v-if="isCustome"
@@ -91,7 +91,7 @@ export default class Home extends Vue {
 
   get placeholder() {
     if (this.isCustome) {
-      return "搜索自定义相册";
+      return "搜索学校相册";
     }
     if (this.isStudent) {
       return "搜索学生相册";
