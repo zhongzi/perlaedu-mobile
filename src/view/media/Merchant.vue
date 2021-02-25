@@ -8,7 +8,7 @@
         </ai-button-round>
       </template>
       <template v-slot:body>
-        <capacity-limit />
+        <capacity-limit :merchant="merchant" />
         <album-list class="section" :merchantId="merchantId" />
         <album-list-student class="section" :merchantId="merchantId" />
         <album-list-group class="section" :merchantId="merchantId" />
@@ -20,7 +20,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Mixins } from "vue-property-decorator";
+
+import SyncMixin from "@/mixin/SyncMixin";
 
 import AiButtonRound from "@/view/component/AiButtonRound.vue";
 import AiButtonRoundSmall from "@/view/component/AiButtonRoundSmall.vue";
@@ -51,10 +53,15 @@ import _get from "lodash/get";
     CapacityLimit,
   },
 })
-export default class Home extends Vue {
+export default class Home extends Mixins(SyncMixin) {
   merchantId: string = null;
 
+  get merchant() {
+    return this.entity;
+  }
+
   created() {
+    this.store = "merchant";
     this.resetMerchantId();
     this.$bus.$on("merchant:switched", (merchant) => {
       this.resetMerchantId(merchant.id);
@@ -63,12 +70,6 @@ export default class Home extends Vue {
 
   activated() {
     this.resetMerchantId();
-    console.log(
-      (this as any)._uid,
-      "activated",
-      this.merchantId,
-      this.$route.meta.keepAlive
-    );
   }
 
   resetMerchantId(merchantId = null) {
@@ -76,6 +77,18 @@ export default class Home extends Vue {
       merchantId ||
       this.$route.query._merchant_id_ ||
       this.$auth.user.curr_merch_id;
+    this.loadMerchant();
+  }
+
+  loadMerchant() {
+    if (!this.merchantId) return;
+
+    this.id = this.merchantId;
+    this.loadEntity({
+      query: {
+        extras: "media_capactiy_limit",
+      },
+    });
   }
 
   gotoEditing() {

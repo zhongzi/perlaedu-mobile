@@ -19,6 +19,7 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 export default class Home extends Vue {
   @Prop({ type: Boolean, default: false }) checked: boolean;
   @Prop({ type: Boolean, default: true }) enableCheck: boolean;
+  @Prop({ type: Boolean, default: true }) enableCancel: boolean;
 
   innerChecked: boolean = false;
 
@@ -33,6 +34,8 @@ export default class Home extends Vue {
 
   trigger() {
     if (this.enableCheck) {
+      if (!this.enableCancel && this.innerChecked) return;
+
       this.innerChecked = !this.innerChecked;
       this.$emit("update:checked", this.innerChecked);
     }

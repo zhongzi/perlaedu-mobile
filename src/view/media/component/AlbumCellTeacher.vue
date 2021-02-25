@@ -102,7 +102,7 @@ export default class Home extends Mixins(SyncMixin) {
       query: {
         target_id: this.teacher.id,
         target_class: "Person",
-        sort: "is_cover desc",
+        sort: "is_cover desc, id desc",
         extras: JSON.stringify({
           MediaLink: ["media"],
           Media: ["url"],
@@ -179,19 +179,18 @@ export default class Home extends Mixins(SyncMixin) {
     height: 40px;
 
     img {
-      width: auto;
-      max-width: 100%;
-      max-height: 100%;
-      margin: auto;
       border-radius: 8px;
       object-fit: cover;
     }
   }
 
   .preview {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
     display: inline-block;
     margin: 0px 5px;
-    width: 30px;
+    border-radius: 4px;
   }
 
   .count {

@@ -137,13 +137,14 @@ import { checkEditable } from "../util";
 
 import isEmpty from "lodash/isEmpty";
 import _get from "lodash/get";
-import indexOf from "lodash/indexOf";
+import find from "lodash/find";
 import concat from "lodash/concat";
 import pull from "lodash/pull";
 import clone from "lodash/clone";
 import groupBy from "lodash/groupBy";
 import toPairs from "lodash/toPairs";
 import orderBy from "lodash/orderBy";
+import filter from "lodash/filter";
 
 @Component({
   components: {
@@ -223,7 +224,13 @@ export default class Home extends Mixins(SyncMixin) {
     this.resetTarget();
     this.$bus.$on("album:cover:changed", (this as any).load);
     this.$bus.$on("album:refresh", () => {
-      this.refresh = true;
+      if (this.targetType === "course") {
+        (this as any).load(() => {
+          this.refresh = true;
+        });
+      } else {
+        this.refresh = true;
+      }
     });
   }
 
@@ -305,14 +312,14 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   checkSelected(item) {
-    return this.selectedLinks && indexOf(this.selectedLinks, item) >= 0;
+    return !!(this.selectedLinks && find(this.selectedLinks, { id: item.id }));
   }
 
   addToSelectedLink(item) {
     if (this.enabledClickToDetail) return;
 
     this.selectedLinks = this.checkSelected(item)
-      ? clone(pull(this.selectedLinks, item))
+      ? filter(this.selectedLinks, (link) => link.id !== item.id)
       : concat(this.selectedLinks || [], item);
   }
 
@@ -385,6 +392,9 @@ export default class Home extends Mixins(SyncMixin) {
         .links {
           display: grid;
           grid-template-columns: auto auto;
+          .link ::v-deep .cell {
+            height: 150px;
+          }
         }
       }
     }

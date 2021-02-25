@@ -69,12 +69,6 @@ export default class Home extends Mixins(SyncMixin) {
     });
   }
 
-  @Watch("medias", { deep: true })
-  onMediaChanged() {
-    this.resetInnerMedia();
-    this.save();
-  }
-
   resetInnerMedia() {
     this.innerMedia = {
       title: _get(this.medias, "[0].title"),

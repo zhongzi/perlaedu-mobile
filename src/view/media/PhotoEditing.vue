@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper photo-editing">
-    <photo :medias="medias" @refresh="resetMediaId" />
+    <photo :medias="medias" :frame="frame" @refresh="resetMediaId" />
     <div v-if="medias && medias.length > 0">
       <div class="settings">
         <photo-basic :medias="medias" />
@@ -36,7 +36,8 @@ import cloneDeep from "lodash/cloneDeep";
 import isEmpty from "lodash/isEmpty";
 import concat from "lodash/concat";
 import uniq from "lodash/uniq";
-import xor from "lodash/xor";
+import difference from "lodash/difference";
+import _get from "lodash/get";
 
 @Component({
   components: {
@@ -54,6 +55,7 @@ export default class Home extends Mixins(SyncMixin) {
 
   mediaId: number = null;
   medias: any = null;
+  frame: any = null;
 
   isInSaving = false;
 
@@ -96,12 +98,16 @@ export default class Home extends Mixins(SyncMixin) {
   save() {
     if (this.isInSaving) return;
     this.isInSaving = true;
+    this.$bus.$on("media:saved:failed", () => {
+      this.isInSaving = false;
+    });
 
     let savedItems = [];
     this.$bus.$on("media:saved", (item) => {
       savedItems = uniq(concat(savedItems, item));
       const items = this.isCreation ? ["basic", "links"] : ["basic"];
-      if (xor(savedItems, items).length === 0) {
+      console.log(savedItems, items);
+      if (difference(items, savedItems).length === 0) {
         this.$hui.toast.info("保存成功");
         this.$bus.$off("media:saved");
         this.$bus.$emit("album:refresh");
@@ -129,6 +135,8 @@ export default class Home extends Mixins(SyncMixin) {
       },
       success: (resp) => {
         this.medias = [cloneDeep(resp.data)];
+        this.frame = _get(this.medias, "[0].frame");
+        console.log(this.frame);
       },
     });
   }
@@ -137,6 +145,7 @@ export default class Home extends Mixins(SyncMixin) {
 <style lang="scss" scoped>
 .photo-editing {
   min-height: 85vh;
+  margin-bottom: 100px;
 
   .settings {
     padding: 20px;

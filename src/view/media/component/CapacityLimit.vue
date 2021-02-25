@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Mixins, Watch } from "vue-property-decorator";
+import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
 
@@ -30,8 +30,14 @@ import _get from "lodash/get";
   },
 })
 export default class Home extends Mixins(SyncMixin) {
+  @Prop({ type: Object, default: null }) merchant: any;
+
   get total() {
-    return _get(this.capacity, "capacity.total", 5 * 1000 * 1000 * 1000);
+    return _get(this.merchant, "media_capacity_limit", 0);
+  }
+
+  get capacity() {
+    return this.entity;
   }
 
   get used() {
@@ -40,10 +46,6 @@ export default class Home extends Mixins(SyncMixin) {
 
   get percentage() {
     return parseFloat(((this.used * 100) / this.total).toFixed(2));
-  }
-
-  get capacity() {
-    return this.entity;
   }
 
   created() {
@@ -58,14 +60,9 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   load() {
-    const merchantId = _get(
-      this.$route,
-      "query._merchant_id_",
-      this.$auth.user.curr_merch_id
-    );
     this.loadEntity({
       query: {
-        merchant_id: merchantId,
+        merchant_id: this.merchant.id,
         extras: "capacity",
       },
     });

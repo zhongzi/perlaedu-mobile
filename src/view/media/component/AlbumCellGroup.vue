@@ -101,7 +101,7 @@ export default class Home extends Mixins(SyncMixin) {
       query: {
         target_id: this.group.id,
         target_class: "Group",
-        sort: "is_cover desc",
+        sort: "is_cover desc, id desc",
         extras: JSON.stringify({
           MediaLink: ["media"],
           Media: ["url"],
@@ -178,10 +178,6 @@ export default class Home extends Mixins(SyncMixin) {
     height: 40px;
 
     img {
-      width: auto;
-      max-width: 100%;
-      max-height: 100%;
-      margin: auto;
       border-radius: 8px;
       object-fit: cover;
     }
@@ -191,6 +187,9 @@ export default class Home extends Mixins(SyncMixin) {
     display: inline-block;
     margin: 0px 5px;
     width: 30px;
+    height: 30px;
+    object-fit: cover;
+    border-radius: 4px;
   }
 
   .count {

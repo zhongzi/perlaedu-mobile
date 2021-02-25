@@ -178,10 +178,6 @@ export default class Home extends Mixins(SyncMixin) {
     height: 40px;
 
     img {
-      width: auto;
-      max-width: 100%;
-      max-height: 100%;
-      margin: auto;
       border-radius: 8px;
       object-fit: cover;
     }

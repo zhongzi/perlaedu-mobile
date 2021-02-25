@@ -3,7 +3,7 @@
     <template v-if="media">
       <merchant-cell
         v-if="hasMerchant"
-        class="section"
+        class="section merchant"
         :merchant="media.merchant"
       />
       <div class="photo">
@@ -38,7 +38,7 @@
         </div>
         <div class="section">
           <div class="stars">
-            <ai-button-round @click.native="saveStarAction" class="action">
+            <ai-button-round @click.native="saveStarAction" class="star-action">
               点赞 <i class="iconfont icon-dianzan" />
             </ai-button-round>
             <ai-list-stored
@@ -54,7 +54,9 @@
                 <div class="label">{{ countStar }} 人点赞</div>
               </template>
               <template v-slot:item="{ item }">
-                <img :src="item | safe('user.avatar')" class="avatar" />
+                <div class="avatar">
+                  <img :src="item | safe('user.avatar')" />
+                </div>
               </template>
             </ai-list-stored>
           </div>
@@ -84,6 +86,12 @@
                   <div class="reply-right">
                     <div class="title">
                       <span> {{ item | safe("user.nickname") }} </span>
+                      <span
+                        v-if="checkReplyDeletable(item)"
+                        @click="deleteReply(item)"
+                      >
+                        删除</span
+                      >
                     </div>
                     <div class="subtitle">
                       {{ item | safe("description") }}
@@ -193,8 +201,7 @@ export default class Home extends Mixins(SyncMixin) {
   checkEditable() {
     this.isEdiable = checkEditable(
       this.$auth.user,
-      _get(this.media, "merchant_id"),
-      _get(this.media, "openid")
+      _get(this.media, "merchant_id")
     );
     return;
   }
@@ -319,6 +326,30 @@ export default class Home extends Mixins(SyncMixin) {
     this.configPoster();
   }
 
+  checkReplyDeletable(reply) {
+    return this.isEdiable || reply.openid === _get(this.$auth, "user.openid");
+  }
+
+  deleteReply(reply) {
+    this.$hui.confirm.show({
+      title: "删除确认",
+      message: "确认删除当前留言?",
+      confirmText: "确认",
+      cancelText: "取消",
+      onConfirm: () => {
+        this.deleteEntity({
+          store: "mediaInteraction",
+          id: reply.id,
+          success: () => {
+            this.$hui.toast.info("删除成功");
+            this.refreshReplyList = true;
+          },
+        });
+      },
+      onCancel: () => {},
+    });
+  }
+
   saveStarAction() {
     this.saveEntity({
       store: "mediaInteraction",
@@ -357,8 +388,12 @@ export default class Home extends Mixins(SyncMixin) {
   share() {
     if (isEmpty(this.media)) return;
 
+    let title = "我的最新力作，快来为我点赞吧!";
+    if (!isEmpty(this.media.title)) {
+      title = `【${this.media.title}】` + title;
+    }
     this.$bus.$emit("config:share", {
-      title: this.media.title,
+      title: title,
       desc: this.media.description,
       imgUrl: this.media.url,
     });
@@ -386,6 +421,8 @@ export default class Home extends Mixins(SyncMixin) {
 </script>
 <style lang="scss" scoped>
 .photo-detail {
+  margin-bottom: 30px;
+
   .editing {
     position: fixed;
     top: 30px;
@@ -456,7 +493,13 @@ export default class Home extends Mixins(SyncMixin) {
     margin: 5px 10px;
   }
 
-  .action {
+  .merchant {
+    background: initial;
+    box-shadow: none;
+    borde-radius: none;
+  }
+
+  .star-action {
     display: block;
     width: 30%;
     margin: 0px auto;
@@ -471,6 +514,7 @@ export default class Home extends Mixins(SyncMixin) {
     line-height: 17px;
 
     border: none;
+    min-height: 40px;
   }
 
   .stars {
@@ -484,19 +528,24 @@ export default class Home extends Mixins(SyncMixin) {
       line-height: 1;
       text-align: center;
       color: #9a9b9e;
+      margin-bottom: 5px;
     }
 
     .stars-list {
-      margin: 20px;
+      margin: 20px 10px;
 
       & ::v-deep .ai-list-stored__list {
         display: grid;
-        grid-template-columns: repeat(8, 1fr);
+        grid-template-columns: repeat(8, auto);
+        justify-content: center;
       }
       .avatar {
-        width: 25px;
-        border-radius: 4px;
-        margin-top: 5px;
+        padding: 3px;
+
+        img {
+          width: 25px;
+          border-radius: 4px;
+        }
       }
     }
   }
@@ -532,10 +581,18 @@ export default class Home extends Mixins(SyncMixin) {
       &-right {
         display: flex;
         flex-direction: column;
+        flex: 1;
 
         .title {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
           font-size: 13px;
           color: #797878;
+
+          span:nth-child(2) {
+            color: #06288c;
+          }
         }
         .subtitle {
           font-size: 14px;

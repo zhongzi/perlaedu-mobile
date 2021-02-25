@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper merchant-cell">
     <ai-cell
       v-if="merchant"
       class="merchant"
@@ -50,7 +50,7 @@ export default class Home extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.wrapper {
+.merchant-cell {
   background: #fff;
   padding: 6px;
 

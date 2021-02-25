@@ -6,7 +6,7 @@
         ref="scroll"
         :height="scrollHeight"
         :loading="listLoading"
-        :list="list"
+        :list="filterList"
         :listTotal="listTotal"
         :emptyText="enableEmpty && emptyText"
         @pull-down="loadData(true)"
@@ -20,10 +20,15 @@
           </div>
         </template>
         <template v-slot:list>
-          <slot :list="list" name="list">
+          <slot :list="filterList" name="list">
             <slot name="item-before" />
             <template v-for="(item, index) in list">
-              <slot name="item" :list="list" :item="item" :index="index" />
+              <slot
+                name="item"
+                :list="filterList"
+                :item="item"
+                :index="index"
+              />
             </template>
             <slot name="item-after" />
           </slot>
@@ -37,7 +42,7 @@
       </ai-infinite-scroll>
       <ai-slider
         v-else-if="scrollType === 'slider'"
-        :list="list"
+        :list="filterList"
         :options="sliderOptions"
         :enableSlideBefore="enableSlideBefore"
         :enableSlideAfter="enableSlideAfter"
@@ -65,7 +70,7 @@
       </ai-slider>
       <ai-waterfall
         v-else-if="scrollType === 'waterfall'"
-        :list="list"
+        :list="filterList"
         :listTotal="listTotal"
         :gap="gap"
         :option="waterfallOptions"
@@ -104,14 +109,14 @@
           </slot>
         </div>
         <div :class="b('list')">
-          <slot name="list" :list="list">
+          <slot name="list" :list="filterList">
             <template v-for="(item, index) in list">
               <slot name="item" :item="item" :index="index" :tag="tag" />
             </template>
           </slot>
         </div>
         <div :class="b('footer')">
-          <slot name="footer" :list="list" />
+          <slot name="footer" :list="filterList" />
         </div>
         <hui-button
           :class="b('list-load-more')"
@@ -133,7 +138,9 @@ import SyncMixin from "@/mixin/SyncMixin";
 import AiInfiniteScroll from "./AiInfiniteScroll.vue";
 import AiSlider from "./AiSlider.vue";
 import AiWaterfall from "./AiWaterfall.vue";
+
 import merge from "lodash/merge";
+import concat from "lodash/concat";
 
 @Component({
   name: "ai-list-stored",
@@ -165,8 +172,15 @@ export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Boolean, default: true }) enableSlideAfter: boolean;
   @Prop({ type: Object, default: () => ({}) }) waterfallOptions: object;
   @Prop({ type: Number, default: 20 }) gap: number;
+  @Prop({ type: [Array, Object], default: null }) appendItems: any;
 
   hasMoreData: boolean = true;
+
+  get filterList() {
+    const l = concat([], this.appendItems || [], this.list);
+    console.log(this.appendItems, l, l.length);
+    return l;
+  }
 
   created() {
     this.loadData(true);

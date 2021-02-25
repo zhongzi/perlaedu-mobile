@@ -4,6 +4,7 @@
       <template v-if="!isCreation">
         <photo
           class="photo-cell"
+          v-if="innerMedias[0]"
           :photo="innerMedias[0]"
           :enabledClickToDetail="false"
           :showMerged="false"
@@ -39,11 +40,18 @@
       resource="mediaFrame"
       scrollType="slider"
       emptyText=""
+      :limit="100"
+      :query="queryFrame"
       :sliderOptions="{ slidesPerView: 5.5, spaceBetween: 5 }"
       :enableSlideBefore="true"
+      :appendItems="frame"
     >
       <template v-slot:slide-before>
-        <ai-state-check-mask :checked="!curFrame" @update:checked="saveFrame()">
+        <ai-state-check-mask
+          :checked="!curFrame"
+          :enableCancel="false"
+          @update:checked="saveFrame()"
+        >
           <div class="frame-none">无</div>
         </ai-state-check-mask>
       </template>
@@ -51,6 +59,7 @@
         <ai-state-check-mask
           :key="item.id"
           :checked="curFrame && curFrame.id === item.id"
+          :enableCancel="false"
           @update:checked="saveFrame(item)"
         >
           <img class="frame" :src="item.url | alioss({ width: 100 })" />
@@ -94,12 +103,23 @@ import isEqual from "lodash/isEqual";
 })
 export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Array, default: null }) medias: any;
+  @Prop({ type: Object, default: null }) frame: any;
 
   curFrame: any = null;
   innerMedias: any = [];
 
   get isCreation() {
     return this.$route.params.mediaId === "new";
+  }
+
+  get queryFrame() {
+    const query: any = {
+      sort: "id desc",
+    };
+    if (this.frame) {
+      query.id = `!=${this.frame.id}`;
+    }
+    return query;
   }
 
   created() {
@@ -154,6 +174,8 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   saveFrame(frame = null) {
+    if (this.curFrame === frame) return;
+
     this.curFrame = frame;
     this.save();
   }

@@ -212,7 +212,7 @@ export default class Home extends Mixins(SyncMixin) {
     });
 
     this.$bus.$on("media:saving", () => {
-      this.save(true);
+      this.save();
     });
     this.loadLinks();
   }
@@ -700,10 +700,10 @@ export default class Home extends Mixins(SyncMixin) {
     );
 
     if (isEmpty(links)) {
-      if (!noToast) {
-        this.$hui.toast.info(
-          this.hasExisted ? "已经保存" : "请选择至少一个目标去向"
-        );
+      if (!noToast && !this.hasExisted) {
+        this.$hui.toast.info("请至少加入到一个相册");
+        this.$bus.$emit("media:saved:failed");
+        return;
       }
       this.$bus.$emit("media:saved", "links");
       return;
