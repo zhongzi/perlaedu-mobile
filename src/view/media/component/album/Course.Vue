@@ -15,13 +15,15 @@ export default class Home extends Mixins(Base) {
 
   load() {
     const targetId = this.targetId;
-    if (!targetId) {
+    const course = this.$route.params.albumId;
+    if (!targetId || targetId <= 0) {
       this.curAlbumComponentProps = {
-        course: this.targetId,
+        course: course,
         merchantId: this.merchantId,
         mode: "detail",
         total: this.curAlbumComponentProps && this.curAlbumComponentProps.total,
       };
+      this.isEditable = this.checkEditable(this.$auth.user.curr_merch_id);
       return;
     }
 
@@ -45,7 +47,7 @@ export default class Home extends Mixins(Base) {
             this.curAlbumComponentProps && this.curAlbumComponentProps.total,
         };
 
-        this.isEditable = this.checkEditable(album.merchant_id, album.openid);
+        this.isEditable = this.checkEditable(album.merchant_id);
       },
     });
   }

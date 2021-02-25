@@ -27,7 +27,7 @@ export default class Home extends Mixins(Base) {
           const total =
             this.curAlbumComponentProps && this.curAlbumComponentProps.total;
 
-          this.isEditable = this.checkEditable(album.merchant_id, album.openid);
+          this.isEditable = this.checkEditable(album.merchant_id);
           this.isDeletable = this.isEditable;
 
           this.targetName = album.title;

@@ -32,6 +32,7 @@ export default class Home extends Mixins(SyncMixin) {
           is_cover: true,
         },
         success: () => {
+          this.$hui.toast.info("设置成功");
           this.$emit("setted");
           this.$bus.$emit("album:cover:changed");
         },

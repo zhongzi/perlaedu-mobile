@@ -31,6 +31,7 @@ const mediaRoutes: any = [
           title: "相册中心",
           keepAlive: true,
           requireAuth: true,
+          requireManager: true,
           hideCopyright: true,
         },
       },

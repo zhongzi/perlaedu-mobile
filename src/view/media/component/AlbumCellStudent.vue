@@ -11,7 +11,7 @@
   </ai-card>
   <ai-cell
     v-else
-    :cover="cover"
+    :cover="cover | alioss({ width: 100 })"
     :title="title"
     :showIcon="showIcon"
     class="wrapper cell"

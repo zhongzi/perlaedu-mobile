@@ -1,13 +1,10 @@
 <template>
   <div class="wrapper photo-editing">
-    <photo :media="media" @refresh="resetMediaId" />
-    <div
-      v-if="innerMedias.length > 0"
-      class="animate__animated animate__fadeInUp"
-    >
+    <photo :medias="medias" @refresh="resetMediaId" />
+    <div v-if="medias && medias.length > 0">
       <div class="settings">
-        <photo-basic :medias="innerMedias" />
-        <photo-link :medias="innerMedias" v-if="isNewMode" />
+        <photo-basic :medias="medias" />
+        <photo-link :medias="medias" v-if="isCreation" />
       </div>
     </div>
     <ai-fixed-footer>
@@ -56,7 +53,6 @@ export default class Home extends Mixins(SyncMixin) {
   curTabIdx: number = 0;
 
   mediaId: number = null;
-  media: any = null;
   medias: any = null;
 
   isInSaving = false;
@@ -72,11 +68,7 @@ export default class Home extends Mixins(SyncMixin) {
     return this.tabs[this.curTabIdx];
   }
 
-  get innerMedias() {
-    return concat(this.medias || [], this.media || []);
-  }
-
-  get isNewMode() {
+  get isCreation() {
     return this.$route.params.mediaId === "new";
   }
 
@@ -108,7 +100,8 @@ export default class Home extends Mixins(SyncMixin) {
     let savedItems = [];
     this.$bus.$on("media:saved", (item) => {
       savedItems = uniq(concat(savedItems, item));
-      if (xor(savedItems, ["basic", "links"]).length === 0) {
+      const items = this.isCreation ? ["basic", "links"] : ["basic"];
+      if (xor(savedItems, items).length === 0) {
         this.$hui.toast.info("保存成功");
         this.$bus.$off("media:saved");
         this.$bus.$emit("album:refresh");
@@ -135,7 +128,7 @@ export default class Home extends Mixins(SyncMixin) {
         extras: "frame,file,url",
       },
       success: (resp) => {
-        this.media = cloneDeep(resp.data);
+        this.medias = [cloneDeep(resp.data)];
       },
     });
   }

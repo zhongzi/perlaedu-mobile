@@ -52,7 +52,7 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 .wrapper {
   background: #fff;
-  padding: 6px 12px 6px 6px;
+  padding: 6px;
 
   box-shadow: 0px 8px 14px 0px rgba(0, 0, 0, 0.06);
   border-radius: 8px;

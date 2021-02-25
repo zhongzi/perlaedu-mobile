@@ -12,7 +12,7 @@
   <ai-cell
     v-else
     class="wrapper cell"
-    :cover="cover"
+    :cover="cover | alioss({ width: 100 })"
     :title="title"
     :showIcon="showIcon"
     :showBottomLine="!isDetailMode"

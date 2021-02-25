@@ -2,8 +2,8 @@
   <div class="wrapper photo-detail">
     <template v-if="media">
       <merchant-cell
-        class="section"
         v-if="hasMerchant"
+        class="section"
         :merchant="media.merchant"
       />
       <div class="photo">

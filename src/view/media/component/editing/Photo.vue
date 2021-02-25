@@ -4,13 +4,13 @@
       <template v-if="!isCreation">
         <photo
           class="photo-cell"
-          :photo="innerMedia"
+          :photo="innerMedias[0]"
           :enabledClickToDetail="false"
           :showMerged="false"
         />
       </template>
       <div v-else class="medias">
-        <template v-for="media in medias">
+        <template v-for="media in innerMedias">
           <div class="media" :key="media.id">
             <photo
               class="photo-cell"
@@ -81,6 +81,7 @@ import filter from "lodash/filter";
 import cloneDeep from "lodash/cloneDeep";
 import find from "lodash/find";
 import forEach from "lodash/forEach";
+import isEqual from "lodash/isEqual";
 
 @Component({
   components: {
@@ -92,55 +93,40 @@ import forEach from "lodash/forEach";
   },
 })
 export default class Home extends Mixins(SyncMixin) {
-  @Prop({ type: Object, default: null }) media: any;
+  @Prop({ type: Array, default: null }) medias: any;
 
   curFrame: any = null;
-  innerMedia: any = {};
-  medias: any = [];
+  innerMedias: any = [];
 
   get isCreation() {
     return this.$route.params.mediaId === "new";
   }
 
-  get isUploaded() {
-    return this.innerMedia.file_id && this.innerMedia.file_id > 0;
-  }
-
   created() {
-    this.resetInnerMedia();
-  }
-
-  @Watch("media", { deep: true })
-  onMediaChanged() {
-    this.resetInnerMedia();
+    this.resetMedias();
   }
 
   @Watch("medias", { deep: true })
+  onMediaChanged() {
+    this.resetMedias();
+  }
+
+  @Watch("innerMedias", { deep: true })
   onMediasChanged(newVal, oldVal) {
-    this.$bus.$emit("media:mutil:uploaded", this.medias);
+    this.$bus.$emit("media:mutil:uploaded", this.innerMedias);
   }
 
-  resetInnerMedia() {
-    this.innerMedia = {
-      id: _get(this.media, "id"),
-      file_id: _get(this.media, "file_id"),
-      url: _get(this.media, "url"),
-      frame_id: _get(this.media, "frame_id"),
-      frame: _get(this.media, "frame"),
-      file: _get(this.media, "file"),
-    };
-
-    this.curFrame = this.innerMedia.frame;
-  }
-
-  uploaded(url, file) {
-    this.innerMedia.url = file.url;
-    this.innerMedia.file = file;
-    this.innerMedia.file_id = file.id;
-    this.saveFrameSingle();
+  resetMedias() {
+    console.log("resetMedias");
+    if (!isEmpty(this.medias) && !isEqual(this.innerMedias, this.medias)) {
+      this.innerMedias = cloneDeep(this.medias);
+      this.curFrame = this.medias[0].frame;
+    }
   }
 
   uploadedMultiple(files) {
+    if (isEmpty(files)) return;
+
     this.saveEntity({
       store: "media",
       query: {
@@ -154,8 +140,8 @@ export default class Home extends Mixins(SyncMixin) {
       }),
       success: (resp) => {
         forEach(resp.data, (media) => {
-          if (!find(this.medias || [], (item) => item.id === media.id)) {
-            this.medias = concat(this.medias || [], media);
+          if (!find(this.innerMedias || [], (item) => item.id === media.id)) {
+            this.innerMedias = concat(this.innerMedias || [], media);
           }
         });
       },
@@ -163,52 +149,31 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   removeMedia(media) {
-    return (this.medias = filter(this.medias, (item) => item.id !== media.id));
+    this.innerMedias = filter(this.innerMedias, (item) => item.id !== media.id);
+    return;
   }
 
   saveFrame(frame = null) {
     this.curFrame = frame;
-    this.isCreation ? this.saveFrameMultiple() : this.saveFrameSingle();
+    this.save();
   }
 
-  saveFrameMultiple() {
-    if (isEmpty(this.medias)) {
-      this.$hui.toast.info("请先上传作品");
-      return;
-    }
+  save() {
+    if (isEmpty(this.innerMedias)) return;
 
     this.saveEntity({
       store: "media",
       query: {
         extras: "frame,file",
       },
-      res: map(this.medias, (media) => {
+      res: map(this.innerMedias, (media) => {
         return {
           id: media.id,
           frame_id: _get(this.curFrame, "id", 0),
         };
       }),
       success: (resp) => {
-        this.medias = cloneDeep(resp.data);
-      },
-    });
-  }
-  saveFrameSingle(frame = null) {
-    if (!this.isUploaded) {
-      this.$hui.toast.info("请先上传作品");
-      return;
-    }
-    this.innerMedia.frame = this.curFrame;
-    this.innerMedia.frame_id = _get(this.curFrame, "id", 0);
-
-    this.saveEntity({
-      store: "media",
-      id: this.innerMedia.id,
-      res: this.innerMedia,
-      success: (resp) => {
-        if (!this.innerMedia.id) {
-          this.$emit("refresh", resp.data.id);
-        }
+        this.innerMedias = cloneDeep(resp.data);
       },
     });
   }
@@ -257,6 +222,10 @@ export default class Home extends Mixins(SyncMixin) {
     }
   }
   .frames {
+    & ::v-deep .ai-slider__swiper-item:nth-child(1) {
+      margin-left: 20px;
+    }
+
     .frame-none {
       width: 60px;
       height: 60px;

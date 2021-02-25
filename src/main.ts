@@ -148,6 +148,25 @@ router.beforeEach((to: any, from: any, next: any) => {
   }
 
   // 角色要求检查
+  if (to.meta.requireTeacher !== false) {
+    if (
+      to.matched.some((record: any) => {
+        return record.meta.requireTeacher === true;
+      })
+    ) {
+      if (
+        !_get(auth, "user.is_manager", false) &&
+        !_get(auth, "user.is_teacher", false)
+      ) {
+        next({
+          name: "Register",
+          query: to.query,
+        });
+        return;
+      }
+    }
+  }
+
   if (to.meta.requireManager !== false) {
     if (
       to.matched.some((record: any) => {

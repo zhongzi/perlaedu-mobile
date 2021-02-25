@@ -88,7 +88,7 @@ function checkEditable(user, merchantId = null, openid = null, id = null) {
   const uid = user.id;
   const uOpenid = user.openid;
   const uMerchantId = user.curr_merch_id;
-  const isManager = user.is_manager;
+  const isManager = user.is_manager || user.is_teacher;
 
   if (uid && uid === id) {
     return true;

@@ -37,9 +37,7 @@ export default class Home extends Mixins(Base) {
             this.curAlbumComponentProps && this.curAlbumComponentProps.total,
         };
 
-        this.isEditable =
-          this.checkEditable(person.merchant_id, person.openid) ||
-          this.checkEditable(person.merchant_id, person.openid_second);
+        this.isEditable = this.checkEditable(person.merchant_id);
       },
     });
   }
