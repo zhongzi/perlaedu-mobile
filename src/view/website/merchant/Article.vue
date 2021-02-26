@@ -12,8 +12,8 @@
       </div>
     </div>
     <ai-rich-text-sections-editor
-      :is-editing="false"
       class="content"
+      :is-editing="false"
       :value="article.description"
     />
   </div>

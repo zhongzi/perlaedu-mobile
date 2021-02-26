@@ -53,17 +53,26 @@ export default class UploaderMixin extends Vue {
     prefix = urljoin(prefix, format(new Date(), "yyyyMMdd"));
 
     // md5
+    // const stage1 = (new Date()).getTime();
     this.md5(file, (md5) => {
+      // const stage2 = (new Date()).getTime();
+      // console.log("md5 cost: ", stage2 - stage1, md5);
+
       // 压缩
       this.compression(file, (compressedFile) => {
-        // token & url
+        // const stage3 = (new Date()).getTime();
+        // console.log("compresseion cost: ", stage3 - stage2);
+
+        // key
         const key = urljoin(prefix, md5 + suffix);
+
+        // token
         this.fetchToken(type, key).then((resp) => {
           const token = resp.data.token;
-
-          // media check & save
-          const size = file.size;
+          const size = compressedFile.size;
           const url = token.url;
+
+          // media_file
           this.createMediaFile(md5, size, url, fileOptions, (mediaFile) => {
             if (mediaFile.is_uploaded) {
               callbackPrg && callbackPrg(100);
@@ -71,7 +80,8 @@ export default class UploaderMixin extends Vue {
               return;
             }
 
-            this.sendFile(file, key, token, callbackPrg)
+            // upload
+            this.sendFile(compressedFile, key, token, callbackPrg)
               .then(() => {
                 this.confirmedMediaFile(mediaFile, () => {
                   callback(mediaFile.url, mediaFile);
@@ -125,7 +135,8 @@ export default class UploaderMixin extends Vue {
 
   compression(file, callback) {
     /*
-     * browser-image-compression 在window+微信客户端环境下工作不正常
+     * browser-image-compression 在window工作可能存在问题
+     * window+微信 工作不正常
      * window+微信开发者工具，工作正常
      * window+chrome/edge，工作正常
      * 暂时如此规避
@@ -140,6 +151,7 @@ export default class UploaderMixin extends Vue {
     }
     // console.log('originalFile instanceof Blob', file instanceof Blob); // true
     // console.log(`originalFile size ${file.size / 1024 / 1024} MB`);
+    // const maxSizeMB = Math.floor(file.size * 0.2 / (1024.0 * 1024.0))
 
     const options = {
       maxSizeMB: 1,

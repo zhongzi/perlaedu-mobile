@@ -44,7 +44,10 @@
                 />
               </template>
               <template v-else>
-                <img :src="c.url" @click="previewImage(c.url, imgUrls)" />
+                <img
+                  :src="c.url | alioss({ width: 375 })"
+                  @click="previewImage(c.url, imgUrls)"
+                />
               </template>
             </div>
             <div v-if="c.type === 'video'" :class="c.type">
