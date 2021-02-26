@@ -8,6 +8,10 @@
       <i class="iconfont icon-qrcode" />
       <span> 二维码 </span>
     </div>
+    <div class="entry" @click="openMedia">
+      <i class="iconfont icon-xiangce" />
+      <span>相册</span>
+    </div>
     <div class="entry" @click="openBirthday">
       <!--
       <ai-badge v-if="countBirthday" :content="countBirthday">
@@ -27,10 +31,6 @@
       </ai-badge>
  -->
       <span> 续费提醒</span>
-    </div>
-    <div class="entry" @click="openSetting" v-if="isOwner">
-      <i class="iconfont icon-setting" />
-      <span>机构设置</span>
     </div>
   </div>
 </template>
@@ -91,9 +91,10 @@ export default class Home extends Vue {
     return;
   }
 
-  openSetting() {
-    const url = this.$frontURLResolver.getSetting(this.merchant);
-    window.location.href = url;
+  openMedia() {
+    this.$router.push({
+      name: "mediaMerchant",
+    });
     return;
   }
 }
@@ -102,13 +103,11 @@ export default class Home extends Vue {
 .quick-entry {
   width: 100%;
 
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding: 5px 30px;
+  display: grid;
+  grid-template-columns: repeat(5, 20%);
+  padding: 5px 10px;
 
   .entry {
-    padding: 5px auto;
     display: flex;
     flex-direction: column;
     align-items: center;

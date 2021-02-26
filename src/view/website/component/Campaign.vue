@@ -64,7 +64,7 @@ export default class Home extends Vue {
       overflow: hidden;
 
       .cover {
-        object-fit: fill;
+        object-fit: cover;
         border-radius: 4px;
       }
     }

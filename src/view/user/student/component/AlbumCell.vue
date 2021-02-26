@@ -58,6 +58,7 @@ export default class Home extends Mixins(SyncMixin) {
         include_count: true,
         target_id: this.person.id,
         target_class: "Person",
+        is_deleted_tmp: false,
         sort: "is_cover desc,id desc",
         extras: "cover",
       },

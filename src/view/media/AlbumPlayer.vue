@@ -10,33 +10,15 @@
     >
       <template v-slot:item="{ item }">
         <photo
+          class="item"
+          :style="{ padding: item.frame && '5vw' }"
           :photo="item.media"
           :link="item"
           :key="item.id"
           :showInfo="true"
-          class="item"
         />
       </template>
     </ai-list-stored>
-    <div>
-      <div class="actions">
-        <div class="action" @click="open = true">
-          <i class="iconfont icon-pc" />
-          <span> 跨屏展示 </span>
-        </div>
-        <div class="action" @click="autoPlayEnabled = !autoPlayEnabled">
-          <i class="iconfont icon-video" />
-          <span> {{ !autoPlayEnabled ? "开启" : "关闭" }}自动滚动 </span>
-        </div>
-      </div>
-      <ai-copyright :manual="true" />
-    </div>
-    <ai-dialog v-model="open">
-      <div class="dialog">
-        <img :src="qrcodeURL" />
-        <span> 扫码即可查看本画廊 </span>
-      </div>
-    </ai-dialog>
   </div>
 </template>
 
@@ -66,9 +48,6 @@ import cloneDeep from "lodash/cloneDeep";
   },
 })
 export default class Home extends Vue {
-  autoPlayEnabled = false;
-  open = false;
-
   get sliderOptions() {
     return {
       slidesPerView: "auto",
@@ -78,7 +57,6 @@ export default class Home extends Vue {
       autoplay: {
         delay: 5000,
         disableOnInteraction: false,
-        playAtStart: false,
       },
     };
   }
@@ -90,28 +68,12 @@ export default class Home extends Vue {
       query.merchant_id = _get(this.$auth, "user.curr_merch_id");
     }
     query.is_deleted_tmp = false;
+    query.sort = "id desc";
     query.extras = JSON.stringify({
       MediaLink: ["media"],
-      Media: ["file", "url", "frame", "count_star"],
+      Media: ["file", "url", "frame", "count_star", "merchant"],
     });
     return query;
-  }
-
-  get qrcodeURL() {
-    return this.$tools.makeQrcode();
-  }
-
-  created() {
-    this.trigger();
-  }
-
-  @Watch("autoPlayEnabled")
-  onAutoPlayEnabledChanged() {
-    this.trigger();
-  }
-
-  trigger() {
-    this.$bus.$emit("swiper:autolay", this.autoPlayEnabled);
   }
 }
 </script>
@@ -137,8 +99,8 @@ export default class Home extends Vue {
     }
 
     .item {
-      width: 80vw;
-      height: 80vh;
+      width: 100vw;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -155,44 +117,6 @@ export default class Home extends Vue {
         }
       }
     }
-  }
-
-  .actions {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .action {
-      margin: 0px 10px;
-
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      line-height: 1.2;
-
-      i {
-        font-size: 32px;
-      }
-      span {
-        font-size: 13px;
-      }
-    }
-  }
-}
-.dialog {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  padding: 20px;
-
-  img {
-    width: 100%;
-  }
-  span {
-    font-size: 13px;
   }
 }
 </style>

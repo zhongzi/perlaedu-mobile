@@ -1,6 +1,13 @@
 <template>
   <div class="wrapper dashboard">
     <framework>
+      <template v-slot:switch>
+        <i
+          class="iconfont icon-setting setting"
+          @click="openSetting"
+          v-if="isOwner"
+        />
+      </template>
       <template v-slot:header>
         <quick-entry :merchant="merchant" />
       </template>
@@ -31,6 +38,7 @@ import FloorLatestChanges from "./component/FloorLatestChanges.vue";
 import FloorQuickWorkEntry from "./component/FloorQuickWorkEntry.vue";
 import FloorMore from "./component/FloorMore.vue";
 
+import _get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import merge from "lodash/merge";
 import cloneDeep from "lodash/cloneDeep";
@@ -48,6 +56,11 @@ import cloneDeep from "lodash/cloneDeep";
 })
 export default class Home extends Mixins(SyncMixin) {
   merchant: any = {};
+
+  get isOwner() {
+    const userId = _get(this.merchant, "user_id");
+    return !!(userId && userId === _get(this.$auth, "user.id"));
+  }
 
   created() {
     this.store = "merchant";
@@ -108,11 +121,23 @@ export default class Home extends Mixins(SyncMixin) {
       },
     });
   }
+
+  openSetting() {
+    const url = this.$frontURLResolver.getSetting(this.merchant);
+    window.location.href = url;
+    return;
+  }
 }
 </script>
 <style lang="scss" scoped>
 .dashboard {
   padding-bottom: 30px;
+  .setting {
+    font-size: 24px;
+    color: #fff;
+    margin: 0px 10px;
+  }
+
   .floor {
     padding: 7px 15px;
   }

@@ -59,6 +59,11 @@ export default class Home extends Mixins(SyncMixin) {
     this.load();
   }
 
+  @Watch("merchant", { deep: true })
+  onMerchantChanged() {
+    this.load();
+  }
+
   load() {
     this.loadEntity({
       query: {

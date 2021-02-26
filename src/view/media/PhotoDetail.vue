@@ -63,13 +63,18 @@
         </div>
         <div>
           <div class="replies">
-            <ai-input
-              class="input"
-              v-model="description"
-              placeholder="写下你的留言"
-              @submit="saveReplyAction"
-            />
-            <div class="label">精彩留言</div>
+            <div class="action">
+              <ai-input
+                class="input"
+                v-model="description"
+                placeholder="写下你的留言"
+                @submit="saveReplyAction"
+              />
+              <ai-button-round @click.native="saveReplyAction">
+                发送
+              </ai-button-round>
+            </div>
+            <div class="label" v-if="countReply > 0">精彩留言</div>
             <ai-list-stored
               resource="mediaInteraction"
               scrollType=""
@@ -402,16 +407,27 @@ export default class Home extends Mixins(SyncMixin) {
   configPoster() {
     if (isEmpty(this.media)) return;
 
+    const person =
+      _get(this.link, "target_class") === "Person" && _get(this.link, "target");
+    const isNoTitle = isEmpty(this.media.title);
+    const title = isNoTitle ? _get(person, "realname", "") : this.media.title;
+    const subTitle =
+      (!isNoTitle && person ? person.realname + " @ " : "") + this.merchantName;
+    const description = this.media.description;
+    const publishedAt = this.$options.filters.defaultDay(
+      this.media.published_at
+    );
+
     this.$bus.$emit(
       "config:poster",
       getPosterData(
         this.media,
         null,
         {
-          title: this.media.title,
-          name: this.aname,
-          merchant: this.merchantName,
-          publishedAt: this.media.published_at,
+          title: title,
+          subTitle: subTitle,
+          description: description,
+          publishedAt: publishedAt,
         },
         1000
       )
@@ -554,9 +570,23 @@ export default class Home extends Mixins(SyncMixin) {
       background: initial;
     }
 
+    .action {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      button {
+        width: auto;
+        border: none;
+        min-height: 40px;
+        margin-left: 10px;
+      }
+    }
+
     .input {
       background: #fff;
       padding: 10px;
+      flex: 1;
     }
     .label {
       font-size: 14px;

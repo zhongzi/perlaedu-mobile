@@ -7,26 +7,21 @@
 
     <div class="cell" v-else>
       <div :style="mergedStyle">
-        <img :src="photo.url | alioss({ width: 200 })" />
+        <img :src="photo.url | alioss({ width: 375 })" />
       </div>
       <img
         v-if="innerFrame"
-        :src="innerFrame.url | alioss({ width: 200 })"
+        :src="innerFrame.url | alioss({ width: 375 })"
         class="innerFrame"
       />
     </div>
 
-    <div class="info" v-if="showInfo">
-      <span> {{ photo.title }} </span>
-      <span> (发表于 {{ photo.published_at | defaultDay }} ) </span>
-      <!--
-      <div class="stars">
-         (
-        <i class="iconfont icon-dianzan" />
-        <span> {{ photo.count_star}} </span>
-        )
-      </div>
--->
+    <div class="info" v-if="showInfo && link">
+      <span class="title"> {{ title }} </span>
+      <span class="subtitle"> {{ subTitle }} </span>
+      <span class="description"> {{ description }} </span>
+      <span class="published"> 创作于 </span>
+      <span class="published"> {{ publishedAt }} </span>
     </div>
   </div>
 </template>
@@ -60,12 +55,47 @@ export default class Home extends Vue {
     return (this.enabledPhotoFrame && _get(this.photo, "frame")) || this.frame;
   }
 
+  get media() {
+    return _get(this.link, "media");
+  }
+
+  get person() {
+    return (
+      _get(this.link, "target_class") === "Person" && _get(this.link, "target")
+    );
+  }
+
+  get isNoTitle() {
+    return isEmpty(this.media.title);
+  }
+
+  get title() {
+    return this.isNoTitle
+      ? _get(this.person, "realname", "")
+      : this.media.title;
+  }
+  get subTitle() {
+    return (
+      (!this.isNoTitle && this.person ? this.person.realname + " @ " : "") +
+      _get(this.media, "merchant.name")
+    );
+  }
+  get description() {
+    return this.media.description;
+  }
+  get publishedAt() {
+    return this.$options.filters.defaultDay(this.media.published_at);
+  }
+
   get mergedStyle() {
     if (!this.computedPosition) {
       return {
         width: "100%",
         height: "100%",
         margin: "10%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       };
     }
 
@@ -180,22 +210,29 @@ export default class Home extends Vue {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
-    line-height: 3;
+    justify-content: center;
+    padding: 20px 40px;
 
-    span {
-      font-size: 14px;
+    .title {
+      font-size: 24px;
       font-weight: 800;
+      line-height: 1.5;
+    }
+    .subtitle {
+      font-size: 13px;
       line-height: 1;
+      color: #848181;
     }
-    span:nth-child(2) {
-      color: #b5b5b5;
-      margin-top: 5px;
+    .description {
+      font-size: 12px;
+      line-height: 1.2;
+      color: #848181;
+      margin: 10px 0px;
     }
-
-    .stars {
-      color: red;
-      margin-left: 10px;
+    .published {
+      font-size: 12px;
+      line-height: 1.2;
+      color: #848181;
     }
   }
 }
