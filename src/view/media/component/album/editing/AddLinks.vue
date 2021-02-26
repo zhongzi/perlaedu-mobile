@@ -217,6 +217,10 @@ export default class Home extends Mixins(SyncMixin) {
     this.loadLinks();
   }
 
+  beforeDestroy() {
+    this.$bus.$off("media:saving");
+  }
+
   @Watch("medias", { deep: true })
   onMediasChanged(newVal, oldVal) {
     if (this.isLoadedExists && oldVal && oldVal.length === 1) {
@@ -482,7 +486,6 @@ export default class Home extends Mixins(SyncMixin) {
     this.teachersToDeleted = d;
   }
   onSelectedStudents(n, d) {
-    console.log(n, d);
     this.students = n;
     this.studentsToDeleted = d;
   }

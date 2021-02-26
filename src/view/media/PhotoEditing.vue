@@ -106,9 +106,9 @@ export default class Home extends Mixins(SyncMixin) {
     this.$bus.$on("media:saved", (item) => {
       savedItems = uniq(concat(savedItems, item));
       const items = this.isCreation ? ["basic", "links"] : ["basic"];
-      console.log(savedItems, items);
       if (difference(items, savedItems).length === 0) {
         this.$hui.toast.info("保存成功");
+        this.$bus.$off("media:saved");
         this.$bus.$off("media:saved");
         this.$bus.$emit("album:refresh");
         this.isInSaving = false;
@@ -136,7 +136,6 @@ export default class Home extends Mixins(SyncMixin) {
       success: (resp) => {
         this.medias = [cloneDeep(resp.data)];
         this.frame = _get(this.medias, "[0].frame");
-        console.log(this.frame);
       },
     });
   }

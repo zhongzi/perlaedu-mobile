@@ -60,13 +60,16 @@ export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: Array, default: null }) medias: any;
 
   innerMedia: any = {};
-  confirmInnerMedia: any = {};
 
   created() {
     this.resetInnerMedia();
     this.$bus.$on("media:saving", () => {
       this.confirm(true);
     });
+  }
+
+  beforeDestroy() {
+    this.$bus.$off("media:saving");
   }
 
   resetInnerMedia() {
@@ -80,12 +83,11 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   confirm(noToast = false) {
-    this.confirmInnerMedia = cloneDeep(this.innerMedia);
     this.save(noToast);
   }
 
   save(noToast = false) {
-    if (isEmpty(this.medias) || isEmpty(this.confirmInnerMedia)) {
+    if (isEmpty(this.medias) || isEmpty(this.innerMedia)) {
       this.$bus.$emit("media:saved", "basic");
       return;
     }
@@ -93,7 +95,7 @@ export default class Home extends Mixins(SyncMixin) {
     this.saveEntity({
       store: "media",
       res: map(this.medias, (media) => {
-        return merge({ id: media.id }, this.confirmInnerMedia);
+        return merge({ id: media.id }, this.innerMedia);
       }),
       success: () => {
         !noToast && this.$hui.toast.info("保存成功");
