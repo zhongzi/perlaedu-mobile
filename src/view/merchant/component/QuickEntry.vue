@@ -103,11 +103,12 @@ export default class Home extends Vue {
 .quick-entry {
   width: 100%;
 
-  display: grid;
-  grid-template-columns: repeat(5, 20%);
-  padding: 5px 10px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
 
   .entry {
+    width: 20%;
     display: flex;
     flex-direction: column;
     align-items: center;

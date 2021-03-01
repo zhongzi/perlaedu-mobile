@@ -390,9 +390,12 @@ export default class Home extends Mixins(SyncMixin) {
           padding-left: 5px;
         }
         .links {
-          display: grid;
-          grid-template-columns: auto auto;
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+
           .link ::v-deep .cell {
+            width: 50%;
             height: 150px;
           }
         }

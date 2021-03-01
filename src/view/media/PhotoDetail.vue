@@ -551,11 +551,13 @@ export default class Home extends Mixins(SyncMixin) {
       margin: 20px 10px;
 
       & ::v-deep .ai-list-stored__list {
-        display: grid;
-        grid-template-columns: repeat(8, auto);
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
         justify-content: center;
       }
       .avatar {
+        width: 12.5%;
         padding: 3px;
 
         img {

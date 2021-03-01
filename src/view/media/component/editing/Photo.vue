@@ -27,7 +27,7 @@
           </div>
         </template>
         <ai-image-multi-uploader
-          class="media"
+          class="media photo-plus"
           :enabledCompression="false"
           @input:file="uploadedMultiple"
         >
@@ -209,9 +209,10 @@ export default class Home extends Mixins(SyncMixin) {
     margin: 0px auto;
   }
   .medias {
-    display: grid;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
     padding: 10px;
-    grid-template-columns: repeat(auto-fill, 33%);
 
     .photo-cell {
       width: 80px;
@@ -219,11 +220,20 @@ export default class Home extends Mixins(SyncMixin) {
       margin: 10px;
     }
 
+    .photo-plus {
+      padding: 10px;
+    }
+
     .media {
       position: relative;
-      margin: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 33.33%;
 
       .trash {
+        margin: 10px;
         position: absolute;
         left: 0px;
         right: 0px;
