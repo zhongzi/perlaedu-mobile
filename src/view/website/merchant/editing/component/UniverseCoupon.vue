@@ -84,10 +84,15 @@ export default class Home extends Mixins(SyncMixin) {
   created() {
     this.store = "website";
     this.enableLoading = false;
+    this.reset();
   }
 
   @Watch("website", { deep: true })
   onWebsiteChanged() {
+    this.reset();
+  }
+
+  reset() {
     this.enableUniverseCoupon = this.website.coupon_enabled;
   }
 
