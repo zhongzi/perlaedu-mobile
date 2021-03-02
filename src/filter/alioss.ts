@@ -2,6 +2,39 @@ import isEmpty from "lodash/isEmpty";
 import forEach from "lodash/forEach";
 import { Base64 } from "js-base64";
 
+// 判断是否支持webp
+let supportedWebp = false;
+function check_webp_feature(feature, callback) {
+  const kTestImages = {
+    lossy: "UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA",
+    lossless: "UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==",
+    alpha:
+      "UklGRkoAAABXRUJQVlA4WAoAAAAQAAAAAAAAAAAAQUxQSAwAAAARBxAR/Q9ERP8DAABWUDggGAAAABQBAJ0BKgEAAQAAAP4AAA3AAP7mtQAAAA==",
+    animation:
+      "UklGRlIAAABXRUJQVlA4WAoAAAASAAAAAAAAAAAAQU5JTQYAAAD/////AABBTk1GJgAAAAAAAAAAAAAAAAAAAGQAAABWUDhMDQAAAC8AAAAQBxAREYiI/gcA",
+  };
+  const img = new Image();
+  img.onload = function () {
+    const result = img.width > 0 && img.height > 0;
+    callback(feature, result);
+  };
+  img.onerror = function () {
+    callback(feature, false);
+  };
+  img.src = "data:image/webp;base64," + kTestImages[feature];
+}
+check_webp_feature("lossy", (f, r) => {
+  supportedWebp = r;
+});
+
+// 图片格式检测
+function check_image_mimes(url, mimes = ["gif"]) {
+  url = new URL(url);
+  const re = /(?:\.([^.]+))?$/;
+  const ext = re.exec(url.pathname)[1] || "";
+  return mimes.indexOf(ext.toLowerCase()) >= 0;
+}
+
 function removeParams(url, ps = []) {
   if (isEmpty(url) || isEmpty(ps) || url.indexOf("?") < 0) return url;
 
@@ -41,6 +74,14 @@ export default function (
   url = removeParams(url, ["x-oss-process"]);
   if (isEmpty(url)) {
     return null;
+  }
+
+  if (!url.startsWith("http")) {
+    return url;
+  }
+
+  if (check_image_mimes(url)) {
+    return url;
   }
 
   const wx = undefined;
@@ -121,6 +162,8 @@ export default function (
     option.w_y = scale * 10;
     ossParams += `,y_${option.w_y}`;
   }
+
+  ossParams += "/format," + (supportedWebp ? "webp" : "jpg");
 
   if (url.indexOf("?") >= 0) {
     url += `&${ossParams}`;

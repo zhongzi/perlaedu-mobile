@@ -99,32 +99,32 @@ export default class Home extends Mixins(UploaderMixin) {
 
   uploadHandler(cropper) {
     this.$hui.loading.show("上传中...");
+    this.mimetype =
+      cropper.url.substring("data:".length, cropper.url.indexOf(";base64")) ||
+      this.mimetype;
     let canvas = cropper.getCroppedCanvas(this.outputOptions);
-    canvas.toBlob(
-      (blob) => {
-        this.uploadBlob(
-          blob,
-          this.type,
-          this.prefix + "",
-          "." + this.mimetype.split("/")[1],
-          (url, id, md5) => {
-            this.$emit("input", url);
-            this.$emit("input:file", url, id, md5);
+    canvas.toBlob((blob) => {
+      this.uploadBlob(
+        blob,
+        this.type,
+        this.prefix + "",
+        "." + this.mimetype.split("/")[1],
+        (url, id, md5) => {
+          this.$emit("input", url);
+          this.$emit("input:file", url, id, md5);
 
-            setTimeout(() => {
-              this.$hui.loading.hide();
-              this.showCropper = false;
-            }, 1000);
-          },
-          null,
-          {
-            width: canvas.width,
-            height: canvas.height,
-          }
-        );
-      },
-      { type: this.mimetype }
-    );
+          setTimeout(() => {
+            this.$hui.loading.hide();
+            this.showCropper = false;
+          }, 1000);
+        },
+        null,
+        {
+          width: canvas.width,
+          height: canvas.height,
+        }
+      );
+    }, this.mimetype);
   }
 
   trigger() {

@@ -52,7 +52,12 @@
                 {{ group[0] }}
               </div>
               <div class="links">
-                <div class="link" v-for="link in group[1]" :key="link.id">
+                <div
+                  class="link"
+                  v-for="link in group[1]"
+                  :key="link.id"
+                  :style="{ flex: group[1].length > 1 ? 'none' : 1 }"
+                >
                   <ai-state-check-mask
                     :enableCheck="!enabledClickToDetail"
                     :checked="checkSelected(link)"
@@ -394,8 +399,11 @@ export default class Home extends Mixins(SyncMixin) {
           align-items: center;
           flex-wrap: wrap;
 
-          .link ::v-deep .cell {
+          .link {
             width: 50%;
+          }
+
+          .link ::v-deep .cell {
             height: 150px;
           }
         }
