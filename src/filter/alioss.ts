@@ -79,7 +79,7 @@ export default function (
       ossParams += `,color_${option.color}`;
     }
 
-    option.limit = option.limit || 0;
+    option.limit = option.limit || 1;
     ossParams += `,limit_${option.limit}`;
   }
 

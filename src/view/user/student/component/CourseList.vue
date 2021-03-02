@@ -46,7 +46,7 @@ export default class Home extends Vue {
       {
         filters: JSON.stringify({
           "person_id.Person.openid": ["=" + this.$auth.user.openid],
-          "person_id.Person.second_openid": ["=" + this.$auth.user.openid],
+          "person_id.Person.openid_second": ["=" + this.$auth.user.openid],
         }),
         extras: JSON.stringify({
           Tag: ["person"],
