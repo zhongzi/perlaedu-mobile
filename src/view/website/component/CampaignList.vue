@@ -61,6 +61,7 @@ export default class Home extends Vue {
     return merge(
       {
         "Campaign.status": "ongoing",
+        sort: "is_initiator desc, Campaign.is_enabled_top desc, id desc",
         extras: JSON.stringify({
           CampaignMerchant: ["campaign", "merchant"],
           Campaign: ["url"],
