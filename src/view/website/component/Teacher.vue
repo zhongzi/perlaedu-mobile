@@ -2,12 +2,7 @@
   <ai-card v-if="innerTeacher.id" @click.native="onClick" class="wrapper">
     <template v-slot:header>
       <div class="cover">
-        <img
-          :src="
-            (innerTeacher.cover_url || innerTeacher.avatar_url)
-              | alioss({ width: 120, height: 160, mode: 'fill' })
-          "
-        />
+        <img :src="logo | alioss({ width: 120, height: 160, mode: 'fill' })" />
       </div>
     </template>
     <template v-slot:footer>
@@ -36,6 +31,13 @@ export default class Home extends Vue {
 
   get innerTeacher() {
     return this.teacher || _get(this.websiteTeacher, "teacher") || {};
+  }
+
+  get logo() {
+    const coverUrl = _get(this.innerTeacher, "cover_url");
+    const avatarUrl = _get(this.innerTeacher, "avatar_url");
+    if (!isEmpty(coverUrl)) return coverUrl;
+    return avatarUrl;
   }
 
   onClick() {

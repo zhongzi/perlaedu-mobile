@@ -2,7 +2,7 @@
   <div class="wrapper teacher">
     <div class="header">
       <div class="cover">
-        <img :src="teacher.cover_url | alioss({ width: 300 })" />
+        <img :src="logo | alioss({ width: 300 })" />
         <div class="setting" v-if="isOwner" @click="openEditing">
           <i class="iconfont icon-setting" />
         </div>
@@ -50,6 +50,13 @@ export default class Home extends Mixins(SyncMixin) {
 
   get teacher() {
     return this.entity;
+  }
+
+  get logo() {
+    const coverUrl = _get(this.teacher, "cover_url");
+    const avatarUrl = _get(this.teacher, "avatar_url");
+    if (!isEmpty(coverUrl)) return coverUrl;
+    return avatarUrl;
   }
 
   get isOwner() {
