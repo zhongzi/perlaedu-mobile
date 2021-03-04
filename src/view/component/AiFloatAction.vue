@@ -1,17 +1,24 @@
 <template>
-  <div :class="b()" :style="style" @click.stop="onClick">
-    <slot>
-      <i :class="['iconfont', 'icon-' + icon]" v-if="icon" />
-      <span v-if="label"> {{ label }} </span>
-    </slot>
-  </div>
+  <ai-draggable :isFixed="true" @click="onClick">
+    <div :class="b()" :style="style">
+      <slot>
+        <i :class="['iconfont', 'icon-' + icon]" v-if="icon" />
+        <span v-if="label"> {{ label }} </span>
+      </slot>
+    </div>
+  </ai-draggable>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 
+import AiDraggable from "./AiDraggable.vue";
+
 @Component({
   name: "ai-float-action",
+  components: {
+    AiDraggable,
+  },
 })
 export default class Home extends Vue {
   @Prop({ type: String, default: null }) icon: string;
@@ -38,24 +45,25 @@ export default class Home extends Vue {
 
 <style lang="scss" scoped>
 .ai-float-action {
-  position: fixed;
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 10px;
-  padding: 10px;
-  width: 70px;
-  height: 70px;
+  width: 100%;
+  height: 100%;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
+  background: #fd6700;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 10px;
+
   i {
-    font-size: 24px;
+    font-size: 18px;
   }
 
   span {
-    font-size: 12px;
+    font-size: 11px;
   }
 }
 </style>

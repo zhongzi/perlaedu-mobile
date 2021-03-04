@@ -28,6 +28,7 @@
         </div>
       </div>
     </ai-popup>
+    <float-back />
   </div>
 </template>
 <script lang="ts">
@@ -38,12 +39,15 @@ import AiTipShare from "@/view/component/AiTipShare.vue";
 import AiCopyright from "@/view/component/AiCopyright.vue";
 import AiPosterPopup from "@/view/component/AiPosterPopup.vue";
 
+import FloatBack from "./view/FloatBack.vue";
+
 @Component({
   components: {
     AiPopup,
     AiTipShare,
     AiCopyright,
     AiPosterPopup,
+    FloatBack,
   },
 })
 export default class Home extends Vue {

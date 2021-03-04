@@ -114,11 +114,8 @@ export default class Home extends Mixins(SyncMixin) {
   }
 
   .float-button {
-    background: #fd6700;
-    color: #fff;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    left: auto;
+    right: 20px;
   }
 }
 </style>

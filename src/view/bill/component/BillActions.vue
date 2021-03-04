@@ -28,20 +28,18 @@
 
     <ai-float-action
       v-if="isManager"
+      class="action action-qrcode"
       icon="qrcode"
-      label="收款码"
       @click="openPoster = true"
-      bottom="160px"
     />
     <ai-float-action
       v-if="isManager"
-      label="充值记录"
+      class="action"
       @click="
         $router.push({
           name: 'billManagementDashboard',
         })
       "
-      bottom="80px"
       icon="money"
     />
   </div>
@@ -347,5 +345,13 @@ export default class Home extends Mixins(SyncMixin, PayMixin) {
       }
     }
   }
+}
+.action {
+  left: auto;
+  right: 20px;
+}
+
+.action-qrcode {
+  bottom: 120px;
 }
 </style>

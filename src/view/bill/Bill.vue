@@ -525,7 +525,7 @@ export default class Home extends Mixins(SyncMixin) {
     position: fixed;
     left: 0px;
     right: 0px;
-    bottom: 10px;
+    bottom: 0px;
   }
 }
 </style>

@@ -2,9 +2,9 @@ import Vue from "vue";
 
 const ua = navigator.userAgent.toLowerCase();
 
-const isWin = /(win32|windows)/i.test(ua);
 const isMac = /(mac68k|macppc|macintosh|macintel)/i.test(ua);
 const isLinux = /(linux)/i.test(ua);
+const isWin = !isMac && !isLinux && /(win32|windows)/i.test(ua);
 
 const isPC = isWin || isMac || isLinux;
 const isWebTV = /(webtv)/i.test(ua);
