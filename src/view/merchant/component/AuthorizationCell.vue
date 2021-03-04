@@ -185,7 +185,7 @@ export default class Home extends Mixins(SyncMixin) {
     }
 
     phone = isEmpty(phone) ? "空" : phone;
-    const phoneInfo = `${realname}的第一电话是 ${phone}`;
+    const phoneInfo = `${realname}的第${seg}电话是 ${phone}`;
     const nicknameInfo = isEmpty(nickname)
       ? "没有已关联的微信"
       : `已经关联的微信是 ${nickname}`;
