@@ -16,6 +16,7 @@
     </slot>
     <avatar-cropper
       v-show="showCropper"
+      mimes="image/jpg, image/png, image/gif, image/jpeg, image/bmp"
       :class="b('cropper')"
       :upload-handler="uploadHandler"
       :cropper-options="innerCropperOptions"
