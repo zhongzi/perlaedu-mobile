@@ -9,7 +9,7 @@
     </ai-card>
     <ai-dialog v-model="showDialog" :enableCloseIcon="false">
       <div class="form">
-        <h2>新建相册</h2>
+        <div class="title">新建相册</div>
         <ai-input v-model="title" placeholder="输入相册名称" class="input" />
         <ai-submit-actions @submit="onSubmit" @cancel="onCancel" />
       </div>
@@ -102,6 +102,10 @@ export default class Home extends Mixins(SyncMixin) {
 .form {
   padding: 30px;
   text-align: center;
+
+  .title {
+    font-size: 18px;
+  }
 
   & ::v-deep input {
     padding: 30px 10px 10px;
