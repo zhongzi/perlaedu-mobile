@@ -6,9 +6,16 @@
           <img :src="action | safe('user.avatar')" class="cover" />
         </template>
         <template v-slot:title>
-          <span> {{ action | safe("user.nickname", "来源线索") }} </span>
+          <span class="title">
+            {{ action | safe("user.nickname", "来源线索") }}
+          </span>
         </template>
-        <template v-slot:right>
+        <template v-slot:subtitle>
+          <span class="subtitle"
+            >跟进时间: {{ action.created_at | date("MM-dd HH:mm") }}</span
+          >
+        </template>
+        <template v-slot:right v-if="status">
           <ai-badge :content="badgeContent" :color="status.color" />
         </template>
       </ai-cell>
@@ -19,11 +26,6 @@
         :isEditing="false"
         class="content"
       />
-    </template>
-    <template v-slot:footer>
-      <div class="footer">
-        <div>更新时间: {{ action.created_at | date("MM-dd HH:mm") }}</div>
-      </div>
     </template>
   </ai-card>
 </template>
@@ -102,17 +104,21 @@ export default class Home extends Mixins(SyncMixin) {
   .header {
     width: 100%;
     .cover {
-      width: 40px;
+      width: 24px;
       border-radius: 50%;
+      margin-right: 5px;
+    }
+    & ::v-deep .ai-cell__left-info-header-title {
+      font-size: 13px;
+      line-height: 1;
+    }
+    & ::v-deep .ai-cell__left-info-header-subtitle {
+      font-size: 11px;
+      line-height: 1;
     }
   }
   .content {
     margin-bottom: 0px;
-  }
-  .footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
   }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper add-action">
-    <hui-button type="info" @click.native.stop="open"> 跟进 </hui-button>
+    <ai-button type="primary" @click.native.stop="open"> 跟进 </ai-button>
   </div>
 </template>
 
@@ -9,6 +9,7 @@ import { Component, Vue, Prop, Mixins, Watch } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
 
+import AiButton from "@/view/component/AiButton.vue";
 import AiDialog from "@/view/component/AiDialog.vue";
 import AiRichTextQuillEditor from "@/view/component/AiRichTextQuillEditor.vue";
 
@@ -17,6 +18,7 @@ import _get from "lodash/get";
 
 @Component({
   components: {
+    AiButton,
     AiDialog,
     AiRichTextQuillEditor,
   },

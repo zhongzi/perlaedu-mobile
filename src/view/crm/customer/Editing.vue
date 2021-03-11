@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper editing">
-    <div class="title">客户信息</div>
+    <div class="title">客户基本信息</div>
     <ai-input class="field" label="名称" v-model="innerCustomer.name" />
     <ai-line />
     <ai-input class="field" label="电话" v-model="innerCustomer.phone" />
@@ -33,6 +33,7 @@ import AiSubmitActions from "@/view/component/AiSubmitActions.vue";
 import isEmpty from "lodash/isEmpty";
 import _get from "lodash/get";
 import cloneDeep from "lodash/cloneDeep";
+import merge from "lodash/merge";
 
 @Component({
   components: {
@@ -83,7 +84,7 @@ export default class Home extends Mixins(SyncMixin) {
     }
 
     this.saveEntity({
-      res: this.innerCustomer,
+      res: merge({ op: "edit" }, this.innerCustomer),
       success: () => {
         this.$nextTick(() => {
           this.innerCustomer = {};
@@ -96,11 +97,14 @@ export default class Home extends Mixins(SyncMixin) {
 </script>
 <style lang="scss" scoped>
 .editing {
-  padding: 20px 10px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background: #fff;
+  margin: 20px;
+  border-radius: 10px;
 
   .title {
     font-size: 18px;
@@ -110,10 +114,6 @@ export default class Home extends Mixins(SyncMixin) {
   .field {
     width: 100%;
   }
-  .remark {
-    padding: 10px;
-  }
-
   .action {
     width: 80%;
     margin: 20px;

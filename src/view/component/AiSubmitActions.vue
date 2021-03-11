@@ -45,6 +45,7 @@ export default class Home extends Vue {
   align-items: center;
   justify-content: center;
   padding: 10px 20px;
+  width: 100%;
 
   &__action {
     margin: 0px 5px;

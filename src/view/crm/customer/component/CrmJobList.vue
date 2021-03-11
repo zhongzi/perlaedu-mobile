@@ -49,6 +49,7 @@ export default class Home extends Vue {
     }
 
     .item {
+      font-size: 14px;
       padding: 10px;
       border-radius: 8px;
     }

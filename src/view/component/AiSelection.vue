@@ -71,11 +71,12 @@ export default class Home extends Mixins(PatchMixin) {
   @Prop({ type: String, default: "value" }) valueKey: string;
   @Prop({ type: Boolean, default: false }) enableAllOption: boolean;
   @Prop({ type: Boolean, default: false }) enableUnsetOption: boolean;
+  @Prop({ type: String, default: "暂不设置" }) unsetOptionLabel: string;
 
   innerValue: any = null;
 
   get defaultName() {
-    if (this.enableUnsetOption) return "暂不设置";
+    if (this.enableUnsetOption) return this.unsetOptionLabel;
     if (this.enableAllOption) return "全部";
     return;
   }

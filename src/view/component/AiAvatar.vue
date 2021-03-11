@@ -46,9 +46,11 @@ export default class Home extends Vue {
     width: 40px;
     border-radius: 50%;
     margin-right: 5px;
+    line-height: 1;
   }
   .remark {
     font-size: 12px;
+    line-height: 1;
   }
 }
 </style>

@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Mixins } from "vue-property-decorator";
+import { Component, Vue, Mixins, Watch } from "vue-property-decorator";
 
 import SyncMixin from "@/mixin/SyncMixin";
 
@@ -45,9 +45,9 @@ import CrmJobList from "./component/CrmJobList.vue";
 })
 export default class Home extends Mixins(SyncMixin) {
   tabs: any = [
-    { label: "客户详情", value: "detail" },
-    { label: "工作清单", value: "jobs" },
-    { label: "跟踪记录", value: "action" },
+    { label: "客户信息", value: "detail" },
+    { label: "事务清单", value: "jobs" },
+    { label: "跟进日志", value: "action" },
     { label: "过往事件", value: "clue" },
   ];
   curTabIdx: number = 0;
@@ -66,6 +66,25 @@ export default class Home extends Mixins(SyncMixin) {
     this.store = "crmCustomer";
     this.id = this.$route.params.customerId;
     this.load();
+  }
+
+  @Watch("customer", { deep: true })
+  onCustomerChanged() {
+    this.confirmed();
+  }
+
+  confirmed() {
+    if (
+      this.customer.status === "confirming" &&
+      this.customer.follower_openid === this.$auth.user.openid
+    ) {
+      this.saveEntity({
+        res: {
+          id: this.id,
+          status: "following",
+        },
+      });
+    }
   }
 
   gotoList() {
@@ -89,7 +108,7 @@ export default class Home extends Mixins(SyncMixin) {
             "persons",
             "merchants",
             "referrer",
-            "follower",
+            "follower_json",
             "u_person",
             "r_person",
             "f_person",

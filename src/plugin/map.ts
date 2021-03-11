@@ -6,6 +6,7 @@ import cloneDeep from "lodash/cloneDeep";
 import debounce from "lodash/debounce";
 
 const axios = require("axios");
+const jsonpAdapter = require("axios-jsonp");
 const configs = cloneDeep(require("../configs.json"));
 
 class QQMap {
@@ -91,9 +92,11 @@ class QQMap {
    * URL: https://lbs.qq.com/service/webService/webServiceGuide/webServiceOverview
    */
   request(url, callback) {
+    url = `${url}&output=jsonp`;
     axios
       .get(url, {
         headers: {},
+        adapter: jsonpAdapter,
       })
       .then((resp) => {
         callback(resp.data);
@@ -149,6 +152,7 @@ class QQMap {
       const fetcher = new GeoLocation(this.key, this.keyName);
       fetcher.getLocation(
         (result) => {
+          console.log(result);
           callback(result);
         },
         (err) => {
@@ -159,6 +163,7 @@ class QQMap {
       this.ipLocation({
         ip: null,
         callback: (result) => {
+          console.log(result);
           callback(result.location);
         },
       });

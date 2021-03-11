@@ -34,6 +34,7 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 .item {
   width: 100%;
+  font-size: 13px;
   padding: 10px;
 }
 </style>

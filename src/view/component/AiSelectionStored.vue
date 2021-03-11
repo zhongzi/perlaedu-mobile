@@ -7,6 +7,7 @@
     :valueKey="valueKey"
     :enableAllOption="enableAllOption"
     :enableUnsetOption="enableUnsetOption"
+    :unsetOptionLabel="unsetOptionLabel"
     :mode="mode"
     :autoDefault="autoDefault"
     :presetOptions="presetOptions"
@@ -40,6 +41,7 @@ export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: String, default: "id" }) valueKey: string;
   @Prop({ type: Boolean, default: false }) enableAllOption: boolean;
   @Prop({ type: Boolean, default: false }) enableUnsetOption: boolean;
+  @Prop({ type: String, default: "暂不设置" }) unsetOptionLabel: string;
   @Prop({ type: Boolean, default: true }) autoDefault: boolean;
   @Prop({ type: String, default: "" }) mode: string;
   @Prop({ type: Array, default: null }) presetOptions: any;

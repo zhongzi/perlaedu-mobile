@@ -62,12 +62,29 @@ export default class Home extends Vue {
     return _get(this.$auth, "user.kind") === 2;
   }
 
+  get enabledRestoringList() {
+    return this.isAdmin || _get(this.$auth, "user.agent.level") === 1;
+  }
+
+  get enabledPendingList() {
+    return this.isAdmin;
+  }
+
   get tabs() {
     return filter(
       [
-        { label: "新客户", value: "pending" },
+        {
+          label: "新客户",
+          value: "pending",
+          disabled: !this.enabledPendingList,
+        },
+        { label: "待确认", value: "confirming" },
         { label: "跟进中", value: "following" },
-        { label: "公海", value: "restoring", disabled: !this.isAdmin },
+        {
+          label: "公海",
+          value: "restoring",
+          disabled: !this.enabledRestoringList,
+        },
         { label: "已结束", value: "finished" },
       ],
       (o) => o.disabled !== true
@@ -79,34 +96,25 @@ export default class Home extends Vue {
   }
 
   get query() {
-    return merge(
-      {
-        extras: JSON.stringify({
-          OAuth: ["avatar"],
-          CrmCustomer: [
-            "user",
-            "referrer",
-            "follower",
-            "u_person",
-            "r_person",
-            "f_person",
-            "channel",
-            "source",
-            "target",
-            "job",
-            "job_stage",
-          ],
-        }),
-      },
-      this.isAgent && this.curTab.value === "pending"
-        ? {
-            status: "following",
-            job_id: 1,
-          }
-        : {
-            status: this.curTab.value,
-          }
-    );
+    return {
+      status: this.curTab.value,
+      extras: JSON.stringify({
+        OAuth: ["avatar"],
+        CrmCustomer: [
+          "user",
+          "referrer",
+          "follower_json",
+          "u_person",
+          "r_person",
+          "f_person",
+          "channel",
+          "source",
+          "target",
+          "job",
+          "job_stage",
+        ],
+      }),
+    };
   }
 
   created() {

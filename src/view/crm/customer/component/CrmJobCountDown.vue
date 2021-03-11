@@ -4,7 +4,7 @@
       {{ countDownTime }}
     </div>
     <div class="title">
-      {{ job | safe("title") }}
+      {{ remark }}
     </div>
   </div>
 </template>
@@ -38,6 +38,16 @@ export default class Home extends Vue {
 
   get jobStage() {
     return _get(this.customer, "job_stage");
+  }
+
+  get remark() {
+    if (_get(this.customer, "status") === "finished") {
+      return this.customer.tags.split(",")[0];
+    }
+    if (_get(this.customer, "status") === "following") {
+      return _get(this.job, "title");
+    }
+    return "";
   }
 
   get mergedStyle() {
@@ -123,17 +133,19 @@ export default class Home extends Vue {
 </script>
 <style lang="scss" scoped>
 .job-count-down {
+  line-height: 1;
+
   .time {
     font-size: 12px;
     font-weight: 600;
     text-align: center;
     padding-bottom: 5px;
+    margin-bottom: 5px;
   }
   .title {
     font-size: 10px;
     text-align: center;
     color: #8c9aa8;
-    margin-top: 5px;
 
     overflow: hidden;
     text-overflow: ellipsis;

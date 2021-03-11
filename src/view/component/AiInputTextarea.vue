@@ -72,6 +72,7 @@ export default class Home extends Mixins(PatchMixin) {
     background-color: rgba(255, 255, 255, 0);
     margin: 0px;
     padding: 0px;
+    font-size: 13px;
 
     &:focus {
       outline: none;

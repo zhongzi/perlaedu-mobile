@@ -177,9 +177,7 @@ export default class Home extends Mixins(SyncMixin) {
   hasMoreData: boolean = true;
 
   get filterList() {
-    const l = concat([], this.appendItems || [], this.list);
-    console.log(this.appendItems, l, l.length);
-    return l;
+    return concat([], this.appendItems || [], this.list);
   }
 
   created() {

@@ -12,7 +12,7 @@
                 :avatar="
                   customer
                     | safe('user.avatar', require('@/asset/logo.bg.png'))
-                    | alioss({ width: 120 })
+                    | alioss({ width: 80 })
                 "
                 :name="
                   customer
@@ -26,23 +26,43 @@
               </ai-avatar>
             </div>
           </template>
-          <template v-slot:right v-if="customer.follower">
-            <ai-avatar :avatar="customer | safe('follower.avatar')" />
+          <template v-slot:right v-if="follower">
+            <ai-avatar :avatar="follower.avatar" />
           </template>
         </ai-cell>
       </template>
       <template v-slot:body v-if="isInDetail">
-        <div class="edit">
-          <div class="job" :style="{ color: '#' + jobStageColor }">
-            当前进度: {{ customer | safe("job.title") }}
-          </div>
-          <div class="actions">
-            <action-add-action :customer="customer" />
-            <hui-button type="info" @click.native.stop="edit">
-              编辑
-            </hui-button>
-            <hui-button @click.native.stop="viewHistory"> 历史 </hui-button>
-          </div>
+        <div class="actions">
+          <action-add-action
+            class="action"
+            :customer="customer"
+            v-if="!isRestoring"
+          />
+          <action-transfer
+            class="action"
+            :customer="customer"
+            :isTransferToSelf="true"
+            @refresh="$emit('refresh')"
+            v-else
+          />
+          <action-close
+            class="action"
+            :customer="customer"
+            @refresh="$emit('refresh')"
+          />
+          <action-transfer
+            class="action"
+            :customer="customer"
+            @refresh="$emit('refresh')"
+          />
+          <ai-button class="action" @click.native.stop="edit"> 编辑 </ai-button>
+          <ai-button
+            class="action"
+            type="default"
+            @click.native.stop="viewHistory"
+          >
+            历史
+          </ai-button>
         </div>
         <div class="body">
           <div class="section detail">
@@ -174,23 +194,17 @@
           <div class="section follower">
             <div class="title">
               <span>跟进人信息: </span>
-              <action-transfer
-                :customer="customer"
-                @refresh="$emit('refresh')"
-              />
             </div>
 
             <div class="field">
               <span class="label">合伙人: </span>
               <span class="value">
-                {{ customer | safe("follower.nickname") }}
+                {{ follower | safe("nickname") }}
               </span>
             </div>
             <div class="field">
               <span class="label">手机号码: </span>
-              <span class="value"
-                >{{ customer | safe("follower.phone") }}
-              </span>
+              <span class="value">{{ follower | safe("phone") }} </span>
             </div>
             <div class="field">
               <span class="label">开始时间: </span>
@@ -221,17 +235,13 @@
         </div>
       </template>
     </ai-card>
-    <action-close
-      :customer="customer"
-      @refresh="$emit('refresh')"
-      v-if="isInDetail"
-    />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 
+import AiButton from "@/view/component/AiButton.vue";
 import AiCard from "@/view/component/AiCard.vue";
 import AiBadge from "@/view/component/AiBadge.vue";
 import AiCell from "@/view/component/AiCell.vue";
@@ -251,6 +261,7 @@ import _get from "lodash/get";
 
 @Component({
   components: {
+    AiButton,
     AiCard,
     AiCell,
     AiBadge,
@@ -266,8 +277,16 @@ export default class Home extends Vue {
   @Prop({ type: String, default: "" }) outerTag: string;
   @Prop({ type: Boolean, default: false }) isInDetail: boolean;
 
+  get follower() {
+    return _get(this.customer, "follower_json");
+  }
+
   get status() {
     return CrmCustomerStatus[this.customer.status];
+  }
+
+  get isRestoring() {
+    return this.status === CrmCustomerStatus.restoring;
   }
 
   get jobStageColor() {
@@ -338,32 +357,14 @@ export default class Home extends Vue {
         margin-right: 10px;
         min-width: 80px;
         width: 80px;
-
-        span {
-          font-size: 24px;
-          font-weight: 600;
-        }
-      }
-
-      .cover {
-        width: 40px;
-        border-radius: 50%;
       }
     }
   }
-  .edit {
+  .actions {
     padding: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    .job {
-      font-weight: 600;
-      text-decoration: underline;
-    }
-    .actions {
-      display: flex;
-    }
   }
   .body {
     padding: 10px;
@@ -378,7 +379,7 @@ export default class Home extends Vue {
 
         padding: 0px 10px;
 
-        font-size: 14px;
+        font-size: 12px;
         color: #4a4a4a;
       }
 
@@ -392,12 +393,13 @@ export default class Home extends Vue {
         align-items: center;
         justify-content: space-between;
         margin: 10px;
+        font-size: 14px;
         font-weight: 600;
       }
 
       table {
         width: 100%;
-        font-size: 14px;
+        font-size: 12px;
         color: #4a4a4a;
 
         td {

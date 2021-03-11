@@ -9,7 +9,7 @@
     />
     <ai-dialog v-model="showDialog">
       <div class="dialog">
-        <h3>选择对应跟进任务</h3>
+        <div class="title">选择对应跟进任务</div>
         <ai-selection-stored
           resource="crmJob"
           v-model="jobId"
@@ -143,16 +143,15 @@ export default class Home extends Mixins(SyncMixin) {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background: #fff;
+  margin: 20px;
+  border-radius: 10px;
 
   .title {
     font-size: 18px;
     font-weight: 600;
     line-height: 2;
   }
-  .content {
-    min-height: 80vh;
-  }
-
   .action {
     width: 80%;
     margin: 20px;
@@ -165,6 +164,10 @@ export default class Home extends Mixins(SyncMixin) {
 
   .selection {
     margin: 30px auto;
+  }
+
+  .title {
+    font-size: 18px;
   }
 
   .action {
