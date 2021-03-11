@@ -140,9 +140,10 @@ export default class Home extends Mixins(SyncMixin) {
     if (this.$route.meta.disableDefaultShare) return;
 
     const name = `${this.$auth.user.nickname} 给你推荐 ${this.merchant.name}`;
+    const desc = _get(this.merchant, "website.share.desc");
     this.$bus.$emit("config:share", {
       title: name,
-      desc: "这是一家非常棒的培训机构哦， 快来了解",
+      desc: isEmpty(desc) ? "这是一家非常棒的培训机构哦， 快来了解" : desc,
       imgUrl: this.merchant.cover_url || this.merchant.logo_url,
     });
   }

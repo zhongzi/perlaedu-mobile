@@ -17,6 +17,7 @@
           :merchant="merchant"
         />
         <universe-coupon class="resource coupon" :merchant="merchant" />
+        <share class="resource share" :merchant="merchant" />
       </div>
     </ai-panel>
   </div>
@@ -32,6 +33,7 @@ import Skin from "./Skin.vue";
 import Sections from "./Sections.vue";
 import UnionMerchantList from "./UnionMerchantList.vue";
 import UniverseCoupon from "./UniverseCoupon.vue";
+import Share from "./Share.vue";
 
 import _get from "lodash/get";
 import merge from "lodash/merge";
@@ -46,6 +48,7 @@ import filter from "lodash/filter";
     Sections,
     UnionMerchantList,
     UniverseCoupon,
+    Share,
   },
 })
 export default class Home extends Vue {
