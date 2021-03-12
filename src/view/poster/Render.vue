@@ -106,13 +106,12 @@ export default class Home extends Mixins(SyncMixin) {
     const baseWidth = _get(this.template, "width");
     const baseHeight = _get(this.template, "height");
 
+    const templateOptions = merge(
+      _get(this.template, "options", {}),
+      _get(this.poster, "options", {})
+    );
     const templateImage =
-      this.$route.query.bgImage ||
-      _get(
-        this.poster,
-        "options.bgImage",
-        _get(this.template, "options.bgImage")
-      );
+      this.$route.query.bgImage || _get(templateOptions, "bgImage");
     const template = {
       type: "image",
       value: this.resizeImage(templateImage, {
@@ -120,7 +119,7 @@ export default class Home extends Mixins(SyncMixin) {
         width: baseWidth,
         height: baseHeight,
       }),
-      options: {},
+      options: templateOptions,
     };
 
     const elements = map(_get(this.template, "elements", []), (element) => {

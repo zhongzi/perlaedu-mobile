@@ -128,7 +128,10 @@ class PosterBuilder {
   }
 
   scaleElement(element) {
-    element.scale({ x: this.scale, y: this.scale });
+    element.options.x = element.options.x * this.scale;
+    element.options.y = element.options.y * this.scale;
+    element.options.width = element.options.width * this.scale;
+    element.options.height = element.options.height * this.scale;
   }
 
   buildTemplate(callback) {
@@ -156,6 +159,7 @@ class PosterBuilder {
   }
 
   dispachRender(element, index) {
+    this.scaleElement(element);
     if (element.type === "text") {
       this.renderText(element, index, () => this.checkAndCallback());
     } else if (element.type == "image") {
@@ -170,7 +174,6 @@ class PosterBuilder {
       Object.assign({}, { text: element.value }, element.options)
     );
 
-    this.scaleElement(text);
     this.layer.add(text);
     element._item = text;
 
@@ -198,7 +201,6 @@ class PosterBuilder {
       const circle = new Konva.Circle(
         Object.assign({}, { fillPatternImage: image }, element.options)
       );
-      self.scaleElement(circle);
       self.layer.add(circle);
       element._item = circle;
 
@@ -216,7 +218,6 @@ class PosterBuilder {
         Object.assign({}, { image: image }, element.options)
       );
 
-      self.scaleElement(img);
       self.layer.add(img);
       element._item = img;
 
@@ -229,17 +230,21 @@ class PosterBuilder {
     return !find(this.elements, (element) => !element._item);
   }
 
+  resetZIndex(element) {
+    const zIndex = _get(element, "options.z");
+    const item = _get(element, "_item");
+    console.log(zIndex, item, element);
+    if (zIndex && item && item.zIndex) {
+      item.zIndex(zIndex);
+    }
+  }
+
   checkAndCallback() {
     if (this.isRendedAll()) {
-      forEach(this.elements, (element) => {
-        const zIndex = _get(element, "options.z");
-        const item = _get(element, "_item");
-        if (zIndex && item && item.zIndex) {
-          console.log(this.elements);
-          console.log(zIndex);
-          item.zIndex(zIndex);
-        }
+      this.elements.forEach((element) => {
+        this.resetZIndex(element);
       });
+      this.resetZIndex(this.template);
       this.callback && this.callback(this.getURL());
     }
   }

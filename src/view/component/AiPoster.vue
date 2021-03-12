@@ -13,6 +13,7 @@ import isEmpty from "lodash/isEmpty";
 import forEach from "lodash/forEach";
 import template from "lodash/template";
 import cloneDeep from "lodash/cloneDeep";
+import debounce from "lodash/debounce";
 
 @Component({
   name: "ai-poster",
@@ -22,21 +23,23 @@ export default class Home extends Vue {
   @Prop({ type: Object, default: () => ({}) }) context: any;
   @Prop({ type: String, default: "poster-container-id" }) containerId: string;
 
+  debBuild: any = null;
   posterBuilder: any = null;
   posterImage: string = "";
 
   @Watch("poster", { deep: true })
   onPosterChanged() {
-    this.build();
+    this.debBuild();
   }
 
   @Watch("context", { deep: true })
   onContextChanged() {
-    this.build();
+    this.debBuild();
   }
 
   created() {
-    this.build();
+    this.debBuild = debounce(this.build, 1000);
+    this.debBuild();
   }
 
   renderContent(content) {
@@ -66,7 +69,6 @@ export default class Home extends Vue {
     if (!this.posterBuilder) {
       this.posterBuilder = new this.$PosterBuilder();
     }
-    console.log(name, template, elements, baseWidth);
 
     this.posterBuilder.setData(
       this.containerId,
