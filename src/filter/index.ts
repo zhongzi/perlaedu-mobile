@@ -25,10 +25,6 @@ function parseDate(value) {
   return value;
 }
 
-function emptyReplace(s, d = "-") {
-  return isEmpty(s) ? d : s;
-}
-
 function distanceFromDatetime(
   value: Date | string,
   simplify: boolean = false,
@@ -170,7 +166,6 @@ const filters: { [k: string]: any } = {
   distanceFromSeconds,
   distanceFromDatetime,
   prettyBytes,
-  emptyReplace,
   ...dates,
 };
 

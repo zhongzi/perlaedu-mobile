@@ -68,7 +68,7 @@ export default class Home extends Vue {
     img {
       border-radius: 4px;
       width: 100%;
-      object-fit: fill;
+      object-fit: cover;
     }
   }
 }

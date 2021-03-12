@@ -1,6 +1,10 @@
 <template>
   <div class="wrapper customer-detail">
-    <crm-customer :customer="customer" class="header" />
+    <crm-customer
+      :customer="customer"
+      class="header"
+      :showMerchantNameInCell="false"
+    />
     <ai-tab-rounded v-model="curTabIdx" :tabs="tabs" />
     <template v-if="curTab.value === 'detail'">
       <crm-customer :customer="customer" :isInDetail="true" @refresh="load" />

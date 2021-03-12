@@ -11,6 +11,7 @@
         >
           <template v-slot:item="{ item, tag }">
             <crm-customer
+              class="item"
               :customer="item"
               :outerTag="tag"
               :isInDetail="false"
@@ -148,6 +149,9 @@ export default class Home extends Vue {
     border-radius: 50%;
     width: 60px;
     height: 60px;
+  }
+  .item {
+    margin: 5px auto;
   }
 }
 </style>

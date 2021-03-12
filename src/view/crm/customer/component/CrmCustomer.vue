@@ -2,34 +2,38 @@
   <div class="wrapper customer" @click="open">
     <ai-card>
       <template v-slot:header v-if="!isInDetail">
-        <ai-cell class="header">
-          <template v-slot:cover>
-            <div class="left">
-              <div class="number">
-                <crm-job-count-down :customer="customer" />
+        <div class="cell">
+          <div class="title" v-if="showMerchantNameInCell">
+            学校: {{ customer.name }} #{{ customer.id }}
+          </div>
+          <ai-cell class="header">
+            <template v-slot:cover>
+              <div class="left">
+                <div class="number">
+                  <crm-job-count-down :customer="customer" />
+                </div>
+                <ai-avatar
+                  :avatar="
+                    customer
+                      | safe('user.avatar', require('@/asset/logo.bg.png'))
+                      | alioss({ width: 80 })
+                  "
+                  :name="
+                    customer
+                      | safe('user.nickname', customer.name || customer.phone)
+                  "
+                >
+                  <template v-slot:remark>
+                    {{ customer.created_at | defaultDate }}
+                  </template>
+                </ai-avatar>
               </div>
-              <ai-avatar
-                :avatar="
-                  customer
-                    | safe('user.avatar', require('@/asset/logo.bg.png'))
-                    | alioss({ width: 80 })
-                "
-                :name="
-                  customer
-                    | safe('user.nickname', customer.name || customer.phone)
-                "
-              >
-                <template v-slot:remark>
-                  {{ "NO-" + customer.id }}
-                  {{ customer.created_at | defaultDate }}
-                </template>
-              </ai-avatar>
-            </div>
-          </template>
-          <template v-slot:right v-if="follower">
-            <ai-avatar :avatar="follower.avatar" />
-          </template>
-        </ai-cell>
+            </template>
+            <template v-slot:right v-if="follower">
+              <ai-avatar :avatar="follower.avatar" />
+            </template>
+          </ai-cell>
+        </div>
       </template>
       <template v-slot:body v-if="isInDetail">
         <div class="actions">
@@ -68,19 +72,19 @@
           <div class="section detail">
             <div class="field phone">
               <span class="label">联系电话: </span>
-              <span class="value">{{ customer.phone | emptyReplace }}</span>
+              <span class="value">{{ customer | safe("phone") }}</span>
             </div>
             <div class="field">
               <span class="label">名称: </span>
-              <span class="value">{{ customer.name | emptyReplace }}</span>
+              <span class="value">{{ customer | safe("name") }}</span>
             </div>
             <div class="field">
               <span class="label">地址: </span>
-              <span class="value">{{ customer.address | emptyReplace }}</span>
+              <span class="value">{{ customer | safe("address ") }}</span>
             </div>
             <div class="field">
               <span class="label">备注: </span>
-              <span class="value">{{ customer.remark | emptyReplace }}</span>
+              <span class="value">{{ customer | safe("remark") }}</span>
             </div>
             <div class="field">
               <span class="label">来源渠道: </span>
@@ -121,10 +125,18 @@
                   <td>校长</td>
                   <td>
                     {{ merchant.name }}
-                    <template v-if="merchant.status === 'approved'">
+                    <template
+                      v-if="
+                        ['approved', 'freezing'].indexOf(merchant.status) >= 0
+                      "
+                    >
                       <i
                         class="iconfont icon-checked"
-                        style="color: green; font-size: 9px"
+                        style="font-size: 9px"
+                        :style="{
+                          color:
+                            merchant.status === 'freezing' ? 'red' : 'green',
+                        }"
                       />
                     </template>
                   </td>
@@ -177,7 +189,23 @@
                 <tr :key="merchant.id">
                   <td>{{ merchant.created_at | defaultDay }}</td>
                   <td>校长</td>
-                  <td>{{ merchant.name }}</td>
+                  <td>
+                    {{ merchant.name }}
+                    <template
+                      v-if="
+                        ['approved', 'freezing'].indexOf(merchant.status) >= 0
+                      "
+                    >
+                      <i
+                        class="iconfont icon-checked"
+                        style="font-size: 9px"
+                        :style="{
+                          color:
+                            merchant.status === 'freezing' ? 'red' : 'green',
+                        }"
+                      />
+                    </template>
+                  </td>
                   <td>{{ merchant | safe("agent.realname") }}</td>
                 </tr>
               </template>
@@ -276,6 +304,7 @@ export default class Home extends Vue {
   @Prop({ type: Object, default: null }) customer: any;
   @Prop({ type: String, default: "" }) outerTag: string;
   @Prop({ type: Boolean, default: false }) isInDetail: boolean;
+  @Prop({ type: Boolean, default: true }) showMerchantNameInCell: boolean;
 
   get follower() {
     return _get(this.customer, "follower_json");
@@ -344,6 +373,17 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 .customer {
   width: 100%;
+  .cell {
+    width: 100%;
+
+    .title {
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1;
+      margin-top: 20px;
+      margin-left: 10px;
+    }
+  }
 
   .header {
     width: 100%;

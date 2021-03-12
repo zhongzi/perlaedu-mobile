@@ -86,7 +86,7 @@ export default class Home extends Vue {
 
     .cover {
       border-radius: 4px;
-      object-fit: fill;
+      object-fit: cover;
     }
   }
 
