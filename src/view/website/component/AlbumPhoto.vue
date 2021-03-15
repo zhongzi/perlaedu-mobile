@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-    <img class="cover" :src="innerImage" />
+    <img class="cover" :src="innerImage" @load="onLoaded" />
   </div>
 </template>
 
@@ -17,6 +17,10 @@ export default class Home extends Vue {
       this.image ||
       this.$options.filters.alioss(this.photo.cover, { width: 100 })
     );
+  }
+
+  onLoaded() {
+    this.$bus.$emit("infinite:scroll:refresh");
   }
 }
 </script>

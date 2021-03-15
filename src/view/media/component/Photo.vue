@@ -2,17 +2,18 @@
   <div class="wrapper photo" @click="gotoDetail">
     <div :id="vecId" v-show="false" />
     <div class="cell" v-if="showMerged && innerFrame && mergedUrl">
-      <img :src="mergedUrl" />
+      <img :src="mergedUrl" @load="onLoaded" />
     </div>
 
     <div class="cell" v-else>
       <div :style="mergedStyle">
-        <img :src="photo.url | alioss({ width: 375 })" />
+        <img :src="photo.url | alioss({ width: 375 })" @load="onLoaded" />
       </div>
       <img
         v-if="innerFrame"
-        :src="innerFrame.url | alioss({ width: 375 })"
         class="innerFrame"
+        :src="innerFrame.url | alioss({ width: 375 })"
+        @load="onLoaded"
       />
     </div>
 
@@ -130,6 +131,10 @@ export default class Home extends Vue {
   @Watch("photo", { deep: true })
   onPhotoChanged() {
     this.getComputedPosition();
+  }
+
+  onLoaded() {
+    this.$bus.$emit("infinite:scroll:refresh");
   }
 
   getComputedPosition() {

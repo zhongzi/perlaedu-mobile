@@ -59,6 +59,7 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import AiDoubleBounce from "./AiDoubleBounce.vue";
 
 import BScroll from "better-scroll";
+import debounce from "lodash/debounce";
 
 @Component({
   name: "ai-infinite-scroll",
@@ -129,6 +130,10 @@ export default class Home extends Vue {
       return `top: ${this.scrollPos - this.pullDownHeight + 10}px`;
     }
     return "top: 10px";
+  }
+
+  created() {
+    this.$bus.$on("infinite:scroll:refresh", debounce(this.refresh, 200));
   }
 
   @Watch("loading")

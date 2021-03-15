@@ -128,6 +128,7 @@ export default class Home extends Vue {
 
   reset() {
     this.curTabIdx = parseInt(this.$route.query.tab as any) || 0;
+    this.$bus.$emit("infinite:scroll:refresh");
   }
 
   add() {

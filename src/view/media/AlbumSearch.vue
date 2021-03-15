@@ -110,22 +110,10 @@ export default class Home extends Vue {
 
   created() {
     this.reset();
-    console.log(
-      (this as any)._uid,
-      "created",
-      this.type,
-      this.$route.meta.keepAlive
-    );
   }
 
   activated() {
     this.reset();
-    console.log(
-      (this as any)._uid,
-      "activated",
-      this.type,
-      this.$route.meta.keepAlive
-    );
   }
 
   reset() {
@@ -133,6 +121,7 @@ export default class Home extends Vue {
     this.merchantId = parseInt(
       this.$route.query._merchant_id_ || _get(this.$auth, "user.curr_merch_id")
     );
+    this.$bus.$emit("infinite:scroll:refresh");
   }
 }
 </script>
