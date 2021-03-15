@@ -24,7 +24,9 @@
     <ai-dialog v-model="show">
       <div class="dialog">
         <p>{{ work | safe("title") }}</p>
-        <img :src="work | safe('qrcode')" />
+        <div class="container">
+          <img :src="work | safe('qrcode')" />
+        </div>
         <p>长按识别二维码, 进入查看操作</p>
       </div>
     </ai-dialog>
@@ -160,8 +162,24 @@ export default class Home extends Vue {
   align-items: center;
   justify-content: space-between;
 
+  position: relative;
+  height: 300px;
+
   img {
     width: 200px;
+  }
+  .container {
+    position: absolute;
+    z-index: 99;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    bottom: 0px;
+    right: 0;
+    left: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   p:nth-child(1) {
