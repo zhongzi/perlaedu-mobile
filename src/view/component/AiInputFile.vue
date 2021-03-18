@@ -5,6 +5,7 @@
       type="file"
       @change="onChange"
       :accept="accept"
+      :multiple="multiple"
       :class="b('hidden')"
     />
     <div :class="b('show')">
@@ -24,6 +25,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 export default class Home extends Vue {
   @Prop({ type: String, default: "video/*" }) accept: string;
   @Prop({ type: String, default: "upload" }) icon: string;
+  @Prop({ type: Boolean, default: false }) multiple: boolean;
 
   onChange(e) {
     this.$emit("change", e);

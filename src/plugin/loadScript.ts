@@ -1,7 +1,14 @@
 import Vue from "vue";
 
-const loadScript = (url, callback = null, type = "js") => {
+const loadScript = (url, callback = null, type = "js", name=null) => {
   let dom = null;
+
+  if(name) {
+    if(document.getElementById(name)) {
+      callback && callback();
+    }
+  }
+
   if (type === "js") {
     dom = document.createElement("script");
     dom.setAttribute("type", "text/javascript");

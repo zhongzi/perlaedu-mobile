@@ -35,6 +35,7 @@ export default class Home extends Mixins(StopBodyScrollMixin) {
 
   @Watch("value")
   onShowChanged() {
+    console.log("ai-dialog", this.value);
     this.reset(this.value);
     this.stopBodyScroll(this.value);
   }

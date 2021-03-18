@@ -21,6 +21,10 @@
             <i class="iconfont icon-album coupon" />
             <span>相册</span>
           </div>
+          <div class="icon" @click="openNotices">
+            <i class="iconfont icon-email email" />
+            <span>通知</span>
+          </div>
         </div>
       </template>
     </ai-cell>
@@ -46,6 +50,7 @@ import Merchants from "./component/Merchants.vue";
 import CourseList from "./component/CourseList.vue";
 import QuickEntry from "./component/QuickEntry.vue";
 import AlbumList from "./component/AlbumList.vue";
+import NoticeList from "./component/NoticeList.vue";
 
 @Component({
   components: {
@@ -56,10 +61,12 @@ import AlbumList from "./component/AlbumList.vue";
     CourseList,
     QuickEntry,
     AlbumList,
+    NoticeList,
   },
 })
 export default class Home extends Vue {
   showAlbums = false;
+
   get user() {
     return this.$auth.user;
   }
@@ -77,12 +84,18 @@ export default class Home extends Vue {
   openAlbums() {
     this.showAlbums = true;
   }
+
+  openNotices() {
+    this.$router.push({
+      name: "notices",
+    });
+  }
 }
 </script>
 <style lang="scss" scoped>
 .student {
   .header {
-    padding: 30px 30px;
+    padding: 30px 10px;
     margin-bottom: 10px;
 
     background: #fff;
@@ -127,6 +140,11 @@ export default class Home extends Vue {
 
         .coupon {
           font-size: 28px;
+        }
+
+        .email {
+          font-size: 28px;
+          font-weight: 800;
         }
       }
     }

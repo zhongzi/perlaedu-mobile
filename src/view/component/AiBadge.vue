@@ -1,6 +1,6 @@
 <template>
   <div :class="b()">
-    <span class="{'float-mode': isFloat}" :style="mergedStyle">
+    <span :class="{ 'float-mode': isFloat }" :style="mergedStyle">
       {{ content }}
     </span>
     <slot />

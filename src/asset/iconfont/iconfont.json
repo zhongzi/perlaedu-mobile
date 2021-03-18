@@ -6,6 +6,41 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "141405",
+      "name": "185078 - email mail streamline",
+      "font_class": "-email",
+      "unicode": "e643",
+      "unicode_decimal": 58947
+    },
+    {
+      "icon_id": "831716",
+      "name": "recording",
+      "font_class": "-recording",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
+      "icon_id": "1301393",
+      "name": "语音",
+      "font_class": "-yuyin",
+      "unicode": "e667",
+      "unicode_decimal": 58983
+    },
+    {
+      "icon_id": "10496989",
+      "name": "time",
+      "font_class": "-clock",
+      "unicode": "e622",
+      "unicode_decimal": 58914
+    },
+    {
+      "icon_id": "1026284",
+      "name": "通知",
+      "font_class": "-notice",
+      "unicode": "e639",
+      "unicode_decimal": 58937
+    },
+    {
       "icon_id": "2229441",
       "name": "相册",
       "font_class": "-xiangce",

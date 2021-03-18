@@ -1,0 +1,281 @@
+<template>
+  <div :class="b()">
+    <ai-list-stored
+      scrollType="scroll"
+      resource="media"
+      :query="innerQuery"
+      :refresh="refresh"
+    >
+      <template v-slot:header>
+        <div :class="b('header')">
+          <hui-button
+            type="primary"
+            @click.native.stop="$emit('trigger')"
+            class="button"
+          >
+            上传新视频
+          </hui-button>
+        </div>
+      </template>
+      <template v-slot:item="{ item }">
+        <div :class="b('item')">
+          <div :class="b('item-datetime')">
+            {{ item.updated_at | date("yyyy-MM-dd HH:mm") }}
+          </div>
+          <ai-cell>
+            <template v-slot:cover>
+              <div :class="b('item-media')" @click="play(item)">
+                <img :src="item.cover" v-if="item.cover.length > 0" />
+                <div :class="b('item-media-mask')">
+                  <i class="iconfont icon-play" />
+                </div>
+              </div>
+            </template>
+            <template v-slot:title>
+              <div :class="b('item-title')">
+                {{ item.title }}
+              </div>
+            </template>
+            <template v-slot:right>
+              <ai-input-check
+                :value="selectedMedias.includes(item)"
+                @input="(v) => checked(item, v)"
+                mode="icon"
+              />
+            </template>
+          </ai-cell>
+        </div>
+        <ai-line />
+      </template>
+    </ai-list-stored>
+    <ai-fixed-footer>
+      <ai-submit-actions
+        @cancel="$emit('cancel')"
+        :submitLabel="'确定(' + selectedMedias.length + ')'"
+        @submit="submit"
+      />
+    </ai-fixed-footer>
+    <hui-dialog v-model="showPlayer" v-if="showPlayer">
+      <div :class="b('dialog-player')">
+        <ai-video-ali-player-new :media="curMedia" />
+      </div>
+    </hui-dialog>
+  </div>
+</template>
+
+<script lang="ts">
+import { Component, Vue, Prop } from "vue-property-decorator";
+
+import AiInput from "./AiInput.vue";
+import AiCell from "./AiCell.vue";
+import AiLine from "./AiLine.vue";
+import AiInputCheck from "./AiInputCheck.vue";
+import AiListStored from "./AiListStored.vue";
+import AiFixedFooter from "./AiFixedFooter.vue";
+import AiSubmitActions from "./AiSubmitActions.vue";
+import AiVideoAliPlayerNew from "./AiVideoAliPlayerNew.vue";
+
+import _get from "lodash/get";
+import merge from "lodash/merge";
+import pull from "lodash/pull";
+import filter from "lodash/filter";
+import isEmpty from "lodash/isEmpty";
+
+@Component({
+  name: "ai-video-picker",
+  components: {
+    AiInput,
+    AiCell,
+    AiLine,
+    AiInputCheck,
+    AiListStored,
+    AiVideoAliPlayerNew,
+    AiFixedFooter,
+    AiSubmitActions,
+  },
+})
+export default class Home extends Vue {
+  @Prop({ type: Object, default: null }) query: any;
+  @Prop({ type: Number, default: 1 }) limit: number;
+  @Prop({ type: Number, default: null }) merchantId: number;
+
+  curMedia: any = null;
+  keyword: string = "";
+  refresh: boolean = true;
+  showDialog: boolean = false;
+  showPlayer: boolean = false;
+  selectedMedias: any = [];
+
+  get isMultiple() {
+    return this.limit > 1;
+  }
+
+  get innerQuery() {
+    return merge(
+      {
+        type: "video",
+        merchant_id: this.merchantId,
+        extras: JSON.stringify({
+          Media: ["file"],
+          MediaFile: ["play_auth", "videoid"],
+        }),
+        filters: JSON.stringify({
+          title: [this.keyword],
+          keywords: [this.keyword],
+        }),
+      },
+      this.query
+    );
+  }
+
+  upload() {
+    this.showDialog = true;
+  }
+
+  play(media) {
+    this.curMedia = media;
+    this.showPlayer = true;
+  }
+
+  submit() {
+    if (isEmpty(this.selectedMedias)) {
+      this.$hui.toast.info("尚未选择任何视频");
+      return;
+    }
+    this.$emit(
+      "input:media",
+      this.isMultiple ? this.selectedMedias : this.selectedMedias[0]
+    );
+  }
+
+  onUploaded(media) {
+    this.checked(media, true);
+    this.showDialog = false;
+  }
+
+  checked(item, flag) {
+    if (flag) {
+      if (this.isMultiple) {
+        this.selectedMedias.push(item);
+      } else {
+        this.selectedMedias = [item];
+      }
+    } else {
+      this.selectedMedias = filter(this.selectedMedias, (v) => {
+        return v.id !== item.id;
+      });
+    }
+  }
+}
+</script>
+<style lang="scss" scoped>
+.ai-video-picker {
+  & ::v-deep .ai-infinite-scroll__list {
+    position: relative;
+    top: -20px;
+
+    padding: 20px 30px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px -6px 18px 0px rgba(0, 0, 0, 0.04);
+    border-radius: 22px 22px 0px 0px;
+  }
+
+  &__header {
+    background: linear-gradient(
+      119deg,
+      rgba(255, 146, 73, 1) 0%,
+      rgba(226, 99, 14, 1) 100%
+    );
+    min-height: 110px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .button {
+      width: 307px;
+      height: 48px;
+      background: rgba(255, 255, 255, 1);
+      border-radius: 24px;
+      opacity: 0.86;
+
+      font-size: 14px;
+      font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
+      font-weight: bold;
+      color: rgba(234, 128, 57, 1);
+      line-height: 19px;
+      letter-spacing: 1px;
+    }
+  }
+
+  &__item {
+    width: 100%;
+    margin: 15px 0px;
+
+    &-datetime {
+      width: 100%;
+      font-size: 12px;
+      font-family: MicrosoftYaHei;
+      color: rgba(155, 155, 155, 1);
+      line-height: 16px;
+      margin-bottom: 10px;
+    }
+
+    &-title {
+      font-size: 14px;
+      font-family: MicrosoftYaHei-Bold, MicrosoftYaHei;
+      font-weight: bold;
+      color: rgba(74, 74, 74, 1);
+      line-height: 19px;
+      max-width: 100%;
+      word-break: break-word;
+      margin: 0px 10px;
+    }
+
+    &-media {
+      position: relative;
+      width: 89px;
+      height: 60px;
+      min-width: 89px;
+      min-height: 60px;
+      background: linear-gradient(
+        136deg,
+        rgba(255, 207, 51, 1) 0%,
+        rgba(255, 131, 6, 1) 100%
+      );
+      border-radius: 12px;
+      overflow: hidden;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        display: block;
+      }
+
+      &-mask {
+        position: absolute;
+        top: 0px;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        background: rgba(0, 0, 0, 0.6);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i {
+          font-size: 18px;
+          background: #fff;
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+}
+</style>

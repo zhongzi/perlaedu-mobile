@@ -84,6 +84,7 @@ export default class Home extends Vue {
       {
         spaceBetween: 0,
         freeMode: true,
+        autoHeight: true,
         pagination: {
           el: ".swiper-pagination",
           clickable: true,
@@ -99,7 +100,7 @@ export default class Home extends Vue {
 
   @Watch("slideToNum", { deep: true })
   onSlideToNumChanged() {
-    (this.$refs.mySwiper as any).$swiper.slideTo(this.slideToNum, 1000, false);
+    this.initSlidePage();
   }
 
   created() {
@@ -112,6 +113,14 @@ export default class Home extends Vue {
         this.swiper.autoplay.stop();
       }
     });
+  }
+
+  mounted() {
+    this.initSlidePage();
+  }
+
+  initSlidePage() {
+    this.swiper && this.swiper.slideTo(this.slideToNum, 1000, false);
   }
 
   onReady() {
@@ -151,6 +160,13 @@ export default class Home extends Vue {
   }
   &__swiper-item {
     box-sizing: border-box;
+  }
+
+  & ::v-deep .swiper-slide {
+    height: 1px;
+  }
+  & ::v-deep .swiper-slide-active {
+    height: auto !important;
   }
 }
 </style>

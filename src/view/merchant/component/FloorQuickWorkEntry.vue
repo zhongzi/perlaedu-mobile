@@ -83,6 +83,12 @@ export default class Home extends Vue {
           name: "merchantAuthorizations",
         },
       },
+      {
+        title: "通知中心(灰度测试)",
+        route: {
+          name: "noticeDashboard",
+        },
+      },
     ];
   }
 

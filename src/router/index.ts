@@ -30,6 +30,7 @@ import crmRoutes from "./crm";
 import posterRoutes from "./poster";
 import merchantRoutes from "./merchant";
 import mediaRoutes from "./media";
+import noticeRoutes from "./notice";
 import termsOfServiceRoutes from "./terms_of_service";
 
 patchVueRouter(Router);
@@ -128,7 +129,8 @@ export default new Router({
     crmRoutes,
     posterRoutes,
     merchantRoutes,
-    mediaRoutes
+    mediaRoutes,
+    noticeRoutes
   ),
   scrollBehavior: (to, from, savedPosition) => {
     if (savedPosition) {

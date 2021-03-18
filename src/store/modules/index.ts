@@ -5,6 +5,7 @@ import common from "./common";
 import crm from "./crm";
 import media from "./media";
 import poster from "./poster";
+import notice from "./notice";
 
 export default {
   ...bill,
@@ -14,4 +15,5 @@ export default {
   ...poster,
   ...common,
   ...media,
+  ...notice,
 };

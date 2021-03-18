@@ -49,9 +49,11 @@ export default class Home extends Vue {
 <style lang="scss" scoped>
 .ai-input-radio {
   display: flex;
+  align-items: center;
 
   input {
     margin-right: 10px;
   }
+
 }
 </style>

@@ -1,14 +1,14 @@
 <template>
   <div :class="b()">
     <vue-aliplayer
-      v-if="video.play_auth"
+      v-if="playAuth"
       ref="player"
-      :cover="video.cover"
       :class="b('player')"
+      :cover="cover"
       :width="width"
       :height="height"
-      :vid="video.videoid"
-      :playauth="video.play_auth"
+      :vid="videoid"
+      :playauth="playAuth"
       :skinLayout="skinLayout"
       :autoplay="false"
       :x5_fullscreen="true"
@@ -33,6 +33,8 @@ import SyncMixin from "@/mixin/SyncMixin";
 
 import VueAliplayer from "vue-aliplayer";
 
+import _get from "lodash/get";
+
 @Component({
   name: "ai-video-ali-player",
   components: {
@@ -41,13 +43,32 @@ import VueAliplayer from "vue-aliplayer";
 })
 export default class Home extends Mixins(SyncMixin) {
   @Prop({ type: [String, Number] }) videoId: string | number;
+  @Prop({ type: String, default: "video" }) resource: string;
   @Prop({ type: String, default: "100%" }) width: string;
   @Prop({ type: String, default: "200px" }) height: string;
   @Prop({ type: Boolean, default: true }) autoplay: boolean;
   @Prop({ type: Boolean, default: true }) showInfo: boolean;
 
+  get isVideoStore() {
+    return this.resource === "video";
+  }
+
   get video() {
     return this.entity;
+  }
+
+  get cover() {
+    return _get(this.video, "cover");
+  }
+
+  get videoid() {
+    const key = this.isVideoStore ? "videoid" : "file.videoid";
+    return _get(this.video, key);
+  }
+
+  get playAuth() {
+    const key = this.isVideoStore ? "play_auth" : "file.play_auth";
+    return _get(this.video, key);
   }
 
   get skinLayout() {
@@ -71,7 +92,7 @@ export default class Home extends Mixins(SyncMixin) {
 
   created() {
     this.enableLoading = false;
-    this.store = "video";
+    this.store = this.resource;
   }
 
   beforeDestroy() {
@@ -94,11 +115,19 @@ export default class Home extends Mixins(SyncMixin) {
   loadVideo() {
     if (!this.videoId) return;
 
+    let extras = "play_auth,videoid";
+    if (!this.isVideoStore) {
+      extras = JSON.stringify({
+        Media: ["file"],
+        MediaFile: ["play_auth", "videoid"],
+      });
+    }
+
     this.id = this.videoId;
     this.loadEntity({
       id: this.videoId,
       query: {
-        extras: "play_auth,videoid",
+        extras: extras,
       },
       success: () => {
         if (!this.autoplay) return;

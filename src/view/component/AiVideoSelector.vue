@@ -2,7 +2,7 @@
   <div :class="b()">
     <ai-list-stored
       scrollType="scroll"
-      resource="video"
+      :resource="resource"
       :query="innerQuery"
       :refresh="refresh"
     >
@@ -56,10 +56,18 @@
     </ai-fixed-footer>
     <hui-dialog v-model="showDialog">
       <div :class="b('dialog')">
-        <ai-video-ali-uploader
-          @uploaded="onUploaded"
-          @cancel="showDialog = false"
-        />
+        <template v-if="isVideoStore">
+          <ai-video-ali-uploader
+            @uploaded="onUploaded"
+            @cancel="showDialog = false"
+          />
+        </template>
+        <template v-else>
+          <ai-video-ali-uploader-new
+            @uploaded="onUploaded"
+            @cancel="showDialog = false"
+          />
+        </template>
       </div>
     </hui-dialog>
     <hui-dialog v-model="showPlayer" v-if="showPlayer">
@@ -105,6 +113,7 @@ import isEmpty from "lodash/isEmpty";
 })
 export default class Home extends Vue {
   @Prop({ type: Object, default: null }) query: any;
+  @Prop({ type: String, default: "video" }) resource: string;
   @Prop({ type: Boolean, default: true }) multiple: boolean;
 
   curVideo: any = null;
@@ -113,6 +122,10 @@ export default class Home extends Vue {
   showDialog: boolean = false;
   showPlayer: boolean = false;
   selectedVideos: any = [];
+
+  get isVideoStore() {
+    return this.resource === "video";
+  }
 
   get defaultVideoCover() {
     return require("@/asset/image/default_video_cover.jpg");

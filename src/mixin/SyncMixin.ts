@@ -170,6 +170,15 @@ export default class SyncMixin extends Vue {
     });
   }
 
+  commitChangesInList(tag, id, changes, store = null) {
+    const key = `${store || this.store}/updateInList`;
+    return store.commit(key, {
+      tag: tag || this.tag,
+      id: id,
+      changes: changes,
+    });
+  }
+
   commitNew(data) {
     this.id = data.data.id;
     const key = `${this.store}/saveSuccess`;

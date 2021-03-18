@@ -3,14 +3,14 @@
     <hui-button
       v-if="cancelLabel && cancelLabel.length > 0"
       :class="[b('action'), b('cancel')]"
-      @click.native="$emit('cancel')"
+      @click.native.stop="$emit('cancel')"
     >
       {{ cancelLabel }}
     </hui-button>
     <hui-button
       v-if="submitLabel && submitLabel.length > 0"
       :class="[b('action'), b('submit')]"
-      @click.native="$emit('submit')"
+      @click.native.stop="$emit('submit')"
       type="primary"
     >
       {{ submitLabel }}
@@ -18,7 +18,7 @@
     <hui-button
       v-if="deleteLabel && deleteLabel.length > 0"
       :class="[b('action'), b('delete')]"
-      @click.native="$emit('deleted')"
+      @click.native.stop="$emit('deleted')"
       type="success"
     >
       {{ deleteLabel }}

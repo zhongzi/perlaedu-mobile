@@ -14,9 +14,11 @@
       :type="type"
       :placeholder="placeholder"
       :value="value"
+      :maxlength="maxLength"
       @blur="onBlur"
       @input="onInput"
     />
+    <div :class="b('counter')">{{ value.length }} / {{ maxLength }}</div>
   </div>
 </template>
 
@@ -34,6 +36,7 @@ export default class Home extends Mixins(PatchMixin) {
   @Prop({ type: String, default: "text" }) type: string;
   @Prop({ type: String, default: "请输入内容" }) placeholder: string;
   @Prop({ type: Number, default: 3 }) rows: number;
+  @Prop({ type: Number, default: 300 }) maxLength: number;
 
   onBlur() {
     this.$emit("onBlur");
@@ -51,6 +54,7 @@ export default class Home extends Mixins(PatchMixin) {
 .ai-input-textarea {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 
   width: 100%;
   position: relative;
@@ -81,6 +85,13 @@ export default class Home extends Mixins(PatchMixin) {
     &::placeholder {
       color: #9b9b9b;
     }
+  }
+
+  &__counter {
+    text-align: right;
+    font-size: 13px;
+    color: #9b9b9b;
+    line-height: 17px;
   }
 }
 </style>

@@ -6,6 +6,7 @@
           :class="b('vec-input')"
           type="checkbox"
           :value="innerValue"
+          :disabled="disabled"
           @blur="fixIOSScroll"
         />
         <div :class="b('vec-fake', { checked: innerValue })" />
@@ -34,6 +35,7 @@ export default class Home extends Mixins(PatchMixin) {
   @Prop({ type: Boolean, default: false }) value: boolean;
   @Prop({ type: String, default: "" }) title: string;
   @Prop({ type: String, default: "input" }) mode: string;
+  @Prop({ type: Boolean, default: false }) disabled: boolean;
 
   innerValue: boolean = false;
 
@@ -47,8 +49,10 @@ export default class Home extends Mixins(PatchMixin) {
   }
 
   onInput(v) {
-    this.innerValue = v;
-    this.$emit("input", this.innerValue);
+    if (this.disabled) return;
+
+    //    this.innerValue = v;
+    this.$emit("input", v);
   }
 }
 </script>
@@ -60,8 +64,8 @@ export default class Home extends Mixins(PatchMixin) {
   &__vec {
     position: relative;
     margin-right: 5px;
-    width: 24px;
-    height: 24px;
+    width: 18px;
+    height: 18px;
 
     &-icon {
       width: 24px;
@@ -110,9 +114,9 @@ export default class Home extends Mixins(PatchMixin) {
           content: "";
           position: absolute;
           top: 0px;
-          left: 6px;
-          width: 8px;
-          height: 15px;
+          left: 4px;
+          width: 6px;
+          height: 10px;
           border: solid white;
           border-width: 0 2px 2px 0;
           transform: rotate(45deg);
